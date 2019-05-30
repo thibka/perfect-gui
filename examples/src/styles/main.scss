@@ -1,0 +1,35 @@
+html, body {
+    height: 100%;
+}
+
+body {
+    overflow: hidden;
+    margin: 0;
+    background-color: black;
+    transition: .3s all ease;
+    background-position: center;
+    background-size: cover;
+}
+
+#element {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    background-color: #3333ff;
+    transition: .1s transform ease, .3s border-radius ease;
+}
+
+#note {
+    position: absolute;
+    bottom: 5px;
+    right: 20px;
+    text-shadow: 0 0 1px black, 0 0 1px black;
+    font-family: arial;
+    color: white;
+    font-size: 10px;
+}
