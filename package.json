@@ -1,0 +1,25 @@
+{
+  "name": "perfect-gui",
+  "version": "1.0.0",
+  "description": "Nice and simple GUI for JavaScript.",
+  "main": "src/index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thibka/perfect-gui.git"
+  },
+  "keywords": [
+    "gui"
+  ],
+  "author": "thibka",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thibka/perfect-gui/issues"
+  },
+  "homepage": "https://github.com/thibka/perfect-gui#readme"
+}
