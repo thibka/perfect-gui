@@ -1,6 +1,8 @@
 # perfect-gui
 Nice and simple GUI for JavaScript.
 
+Demo : https://thibka.github.io/
+
 ## Installing
 
 ```bash
