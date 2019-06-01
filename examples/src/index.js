@@ -13,7 +13,7 @@ const gui_1 = new perfectGUI({
 
 gui_1.addImage({
     image: 'https://images.unsplash.com/photo-1485254767195-60704c46702e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1502&q=80',
-    text: "Red",
+    text: "Background 1",
     onclick: () => {
         document.body.style.backgroundImage = `url(https://images.unsplash.com/photo-1485254767195-60704c46702e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1502&q=80)`;
         document.body.style.backgroundColor = `none`;
@@ -22,7 +22,7 @@ gui_1.addImage({
 });
 gui_1.addImage({
     image: 'https://images.unsplash.com/photo-1535370976884-f4376736ab06?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=564&q=80',
-    text: "Red",
+    text: "Background 2",
     onclick: () => {
         document.body.style.backgroundImage = `url(https://images.unsplash.com/photo-1535370976884-f4376736ab06?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=564&q=80)`;
         document.body.style.backgroundColor = `none`;
@@ -31,7 +31,7 @@ gui_1.addImage({
 });
 gui_1.addImage({
     image: 'https://images.unsplash.com/photo-1524721696987-b9527df9e512?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1490&q=80',
-    text: "Red",
+    text: "Background 3",
     onclick: () => {
         document.body.style.backgroundImage = `url(https://images.unsplash.com/photo-1524721696987-b9527df9e512?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1490&q=80)`;
         document.body.style.backgroundColor = `none`;
