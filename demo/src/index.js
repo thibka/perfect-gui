@@ -43,6 +43,7 @@ gui_1.addButton({
     onclick: () => {
         document.body.style.backgroundImage = `none`;
         document.body.style.backgroundColor = get_random_color();
+        document.getElementById('note').textContent = "";
     }
 });
 gui_1.addButton({
@@ -82,7 +83,7 @@ function get_random_color() {
 };
 
 const gui_2 = new perfectGUI({
-    name: "...and drag and close them.",
+    name: "...and drag and close them!",
     width: 175
 });
 
