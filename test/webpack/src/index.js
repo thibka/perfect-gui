@@ -3,7 +3,7 @@ import "@babel/polyfill"
 import 'normalize.css'
 import './styles/main.scss'
 
-import perfectGUI from '../../src/index'
+import perfectGUI from '../../../src/es6/index'
 
 const element = document.getElementById('element');
 

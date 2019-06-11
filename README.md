@@ -5,14 +5,18 @@ Demo : https://thibka.github.io/perfect-gui/public/
 
 ## Installing
 
+### ES5
+```html
+<script src="https://cdn.jsdelivr.net/gh/thibka/perfect-gui/src/es5/perfect-gui-es5.min.js"></script>
+```
+
+### ES6
 ```bash
 npm i perfect-gui
 ```
 
 ```javascript
 import perfectGUI from 'perfect-gui';
-
-const gui = new perfectGUI();
 ```
 
 ## Usage
