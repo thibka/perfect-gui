@@ -38,6 +38,9 @@ export default class GUI {
         this._addWrapper();
     
         this._makeDraggable();
+
+        this.closed = false;
+        if (options.closed) this.toggleClose();
     }
 
     _createElement(element) {
@@ -80,9 +83,7 @@ export default class GUI {
         this._createElement({
             parent: this.header,
             class: 'lm_gui__header-close',
-            onclick: () => {
-                this.wrapper.classList.toggle('lm_gui--collapsed');
-            }
+            onclick: this.toggleClose.bind(this)
         });
     }
     
@@ -192,5 +193,10 @@ export default class GUI {
         function dragMouseUp(ev) {
             document.removeEventListener('mousemove', dragElement);
         }
+    }
+
+    toggleClose() {
+        this.closed = !this.closed;
+        this.wrapper.classList.toggle('lm_gui--collapsed');
     }
 }

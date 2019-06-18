@@ -2,7 +2,7 @@
 
     function GUI(options) {
         this.name = (options != undefined && typeof options.name == "string") ? options.name : '';
-
+        
         if (this instanceof GUI) {
             if (typeof GUI[GUI.instanceCounter] != 'number') GUI[GUI.instanceCounter] = 0;
             else GUI[GUI.instanceCounter]++;
@@ -34,6 +34,9 @@
         this._addWrapper();
 
         this._makeDraggable();
+
+        this.closed = false;
+        if (options.closed) this.toggleClose();
     }
 
     GUI.prototype._createElement = function (element) {
@@ -76,9 +79,7 @@
         this._createElement({
             parent: this.header,
             class: 'lm_gui__header-close',
-            onclick: function() {
-                this.wrapper.classList.toggle('lm_gui--collapsed');
-            }
+            onclick: this.toggleClose.bind(this)
         });
     }
 
@@ -158,38 +159,43 @@
             })
         }
     }
-
+    
     GUI.prototype._makeDraggable = function () {
         var that = this;
         this.header.addEventListener('mousedown', dragMouseDown);
         this.header.addEventListener('mouseup', dragMouseUp);
-
+        
         function dragMouseDown(ev) {
             ev.preventDefault();
-
+            
             that.position.initX = that.position.x;
             that.position.initY = that.position.y;
-
+            
             that.position.prevX = ev.clientX;
             that.position.prevY = ev.clientY;
-
+            
             document.addEventListener('mousemove', dragElement);
         }
-
+        
         function dragElement(ev) {
             ev.preventDefault();
-
+            
             that.position.x = that.position.initX + ev.clientX - that.position.prevX;
             that.position.y = that.position.initY + ev.clientY - that.position.prevY;
-
+            
             that.wrapper.style.transform = "translate3d(" + that.position.x + "px," + that.position.y + "px,0)";
         }
-
+        
         function dragMouseUp(ev) {
             document.removeEventListener('mousemove', dragElement);
         }
     }
-
+    
+    GUI.prototype.toggleClose = function () {
+        this.closed = !this.closed;
+        this.wrapper.classList.toggle('lm_gui--collapsed');
+    }
+    
     window.perfectGUI = GUI;
 
 }) (window, document);

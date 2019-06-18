@@ -84,20 +84,19 @@ function get_random_color() {
 
 const gui_2 = new perfectGUI({
     name: "...and drag and close them!",
-    width: 175
+    width: 175,
+    closed: true
 });
 
 gui_2.addButton({
-    text: "Do something",
+    text: "Toggle the first GUI",
     onclick: function() {
-        alert('Something');
-        console.log(this)
+        gui_1.toggleClose();
     }
 });
 gui_2.addButton({
     text: "Multiple line button text",
     onclick: () => {
         alert('Yay');
-        console.log(this)
     }
 });
