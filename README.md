@@ -24,7 +24,8 @@ import perfectGUI from 'perfect-gui';
 ```javascript
 const gui = new perfectGUI({
     name: 'My GUI', // optional
-    width: 250      // optional, default is 290
+    width: 250,     // optional, default is 290,
+    closed: true    // optional, default is false
 });
 ```
 
@@ -54,5 +55,7 @@ gui.addSlider({
         // do something nice
     }
 });
+
+gui.toggleClose();
 
 ```
