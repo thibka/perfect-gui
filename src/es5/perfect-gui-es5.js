@@ -83,6 +83,23 @@
         });
     }
 
+    GUI.prototype.addButton = function (text, callback) {
+        var params = {
+            text: text,
+            callback: callback
+        };
+        this._checkMandatoryParams({
+            text: 'string',
+            callback: 'function'
+        }, params);
+
+        this._createElement({
+            class: 'lm_gui__button',
+            onclick: params.callback,
+            textContent: params.text
+        })
+    }
+
     GUI.prototype.addImage = function (params) {
         // Image
         var element = this._createElement({
@@ -95,14 +112,6 @@
         this._createElement({
             parent: element,
             class: 'lm_gui__item-text',
-            textContent: params.text
-        })
-    }
-
-    GUI.prototype.addButton = function (params) {
-        this._createElement({
-            class: 'lm_gui__button',
-            onclick: params.onclick,
             textContent: params.text
         })
     }

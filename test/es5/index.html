@@ -15,11 +15,8 @@ const gui = new perfectGUI({
     closed: false
 });
 
-gui.addButton({
-    text: "Click me!",
-    onclick: () => {
-        // do something cool
-    }
+gui.addButton("Click me!", function(){
+    alert('Ok');
 });
 
 gui.addSlider({

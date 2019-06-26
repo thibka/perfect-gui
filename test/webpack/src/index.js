@@ -38,20 +38,16 @@ gui_1.addImage({
         document.getElementById('note').textContent = "Photo by Cassi Josh on Unsplash";
     }
 });
-gui_1.addButton({
-    text: "Random background color",
-    onclick: () => {
+
+gui_1.addButton("Random background color", () => {
         document.body.style.backgroundImage = `none`;
         document.body.style.backgroundColor = get_random_color();
         document.getElementById('note').textContent = "";
-    }
 });
-gui_1.addButton({
-    text: "Random element color",
-    onclick: () => {
+gui_1.addButton("Random element color", () => {
         element.style.backgroundColor = get_random_color();
-    }
 });
+
 gui_1.addSlider({
     text: "Scale",
     min: .1,
@@ -88,15 +84,9 @@ const gui_2 = new perfectGUI({
     closed: true
 });
 
-gui_2.addButton({
-    text: "Toggle the first GUI",
-    onclick: function() {
-        gui_1.toggleClose();
-    }
+gui_2.addButton("Toggle the first GUI", () => {
+    gui_1.toggleClose();
 });
-gui_2.addButton({
-    text: "Multiple line button text",
-    onclick: () => {
-        alert('Yay');
-    }
+gui_2.addButton("Multiple line button text", () => {
+    alert('Yay');
 });

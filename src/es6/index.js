@@ -86,6 +86,23 @@ export default class GUI {
             onclick: this.toggleClose.bind(this)
         });
     }
+
+    addButton(text, callback) {
+        let params = {
+            text: text,
+            callback: callback
+        };
+        this._checkMandatoryParams({
+            text: 'string',
+            callback: 'function'
+        }, params);
+
+        this._createElement({
+            class: 'lm_gui__button',
+            onclick: params.callback,
+            textContent: params.text
+        })
+    }
     
     addImage(params) {
         // Image
@@ -101,14 +118,6 @@ export default class GUI {
             class: 'lm_gui__item-text',
             textContent: params.text
         })    
-    }
-    
-    addButton(params) {
-        this._createElement({
-            class: 'lm_gui__button',
-            onclick: params.onclick,
-            textContent: params.text
-        })
     }
     
     addSlider (params) {

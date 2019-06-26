@@ -30,12 +30,7 @@ const gui = new perfectGUI({
 ```
 
 ```javascript
-gui.addButton({
-    text: "Click me!",
-    onclick: () => {
-        // do something cool
-    }
-});
+gui.addButton("Click me!", callback);
 
 gui.addImage({
     image: "path/to/image",
