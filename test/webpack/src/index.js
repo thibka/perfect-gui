@@ -11,33 +11,33 @@ const gui_1 = new perfectGUI({
     name: "You can name and size instances..."
 });
 
-gui_1.addImage({
-    image: 'https://images.unsplash.com/photo-1485254767195-60704c46702e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1502&q=80',
-    text: "Background 1",
-    onclick: () => {
+gui_1.addImage(
+    'Background 1',
+    'https://images.unsplash.com/photo-1485254767195-60704c46702e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1502&q=80',
+    () => {
         document.body.style.backgroundImage = `url(https://images.unsplash.com/photo-1485254767195-60704c46702e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1502&q=80)`;
         document.body.style.backgroundColor = `none`;
         document.getElementById('note').textContent = "Photo by Joel Filipe on Unsplash";
     }
-});
-gui_1.addImage({
-    image: 'https://images.unsplash.com/photo-1535370976884-f4376736ab06?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=564&q=80',
-    text: "Background 2",
-    onclick: () => {
+);
+gui_1.addImage(
+    'Background 2',
+    'https://images.unsplash.com/photo-1535370976884-f4376736ab06?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=564&q=80',
+    () => {
         document.body.style.backgroundImage = `url(https://images.unsplash.com/photo-1535370976884-f4376736ab06?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=564&q=80)`;
         document.body.style.backgroundColor = `none`;
         document.getElementById('note').textContent = "Photo by Richard M. on Unsplash";
     }
-});
-gui_1.addImage({
-    image: 'https://images.unsplash.com/photo-1524721696987-b9527df9e512?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1490&q=80',
-    text: "Background 3",
-    onclick: () => {
+);
+gui_1.addImage(
+    'Background 3',
+    'https://images.unsplash.com/photo-1524721696987-b9527df9e512?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1490&q=80',
+    () => {
         document.body.style.backgroundImage = `url(https://images.unsplash.com/photo-1524721696987-b9527df9e512?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1490&q=80)`;
         document.body.style.backgroundColor = `none`;
         document.getElementById('note').textContent = "Photo by Cassi Josh on Unsplash";
     }
-});
+);
 
 gui_1.addButton("Random background color", () => {
         document.body.style.backgroundImage = `none`;

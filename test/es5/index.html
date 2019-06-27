@@ -15,6 +15,11 @@ const gui = new perfectGUI({
     closed: false
 });
 
+gui.addImage('Test', 'https://picsum.photos/id/13/100/100', function() {
+        alert('ok');
+    }
+);
+
 gui.addButton("Click me!", function(){
     alert('Ok');
 });

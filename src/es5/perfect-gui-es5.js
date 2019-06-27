@@ -100,12 +100,23 @@
         })
     }
 
-    GUI.prototype.addImage = function (params) {
+    GUI.prototype.addImage = function (text, path, callback) {
+        var params = {
+            text: text,
+            path: path,
+            callback: callback
+        };
+        this._checkMandatoryParams({
+            text: 'string',
+            path: 'string',
+            callback: 'function'
+        }, params);
+
         // Image
         var element = this._createElement({
             class: 'lm_gui__item',
-            onclick: params.onclick,
-            inline: 'background-image: url('+params.image+')'
+            onclick: params.callback,
+            inline: 'background-image: url('+params.path+')'
         })
 
         // Text inside image

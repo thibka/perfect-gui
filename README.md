@@ -32,16 +32,9 @@ const gui = new perfectGUI({
 ```javascript
 gui.addButton("Click me!", callback);
 
-gui.addImage({
-    image: "path/to/image",
-    text: "Click this",
-    onclick: () => {                                
-        // do something sweet
-    }
-});
+gui.addImage("Click this", "path/to/image", callback);
 
-gui.addSlider({
-    text: "Slide this",
+gui.addSlider("Slide this", {
     min: 0,
     max: 10,
     value: 5,
