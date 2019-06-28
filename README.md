@@ -7,7 +7,7 @@ Nice and simple GUI for JavaScript.
 
 ### ES5
 ```html
-<script src="https://cdn.jsdelivr.net/npm/thibka/perfect-gui@2.1.0/src/es5/perfect-gui-es5.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/perfect-gui@2.1.1/src/es5/perfect-gui-es5.min.js"></script>
 ```
 
 ### ES6
