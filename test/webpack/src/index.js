@@ -48,25 +48,11 @@ gui_1.addButton("Random element color", () => {
         element.style.backgroundColor = get_random_color();
 });
 
-gui_1.addSlider({
-    text: "Scale",
-    min: .1,
-    max: 2,
-    value: 1,
-    step: .01,
-    oninput: (value) => {
+gui_1.addSlider("Scale", {min: .1, max: 2, value: 1, step: .01 }, (value) => {
         element.style.transform = `scale(${value})`;
-    }
 });
-gui_1.addSlider({
-    text: "Border-radius",
-    min: 0,
-    max: 50,
-    value: 0,
-    step: 25,
-    oninput: (value) => {
+gui_1.addSlider("Border-radius", {min: 0, max: 50, value: 0, step: 25 }, (value) => {
         element.style.borderRadius = `${value}%`;
-    }
 });
 
 function get_random_color() {

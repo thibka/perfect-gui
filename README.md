@@ -34,15 +34,7 @@ gui.addButton("Click me!", callback);
 
 gui.addImage("Click this", "path/to/image", callback);
 
-gui.addSlider("Slide this", {
-    min: 0,
-    max: 10,
-    value: 5,
-    step: .1,
-    oninput: (value) => {
-        // do something nice
-    }
-});
+gui.addSlider("Slide this", { min: 0, max: 10, value: 5, step: .1 }, callback);
 
 gui.toggleClose();
 

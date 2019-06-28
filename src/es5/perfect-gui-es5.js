@@ -127,17 +127,17 @@
         })
     }
 
-    GUI.prototype.addSlider = function (params) {
+    GUI.prototype.addSlider = function (text, sliderParams, callback) {
         this._checkMandatoryParams({
-            text: 'string',
             min: 'number',
-            max: 'number'
-        }, params);
+            max: 'number',
+            value: 'number',
+            step: 'number'
+        }, sliderParams);
 
         var container = this._createElement({
             class: 'lm_gui__slider',
-            onclick: params.onclick,
-            textContent: params.text
+            textContent: text
         });
 
         var ctrl = this._createElement({
@@ -146,22 +146,22 @@
             class: 'lm_gui__slider-ctrl',
             customAttributes: {
                 type: 'range',
-                min: params.min,
-                max: params.max,
-                step: params.step,
-                value: params.value
+                min: sliderParams.min,
+                max: sliderParams.max,
+                step: sliderParams.step,
+                value: sliderParams.value
             }
         });
 
         var val = this._createElement({
             parent: container,
             class: 'lm_gui__slider-value',
-            textContent: params.value
+            textContent: sliderParams.value
         });
 
         ctrl.addEventListener('input', function () {
             val.textContent = ctrl.value;
-            if (typeof params.oninput == "function") params.oninput(ctrl.value);
+            if (typeof callback == "function") callback(ctrl.value);
         });
     }
 

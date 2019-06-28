@@ -16,23 +16,16 @@ const gui = new perfectGUI({
 });
 
 gui.addImage('Test', 'https://picsum.photos/id/13/100/100', function() {
-        alert('ok');
+        alert('Image clicked');
     }
 );
 
 gui.addButton("Click me!", function(){
-    alert('Ok');
+    alert('Button clicked');
 });
 
-gui.addSlider({
-    text: "Slide this",
-    min: 0,
-    max: 10,
-    value: 5,
-    step: .1,
-    oninput: (value) => {
-        // do something nice
-    }
+gui.addSlider("Slide this", { min: 0, max: 10, value: 5, step: .1 }, function(value) {
+    console.log(value)
 });
 </script>
 </body>
