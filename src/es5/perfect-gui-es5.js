@@ -11,7 +11,7 @@
 
         this.xOffset = 0;
         if (this.instanceId > 0) {
-            var previousInstances = document.getElementsByClassName('lm_gui');
+            var previousInstances = document.getElementsByClassName('p-gui');
             for (var i = 0; i < previousInstances.length; i++) {
                 this.xOffset += previousInstances[i].offsetWidth;
             }
@@ -26,10 +26,10 @@
         document.head.append(this.stylesheet);
 
         // Common styles
-        if (this.instanceId == 0) this._addStyles('.lm_gui{position:fixed;top:0;left:0;transform:translate3d(0,0,0);padding:25px 10px 10px 10px;background:rgba(51,51,51,.9);display:flex;flex-wrap:wrap;font-family:Verdana,Arial,sans-serif;width:290px;overflow:hidden;box-shadow:0 0 10px #000;box-sizing:border-box}.lm_gui--collapsed{height:0;padding:21px 10px 0 10px}.lm_gui__header{position:absolute;top:0;left:0;width:100%;height:20px;background-color:#111;border-bottom:1px solid #484848;cursor:grab;color:grey;font-size:10px;line-height:20px;padding-left:8px;box-sizing:border-box}.lm_gui__header-close{width:20px;height:20px;position:absolute;top:0;right:0;cursor:pointer;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUAQMAAAC3R49OAAAABlBMVEUAAAD///+l2Z/dAAAAAXRSTlMAQObYZgAAABFJREFUCNdjIAb8//8BjIkAAOrOBd3TR0jRAAAAAElFTkSuQmCC);background-size:50% 50%;background-position:center;background-repeat:no-repeat}.lm_gui--collapsed .lm_gui__header-close{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUAQMAAAC3R49OAAAABlBMVEUAAAD///+l2Z/dAAAAAXRSTlMAQObYZgAAABVJREFUCNdjYEhgIIj///8AwsSoBQD43QydY5mb0QAAAABJRU5ErkJggg==)}.lm_gui__item{width:80px;height:80px;background-size:cover;margin:5px 5px 21px 5px;cursor:pointer;position:relative}.lm_gui__item-text{position:absolute;bottom:-15px;color:#eee;font-size:11px;text-shadow:0 -1px 0 #111}.lm_gui__button{width:100%;margin:5px;padding:7px;background:#1b1b1b;font-size:11px;color:#fff;border-bottom:1px solid #00ff89;cursor:pointer;position:relative}.lm_gui__button:hover{background:#101010}.lm_gui__slider{width:100%;margin:5px 5px 10px 5px;padding:7px;background:#1b1b1b;font-size:11px;color:#fff;position:relative}.lm_gui__slider-ctrl{-webkit-appearance:none;padding:0;font:inherit;outline:0;opacity:.8;background:#00a1ff;box-sizing:border-box;cursor:pointer;position:absolute;bottom:-5px;right:0;height:5px;width:100%;margin:0}.lm_gui__slider-ctrl::-webkit-slider-runnable-track{height:12px;border:none;border-radius:0;background-color:transparent}.lm_gui__slider-ctrl::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:inherit;border:none;border-radius:50%;background:#fff;border:2px solid #00a1ff}.lm_gui__slider-value{display:inline-block;position:absolute;right:7px}');
+        if (this.instanceId == 0) this._addStyles('.p-gui{position:fixed;top:0;left:0;transform:translate3d(0,0,0);padding:25px 10px 10px 10px;background:rgba(51,51,51,.9);display:flex;flex-wrap:wrap;font-family:Verdana,Arial,sans-serif;width:290px;overflow:hidden;box-shadow:0 0 10px #000;box-sizing:border-box}.p-gui--collapsed{height:0;padding:21px 10px 0 10px}.p-gui__header{position:absolute;top:0;left:0;width:100%;height:20px;background-color:#111;border-bottom:1px solid #484848;cursor:grab;color:grey;font-size:10px;line-height:20px;padding-left:8px;box-sizing:border-box}.p-gui__header-close{width:20px;height:20px;position:absolute;top:0;right:0;cursor:pointer;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUAQMAAAC3R49OAAAABlBMVEUAAAD///+l2Z/dAAAAAXRSTlMAQObYZgAAABFJREFUCNdjIAb8//8BjIkAAOrOBd3TR0jRAAAAAElFTkSuQmCC);background-size:50% 50%;background-position:center;background-repeat:no-repeat}.p-gui--collapsed .p-gui__header-close{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUAQMAAAC3R49OAAAABlBMVEUAAAD///+l2Z/dAAAAAXRSTlMAQObYZgAAABVJREFUCNdjYEhgIIj///8AwsSoBQD43QydY5mb0QAAAABJRU5ErkJggg==)}.p-gui__item{width:80px;height:80px;background-size:cover;margin:5px 5px 21px 5px;cursor:pointer;position:relative}.p-gui__item-text{position:absolute;bottom:-15px;color:#eee;font-size:11px;text-shadow:0 -1px 0 #111}.p-gui__button,.p-gui__switch{width:100%;margin:5px;padding:7px;background:#1b1b1b;font-size:11px;color:#fff;border-bottom:1px solid #00ff89;cursor:pointer;position:relative}.p-gui__button:hover,.p-gui__switch:hover{background:#101010}.p-gui__switch-checkbox{width:5px;height:5px;background-color:#343434;position:absolute;top:0;right:8px;bottom:0;margin:auto;border-radius:50%;pointer-events:none}.p-gui__switch-checkbox--active{background-color:#00ff89;box-shadow:0 0 5px #00ff89}.p-gui__slider{width:100%;margin:5px 5px 10px 5px;padding:7px;background:#1b1b1b;font-size:11px;color:#fff;position:relative}.p-gui__slider-ctrl{-webkit-appearance:none;padding:0;font:inherit;outline:0;opacity:.8;background:#00a1ff;box-sizing:border-box;cursor:pointer;position:absolute;bottom:-5px;right:0;height:5px;width:100%;margin:0}.p-gui__slider-ctrl::-webkit-slider-runnable-track{height:12px;border:none;border-radius:0;background-color:transparent}.p-gui__slider-ctrl::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:inherit;border:none;border-radius:50%;background:#fff;border:2px solid #00a1ff}.p-gui__slider-value{display:inline-block;position:absolute;right:7px}');
 
         // Instance styles
-        this._addStyles('#lm_gui-'+this.instanceId+' { width: '+this.wrapperWidth+'; transform: translate3d('+this.xOffset+'px,'+this.yOffset+'px,0); }');
+        this._addStyles('#p-gui-'+this.instanceId+' { width: '+this.wrapperWidth+'; transform: translate3d('+this.xOffset+'px,'+this.yOffset+'px,0); }');
 
         this._addWrapper();
 
@@ -66,19 +66,19 @@
     GUI.prototype._addWrapper = function () {
         this.wrapper = this._createElement({
             parent: document.body,
-            id: 'lm_gui-' + this.instanceId,
-            class: 'lm_gui'
+            id: 'p-gui-' + this.instanceId,
+            class: 'p-gui'
         });
 
         this.header = this._createElement({
             parent: this.wrapper,
-            class: 'lm_gui__header',
+            class: 'p-gui__header',
             textContent: this.name
         });
 
         this._createElement({
             parent: this.header,
-            class: 'lm_gui__header-close',
+            class: 'p-gui__header-close',
             onclick: this.toggleClose.bind(this)
         });
     }
@@ -94,7 +94,7 @@
         }, params);
 
         this._createElement({
-            class: 'lm_gui__button',
+            class: 'p-gui__button',
             onclick: params.callback,
             textContent: params.text
         })
@@ -114,7 +114,7 @@
 
         // Image
         var element = this._createElement({
-            class: 'lm_gui__item',
+            class: 'p-gui__item',
             onclick: params.callback,
             inline: 'background-image: url('+params.path+')'
         })
@@ -122,7 +122,7 @@
         // Text inside image
         this._createElement({
             parent: element,
-            class: 'lm_gui__item-text',
+            class: 'p-gui__item-text',
             textContent: params.text
         })
     }
@@ -136,14 +136,14 @@
         }, sliderParams);
 
         var container = this._createElement({
-            class: 'lm_gui__slider',
+            class: 'p-gui__slider',
             textContent: text
         });
 
         var ctrl = this._createElement({
             parent: container,
             el: 'input',
-            class: 'lm_gui__slider-ctrl',
+            class: 'p-gui__slider-ctrl',
             customAttributes: {
                 type: 'range',
                 min: sliderParams.min,
@@ -155,13 +155,47 @@
 
         var val = this._createElement({
             parent: container,
-            class: 'lm_gui__slider-value',
+            class: 'p-gui__slider-value',
             textContent: sliderParams.value
         });
 
         ctrl.addEventListener('input', function () {
             val.textContent = ctrl.value;
             if (typeof callback == "function") callback(ctrl.value);
+        });
+    }
+
+    GUI.prototype.addSwitch = function(text, state, callback) {
+        var params = {
+            text: text,
+            state: state,
+            callback: callback
+        };
+        this._checkMandatoryParams({
+            text: 'string',
+            state: 'boolean',
+            callback: 'function'
+        }, params);
+
+        var switchContainer = this._createElement({
+            class: 'p-gui__switch',
+            onclick: function(ev) {
+                let checkbox = ev.target.childNodes[1], 
+                    state = true;
+                if (checkbox.classList.contains('p-gui__switch-checkbox--active')) {
+                    state = false;
+                }
+                checkbox.classList.toggle('p-gui__switch-checkbox--active')
+                params.callback(state)
+            },
+            textContent: params.text
+        });
+
+        var activeClass = state ? " p-gui__switch-checkbox--active" : "";
+
+        this._createElement({
+            parent: switchContainer,
+            class: "p-gui__switch-checkbox" + activeClass
         });
     }
 
@@ -213,7 +247,7 @@
     
     GUI.prototype.toggleClose = function () {
         this.closed = !this.closed;
-        this.wrapper.classList.toggle('lm_gui--collapsed');
+        this.wrapper.classList.toggle('p-gui--collapsed');
     }
     
     window.perfectGUI = GUI;

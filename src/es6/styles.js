@@ -4,7 +4,7 @@
  */
 
 export default `
-.lm_gui {
+.p-gui {
     position: fixed;
     top: 0;
     left: 0;
@@ -20,12 +20,12 @@ export default `
     box-sizing: border-box;
 }
 
-.lm_gui--collapsed {
+.p-gui--collapsed {
     height: 0;
     padding: 21px 10px 0 10px;
 }
 
-.lm_gui__header {
+.p-gui__header {
     position: absolute;
     top: 0;
     left: 0;
@@ -41,7 +41,7 @@ export default `
     box-sizing: border-box;
 }
 
-.lm_gui__header-close {
+.p-gui__header-close {
     width: 20px;
     height: 20px;
     position: absolute;
@@ -55,11 +55,11 @@ export default `
     background-repeat: no-repeat; 
 }
 
-.lm_gui--collapsed .lm_gui__header-close {
+.p-gui--collapsed .p-gui__header-close {
     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUAQMAAAC3R49OAAAABlBMVEUAAAD///+l2Z/dAAAAAXRSTlMAQObYZgAAABVJREFUCNdjYEhgIIj///8AwsSoBQD43QydY5mb0QAAAABJRU5ErkJggg==);
 }
 
-.lm_gui__item {
+.p-gui__item {
     width: 80px;
     height: 80px;
     background-size: cover;
@@ -68,7 +68,7 @@ export default `
     position: relative;
 }
 
-.lm_gui__item-text {
+.p-gui__item-text {
     position: absolute;
     bottom: -15px;
     color: #eee;
@@ -76,7 +76,8 @@ export default `
     text-shadow: 0 -1px 0 #111;
 }
 
-.lm_gui__button {
+.p-gui__button, 
+.p-gui__switch {
     width: 100%;
     margin: 5px;
     padding: 7px;
@@ -88,11 +89,30 @@ export default `
     position: relative;
 }
 
-.lm_gui__button:hover {
+.p-gui__button:hover,
+.p-gui__switch:hover {
     background: #101010;
 }
 
-.lm_gui__slider {
+.p-gui__switch-checkbox {
+    width: 5px;
+    height: 5px;
+    background-color: #343434;
+    position: absolute;
+    top: 0;
+    right: 8px;
+    bottom: 0;
+    margin: auto;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.p-gui__switch-checkbox--active {
+    background-color: #00ff89;
+    box-shadow: 0 0 5px #00ff89;
+}
+
+.p-gui__slider {
     width: 100%;
     margin: 5px 5px 10px 5px;
     padding: 7px;
@@ -102,7 +122,7 @@ export default `
     position: relative;
 }
 
-.lm_gui__slider-ctrl {
+.p-gui__slider-ctrl {
     -webkit-appearance: none;
     padding: 0;
     font: inherit;
@@ -120,7 +140,7 @@ export default `
 }
 
 /* la zone de déplacement */
-.lm_gui__slider-ctrl::-webkit-slider-runnable-track {
+.p-gui__slider-ctrl::-webkit-slider-runnable-track {
     height: 12px;
     border: none;
     border-radius: 0;
@@ -128,7 +148,7 @@ export default `
 }
 
 /* le curseur */
-.lm_gui__slider-ctrl::-webkit-slider-thumb {
+.p-gui__slider-ctrl::-webkit-slider-thumb {
     -webkit-appearance: none;       /* également nécessaire sur le curseur */
     width: 12px;
     height: inherit;                /* s'adapte à la hauteur de l'input */
@@ -138,7 +158,7 @@ export default `
     border: 2px solid #00a1ff;
 }
 
-.lm_gui__slider-value {
+.p-gui__slider-value {
     display: inline-block;
     position: absolute;
     right: 7px;

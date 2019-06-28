@@ -39,11 +39,11 @@ gui_1.addImage(
     }
 );
 
-gui_1.addButton("Random background color", () => {
+/* gui_1.addButton("Random background color", () => {
         document.body.style.backgroundImage = `none`;
         document.body.style.backgroundColor = get_random_color();
         document.getElementById('note').textContent = "";
-});
+}); */
 gui_1.addButton("Random element color", () => {
         element.style.backgroundColor = get_random_color();
 });
@@ -51,8 +51,13 @@ gui_1.addButton("Random element color", () => {
 gui_1.addSlider("Scale", {min: .1, max: 2, value: 1, step: .01 }, (value) => {
         element.style.transform = `scale(${value})`;
 });
-gui_1.addSlider("Border-radius", {min: 0, max: 50, value: 0, step: 25 }, (value) => {
+gui_1.addSlider("3-step border-radius", {min: 0, max: 50, value: 0, step: 25 }, (value) => {
         element.style.borderRadius = `${value}%`;
+});
+
+gui_1.addSwitch("Opacity switch", true, (state) => {
+    if (!state) element.style.opacity = 0;
+    else element.style.opacity = 1;
 });
 
 function get_random_color() {

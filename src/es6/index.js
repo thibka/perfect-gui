@@ -12,7 +12,7 @@ export default class GUI {
 
         this.xOffset = 0;
         if (this.instanceId > 0) {
-            let previousInstances = document.getElementsByClassName('lm_gui');
+            let previousInstances = document.getElementsByClassName('p-gui');
             for (let i = 0; i < previousInstances.length; i++) {
                 this.xOffset += previousInstances[i].offsetWidth;
             }
@@ -30,7 +30,7 @@ export default class GUI {
         if (this.instanceId == 0) this._addStyles(`${styles}`);
         
         // Instance styles
-        this._addStyles(`#lm_gui-${this.instanceId} {
+        this._addStyles(`#p-gui-${this.instanceId} {
             width: ${this.wrapperWidth};
             transform: translate3d(${this.xOffset}px,${this.yOffset}px,0);
         }`);
@@ -70,19 +70,19 @@ export default class GUI {
     _addWrapper() {        
         this.wrapper = this._createElement({
             parent: document.body,
-            id: 'lm_gui-'+this.instanceId,
-            class: 'lm_gui'
+            id: 'p-gui-'+this.instanceId,
+            class: 'p-gui'
         });        
     
         this.header = this._createElement({
             parent: this.wrapper,
-            class: 'lm_gui__header',
+            class: 'p-gui__header',
             textContent: this.name
         });
     
         this._createElement({
             parent: this.header,
-            class: 'lm_gui__header-close',
+            class: 'p-gui__header-close',
             onclick: this.toggleClose.bind(this)
         });
     }
@@ -98,7 +98,7 @@ export default class GUI {
         }, params);
 
         this._createElement({
-            class: 'lm_gui__button',
+            class: 'p-gui__button',
             onclick: params.callback,
             textContent: params.text
         })
@@ -118,7 +118,7 @@ export default class GUI {
 
         // Image
         var element = this._createElement({
-            class: 'lm_gui__item',
+            class: 'p-gui__item',
             onclick: params.callback,
             inline: `background-image: url(${params.path})`
         })
@@ -126,7 +126,7 @@ export default class GUI {
         // Text inside image
         this._createElement({
             parent: element,
-            class: 'lm_gui__item-text',
+            class: 'p-gui__item-text',
             textContent: params.text
         })    
     }
@@ -140,14 +140,14 @@ export default class GUI {
         }, sliderParams);
     
         var container = this._createElement({
-            class: 'lm_gui__slider',
+            class: 'p-gui__slider',
             textContent: text
         });
     
         var ctrl = this._createElement({
             parent: container,
             el: 'input',
-            class: 'lm_gui__slider-ctrl',
+            class: 'p-gui__slider-ctrl',
             customAttributes: {
                 type: 'range',
                 min: sliderParams.min,
@@ -159,13 +159,47 @@ export default class GUI {
     
         var val = this._createElement({
             parent: container,
-            class: 'lm_gui__slider-value',
+            class: 'p-gui__slider-value',
             textContent: sliderParams.value
         });
     
         ctrl.addEventListener('input', function() {
             val.textContent = ctrl.value;
             if (typeof callback == "function") callback(ctrl.value);
+        });
+    }
+
+    addSwitch(text, state, callback) {
+        let params = {
+            text: text,
+            state: state,
+            callback: callback
+        };
+        this._checkMandatoryParams({
+            text: 'string',
+            state: 'boolean',
+            callback: 'function'
+        }, params);
+
+        let switchContainer = this._createElement({
+            class: 'p-gui__switch',
+            onclick: (ev) => {
+                let checkbox = ev.target.childNodes[1], 
+                    state = true;
+                if (checkbox.classList.contains('p-gui__switch-checkbox--active')) {
+                    state = false;
+                }
+                checkbox.classList.toggle('p-gui__switch-checkbox--active')
+                params.callback(state)
+            },
+            textContent: params.text
+        });
+
+        let activeClass = state ? " p-gui__switch-checkbox--active" : "";
+
+        this._createElement({
+            parent: switchContainer,
+            class: "p-gui__switch-checkbox" + activeClass
         });
     }
     
@@ -217,6 +251,6 @@ export default class GUI {
 
     toggleClose() {
         this.closed = !this.closed;
-        this.wrapper.classList.toggle('lm_gui--collapsed');
+        this.wrapper.classList.toggle('p-gui--collapsed');
     }
 }

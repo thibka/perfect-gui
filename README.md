@@ -7,7 +7,7 @@ Nice and simple GUI for JavaScript.
 
 ### ES5
 ```html
-<script src="https://cdn.jsdelivr.net/gh/thibka/perfect-gui/src/es5/perfect-gui-es5.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery/perfect-gui@2.1.0/src/es5/perfect-gui-es5.min.js"></script>
 ```
 
 ### ES6
@@ -35,7 +35,11 @@ gui.addButton("Click me!", callback);
 gui.addImage("Click this", "path/to/image", callback);
 
 gui.addSlider("Slide this", { min: 0, max: 10, value: 5, step: .1 }, function(value) {
-    console.log('Current slider value : ' + value);
+    console.log('Slider value : ' + value);
+});
+
+gui.addSwitch("Switch me!", true, function(state) {
+    console.log('Switch boolean value: ' + state);
 });
 
 gui.toggleClose();
