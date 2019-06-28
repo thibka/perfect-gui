@@ -34,8 +34,9 @@ gui.addButton("Click me!", callback);
 
 gui.addImage("Click this", "path/to/image", callback);
 
-gui.addSlider("Slide this", { min: 0, max: 10, value: 5, step: .1 }, callback);
+gui.addSlider("Slide this", { min: 0, max: 10, value: 5, step: .1 }, function(value) {
+    console.log('Current slider value : ' + value);
+});
 
 gui.toggleClose();
-
 ```
