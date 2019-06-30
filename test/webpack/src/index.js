@@ -60,6 +60,10 @@ gui_1.addSwitch("Opacity switch", true, (state) => {
     else element.style.opacity = 1;
 });
 
+gui_1.addList('Select one', ['apple', 'banana', 'peach'], function(item) {
+    console.log('Selected item: ' + item);
+});
+
 function get_random_color() {
     var letters = '0123456789ABCDEF'.split('');
     var color = '#';

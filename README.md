@@ -30,16 +30,20 @@ const gui = new perfectGUI({
 ```
 
 ```javascript
-gui.addButton("Click me!", callback);
+gui.addButton('Click me!', callback);
 
-gui.addImage("Click this", "path/to/image", callback);
+gui.addImage('Click this', 'path/to/image', callback);
 
-gui.addSlider("Slide this", { min: 0, max: 10, value: 5, step: .1 }, function(value) {
+gui.addSlider('Slide this', { min: 0, max: 10, value: 5, step: .1 }, function(value) {
     console.log('Slider value : ' + value);
 });
 
-gui.addSwitch("Switch me!", true, function(state) {
+gui.addSwitch('Switch me!', true, function(state) {
     console.log('Switch boolean value: ' + state);
+});
+
+gui.addList('Select one', ['apple', 'banana', 'peach'], function(item) {
+    console.log('Selected item: ' + item);
 });
 
 gui.toggleClose();

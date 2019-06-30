@@ -30,6 +30,10 @@ gui.addSlider("Slide this", { min: 0, max: 10, value: 5, step: .1 }, function(va
 gui.addSwitch("Switch that", true, (state) => {
     console.log(state);
 });
+
+gui.addList('Select one', ['apple', 'banana', 'peach'], function(item) {
+    console.log('Selected item: ' + item);
+});
 </script>
 </body>
 </html>

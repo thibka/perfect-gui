@@ -52,6 +52,7 @@ export default class GUI {
         if (element.inline) domElement.style = element.inline;
         if (element.href) domElement.href = element.href;
         if (element.onclick) domElement.onclick = element.onclick;
+        if (element.onchange) domElement.onchange = element.onchange;
         if (element.textContent) domElement.textContent = element.textContent;
         if (element.customAttributes) {
             for (var i in element.customAttributes) {
@@ -200,6 +201,44 @@ export default class GUI {
         this._createElement({
             parent: switchContainer,
             class: "p-gui__switch-checkbox" + activeClass
+        });
+    }
+
+    addList(text, list, callback) {
+        let params = {
+            text: text,
+            list: list,
+            callback: callback
+        };
+        this._checkMandatoryParams({
+            text: 'string',
+            list: 'object',
+            callback: 'function'
+        }, params);
+
+        let container = this._createElement({
+            class: 'p-gui__list',
+            textContent: params.text
+        });
+
+        let select = this._createElement({
+            parent: container,
+            el: 'select',
+            class: 'p-gui__list-dropdown',
+            onchange: (ev) => {
+                params.callback(ev.target.value);
+            }
+        });
+
+        list.forEach(item => {
+            this._createElement({
+                parent: select,
+                el: 'option',
+                customAttributes: {
+                    value: item,
+                },
+                textContent: item
+            });
         });
     }
     

@@ -77,7 +77,8 @@ export default `
 }
 
 .p-gui__button, 
-.p-gui__switch {
+.p-gui__switch,
+.p-gui__list {
     width: 100%;
     margin: 5px;
     padding: 7px;
@@ -87,6 +88,10 @@ export default `
     border-bottom: 1px solid #00ff89;
     cursor: pointer;
     position: relative;
+}
+
+.p-gui__list {
+    cursor: default;
 }
 
 .p-gui__button:hover,
@@ -110,6 +115,16 @@ export default `
 .p-gui__switch-checkbox--active {
     background-color: #00ff89;
     box-shadow: 0 0 5px #00ff89;
+}
+
+.p-gui__list-dropdown {
+    position: absolute;
+    right: 5px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    height: 18px;
+    cursor: pointer;
 }
 
 .p-gui__slider {
