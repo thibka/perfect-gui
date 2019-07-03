@@ -7,7 +7,7 @@ Nice and simple GUI for JavaScript.
 
 ### ES5
 ```html
-<script src="https://cdn.jsdelivr.net/npm/perfect-gui@2.2.1/src/es5/perfect-gui-es5.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/perfect-gui@2.2.2/src/es5/perfect-gui-es5.min.js"></script>
 ```
 
 ### ES6
@@ -24,8 +24,8 @@ import perfectGUI from 'perfect-gui';
 ```javascript
 const gui = new perfectGUI({
     name: 'My GUI', // optional
-    width: 250,     // optional, default is 290,
-    closed: true    // optional, default is false
+    width: 250,     // optional, default is 290
+    closed: false   // optional, default is false
 });
 ```
 

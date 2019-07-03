@@ -16,7 +16,7 @@ export default class GUI {
             for (let i = 0; i < previousInstances.length; i++) {
                 this.xOffset += previousInstances[i].offsetWidth;
             }
-        }        
+        }
         this.yOffset = 0;
         
         this.position = {prevX:this.xOffset, prevY:this.yOffset, x:this.xOffset, y:this.yOffset};
@@ -40,7 +40,7 @@ export default class GUI {
         this._makeDraggable();
 
         this.closed = false;
-        if (options.closed) this.toggleClose();
+        if (options != undefined && options.closed) this.toggleClose();
     }
 
     _createElement(element) {

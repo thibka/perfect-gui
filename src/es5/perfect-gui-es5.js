@@ -36,7 +36,7 @@
         this._makeDraggable();
 
         this.closed = false;
-        if (options.closed) this.toggleClose();
+        if (options != undefined && options.closed) this.toggleClose();
     }
 
     GUI.prototype._createElement = function (element) {
