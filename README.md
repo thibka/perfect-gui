@@ -1,16 +1,19 @@
 # perfect-gui
-Nice and simple GUI for JavaScript.
+Nice and simple GUI for JavaScript.  
 
-[Demo](https://thibka.github.io/perfect-gui/public/)
+<img src="https://raw.githubusercontent.com/thibka/thibka.github.io/master/perfect-gui/_data/capture.png" width="464"/>  
+
+## Demo
+[Try it here](https://thibka.github.io/perfect-gui/public/)
 
 ## Installing
 
-### ES5
+### ES5 (CDN)
 ```html
 <script src="https://cdn.jsdelivr.net/npm/perfect-gui@2.2.3/src/es5/perfect-gui-es5.min.js"></script>
 ```
 
-### ES6
+### ES6 (NPM)
 ```bash
 npm i perfect-gui
 ```
@@ -29,7 +32,7 @@ const gui = new perfectGUI({
 });
 ```
 <table>
-<tr><th>Methods</th><th>Argument</th><th>Example</th></tr>
+<tr><th>Method</th><th>Arguments</th><th>Example</th></tr>
 <tr><td>addButton</td><td>text: string,<br>callback: function</td><td>
 
 ```javascript
