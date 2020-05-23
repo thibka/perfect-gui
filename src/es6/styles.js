@@ -18,6 +18,7 @@ export default `
     overflow: hidden;
     box-shadow: 0 0 10px black;
     box-sizing: border-box;
+    z-index: 99999;
 }
 
 .p-gui--collapsed {
