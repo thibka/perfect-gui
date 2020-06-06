@@ -1,30 +1,36 @@
 # perfect-gui
-Nice and simple GUI for JavaScript.  
+Nice and simple GUI for JavaScript including:  
+- image buttons 
+- multiple panels
+- draggable panels
 
 <img src="https://raw.githubusercontent.com/thibka/thibka.github.io/master/perfect-gui/_data/capture.png" width="464"/>  
 
 ## Demo
-[Try it here](https://thibka.github.io/perfect-gui/public/)
+[Demo 1](https://projects.thibautfoussard.com/square_noise/)
+[Demo 2](https://thibka.github.io/perfect-gui/public/)
 
 ## Installing
 
-### ES5 (CDN)
-```html
-<script src="https://cdn.jsdelivr.net/npm/perfect-gui@2.2.3/src/es5/perfect-gui-es5.min.js"></script>
-```
-
-### ES6 (NPM)
+### NPM
 ```bash
 npm i perfect-gui
 ```
-
-```javascript
-import perfectGUI from 'perfect-gui';
+### CDN (ES6)
+```html
+<script src="https://cdn.jsdelivr.net/npm/perfect-gui@2.2.5/src/es6/index.min.js"></script>
 ```
+### CDN (ES5)
+```html
+<script src="https://cdn.jsdelivr.net/npm/perfect-gui@2.2.6/src/es5/perfect-gui-es5.min.js"></script>
+```
+
 
 ## Usage
 
 ```javascript
+import perfectGUI from 'perfect-gui';
+
 const gui = new perfectGUI({
     name: 'My GUI', // optional
     width: 250,     // optional, default is 290
