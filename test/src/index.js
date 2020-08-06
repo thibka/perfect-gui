@@ -3,7 +3,7 @@ import "@babel/polyfill"
 import 'normalize.css'
 import './styles/main.scss'
 
-import perfectGUI from '../../../src/es6/index'
+import perfectGUI from '../../../src/index'
 
 const element = document.getElementById('element');
 
@@ -39,11 +39,6 @@ gui_1.addImage(
     }
 );
 
-/* gui_1.addButton("Random background color", () => {
-        document.body.style.backgroundImage = `none`;
-        document.body.style.backgroundColor = get_random_color();
-        document.getElementById('note').textContent = "";
-}); */
 gui_1.addButton("Random element color", () => {
         element.style.backgroundColor = get_random_color();
 });
@@ -82,6 +77,25 @@ const gui_2 = new perfectGUI({
 gui_2.addButton("Toggle the first GUI", () => {
     gui_1.toggleClose();
 });
+
 gui_2.addButton("Multiple line button text", () => {
     alert('Yay');
+});
+
+const gui_3 = new perfectGUI({
+    name: "Position them manually",
+    customPosition: 'left: auto; right: 0;'
+});
+
+gui_3.addButton("top right corner", () => {
+    
+});
+
+const gui_4 = new perfectGUI({
+    name: "Position them manually",
+    customPosition: 'left: auto; right: 0; top: auto; bottom: 0;'
+});
+
+gui_4.addButton("bottom right corner", () => {
+    
 });

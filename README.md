@@ -10,31 +10,24 @@ Nice and simple GUI for JavaScript including:
 [Demo 1](https://projects.thibautfoussard.com/square_noise/)
 [Demo 2](https://thibka.github.io/perfect-gui/public/)
 
-## Installing
+## Install
 
 ### NPM
 ```bash
 npm i perfect-gui
 ```
-### CDN (ES6)
-```html
-<script src="https://cdn.jsdelivr.net/npm/perfect-gui@2.2.5/src/es6/index.min.js"></script>
+```javascript
+import perfectGUI from 'perfect-gui';
 ```
-### CDN (ES5)
-```html
-<script src="https://cdn.jsdelivr.net/npm/perfect-gui@2.2.6/src/es5/perfect-gui-es5.min.js"></script>
-```
-
 
 ## Usage
 
 ```javascript
-import perfectGUI from 'perfect-gui';
-
 const gui = new perfectGUI({
     name: 'My GUI', // optional
     width: 250,     // optional, default is 290
-    closed: false   // optional, default is false
+    closed: false,  // optional, default is false
+    customPosition: 'left auto; right: 0;' // optional, default is 'top: 0; left: 0;'
 });
 ```
 <table>

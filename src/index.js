@@ -10,16 +10,18 @@ export default class GUI {
         }        
         this.instanceId = GUI[GUI.instanceCounter];
 
-        this.xOffset = 0;
-        if (this.instanceId > 0) {
-            let previousInstances = document.getElementsByClassName('p-gui');
-            for (let i = 0; i < previousInstances.length; i++) {
-                this.xOffset += previousInstances[i].offsetWidth;
+        if (options.customPosition == undefined) {
+            this.xOffset = 0;
+            if (this.instanceId > 0) {
+                let previousInstances = document.getElementsByClassName('p-gui');
+                for (let i = 0; i < previousInstances.length; i++) {
+                    this.xOffset += previousInstances[i].offsetWidth;
+                }
             }
+            this.yOffset = 0;
+            this.position = {prevX:this.xOffset, prevY:this.yOffset, x:this.xOffset, y:this.yOffset};
         }
-        this.yOffset = 0;
         
-        this.position = {prevX:this.xOffset, prevY:this.yOffset, x:this.xOffset, y:this.yOffset};
         this.wrapperWidth = (options != undefined && options.width) ? options.width+'px' : '290px';
         this.stylesheet = document.createElement('style');
         this.stylesheet.setAttribute('type', 'text/css');
@@ -30,10 +32,18 @@ export default class GUI {
         if (this.instanceId == 0) this._addStyles(`${styles}`);
         
         // Instance styles
-        this._addStyles(`#p-gui-${this.instanceId} {
-            width: ${this.wrapperWidth};
-            transform: translate3d(${this.xOffset}px,${this.yOffset}px,0);
-        }`);
+        if (options.customPosition == undefined) {
+            this._addStyles(`#p-gui-${this.instanceId} {
+                width: ${this.wrapperWidth};
+                transform: translate3d(${this.xOffset}px,${this.yOffset}px,0);
+            }`);
+        } else {
+            this._addStyles(`#p-gui-${this.instanceId} {
+                width: ${this.wrapperWidth};
+                transform: translate3d(${this.xOffset}px,${this.yOffset}px,0);
+                ${options.customPosition}
+            }`);
+        }
                 
         this._addWrapper();
     
