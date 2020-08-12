@@ -3,7 +3,7 @@ import "@babel/polyfill"
 import 'normalize.css'
 import './styles/main.scss'
 
-import perfectGUI from '../../../src/index'
+import perfectGUI from '../../src/index'
 
 const element = document.getElementById('element');
 
@@ -83,8 +83,8 @@ gui_2.addButton("Multiple line button text", () => {
 });
 
 const gui_3 = new perfectGUI({
-    name: "Position them manually",
-    customPosition: 'left: auto; right: 0;'
+    name: "Place them anywhere",
+    position: 'top right'
 });
 
 gui_3.addButton("top right corner", () => {
@@ -92,10 +92,30 @@ gui_3.addButton("top right corner", () => {
 });
 
 const gui_4 = new perfectGUI({
-    name: "Position them manually",
-    customPosition: 'left: auto; right: 0; top: auto; bottom: 0;'
+    name: "gui 4",
+    position: 'top right'
 });
 
-gui_4.addButton("bottom right corner", () => {
+new perfectGUI({
+    name: "gui 5",
+    position: 'right bottom'
+});
+
+new perfectGUI({
+    name: "gui 6",
+    position: 'right bottom'
+});
+
+new perfectGUI({
+    name: "gui 7",
+    position: 'top right'
+});
+
+let gui_8 = new perfectGUI({
+    name: "gui 8",
+    position: 'left bottom'
+});
+
+gui_8.addButton("blabla", () => {
     
 });

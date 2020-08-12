@@ -9,20 +9,8 @@ export default class GUI {
             else GUI[GUI.instanceCounter]++;
         }        
         this.instanceId = GUI[GUI.instanceCounter];
-
-        if (options.customPosition == undefined) {
-            this.xOffset = 0;
-            if (this.instanceId > 0) {
-                let previousInstances = document.getElementsByClassName('p-gui');
-                for (let i = 0; i < previousInstances.length; i++) {
-                    this.xOffset += previousInstances[i].offsetWidth;
-                }
-            }
-            this.yOffset = 0;
-            this.position = {prevX:this.xOffset, prevY:this.yOffset, x:this.xOffset, y:this.yOffset};
-        }
         
-        this.wrapperWidth = (options != undefined && options.width) ? options.width+'px' : '290px';
+        this.wrapperWidth = (options != undefined && options.width) ? options.width : 290;
         this.stylesheet = document.createElement('style');
         this.stylesheet.setAttribute('type', 'text/css');
         this.stylesheet.setAttribute('id', 'lm-gui-stylesheet');
@@ -30,27 +18,54 @@ export default class GUI {
         
         // Common styles
         if (this.instanceId == 0) this._addStyles(`${styles}`);
-        
+       
         // Instance styles
-        if (options.customPosition == undefined) {
-            this._addStyles(`#p-gui-${this.instanceId} {
-                width: ${this.wrapperWidth};
-                transform: translate3d(${this.xOffset}px,${this.yOffset}px,0);
-            }`);
-        } else {
-            this._addStyles(`#p-gui-${this.instanceId} {
-                width: ${this.wrapperWidth};
-                transform: translate3d(${this.xOffset}px,${this.yOffset}px,0);
-                ${options.customPosition}
-            }`);
+        this.screenCorner = this._parseScreenCorner(options.position);
+        this.xOffset = this.screenCorner.x == 'left' ? 0 : document.documentElement.clientWidth - this.wrapperWidth;
+        if (this.instanceId > 0) {
+            let existingDomInstances = document.getElementsByClassName('p-gui');
+            for (let i = 0; i < existingDomInstances.length; i++) {
+                if (this.screenCorner.y == existingDomInstances[i].dataset.cornerY) {
+                    if (this.screenCorner.x == 'left' && existingDomInstances[i].dataset.cornerX == this.screenCorner.x) {
+                        this.xOffset += existingDomInstances[i].offsetWidth;
+                    } 
+                    else if (this.screenCorner.x == 'right' 
+                    && existingDomInstances[i].dataset.cornerX == this.screenCorner.x) {
+                        this.xOffset -= existingDomInstances[i].offsetWidth;
+                    }
+                }
+            }
         }
+        this.yOffset = 0;
+        this.position = {prevX:this.xOffset, prevY:this.yOffset, x:this.xOffset, y:this.yOffset};
+
+        let verticalCSSPositioning = this.screenCorner.y == 'top' ? null : 'top: auto; bottom: 0;';
+        this._addStyles(`#p-gui-${this.instanceId} {
+            width: ${this.wrapperWidth}px;
+            transform: translate3d(${this.xOffset}px,${this.yOffset}px,0);
+            ${verticalCSSPositioning}
+        }`);
                 
         this._addWrapper();
+        this.wrapper.setAttribute('data-corner-x', this.screenCorner.x);
+        this.wrapper.setAttribute('data-corner-y', this.screenCorner.y);
     
         this._makeDraggable();
 
         this.closed = false;
         if (options != undefined && options.closed) this.toggleClose();
+    }
+
+    _parseScreenCorner(position) {
+        let parsedPosition = {x: 'left', y: 'top'};
+
+        if (position == undefined) return parsedPosition;
+        else if (typeof position != 'string') console.error('[perfect-gui] The position option must be a string.');
+
+        if (position.includes('right')) parsedPosition.x = 'right';
+        if (position.includes('bottom')) parsedPosition.y = 'bottom';
+
+        return parsedPosition;
     }
 
     _createElement(element) {

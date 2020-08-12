@@ -23,66 +23,6 @@ import perfectGUI from 'perfect-gui';
 ## Usage
 
 ```javascript
-const gui = new perfectGUI({
-    name: 'My GUI', // optional
-    width: 250,     // optional, default is 290
-    closed: false,  // optional, default is false
-    customPosition: 'left auto; right: 0;' // optional, default is 'top: 0; left: 0;'
-});
-```
-<table>
-<tr><th>Method</th><th>Arguments</th><th>Example</th></tr>
-<tr><td>addButton</td><td>text: string,<br>callback: function</td><td>
-
-```javascript
-gui.addButton('Click me!', function() {
-    ...
-});
-```
-</td></tr>
-<tr><td>addImage</td><td>text: string,<br>path: string,<br>callback: function</td><td>
-
-```javascript
-gui.addImage('Click this', 'path/to/image', function {
-    ...
-});
-```
-</td></tr>
-<tr><td>addSlider</td><td>text: string,<br>sliderParams: object<br>callback: function</td><td>
-
-```javascript
-gui.addSlider('Slide this', { min: 0, max: 10, value: 5, step: .1 }, function(value) {
-    console.log('Slider value : ' + value);
-});
-```
-</td></tr>
-<tr><td>addSwitch</td><td>text: string,<br>defaultVal: boolean<br>callback: function</td><td>
-
-```javascript
-gui.addSwitch('Switch me!', true, function(state) {
-    console.log('Switched boolean value: ' + state);
-});
-```
-</td></tr>
-<tr><td>addList</td><td>text: string,<br>list: array,<br>callback: function</td><td>
-
-```javascript
-gui.addList('Select one', ['apple', 'lime', 'peach'], function(item) {
-    console.log('Selected item: ' + item);
-});
-```
-</td></tr>
-<tr><td>toggleClose</td><td></td><td>
-
-```javascript
-gui.toggleClose();
-```
-</td></tr>
-</table>
-
-## Example
-
-```javascript
 const gui = new perfectGUI();
 
 gui.addButton('Click me', doSomething);
@@ -91,3 +31,77 @@ function doSomething() {
     alert('button clicked');
 }
 ```
+
+## Options
+```javascript
+const gui = new perfectGUI({
+    name: 'My GUI',
+    // Name of the panel. 
+    // Default is null.
+    
+    width: 250,
+    // Width of the panel (in pixels). 
+    // Default is 290.
+    
+    closed: false, 
+    // Defines whether the panel should be open or closed on load. 
+    // Default is false (open).
+
+    position: 'bottom right',
+    // Defines where to position the panel on screen.
+    // Accepted values are 'top', 'bottom', 'left' and 'right' in no particular order ('bottom right' = 'right bottom').
+    // If multiple instances have the same position, they will stack horizontally.
+    // Default is 'top left'.
+});
+```
+
+## Methods
+<table>
+<tr><th>Method</th><th>Example</th></tr>
+<tr><td>addButton</td><td>
+
+```javascript
+gui.addButton('Click me!', function() {
+    ...
+});
+```
+</td></tr>
+<tr><td>addImage</td><td>
+
+```javascript
+gui.addImage('Click this', 'path/to/image', function {
+    ...
+});
+```
+</td></tr>
+<tr><td>addSlider</td><td>
+
+```javascript
+gui.addSlider('Slide this', { min: 0, max: 10, value: 5, step: .1 }, function(value) {
+    console.log('Slider value : ' + value);
+});
+```
+</td></tr>
+<tr><td>addSwitch</td><td>
+
+```javascript
+gui.addSwitch('Switch me!', true, function(state) {
+    console.log('Switched boolean value: ' + state);
+});
+```
+</td></tr>
+<tr><td>addList</td><td>
+
+```javascript
+gui.addList('Select one', ['apple', 'lime', 'peach'], function(item) {
+    console.log('Selected item: ' + item);
+});
+```
+</td></tr>
+<tr><td>toggleClose</td><td>
+
+```javascript
+gui.toggleClose();
+```
+</td></tr>
+</table>
