@@ -1,14 +1,16 @@
 # perfect-gui
-Nice and simple GUI for JavaScript including:  
+Nice and simple GUI for JavaScript.
+
+Features:  
 - image buttons 
 - multiple panels
+- easy custom positioning
 - draggable panels
 
 <img src="https://raw.githubusercontent.com/thibka/thibka.github.io/master/perfect-gui/_data/capture.png" width="464"/>  
 
 ## Demo
-[Demo 1](https://projects.thibautfoussard.com/square_noise/)
-[Demo 2](https://thibka.github.io/perfect-gui/public/)
+https://thibka.github.io/perfect-gui/public/
 
 ## Install
 
@@ -28,7 +30,7 @@ const gui = new perfectGUI();
 gui.addButton('Click me', doSomething);
 
 function doSomething() {
-    alert('button clicked');
+    // ...
 }
 ```
 
@@ -48,10 +50,20 @@ const gui = new perfectGUI({
     // Default is false (open).
 
     position: 'bottom right',
-    // Defines where to position the panel on screen.
-    // Accepted values are 'top', 'bottom', 'left' and 'right' in no particular order ('bottom right' = 'right bottom').
+    // Defines where to place the panel on screen.
+    // Accepted values are 'top', 'bottom', 'left' and 'right' 
+    // in no particular order ('bottom right' = 'right bottom').
     // If multiple instances have the same position, they will stack horizontally.
     // Default is 'top left'.
+
+    draggable: false
+    // Defines if the panel can be manually moved across the screen.
+    // Default is false.
+
+    autoRepositioning: true
+    // If set to true, the panel position will be reset when the screen is resized.
+    // If a panel has been dragged, it won't be be affected.
+    // Default is true.
 });
 ```
 

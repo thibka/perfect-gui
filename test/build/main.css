@@ -323,8 +323,9 @@ body {
   right: 0;
   bottom: 0;
   margin: auto;
-  background-color: #3333ff;
-  transition: .1s transform ease, .3s border-radius ease; }
+  background-color: red;
+  border: 1px solid black;
+  transition: .1s transform ease, .3s border-radius ease, .3s background-color linear; }
 
 #note {
   position: absolute;

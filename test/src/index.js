@@ -8,7 +8,8 @@ import perfectGUI from '../../src/index'
 const element = document.getElementById('element');
 
 const gui_1 = new perfectGUI({
-    name: "You can name and size instances..."
+    name: "This is a basic panel",
+    draggable: true
 });
 
 gui_1.addImage(
@@ -40,23 +41,23 @@ gui_1.addImage(
 );
 
 gui_1.addButton("Random element color", () => {
-        element.style.backgroundColor = get_random_color();
+    element.style.backgroundColor = get_random_color();
 });
 
 gui_1.addSlider("Scale", {min: .1, max: 2, value: 1, step: .01 }, (value) => {
-        element.style.transform = `scale(${value})`;
+    element.style.transform = `scale(${value})`;
 });
 gui_1.addSlider("3-step border-radius", {min: 0, max: 50, value: 0, step: 25 }, (value) => {
-        element.style.borderRadius = `${value}%`;
+    element.style.borderRadius = `${value}%`;
 });
 
 gui_1.addSwitch("Opacity switch", true, (state) => {
-    if (!state) element.style.opacity = 0;
+    if (!state) element.style.opacity = .5;
     else element.style.opacity = 1;
 });
 
-gui_1.addList('Select one', ['apple', 'banana', 'peach'], function(item) {
-    console.log('Selected item: ' + item);
+gui_1.addList('Select a color', ['red', 'pink', 'yellow', 'blue'], function(item) {
+    element.style.backgroundColor = item;
 });
 
 function get_random_color() {
@@ -69,53 +70,45 @@ function get_random_color() {
 };
 
 const gui_2 = new perfectGUI({
-    name: "...and drag and close them!",
+    name: "This is one is closed",
     width: 175,
-    closed: true
+    closed: true,
+    draggable: true
 });
 
 gui_2.addButton("Toggle the first GUI", () => {
     gui_1.toggleClose();
 });
 
-gui_2.addButton("Multiple line button text", () => {
-    alert('Yay');
+gui_2.addButton("You can put a lot of text in a button if you want to.", () => {
+    element.style.backgroundColor = get_random_color();
 });
 
 const gui_3 = new perfectGUI({
-    name: "Place them anywhere",
-    position: 'top right'
+    name: "You can drag panels around...",
+    draggable: true
 });
 
-gui_3.addButton("top right corner", () => {
-    
+gui_3.addButton("...with the 'draggable' option.", () => {
+    element.style.backgroundColor = get_random_color();
 });
 
 const gui_4 = new perfectGUI({
-    name: "gui 4",
-    position: 'top right'
+    name: "This panel is not draggable.",
+    position: 'top right',
+    draggable: false
 });
 
-new perfectGUI({
-    name: "gui 5",
-    position: 'right bottom'
+gui_4.addButton("It's up to you.", ()=>{
+    element.style.backgroundColor = get_random_color();
 });
 
-new perfectGUI({
-    name: "gui 6",
-    position: 'right bottom'
+const gui_5 = new perfectGUI({
+    name: "You can place the panels wherever you want",
+    position: 'right bottom',
+    width: 450
 });
 
-new perfectGUI({
-    name: "gui 7",
-    position: 'top right'
-});
-
-let gui_8 = new perfectGUI({
-    name: "gui 8",
-    position: 'left bottom'
-});
-
-gui_8.addButton("blabla", () => {
+gui_5.addButton("And you can set their width, with the 'width' option.", () => {
     
 });

@@ -26,11 +26,10 @@ export default class GUI {
             let existingDomInstances = document.getElementsByClassName('p-gui');
             for (let i = 0; i < existingDomInstances.length; i++) {
                 if (this.screenCorner.y == existingDomInstances[i].dataset.cornerY) {
-                    if (this.screenCorner.x == 'left' && existingDomInstances[i].dataset.cornerX == this.screenCorner.x) {
+                    if (this.screenCorner.x == 'left' && existingDomInstances[i].dataset.cornerX == 'left') {
                         this.xOffset += existingDomInstances[i].offsetWidth;
                     } 
-                    else if (this.screenCorner.x == 'right' 
-                    && existingDomInstances[i].dataset.cornerX == this.screenCorner.x) {
+                    else if (this.screenCorner.x == 'right' && existingDomInstances[i].dataset.cornerX == 'right') {
                         this.xOffset -= existingDomInstances[i].offsetWidth;
                     }
                 }
@@ -39,18 +38,21 @@ export default class GUI {
         this.yOffset = 0;
         this.position = {prevX:this.xOffset, prevY:this.yOffset, x:this.xOffset, y:this.yOffset};
 
-        let verticalCSSPositioning = this.screenCorner.y == 'top' ? null : 'top: auto; bottom: 0;';
+        let verticalCSSPositioning = this.screenCorner.y == 'top' ? '' : 'top: auto; bottom: 0;';
         this._addStyles(`#p-gui-${this.instanceId} {
             width: ${this.wrapperWidth}px;
             transform: translate3d(${this.xOffset}px,${this.yOffset}px,0);
             ${verticalCSSPositioning}
         }`);
+
+        if (options.autoRepositioning != false) window.addEventListener('resize', this._handleResize.bind(this));
                 
         this._addWrapper();
         this.wrapper.setAttribute('data-corner-x', this.screenCorner.x);
         this.wrapper.setAttribute('data-corner-y', this.screenCorner.y);
     
-        this._makeDraggable();
+        this.hasBeenDragged = false;
+        if (options.draggable == true) this._makeDraggable();
 
         this.closed = false;
         if (options != undefined && options.closed) this.toggleClose();
@@ -66,6 +68,29 @@ export default class GUI {
         if (position.includes('bottom')) parsedPosition.y = 'bottom';
 
         return parsedPosition;
+    }
+
+    _handleResize() {
+        if (this.hasBeenDragged) return;
+
+        this.xOffset = this.screenCorner.x == 'left' ? 0 : document.documentElement.clientWidth - this.wrapperWidth;
+        if (this.instanceId > 0) {
+            let existingDomInstances = document.querySelectorAll(`.p-gui:not(#${this.wrapper.id}):not([data-dragged])`);
+            for (let i = 0; i < existingDomInstances.length; i++) {
+                let instanceId = parseInt(existingDomInstances[i].id.replace('p-gui-', ''));
+                if (instanceId > this.instanceId) break;
+                if (this.screenCorner.y == existingDomInstances[i].dataset.cornerY) {
+                    if (this.screenCorner.x == 'left' && existingDomInstances[i].dataset.cornerX == 'left') {
+                        this.xOffset += existingDomInstances[i].offsetWidth;
+                    } 
+                    else if (this.screenCorner.x == 'right' && existingDomInstances[i].dataset.cornerX == 'right') {
+                        this.xOffset -= existingDomInstances[i].offsetWidth;
+                    }
+                }
+            }
+        }
+        this.position = {prevX:this.xOffset, prevY:this.yOffset, x:this.xOffset, y:this.yOffset};
+        this.wrapper.style.transform = `translate3d(${this.position.x}px, ${this.position.y}px, 0)`;
     }
 
     _createElement(element) {
@@ -301,6 +326,10 @@ export default class GUI {
     
         function dragElement(ev) {
             ev.preventDefault();
+            if (!that.hasBeenDragged) {
+                that.hasBeenDragged = true;
+                that.wrapper.setAttribute('data-dragged', 'true')
+            }
     
             that.position.x = that.position.initX + ev.clientX - that.position.prevX;
             that.position.y = that.position.initY + ev.clientY - that.position.prevY;
