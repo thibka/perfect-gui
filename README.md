@@ -56,7 +56,7 @@ const gui = new perfectGUI({
     // If multiple instances have the same position, they will stack horizontally.
     // Default is 'top left'.
 
-    draggable: false
+    draggable: false,
     // Defines if the panel can be manually moved across the screen.
     // Default is false.
 
