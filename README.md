@@ -4,7 +4,7 @@ Nice and simple GUI for JavaScript.
 Features:  
 - image buttons 
 - multiple panels
-- easy custom positioning
+- easy positioning
 - draggable panels
 
 <img src="https://raw.githubusercontent.com/thibka/thibka.github.io/master/perfect-gui/_data/capture.png" width="464"/>  
