@@ -19,6 +19,7 @@ export default `
     box-shadow: 0 0 10px black;
     box-sizing: border-box;
     z-index: 99999;
+    user-select: none;
 }
 
 .p-gui--collapsed {

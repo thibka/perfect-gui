@@ -62,8 +62,9 @@ let config = {
 		]
     },
     devServer: {
-        contentBase: path.join(__dirname, 'build'),
-        watchContentBase: true
+        contentBase: path.join(__dirname, 'public'),
+		watchContentBase: true,
+		port: 8000
     },
 	plugins: [
 		new HtmlWebpackPlugin({
