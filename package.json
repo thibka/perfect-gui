@@ -1,6 +1,6 @@
 {
   "name": "perfect-gui",
-  "version": "2.4.2",
+  "version": "2.4.3",
   "description": "Nice and simple GUI for JavaScript.",
   "main": "src/index.js",
   "directories": {

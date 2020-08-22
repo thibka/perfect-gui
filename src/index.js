@@ -2,6 +2,7 @@ import styles from './styles';
 
 export default class GUI {
     constructor(options) {
+        if (options == undefined) options = {};
         this.name = (options != undefined && typeof options.name == "string") ? options.name : ''; 
 
         if (this instanceof GUI) {
