@@ -10,7 +10,7 @@ export default `
     left: 0;
     transform: translate3d(0,0,0);
     padding: 20px 0px 4px 0px;
-    background: rgba(51,51,51,.9);
+    background: #2e2e2e;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -66,13 +66,14 @@ export default `
     padding: 0 10px;
     display: flex;
     flex-wrap: wrap;
+    margin-bottom: 5px;
 }
 
 .p-gui__image {
-    width: 80px;
+    width: 30.33%;
     height: 80px;
     background-size: cover;
-    margin: 5px 5px 21px 5px;
+    margin: 5px 1.5% 17px 1.5%;
     cursor: pointer;
     position: relative;
 }
