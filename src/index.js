@@ -336,7 +336,6 @@ export default class GUI {
         let className = 'p-gui__folder';
         if (this.folders.length == 0) className += ' p-gui__folder--first';
         if (!open) className += ' p-gui__folder--closed';
-        console.log(className);
         let container = this._createElement({
             class: className
         });
