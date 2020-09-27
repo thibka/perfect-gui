@@ -110,6 +110,14 @@ gui.addList('Select one', ['apple', 'lime', 'peach'], function(item) {
 });
 ```
 </td></tr>
+<tr><td>addFolder</td><td>
+
+```javascript
+let open = true; // default is true
+let folder = gui.addFolder('folder name', open);
+folder.addButton('click me!', callback);
+```
+</td></tr>
 <tr><td>toggleClose</td><td>
 
 ```javascript
@@ -117,3 +125,9 @@ gui.toggleClose();
 ```
 </td></tr>
 </table>
+
+
+## To do
+- Adding scrollbars if window is too short
+- Adding color palette component
+- Adding object binding

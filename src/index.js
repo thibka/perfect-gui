@@ -3,6 +3,12 @@ import styles from './styles';
 export default class GUI {
     constructor(options) {
         if (options == undefined) options = {};
+
+        if (options.isFolder) {
+            this._folderConstructor(options.folderOptions);
+            return;
+        }
+
         this.name = (options != undefined && typeof options.name == "string") ? options.name : ''; 
 
         if (this instanceof GUI) {
@@ -57,6 +63,12 @@ export default class GUI {
 
         this.closed = false;
         if (options != undefined && options.closed) this.toggleClose();
+
+        this.folders = [];
+    }
+
+    _folderConstructor(folderOptions) {
+        this.wrapper = folderOptions.wrapper;
     }
 
     _parseScreenCorner(position) {
@@ -105,6 +117,7 @@ export default class GUI {
         if (element.onclick) domElement.onclick = element.onclick;
         if (element.onchange) domElement.onchange = element.onchange;
         if (element.textContent) domElement.textContent = element.textContent;
+        if (element.innerHTML) domElement.innerHTML = element.innerHTML;
         if (element.customAttributes) {
             for (var i in element.customAttributes) {
                 domElement.setAttribute(i, element.customAttributes[i]);
@@ -149,6 +162,8 @@ export default class GUI {
             callback: 'function'
         }, params);
 
+        this.imageContainer = null;
+
         this._createElement({
             class: 'p-gui__button',
             onclick: params.callback,
@@ -167,18 +182,25 @@ export default class GUI {
             path: 'string',
             callback: 'function'
         }, params);
-
+                
+        if (!this.imageContainer) {
+            this.imageContainer = this._createElement({
+                class: 'p-gui__image-container'
+            });
+        }
+        
         // Image
-        var element = this._createElement({
-            class: 'p-gui__item',
+        var image = this._createElement({
+            class: 'p-gui__image',
             onclick: params.callback,
-            inline: `background-image: url(${params.path})`
+            inline: `background-image: url(${params.path})`,
+            parent: this.imageContainer
         })
     
         // Text inside image
         this._createElement({
-            parent: element,
-            class: 'p-gui__item-text',
+            parent: image,
+            class: 'p-gui__image-text',
             textContent: params.text
         })    
     }
@@ -190,6 +212,8 @@ export default class GUI {
             value: 'number',
             step: 'number'
         }, sliderParams);
+
+        this.imageContainer = null;
     
         var container = this._createElement({
             class: 'p-gui__slider',
@@ -233,6 +257,8 @@ export default class GUI {
             callback: 'function'
         }, params);
 
+        this.imageContainer = null;
+
         let switchContainer = this._createElement({
             class: 'p-gui__switch',
             onclick: (ev) => {
@@ -267,6 +293,8 @@ export default class GUI {
             callback: 'function'
         }, params);
 
+        this.imageContainer = null;
+
         let container = this._createElement({
             class: 'p-gui__list',
             textContent: params.text
@@ -291,6 +319,42 @@ export default class GUI {
                 textContent: item
             });
         });
+    }
+
+    addFolder(name, open = true) {
+        let params = {
+            name: name,
+            open: open
+        };
+        this._checkMandatoryParams({
+            name: 'string',
+            open: 'boolean'
+        }, params);
+
+        this.imageContainer = null;
+
+        let className = 'p-gui__folder';
+        if (this.folders.length == 0) className += ' p-gui__folder--first';
+        if (!open) className += ' p-gui__folder--closed';
+        console.log(className);
+        let container = this._createElement({
+            class: className
+        });
+        
+        let folderHeader = this._createElement({
+            innerHTML: `<span class="p-gui__folder-arrow"></span>${params.name}`,
+            class: 'p-gui__folder-header',
+            onclick: function() {
+                this.parentNode.classList.toggle('p-gui__folder--closed');
+            },
+            parent: container
+        })
+
+        let folder = new GUI({isFolder: true, folderOptions: {
+            wrapper: container
+        }});
+        this.folders.push(folder);
+        return folder;
     }
     
     _checkMandatoryParams(mandatoryParams, params) {

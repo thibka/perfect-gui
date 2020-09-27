@@ -39,6 +39,61 @@ gui_1.addImage(
         document.getElementById('note').textContent = "Photo by Cassi Josh on Unsplash";
     }
 );
+gui_1.addImage(
+    'Background 3',
+    'https://images.unsplash.com/photo-1524721696987-b9527df9e512?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1490&q=80',
+    () => {
+        document.body.style.backgroundImage = `url(https://images.unsplash.com/photo-1524721696987-b9527df9e512?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1490&q=80)`;
+        document.body.style.backgroundColor = `none`;
+        document.getElementById('note').textContent = "Photo by Cassi Josh on Unsplash";
+    }
+);
+
+let folder = gui_1.addFolder('Some folder');
+
+
+folder.addButton("Random element color", () => {
+    element.style.backgroundColor = get_random_color();
+});
+
+folder.addImage(
+    'Background 1',
+    'https://images.unsplash.com/photo-1485254767195-60704c46702e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1502&q=80',
+    () => {
+        document.body.style.backgroundImage = `url(https://images.unsplash.com/photo-1485254767195-60704c46702e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1502&q=80)`;
+        document.body.style.backgroundColor = `none`;
+        document.getElementById('note').textContent = "Photo by Joel Filipe on Unsplash";
+    }
+);
+
+folder.addImage(
+    'Background 1',
+    'https://images.unsplash.com/photo-1485254767195-60704c46702e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1502&q=80',
+    () => {
+        document.body.style.backgroundImage = `url(https://images.unsplash.com/photo-1485254767195-60704c46702e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1502&q=80)`;
+        document.body.style.backgroundColor = `none`;
+        document.getElementById('note').textContent = "Photo by Joel Filipe on Unsplash";
+    }
+);
+
+folder.addImage(
+    'Background 1',
+    'https://images.unsplash.com/photo-1485254767195-60704c46702e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1502&q=80',
+    () => {
+        document.body.style.backgroundImage = `url(https://images.unsplash.com/photo-1485254767195-60704c46702e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1502&q=80)`;
+        document.body.style.backgroundColor = `none`;
+        document.getElementById('note').textContent = "Photo by Joel Filipe on Unsplash";
+    }
+);
+folder.addImage(
+    'Background 1',
+    'https://images.unsplash.com/photo-1485254767195-60704c46702e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1502&q=80',
+    () => {
+        document.body.style.backgroundImage = `url(https://images.unsplash.com/photo-1485254767195-60704c46702e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1502&q=80)`;
+        document.body.style.backgroundColor = `none`;
+        document.getElementById('note').textContent = "Photo by Joel Filipe on Unsplash";
+    }
+);
 
 gui_1.addButton("Random element color", () => {
     element.style.backgroundColor = get_random_color();
@@ -49,6 +104,11 @@ gui_1.addSlider("Scale", {min: .1, max: 2, value: 1, step: .01 }, (value) => {
 });
 gui_1.addSlider("3-step border-radius", {min: 0, max: 50, value: 0, step: 25 }, (value) => {
     element.style.borderRadius = `${value}%`;
+});
+
+let folder2 = gui_1.addFolder('ok', false);
+folder2.addButton("Random element color", () => {
+    element.style.backgroundColor = get_random_color();
 });
 
 gui_1.addSwitch("Opacity switch", true, (state) => {
@@ -75,6 +135,10 @@ const gui_2 = new perfectGUI({
     closed: true,
     draggable: true
 });
+
+let f = gui_2.addFolder("test");
+
+f.addButton('ok', ()=>{});
 
 gui_2.addButton("Toggle the first GUI", () => {
     gui_1.toggleClose();

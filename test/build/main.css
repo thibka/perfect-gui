@@ -329,8 +329,8 @@ body {
 
 #note {
   position: absolute;
-  bottom: 5px;
-  right: 20px;
+  bottom: 50px;
+  left: 20px;
   text-shadow: 0 0 1px black, 0 0 1px black;
   font-family: arial;
   color: white;

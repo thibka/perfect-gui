@@ -9,9 +9,10 @@ export default `
     top: 0;
     left: 0;
     transform: translate3d(0,0,0);
-    padding: 25px 10px 10px 10px;
+    padding: 20px 0px 4px 0px;
     background: rgba(51,51,51,.9);
     display: flex;
+    justify-content: center;
     flex-wrap: wrap;
     font-family: Verdana, Arial, sans-serif;
     width: 290px;
@@ -50,7 +51,6 @@ export default `
     top: 0;
     right: 0;
     cursor: pointer;
-    /*background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUBAMAAAB/pwA+AAAAGFBMVEUAAAD///////////////////////////8jfp1fAAAAB3RSTlMA2hq+JRu9E1zjOwAAAE1JREFUCNdjwAHcFEAkUwqQMBcCMRWLQUShAlBQHCgAIqF8MAXmQoTBghBhkCBUGCaIYCIUILQhDEO2AkqyAvkw5wSCnOMM1sFqgsMPAJjNDQhN21NVAAAAAElFTkSuQmCC);*/
     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUAQMAAAC3R49OAAAABlBMVEUAAAD///+l2Z/dAAAAAXRSTlMAQObYZgAAABFJREFUCNdjIAb8//8BjIkAAOrOBd3TR0jRAAAAAElFTkSuQmCC);
     background-size: 50% 50%;
     background-position: center;
@@ -61,7 +61,14 @@ export default `
     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUAQMAAAC3R49OAAAABlBMVEUAAAD///+l2Z/dAAAAAXRSTlMAQObYZgAAABVJREFUCNdjYEhgIIj///8AwsSoBQD43QydY5mb0QAAAABJRU5ErkJggg==);
 }
 
-.p-gui__item {
+.p-gui__image-container {
+    width: 100%;
+    padding: 0 10px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.p-gui__image {
     width: 80px;
     height: 80px;
     background-size: cover;
@@ -70,7 +77,7 @@ export default `
     position: relative;
 }
 
-.p-gui__item-text {
+.p-gui__image-text {
     position: absolute;
     bottom: -15px;
     color: #eee;
@@ -82,7 +89,7 @@ export default `
 .p-gui__switch,
 .p-gui__list {
     width: 100%;
-    margin: 5px;
+    margin: 3px;
     padding: 7px;
     background: #1b1b1b;
     font-size: 11px;
@@ -90,6 +97,7 @@ export default `
     border-bottom: 1px solid #00ff89;
     cursor: pointer;
     position: relative;
+    box-sizing: border-box;
 }
 
 .p-gui__list {
@@ -131,7 +139,7 @@ export default `
 
 .p-gui__slider {
     width: 100%;
-    margin: 5px 5px 10px 5px;
+    margin: 3px 3px 9px 3px;
     padding: 7px;
     background: #1b1b1b;
     font-size: 11px;
@@ -179,4 +187,60 @@ export default `
     display: inline-block;
     position: absolute;
     right: 7px;
-}`;
+}
+
+.p-gui__folder {
+    width: 100%;
+    position: relative;
+    background: #434343;
+    overflow: hidden;
+    margin-bottom: 3px;
+    padding-bottom: 1px;
+    display: flex;
+    flex-wrap: wrap;
+    border-left: 2px solid grey;
+    margin-top: 5px;
+}
+
+.p-gui__folder--first {
+    margin-top: 0;
+}
+
+.p-gui__folder--closed {
+    height: 22px;
+}
+
+.p-gui__folder-header {
+    padding: 5px;
+    font-size: 11px;
+    background-color: #222222;
+    color: white;
+    cursor: pointer;
+    width: 100%;
+}
+
+.p-gui__folder-header:hover {
+    background-color: #111111;
+}
+
+.p-gui__folder-arrow {
+    width: 8px;
+    height: 8px;
+    display: inline-block;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAHlBMVEUAAAD///////////////////////////////////8kfJuVAAAACXRSTlMA9Z1fCdMo1yxEJnA0AAAAK0lEQVQI12PABlRgjKkJUMZMYRhjpgqMAZSEMICSaIzpDWiKhdENhEhgAgATSg5jyWnYewAAAABJRU5ErkJggg==);
+    background-size: contain;
+    margin-right: 5px;
+    transform: rotate(90deg)
+}
+
+.p-gui__folder--closed .p-gui__folder-arrow {
+    transform: rotate(0deg);
+}
+
+.p-gui__folder .p-gui__button, 
+.p-gui__folder .p-gui__switch,
+.p-gui__folder .p-gui__slider,
+.p-gui__folder .p-gui__list {
+    margin-left: 6px;
+}
+`;
