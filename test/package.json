@@ -17,7 +17,7 @@
     "image-webpack-loader": "^4.6.0",
     "json-loader": "^0.5.7",
     "mini-css-extract-plugin": "^0.4.5",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.0",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.21.0",
     "webpack": "^4.29.3",
