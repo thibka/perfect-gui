@@ -1,5 +1,4 @@
 /* eslint-disable */
-
 const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -16,22 +15,8 @@ let config = {
 	module: {
 		rules: [
 			{
-				test: /\.(png|jpe?g|gif|mp3|woff|woff2|eot|ttf|otf|obj)$/,
-				use: [
-					'file-loader'
-				]
-			},
-			{
-				test: /\.(svg)$/i,
-				use: [
-				  'file-loader',
-				  {
-					loader: 'image-webpack-loader',
-					options: {
-					  bypassOnDebug: true,
-					},
-				  },
-				],
+				test: /\.(jpe?g|gif|svg|png|mp3|mp4|woff|woff2|eot|ttf|otf|obj|json)$/,
+				type: 'asset/resource'
 			},
 			{
 				test: /\.s?css$/,
@@ -40,19 +25,9 @@ let config = {
 					"css-loader",
 				]
 			},
-			{
-				type: 'javascript/auto',
-				test: /\.json$/,
-				loader: 'file-loader',
-				options: {
-					name: '[name].[ext]'
-				}
-            }
 		]
     },
     devServer: {
-        contentBase: path.join(__dirname, 'public'),
-		watchContentBase: true,
 		port: 8000
     },
 	plugins: [
