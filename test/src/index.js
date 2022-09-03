@@ -1,6 +1,3 @@
-import "@babel/polyfill"
-
-import 'normalize.css'
 import './styles/main.scss'
 
 import perfectGUI from '../../src/index'
