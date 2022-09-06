@@ -40,6 +40,10 @@ const gui = new perfectGUI({
     name: 'My GUI',
     // Name of the panel. 
     // Default is null.
+
+    container: '#container',
+    // Element containing the GUI
+    // Default is document.body
     
     width: 250,
     // Width of the panel (in pixels). 
@@ -97,7 +101,7 @@ gui.addSlider('Slide this', { min: 0, max: 10, value: 5, step: .1 }, function(va
 <tr><td>addSwitch</td><td>
 
 ```javascript
-gui.addSwitch('Switch me!', true, function(state) {
+gui.addSwitch('Switch me!', true, state => {
     console.log('Switched boolean value: ' + state);
 });
 ```
@@ -113,8 +117,9 @@ gui.addList('Select one', ['apple', 'lime', 'peach'], function(item) {
 <tr><td>addFolder</td><td>
 
 ```javascript
-let open = true; // default is true
-let folder = gui.addFolder('folder name', open);
+let folder = gui.addFolder('folder name', { 
+    closed: false // default is false
+});
 folder.addButton('click me!', callback);
 ```
 </td></tr>

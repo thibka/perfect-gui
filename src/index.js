@@ -1,10 +1,16 @@
 import styles from './styles';
 
 export default class GUI {
-    constructor(options) {
-        if (options == undefined) options = {};
+    constructor(options = {}) {
+        if ( options.container ) {
+            this.container = typeof options.container == "string" ? document.querySelector(options.container) : options.container;
+            this.position_type = 'absolute';
+        } else {
+            this.container = document.body;
+            this.position_type = 'fixed';
+        }
 
-        if (options.isFolder) {
+        if ( options.isFolder ) {
             this._folderConstructor(options.folderOptions);
             return;
         }
@@ -24,13 +30,13 @@ export default class GUI {
         document.head.append(this.stylesheet);
         
         // Common styles
-        if (this.instanceId == 0) this._addStyles(`${styles}`);
+        if (this.instanceId == 0) this._addStyles(`${styles(this.position_type)}`);
        
         // Instance styles
         this.screenCorner = this._parseScreenCorner(options.position);
-        this.xOffset = this.screenCorner.x == 'left' ? 0 : document.documentElement.clientWidth - this.wrapperWidth;
+        this.xOffset = this.screenCorner.x == 'left' ? 0 : this.container.clientWidth - this.wrapperWidth;
         if (this.instanceId > 0) {
-            let existingDomInstances = document.getElementsByClassName('p-gui');
+            let existingDomInstances = this.container.querySelectorAll('.p-gui');
             for (let i = 0; i < existingDomInstances.length; i++) {
                 if (this.screenCorner.y == existingDomInstances[i].dataset.cornerY) {
                     if (this.screenCorner.x == 'left' && existingDomInstances[i].dataset.cornerX == 'left') {
@@ -62,7 +68,7 @@ export default class GUI {
         if (options.draggable == true) this._makeDraggable();
 
         this.closed = false;
-        if (options != undefined && options.closed) this.toggleClose();
+        if (options.closed) this.toggleClose();
 
         this.folders = [];
     }
@@ -86,9 +92,9 @@ export default class GUI {
     _handleResize() {
         if (this.hasBeenDragged) return;
 
-        this.xOffset = this.screenCorner.x == 'left' ? 0 : document.documentElement.clientWidth - this.wrapperWidth;
+        this.xOffset = this.screenCorner.x == 'left' ? 0 : this.container.clientWidth - this.wrapperWidth;
         if (this.instanceId > 0) {
-            let existingDomInstances = document.querySelectorAll(`.p-gui:not(#${this.wrapper.id}):not([data-dragged])`);
+            let existingDomInstances = this.container.querySelectorAll(`.p-gui:not(#${this.wrapper.id}):not([data-dragged])`);
             for (let i = 0; i < existingDomInstances.length; i++) {
                 let instanceId = parseInt(existingDomInstances[i].id.replace('p-gui-', ''));
                 if (instanceId > this.instanceId) break;
@@ -134,7 +140,7 @@ export default class GUI {
     
     _addWrapper() {        
         this.wrapper = this._createElement({
-            parent: document.body,
+            parent: this.container,
             id: 'p-gui-'+this.instanceId,
             class: 'p-gui'
         });        
@@ -192,7 +198,7 @@ export default class GUI {
         // Image
         var image = this._createElement({
             class: 'p-gui__image',
-            onclick: params.callback,
+            onclick: () => params.callback(params.path),
             inline: `background-image: url(${params.path})`,
             parent: this.imageContainer
         })
@@ -321,21 +327,23 @@ export default class GUI {
         });
     }
 
-    addFolder(name, open = true) {
+    addFolder(name, options = {}) {
+        let closed = typeof options.closed == 'boolean' ? options.closed : false;
+
         let params = {
-            name: name,
-            open: open
+            name,
+            closed
         };
         this._checkMandatoryParams({
             name: 'string',
-            open: 'boolean'
+            closed: 'boolean'
         }, params);
 
         this.imageContainer = null;
 
         let className = 'p-gui__folder';
         if (this.folders.length == 0) className += ' p-gui__folder--first';
-        if (!open) className += ' p-gui__folder--closed';
+        if (closed) className += ' p-gui__folder--closed';
         let container = this._createElement({
             class: className
         });

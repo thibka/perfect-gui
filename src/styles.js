@@ -3,9 +3,10 @@
  * depending on a css loader
  */
 
-export default `
+export default function( position_type ) {
+return /* css */`
 .p-gui {
-    position: fixed;
+    position: ${ position_type };
     top: 0;
     left: 0;
     transform: translate3d(0,0,0);
@@ -244,4 +245,5 @@ export default `
 .p-gui__folder .p-gui__list {
     margin-left: 6px;
 }
-`;
+`
+};

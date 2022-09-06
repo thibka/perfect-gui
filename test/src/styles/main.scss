@@ -1,17 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 html, body {
     height: 100%;
 }
 
 body {
-    overflow: hidden;
     margin: 0;
+    background-color: white;
+    color: black;
+    font-family: Arial, sans-serif;
+}
+
+.wrapper {
+    width: 800px;
+    margin: 0 auto;
+    padding-bottom: 100px;
+}
+
+h1, h2 {
+    font-family: 'Montserrat', sans-serif;
+}
+
+h1 {
+    margin: 80px 0;
+}
+
+h2 {
+    margin-top: 80px;
+}
+
+.code {
+    font-family: monospace;
     background-color: black;
+    color: #a6e22e;
+    padding: 3px 6px;
+    border-radius: 3px;
+}
+
+div:has(pre) {
+    border-radius: 5px;
+}
+
+pre {
+    padding: 20px; 
+    border-radius: 5px;
+    font-size: 1.2em;
+}
+
+.container {
+    background-color: #111;
     transition: .3s all ease;
     background-position: center;
     background-size: cover;
+    overflow: hidden;
+    position: relative;
+    height: 400px;
+    width: 100%;
+    margin: 20px auto 20px auto;
+    border-radius: 5px;
 }
 
-#element {
+.element {
     width: 100px;
     height: 100px;
     position: absolute;
@@ -21,11 +69,18 @@ body {
     bottom: 0;
     margin: auto;
     background-color: red;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     border: 1px solid black;
     transition: .1s transform ease, .3s border-radius ease, .3s background-color linear;
 }
 
-#note {
+.element.round {
+    border-radius: 50%;
+}
+
+.note {
     position: absolute;
     bottom: 10px;
     left: 20px;
