@@ -198,17 +198,18 @@ export default class GUI {
         // Image
         var image = this._createElement({
             class: 'p-gui__image',
-            onclick: () => params.callback(params.path),
             inline: `background-image: url(${params.path})`,
             parent: this.imageContainer
         })
-    
+        
         // Text inside image
         this._createElement({
             parent: image,
             class: 'p-gui__image-text',
             textContent: params.text
         })    
+        
+        image.onclick = () => params.callback({ path: params.path, text: params.text });
     }
     
     addSlider (text, sliderParams, callback) {
