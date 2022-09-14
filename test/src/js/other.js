@@ -1,9 +1,11 @@
 import getRandomColor from './getRandomColor';
 import perfectGUI from '../../../src/index';
 
+const container = '#container-4';
+
 export default function other() {
     const gui_1 = new perfectGUI({
-        container: '#container-4',
+        container,
         name: 'GUI 1 (drag me!)',
         width: 500,
         draggable: true
@@ -11,7 +13,7 @@ export default function other() {
     gui_1.addButton('Custom width using the `width` option', () => {});
 
     const gui_2 = new perfectGUI({
-        container: '#container-4',
+        container,
         name: 'GUI 2 (drag me!)',
         close: true,
         draggable: true,
@@ -23,7 +25,7 @@ export default function other() {
     });
 
     const gui_3 = new perfectGUI({
-        container: '#container-4',
+        container,
         name: 'GUI 3 (closed)',
         closed: true,
     });

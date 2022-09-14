@@ -5,7 +5,7 @@ import basics from './js/basics';
 import multiple from './js/multiple';
 import folders from './js/folders';
 import other from './js/other';
-import getRandomColor from './js/getRandomColor';
+import kill_create from './js/kill_create';
 
 basics();
 
@@ -14,3 +14,5 @@ multiple();
 folders();
 
 other();
+
+kill_create();

@@ -17,9 +17,13 @@ export default class GUI {
 
         this.name = (options != undefined && typeof options.name == "string") ? options.name : ''; 
 
-        if (this instanceof GUI) {
-            if (typeof GUI[GUI.instanceCounter] != 'number') GUI[GUI.instanceCounter] = 0;
-            else GUI[GUI.instanceCounter]++;
+        if ( this instanceof GUI ) {
+            if ( typeof GUI[GUI.instanceCounter] != 'number' ) {
+                GUI[GUI.instanceCounter] = 0;
+            }
+            else {
+                GUI[GUI.instanceCounter]++;
+            }
         }        
         this.instanceId = GUI[GUI.instanceCounter];
         
@@ -30,7 +34,9 @@ export default class GUI {
         document.head.append(this.stylesheet);
         
         // Common styles
-        if (this.instanceId == 0) this._addStyles(`${styles(this.position_type)}`);
+        if (this.instanceId == 0) {
+            this._addStyles(`${styles(this.position_type)}`);
+        }
        
         // Instance styles
         this.screenCorner = this._parseScreenCorner(options.position);
@@ -418,5 +424,9 @@ export default class GUI {
     toggleClose() {
         this.closed = !this.closed;
         this.wrapper.classList.toggle('p-gui--collapsed');
+    }
+
+    kill() {
+        this.wrapper.remove();
     }
 }
