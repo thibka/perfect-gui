@@ -1,4 +1,4 @@
-import perfectGUI from '../../../src/index';
+import GUI from '../../../src/index';
 import getRandomColor from './getRandomColor';
 
 export default function basics() {
@@ -9,7 +9,7 @@ export default function basics() {
 
     const element = document.querySelector('#container-1 .element');
 
-    const gui_1 = new perfectGUI({
+    const gui_1 = new GUI({
         name: 'Basics',
         container: '#container-1'
     });
