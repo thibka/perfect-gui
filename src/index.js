@@ -77,6 +77,8 @@ export default class GUI {
         if (options.closed) this.toggleClose();
 
         this.folders = [];
+
+        this.objectReferences = [];
     }
 
     _folderConstructor(folderOptions) {
@@ -222,9 +224,29 @@ export default class GUI {
         this._checkMandatoryParams({
             min: 'number',
             max: 'number',
-            value: 'number',
             step: 'number'
         }, sliderParams);
+
+        let isObject = false;
+        let objectReferenceIndex = null;
+        let object; 
+        let prop;
+
+        if ( sliderParams.value ) {
+            this._checkMandatoryParams({
+                value: 'number'
+            }, sliderParams);
+        } else {
+            this._checkMandatoryParams({
+                object: 'object',
+                prop: 'string'
+            }, sliderParams);
+
+            object = sliderParams.object;
+            prop = sliderParams.prop;
+            objectReferenceIndex = this.objectReferences.push(object[prop]);
+            isObject = true;
+        }
 
         this.imageContainer = null;
     
@@ -233,7 +255,7 @@ export default class GUI {
             textContent: text
         });
     
-        var ctrl = this._createElement({
+        var slider_ctrl = this._createElement({
             parent: container,
             el: 'input',
             class: 'p-gui__slider-ctrl',
@@ -246,16 +268,37 @@ export default class GUI {
             }
         });
     
-        var val = this._createElement({
+        var slider_value = this._createElement({
             parent: container,
             class: 'p-gui__slider-value',
-            textContent: sliderParams.value
+            textContent: isObject ? String(object[prop]) : sliderParams.value
         });
     
-        ctrl.addEventListener('input', function() {
-            val.textContent = ctrl.value;
-            if (typeof callback == "function") callback(ctrl.value);
+        slider_ctrl.addEventListener('input', () => {
+            slider_value.textContent = slider_ctrl.value;
+
+            if ( isObject ) {
+                object[prop] = slider_ctrl.value;
+            }
+
+            if (typeof callback == "function") {
+                callback(slider_ctrl.value);
+            }            
         });
+
+        if ( isObject ) {
+            Object.defineProperty( object, prop, {
+                set: val => { 
+                    this.objectReferences[objectReferenceIndex] = val;
+                    slider_ctrl.value = val;
+                    slider_value.textContent = String( val );
+                },
+                get: () => { 
+                    return this.objectReferences[objectReferenceIndex];
+                },
+                enumerable: false
+            });
+        }
     }
 
     addSwitch(text, state, callback) {

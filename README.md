@@ -93,9 +93,13 @@ gui.addImage('Click this', 'path/to/image', function {
 <tr><td>addSlider</td><td>
 
 ```javascript
-gui.addSlider('Slide this', { min: 0, max: 10, value: 5, step: .1 }, function(value) {
+// Simple slider, only returns a value to the callback
+gui.addSlider('Slide this', { value: 5, min: 0, max: 10, step: .1 }, value => {
     console.log('Slider value : ' + value);
 });
+
+// Object-based slider, automatically updates the value of the object property
+gui.addSlider('Slide this', { object: foo, prop: 'bar', min: 0, max: 10, step: .1 });
 ```
 </td></tr>
 <tr><td>addSwitch</td><td>
@@ -135,4 +139,3 @@ gui.toggleClose();
 ## To do
 - Adding scrollbars if window is too short
 - Adding color palette component
-- Adding object binding

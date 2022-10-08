@@ -11,7 +11,6 @@ let config = {
 		path: path.resolve(__dirname, './build'),
 		filename: './bundle.js'
 	},
-	watch: true,
 	module: {
 		rules: [
 			{

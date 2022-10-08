@@ -3,6 +3,10 @@ import getRandomColor from './getRandomColor';
 
 export default function basics() {
 
+    const foo = {
+        bar: 1
+    };
+
     const element = document.querySelector('#container-1 .element');
 
     const gui_1 = new perfectGUI({
@@ -15,9 +19,13 @@ export default function basics() {
         element.style.backgroundImage = 'none';
     });
 
-    gui_1.addSlider('Slider', 
+    gui_1.addSlider('Slider (simple callback)', 
         { min: 0, max: 2, value: 1, step: .01 }, 
         value => element.style.transform = `scale(${ value })`
+    );
+
+    gui_1.addSlider('Slider 2 (object binding)',
+        { object: foo, prop: 'bar', min: 0, max: 2, step: .01 }
     );
 
     gui_1.addSwitch('Switch', true, state => {
