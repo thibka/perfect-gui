@@ -244,7 +244,7 @@ export default class GUI {
 
             object = sliderParams.object;
             prop = sliderParams.prop;
-            objectReferenceIndex = this.objectReferences.push(object[prop]);
+            objectReferenceIndex = this.objectReferences.push(object[prop]) - 1;
             isObject = true;
         }
 
