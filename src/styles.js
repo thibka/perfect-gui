@@ -89,7 +89,8 @@ return /* css */`
 
 .p-gui__button, 
 .p-gui__switch,
-.p-gui__list {
+.p-gui__list,
+.p-gui__vector2 {
     width: 100%;
     margin: 3px;
     padding: 7px;
@@ -100,6 +101,55 @@ return /* css */`
     cursor: pointer;
     position: relative;
     box-sizing: border-box;
+}
+
+.p-gui__vector2 {
+    border-bottom: 1px solid #ff9999;
+    aspect-ratio: 1;
+}
+
+.p-gui__vector2-area {
+    position: relative;
+    background: black;
+    margin-top: 11px;
+    width: 100%;
+    height: calc(100% - 33px);
+}
+
+.p-gui__vector2-line {
+    position: absolute;
+    background: white;
+    opacity: .3;
+    pointer-events: none;
+}
+
+.p-gui__vector2-line-x {
+    width: 100%;
+    height: 1px;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.p-gui__vector2-line-y {
+    width: 1px;
+    height: 100%;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.p-gui__vector2-dot {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #d5d5d5;
+    border: 2px solid #ff9999;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
 }
 
 .p-gui__list {
@@ -185,7 +235,8 @@ return /* css */`
     border: 2px solid #00a1ff;
 }
 
-.p-gui__slider-value {
+.p-gui__slider-value,
+.p-gui__vector-value {
     display: inline-block;
     position: absolute;
     right: 7px;

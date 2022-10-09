@@ -78,7 +78,7 @@ export default class GUI {
 
         this.folders = [];
 
-        this.objectReferences = [];
+        this.propReferences = [];
     }
 
     _folderConstructor(folderOptions) {
@@ -228,7 +228,7 @@ export default class GUI {
         }, sliderParams);
 
         let isObject = false;
-        let objectReferenceIndex = null;
+        let propReferenceIndex = null;
         let object; 
         let prop;
 
@@ -244,7 +244,7 @@ export default class GUI {
 
             object = sliderParams.object;
             prop = sliderParams.prop;
-            objectReferenceIndex = this.objectReferences.push(object[prop]) - 1;
+            propReferenceIndex = this.propReferences.push(object[prop]) - 1;
             isObject = true;
         }
 
@@ -289,12 +289,12 @@ export default class GUI {
         if ( isObject ) {
             Object.defineProperty( object, prop, {
                 set: val => { 
-                    this.objectReferences[objectReferenceIndex] = val;
+                    this.propReferences[propReferenceIndex] = val;
                     slider_ctrl.value = val;
                     slider_value.textContent = String( val );
                 },
                 get: () => { 
-                    return this.objectReferences[objectReferenceIndex];
+                    return this.propReferences[propReferenceIndex];
                 },
                 enumerable: false
             });
@@ -374,6 +374,97 @@ export default class GUI {
                 },
                 textContent: item
             });
+        });
+    }
+
+    addVector2(text, data, callback) {
+        this._checkMandatoryParams({
+            text: 'string',
+            data: 'object',
+            minX: 'number',
+            maxX: 'number',
+            minY: 'number',
+            maxY: 'number',
+        }, {
+            text,
+            data,
+            minX: data.x.min,
+            maxX: data.x.max,
+            minY: data.y.min,
+            maxY: data.y.max,
+        });
+
+        const objectX = data.x.object;
+        const propX = data.x.prop;
+        const propXReferenceIndex = this.propReferences.push(objectX[propX]) - 1;
+        
+        const objectY = data.y.object;
+        const propY = data.y.prop;
+        const propYReferenceIndex = this.propReferences.push(objectY[propY]) - 1;
+
+        this.imageContainer = null;
+
+        const container = this._createElement({
+            class: 'p-gui__vector2',
+            textContent: text
+        });
+
+        const vector_value = this._createElement({
+            parent: container,
+            class: 'p-gui__vector-value',
+            textContent: objectX[propX] + ', ' + objectY[propY]
+        });
+
+        const area = this._createElement({
+            parent: container,
+            el: 'div',
+            class: 'p-gui__vector2-area',
+            onclick: (evt) => {
+                objectX[propX] = parseFloat(this._mapLinear(evt.offsetX, 0, area.clientWidth, data.x.min, data.x.max).toFixed(1));
+                objectY[propY] = parseFloat(this._mapLinear(evt.offsetY, 0, area.clientHeight, data.y.max, data.y.min).toFixed(1));
+            }
+        });
+
+        this._createElement({
+            parent: area,
+            class: 'p-gui__vector2-line p-gui__vector2-line-x'
+        });
+        
+        this._createElement({
+            parent: area,
+            class: 'p-gui__vector2-line p-gui__vector2-line-y'
+        });
+
+        const dot = this._createElement({
+            parent: area,
+            class: 'p-gui__vector2-dot'
+        });
+
+        dot.style.left = this._mapLinear(objectX[propX], data.x.min, data.x.max, 0, area.clientWidth) + 'px';
+        dot.style.top = this._mapLinear(objectY[propY], data.y.min, data.y.max, area.clientHeight, 0) + 'px';
+
+        Object.defineProperty( objectX, propX, {
+            set: val => { 
+                this.propReferences[propXReferenceIndex] = val;
+                dot.style.left = this._mapLinear(val, data.x.min, data.x.max, 0, area.clientWidth) + 'px';
+                vector_value.textContent = String( val ) + ', ' + objectY[propY];
+            },
+            get: () => { 
+                return this.propReferences[propXReferenceIndex];
+            },
+            enumerable: false
+        });
+
+        Object.defineProperty( objectY, propY, {
+            set: val => { 
+                this.propReferences[propYReferenceIndex] = val;
+                dot.style.top = this._mapLinear(val, data.y.min, data.y.max, area.clientHeight, 0) + 'px';
+                vector_value.textContent = objectX[propX] + ', ' + String( val );
+            },
+            get: () => { 
+                return this.propReferences[propYReferenceIndex];
+            },
+            enumerable: false
         });
     }
 
@@ -471,5 +562,9 @@ export default class GUI {
 
     kill() {
         this.wrapper.remove();
+    }
+
+    _mapLinear( x, a1, a2, b1, b2 ) {
+        return b1 + ( x - a1 ) * ( b2 - b1 ) / ( a2 - a1 );
     }
 }

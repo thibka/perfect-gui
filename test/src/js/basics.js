@@ -42,7 +42,6 @@ export default function basics() {
         'https://images.unsplash.com/photo-1485254767195-60704c46702e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=512&q=80',
         evt => {
             element.style.backgroundImage = `url(${evt.path})`;
-            console.log(evt.text);
             document.querySelector('#container-1 .note').textContent = "Photo by Joel Filipe on Unsplash";
         }
     );
@@ -51,7 +50,6 @@ export default function basics() {
         'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=512&q=80',
         evt => {
             element.style.backgroundImage = `url(${evt.path})`;
-            console.log(evt.text);
             document.querySelector('#container-1 .note').textContent = "Photo by Milad Fakurian on Unsplash";
         }
     );
