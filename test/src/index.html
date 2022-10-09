@@ -19,53 +19,90 @@
             <p class="note"></p>
         </div>
 
-        <!-- HTML generated using hilite.me --><div style="background: #272822; overflow:auto;width:auto;;"><pre style="margin: 0; line-height: 125%"><span style="color: #66d9ef">import</span> <span style="color: #a6e22e">GUI</span> <span style="color: #a6e22e">from</span> <span style="color: #e6db74">&#39;perfect-gui&#39;</span><span style="color: #f8f8f2">;</span>
+        <div class="code-button" onclick="document.getElementById('code-block-basics').classList.toggle('code-block--hidden')">See code</div>
+        <div id="code-block-basics" class="code-block code-block--hidden">
+        <!-- HTML generated using hilite.me --><div style="background: #272822; overflow:auto;width:auto;;"><pre style="margin: 0; line-height: 125%"><span style="color: #66d9ef">const</span> <span style="color: #a6e22e">position</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">{</span>
+    <span style="color: #a6e22e">x</span><span style="color: #f92672">:</span> <span style="color: #ae81ff">0</span>
+<span style="color: #f8f8f2">};</span>
 
-<span style="color: #66d9ef">const</span> <span style="color: #a6e22e">gui_1</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">new</span> <span style="color: #a6e22e">GUI</span><span style="color: #f8f8f2">({</span>
-    <span style="color: #a6e22e">name</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;Basics&#39;</span><span style="color: #f8f8f2">,</span>
+<span style="color: #66d9ef">const</span> <span style="color: #a6e22e">gui</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">new</span> <span style="color: #a6e22e">GUI</span><span style="color: #f8f8f2">({</span>
+    <span style="color: #a6e22e">name</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;Basics&#39;</span>
 <span style="color: #f8f8f2">});</span>
 
-<span style="color: #75715e">// .addButon( label, callback )</span>
-<span style="color: #a6e22e">gui_1</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">addButton</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;Button&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">changeColor</span><span style="color: #f8f8f2">);</span>
+<span style="color: #a6e22e">gui</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">addButton</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;Button&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">changeColor</span><span style="color: #f8f8f2">);</span>
 
-<span style="color: #75715e">// .addSlider( label, settings, callback )</span>
-<span style="color: #a6e22e">gui_1</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">addSlider</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;Slider&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">{</span> <span style="color: #a6e22e">min</span><span style="color: #f92672">:</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">max</span><span style="color: #f92672">:</span> <span style="color: #ae81ff">2</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">value</span><span style="color: #f92672">:</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">step</span><span style="color: #f92672">:</span> <span style="color: #f8f8f2">.</span><span style="color: #ae81ff">01</span> <span style="color: #f8f8f2">},</span> 
-    <span style="color: #a6e22e">value</span> <span style="color: #f92672">=&gt;</span> <span style="color: #a6e22e">element</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">style</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">transform</span> <span style="color: #f92672">=</span> <span style="color: #960050; background-color: #1e0010">`</span><span style="color: #a6e22e">scale</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">$</span><span style="color: #f8f8f2">{</span> <span style="color: #a6e22e">value</span> <span style="color: #f8f8f2">})</span><span style="color: #960050; background-color: #1e0010">`</span>
+<span style="color: #a6e22e">gui</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">addSlider</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;Slider (simple callback)&#39;</span><span style="color: #f8f8f2">,</span> 
+    <span style="color: #f8f8f2">{</span> <span style="color: #a6e22e">min</span><span style="color: #f92672">:</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">max</span><span style="color: #f92672">:</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">value</span><span style="color: #f92672">:</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">step</span><span style="color: #f92672">:</span> <span style="color: #f8f8f2">.</span><span style="color: #ae81ff">2</span> <span style="color: #f8f8f2">},</span> 
+    <span style="color: #a6e22e">value</span> <span style="color: #f92672">=&gt;</span> <span style="color: #a6e22e">element</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">style</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">opacity</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">value</span>
 <span style="color: #f8f8f2">);</span>
 
-<span style="color: #75715e">// .addSwitch( label, defaultState, callback )</span>
-<span style="color: #a6e22e">gui_1</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">addSwitch</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;Switch&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #66d9ef">true</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">state</span> <span style="color: #f92672">=&gt;</span> <span style="color: #f8f8f2">{</span>
+<span style="color: #a6e22e">gui</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">addSlider</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;Slider 2 (object binding)&#39;</span><span style="color: #f8f8f2">,</span> 
+    <span style="color: #f8f8f2">{</span> <span style="color: #a6e22e">object</span><span style="color: #f92672">:</span> <span style="color: #a6e22e">position</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">prop</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;x&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">min</span><span style="color: #f92672">:</span> <span style="color: #f92672">-</span><span style="color: #ae81ff">30</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">max</span><span style="color: #f92672">:</span> <span style="color: #ae81ff">30</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">step</span><span style="color: #f92672">:</span> <span style="color: #f8f8f2">.</span><span style="color: #ae81ff">1</span> <span style="color: #f8f8f2">}</span>
+<span style="color: #f8f8f2">);</span>
+
+<span style="color: #a6e22e">gui</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">addSwitch</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;Switch&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #66d9ef">true</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">state</span> <span style="color: #f92672">=&gt;</span> <span style="color: #f8f8f2">{</span>
     <span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">(</span> <span style="color: #a6e22e">state</span> <span style="color: #f8f8f2">)</span> <span style="color: #a6e22e">element</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">classList</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">remove</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;round&#39;</span><span style="color: #f8f8f2">);</span>
     <span style="color: #66d9ef">else</span> <span style="color: #a6e22e">element</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">classList</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">add</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;round&#39;</span><span style="color: #f8f8f2">);</span>
 <span style="color: #f8f8f2">});</span>
 
-<span style="color: #75715e">// .addList( label, values, callback )</span>
-<span style="color: #a6e22e">gui_1</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">addList</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;List&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">[</span><span style="color: #e6db74">&#39;red&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&#39;pink&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&#39;yellow&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&#39;blue&#39;</span><span style="color: #f8f8f2">],</span> <span style="color: #a6e22e">value</span> <span style="color: #f92672">=&gt;</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #a6e22e">element</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">style</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">backgroundColor</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">value</span><span style="color: #f8f8f2">;</span>
+<span style="color: #a6e22e">gui</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">addList</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;List&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">[</span><span style="color: #e6db74">&#39;red&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&#39;pink&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&#39;yellow&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&#39;blue&#39;</span><span style="color: #f8f8f2">],</span> <span style="color: #a6e22e">item</span> <span style="color: #f92672">=&gt;</span> <span style="color: #f8f8f2">{</span>
+    <span style="color: #a6e22e">element</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">style</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">backgroundColor</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">item</span><span style="color: #f8f8f2">;</span>
     <span style="color: #a6e22e">element</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">style</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">backgroundImage</span> <span style="color: #f92672">=</span> <span style="color: #e6db74">&#39;none&#39;</span><span style="color: #f8f8f2">;</span>
 <span style="color: #f8f8f2">});</span>
 
-<span style="color: #75715e">// .addImage( label, imagePath, callback )</span>
-<span style="color: #a6e22e">gui_1</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">addImage</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;Image 1&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&#39;path/to/image-1.jpg&#39;</span><span style="color: #f8f8f2">,</span>
+<span style="color: #a6e22e">gui</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">addImage</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;Image 1&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&#39;path/to/image-1.jpg&#39;</span><span style="color: #f8f8f2">,</span>
     <span style="color: #a6e22e">evt</span> <span style="color: #f92672">=&gt;</span> <span style="color: #f8f8f2">{</span>
-        <span style="color: #a6e22e">element</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">style</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">backgroundImage</span> <span style="color: #f92672">=</span> <span style="color: #960050; background-color: #1e0010">`</span><span style="color: #a6e22e">url</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">$</span><span style="color: #f8f8f2">{</span> <span style="color: #a6e22e">evt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">path</span> <span style="color: #f8f8f2">})</span><span style="color: #960050; background-color: #1e0010">`</span><span style="color: #f8f8f2">;</span>
+        <span style="color: #a6e22e">element</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">style</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">backgroundImage</span> <span style="color: #f92672">=</span> <span style="color: #960050; background-color: #1e0010">`</span><span style="color: #a6e22e">url</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">$</span><span style="color: #f8f8f2">{</span><span style="color: #a6e22e">evt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">path</span><span style="color: #f8f8f2">})</span><span style="color: #960050; background-color: #1e0010">`</span><span style="color: #f8f8f2">;</span>
         <span style="color: #f8f8f2">document.</span><span style="color: #a6e22e">querySelector</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;#container-1 .note&#39;</span><span style="color: #f8f8f2">).</span><span style="color: #a6e22e">textContent</span> <span style="color: #f92672">=</span> <span style="color: #e6db74">&quot;Photo by Joel Filipe on Unsplash&quot;</span><span style="color: #f8f8f2">;</span>
     <span style="color: #f8f8f2">}</span>
 <span style="color: #f8f8f2">);</span>
 
-<span style="color: #a6e22e">gui_1</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">addImage</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;Image 2&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&#39;path/to/image-2.jpg&#39;</span><span style="color: #f8f8f2">,</span>
+<span style="color: #a6e22e">gui</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">addImage</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;Image 2&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&#39;path/to/image-2.jpg&#39;</span><span style="color: #f8f8f2">,</span>
     <span style="color: #a6e22e">evt</span> <span style="color: #f92672">=&gt;</span> <span style="color: #f8f8f2">{</span>
-        <span style="color: #a6e22e">element</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">style</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">backgroundImage</span> <span style="color: #f92672">=</span> <span style="color: #960050; background-color: #1e0010">`</span><span style="color: #a6e22e">url</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">$</span><span style="color: #f8f8f2">{</span> <span style="color: #a6e22e">evt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">path</span> <span style="color: #f8f8f2">})</span><span style="color: #960050; background-color: #1e0010">`</span><span style="color: #f8f8f2">;</span>
+        <span style="color: #a6e22e">element</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">style</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">backgroundImage</span> <span style="color: #f92672">=</span> <span style="color: #960050; background-color: #1e0010">`</span><span style="color: #a6e22e">url</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">$</span><span style="color: #f8f8f2">{</span><span style="color: #a6e22e">evt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">path</span><span style="color: #f8f8f2">})</span><span style="color: #960050; background-color: #1e0010">`</span><span style="color: #f8f8f2">;</span>
         <span style="color: #f8f8f2">document.</span><span style="color: #a6e22e">querySelector</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;#container-1 .note&#39;</span><span style="color: #f8f8f2">).</span><span style="color: #a6e22e">textContent</span> <span style="color: #f92672">=</span> <span style="color: #e6db74">&quot;Photo by Milad Fakurian on Unsplash&quot;</span><span style="color: #f8f8f2">;</span>
     <span style="color: #f8f8f2">}</span>
 <span style="color: #f8f8f2">);</span>
+
+<span style="color: #66d9ef">function</span> <span style="color: #a6e22e">loop</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
+    <span style="color: #a6e22e">element</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">style</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">transform</span> <span style="color: #f92672">=</span> <span style="color: #960050; background-color: #1e0010">`</span><span style="color: #a6e22e">translateX</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">$</span><span style="color: #f8f8f2">{</span><span style="color: #a6e22e">position</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">x</span><span style="color: #f8f8f2">}</span><span style="color: #a6e22e">px</span><span style="color: #f8f8f2">)</span><span style="color: #960050; background-color: #1e0010">`</span><span style="color: #f8f8f2">;</span>
+    <span style="color: #a6e22e">requestAnimationFrame</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">loop</span><span style="color: #f8f8f2">);</span>
+<span style="color: #f8f8f2">}</span>
+
+<span style="color: #a6e22e">loop</span><span style="color: #f8f8f2">();</span>
 </pre></div>
+        </div>
         
         <h2>Vectors</h2>
 
         <div id="container-vectors" class="container">
             <div class="element"></div>
             <p class="note"></p>
+        </div>
+
+        <div class="code-button" onclick="document.getElementById('code-block-vectors').classList.toggle('code-block--hidden')">See code</div>
+        <div id="code-block-vectors" class="code-block code-block--hidden">
+        <!-- HTML generated using hilite.me --><div style="background: #272822; overflow:auto;width:auto;;"><pre style="margin: 0; line-height: 125%"><span style="color: #66d9ef">const</span> <span style="color: #a6e22e">data</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">{</span>
+    <span style="color: #a6e22e">x</span><span style="color: #f92672">:</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">,</span>
+    <span style="color: #a6e22e">y</span><span style="color: #f92672">:</span> <span style="color: #ae81ff">0</span>
+<span style="color: #f8f8f2">}</span>
+
+<span style="color: #66d9ef">const</span> <span style="color: #a6e22e">gui</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">new</span> <span style="color: #a6e22e">perfectGUI</span><span style="color: #f8f8f2">({</span>
+    <span style="color: #a6e22e">name</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;Vectors&#39;</span>
+<span style="color: #f8f8f2">});</span>
+
+<span style="color: #a6e22e">gui</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">addVector2</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;Position&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">{</span>
+    <span style="color: #a6e22e">x</span><span style="color: #f92672">:</span> <span style="color: #f8f8f2">{</span> <span style="color: #a6e22e">object</span><span style="color: #f92672">:</span> <span style="color: #a6e22e">data</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">prop</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;x&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">min</span><span style="color: #f92672">:</span> <span style="color: #f92672">-</span><span style="color: #ae81ff">50</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">max</span><span style="color: #f92672">:</span> <span style="color: #ae81ff">50</span> <span style="color: #f8f8f2">},</span>
+    <span style="color: #a6e22e">y</span><span style="color: #f92672">:</span> <span style="color: #f8f8f2">{</span> <span style="color: #a6e22e">object</span><span style="color: #f92672">:</span> <span style="color: #a6e22e">data</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">prop</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;y&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">min</span><span style="color: #f92672">:</span> <span style="color: #f92672">-</span><span style="color: #ae81ff">50</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">max</span><span style="color: #f92672">:</span> <span style="color: #ae81ff">50</span> <span style="color: #f8f8f2">},</span>
+<span style="color: #f8f8f2">});</span>
+
+<span style="color: #66d9ef">function</span> <span style="color: #a6e22e">loop</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
+    <span style="color: #a6e22e">element</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">style</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">transform</span> <span style="color: #f92672">=</span> <span style="color: #960050; background-color: #1e0010">`</span><span style="color: #a6e22e">translate</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">$</span><span style="color: #f8f8f2">{</span><span style="color: #a6e22e">data</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">x</span><span style="color: #f8f8f2">}</span><span style="color: #a6e22e">px</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">$</span><span style="color: #f8f8f2">{</span><span style="color: #f92672">-</span><span style="color: #a6e22e">data</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">y</span><span style="color: #f8f8f2">}</span><span style="color: #a6e22e">px</span><span style="color: #f8f8f2">)</span><span style="color: #960050; background-color: #1e0010">`</span><span style="color: #f8f8f2">;</span>
+    <span style="color: #a6e22e">requestAnimationFrame</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">loop</span><span style="color: #f8f8f2">);</span>
+<span style="color: #f8f8f2">}</span>
+
+<span style="color: #a6e22e">loop</span><span style="color: #f8f8f2">();</span>
+</pre></div>
         </div>
 
         <h2>Positioning</h2>
@@ -77,6 +114,8 @@
             <div class="element"></div>
         </div>
 
+        <div class="code-button" onclick="document.getElementById('code-block-positioning').classList.toggle('code-block--hidden')">See code</div>
+        <div id="code-block-positioning" class="code-block code-block--hidden">
        <!-- HTML generated using hilite.me --><div style="background: #272822; overflow:auto;width:auto;;"><pre style="margin: 0; line-height: 125%"><span style="color: #66d9ef">const</span> <span style="color: #a6e22e">gui_1</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">new</span> <span style="color: #a6e22e">GUI</span><span style="color: #f8f8f2">({</span>
     <span style="color: #a6e22e">name</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;GUI 1&#39;</span><span style="color: #f8f8f2">,</span>
     <span style="color: #a6e22e">width</span><span style="color: #f92672">:</span> <span style="color: #ae81ff">200</span>
@@ -107,16 +146,19 @@
 
 <span style="color: #a6e22e">gui_4</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">addButton</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;Button&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">()</span> <span style="color: #f92672">=&gt;</span> <span style="color: #a6e22e">element</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">style</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">backgroundColor</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">getRandomColor</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">);</span>
 </pre></div>
+        </div>
 
 
         <h2>Folders</h2>
 
-        <p>Folders can be closed by default by setting the <i>open</i> parameter to <span class="code">false</span>.</p>
+        <p>Folders can be closed by default by setting the <i>open</i> parameter to <span class="code-inline">false</span>.</p>
 
         <div id="container-3" class="container">
             <div class="element"></div>
         </div>
 
+        <div class="code-button" onclick="document.getElementById('code-block-folders').classList.toggle('code-block--hidden')">See code</div>
+        <div id="code-block-folders" class="code-block code-block--hidden">
         <!-- HTML generated using hilite.me --><div style="background: #272822; overflow:auto;width:auto;;"><pre style="margin: 0; line-height: 125%"><span style="color: #66d9ef">const</span> <span style="color: #a6e22e">gui</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">new</span> <span style="color: #a6e22e">GUI</span><span style="color: #f8f8f2">({</span>
     <span style="color: #a6e22e">name</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;Folders&#39;</span>
 <span style="color: #f8f8f2">});</span>
@@ -133,16 +175,19 @@
     <span style="color: #a6e22e">element</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">style</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">backgroundColor</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">getRandomColor</span><span style="color: #f8f8f2">();</span>
 <span style="color: #f8f8f2">});</span>
 </pre></div>
+        </div>
     
         <h2>Other options</h2>
 
-        <p>GUI panels can be dragged around with the <span class="code">draggable</span> option.</p>
-        <p>They can also have a custom width, by using the <span class="code">width</span> option.</p>
-        <p>The <span class="code">toggleClose()</span> method can be used to open / close a GUI panel.</p>
-        <p>Just like folders, GUI panels can be closed by default by setting the <span class="code">close</span> option to <span class="code">true</span>.</p>
+        <p>GUI panels can be dragged around with the <span class="code-inline">draggable</span> option.</p>
+        <p>They can also have a custom width, by using the <span class="code-inline">width</span> option.</p>
+        <p>The <span class="code-inline">toggleClose()</span> method can be used to open / close a GUI panel.</p>
+        <p>Just like folders, GUI panels can be closed by default by setting the <span class="code-inline">close</span> option to <span class="code-inline">true</span>.</p>
         
         <div id="container-4" class="container"></div>
 
+        <div class="code-button" onclick="document.getElementById('code-block-containers').classList.toggle('code-block--hidden')">See code</div>
+        <div id="code-block-containers" class="code-block code-block--hidden">
         <!-- HTML generated using hilite.me --><div style="background: #272822; overflow:auto;width:auto;;"><pre style="margin: 0; line-height: 125%"><span style="color: #66d9ef">const</span> <span style="color: #a6e22e">gui_1</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">new</span> <span style="color: #a6e22e">GUI</span><span style="color: #f8f8f2">({</span>
     <span style="color: #a6e22e">name</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;GUI 1 (drag me!)&#39;</span><span style="color: #f8f8f2">,</span>
     <span style="color: #a6e22e">width</span><span style="color: #f92672">:</span> <span style="color: #ae81ff">500</span><span style="color: #f8f8f2">,</span>
@@ -170,6 +215,7 @@
     <span style="color: #a6e22e">gui_2</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">toggleClose</span><span style="color: #f8f8f2">();</span>
 <span style="color: #f8f8f2">});</span>
 </pre></div>
+        </div>
 
         <h2>Killing and creating dynamically</h2>
 
@@ -177,6 +223,8 @@
 
         <div id="container-5" class="container"></div>
 
+        <div class="code-button" onclick="document.getElementById('code-block-killing').classList.toggle('code-block--hidden')">See code</div>
+        <div id="code-block-killing" class="code-block code-block--hidden">
         <!-- HTML generated using hilite.me --><div style="background: #272822; overflow:auto;width:auto;;"><pre style="margin: 0; line-height: 125%"><span style="color: #66d9ef">const</span> <span style="color: #a6e22e">guis</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">[];</span>
 
 <span style="color: #66d9ef">let</span> <span style="color: #a6e22e">gui_1</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">new</span> <span style="color: #a6e22e">GUI</span><span style="color: #f8f8f2">({</span>
@@ -205,7 +253,7 @@
     <span style="color: #f8f8f2">}</span>
 <span style="color: #f8f8f2">});</span>
 </pre></div>
-
+        </div>
     </div>
 </body>
 

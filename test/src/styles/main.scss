@@ -28,7 +28,17 @@ h2 {
     margin-top: 80px;
 }
 
-.code {
+.code-button {
+    text-decoration: underline;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.code-block--hidden {
+    display: none;
+}
+
+.code-inline {
     font-family: monospace;
     background-color: black;
     color: #a6e22e;

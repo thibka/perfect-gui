@@ -1,7 +1,6 @@
 import perfectGUI from '../../../src/index';
 
 export default function vectors() {
-
     const data = {
         x: 0,
         y: 0
@@ -23,5 +22,6 @@ export default function vectors() {
         element.style.transform = `translate(${data.x}px, ${-data.y}px)`;
         requestAnimationFrame(loop);
     }
+    
     loop();
 }

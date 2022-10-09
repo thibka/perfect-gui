@@ -2,9 +2,8 @@ import GUI from '../../../src/index';
 import getRandomColor from './getRandomColor';
 
 export default function basics() {
-
-    const foo = {
-        bar: 1
+    const position = {
+        x: 0,
     };
 
     const element = document.querySelector('#container-1 .element');
@@ -20,12 +19,14 @@ export default function basics() {
     });
 
     gui.addSlider('Slider (simple callback)', 
-        { min: 0, max: 2, value: 1, step: .01 }, 
-        value => element.style.transform = `scale(${ value })`
+        { min: 0, max: 1, value: 1, step: .2 }, 
+        value => {
+            element.style.opacity = value;
+        }
     );
 
     gui.addSlider('Slider 2 (object binding)',
-        { object: foo, prop: 'bar', min: 0, max: 2, step: .01 }
+        { object: position, prop: 'x', min: -30, max: 30, step: .1 }
     );
 
     gui.addSwitch('Switch', true, state => {
@@ -54,4 +55,10 @@ export default function basics() {
         }
     );
 
+    function loop() {
+        element.style.transform = `translateX(${position.x}px)`;
+        requestAnimationFrame(loop);
+    }
+    
+    loop();
 }
