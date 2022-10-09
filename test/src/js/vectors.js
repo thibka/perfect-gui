@@ -2,9 +2,9 @@ import perfectGUI from '../../../src/index';
 
 export default function vectors() {
 
-    window.data = {
-        foo: 5,
-        bar: 10
+    const data = {
+        x: 0,
+        y: 0
     }
 
     const element = document.querySelector('#container-vectors .element');
@@ -14,8 +14,14 @@ export default function vectors() {
         container: '#container-vectors'
     });
 
-    gui.addVector2('Foo / Bar', {
-        x: { object: window.data, prop: 'foo', min: 0, max: 10 },
-        y: { object: window.data, prop: 'bar', min: 0, max: 10 },
+    gui.addVector2('Position', {
+        x: { object: data, prop: 'x', min: -50, max: 50 },
+        y: { object: data, prop: 'y', min: -50, max: 50 },
     });
+
+    function loop() {
+        element.style.transform = `translate(${data.x}px, ${-data.y}px)`;
+        requestAnimationFrame(loop);
+    }
+    loop();
 }

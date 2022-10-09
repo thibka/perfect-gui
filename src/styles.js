@@ -105,7 +105,7 @@ return /* css */`
 
 .p-gui__vector2 {
     border-bottom: 1px solid #ff9999;
-    height: 200px
+    aspect-ratio: 1;
 }
 
 .p-gui__vector2-area {
@@ -235,7 +235,8 @@ return /* css */`
     border: 2px solid #00a1ff;
 }
 
-.p-gui__slider-value {
+.p-gui__slider-value,
+.p-gui__vector-value {
     display: inline-block;
     position: absolute;
     right: 7px;

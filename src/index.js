@@ -380,10 +380,18 @@ export default class GUI {
     addVector2(text, data, callback) {
         this._checkMandatoryParams({
             text: 'string',
-            data: 'object'
+            data: 'object',
+            minX: 'number',
+            maxX: 'number',
+            minY: 'number',
+            maxY: 'number',
         }, {
             text,
-            data
+            data,
+            minX: data.x.min,
+            maxX: data.x.max,
+            minY: data.y.min,
+            maxY: data.y.max,
         });
 
         const objectX = data.x.object;
@@ -394,32 +402,6 @@ export default class GUI {
         const propY = data.y.prop;
         const propYReferenceIndex = this.propReferences.push(objectY[propY]) - 1;
 
-        console.log(propXReferenceIndex);
-
-        Object.defineProperty( objectX, propX, {
-            set: val => { 
-                this.propReferences[propXReferenceIndex] = val;
-                //slider_ctrl.value = val;
-                //slider_value.textContent = String( val );
-            },
-            get: () => { 
-                return this.propReferences[propXReferenceIndex];
-            },
-            enumerable: false
-        });
-
-        Object.defineProperty( objectY, propY, {
-            set: val => { 
-                this.propReferences[propYReferenceIndex] = val;
-                //slider_ctrl.value = val;
-                //slider_value.textContent = String( val );
-            },
-            get: () => { 
-                return this.propReferences[propYReferenceIndex];
-            },
-            enumerable: false
-        });
-
         this.imageContainer = null;
 
         const container = this._createElement({
@@ -427,13 +409,19 @@ export default class GUI {
             textContent: text
         });
 
+        const vector_value = this._createElement({
+            parent: container,
+            class: 'p-gui__vector-value',
+            textContent: objectX[propX] + ', ' + objectY[propY]
+        });
+
         const area = this._createElement({
             parent: container,
             el: 'div',
             class: 'p-gui__vector2-area',
             onclick: (evt) => {
-                dot.style.top = evt.offsetY + 'px';
-                dot.style.left = evt.offsetX + 'px';
+                objectX[propX] = parseFloat(this._mapLinear(evt.offsetX, 0, area.clientWidth, data.x.min, data.x.max).toFixed(1));
+                objectY[propY] = parseFloat(this._mapLinear(evt.offsetY, 0, area.clientHeight, data.y.max, data.y.min).toFixed(1));
             }
         });
 
@@ -452,8 +440,32 @@ export default class GUI {
             class: 'p-gui__vector2-dot'
         });
 
-        dot.style.top = area.clientHeight / 2 + 'px';
-        dot.style.left = area.clientWidth / 2 + 'px';
+        dot.style.left = this._mapLinear(objectX[propX], data.x.min, data.x.max, 0, area.clientWidth) + 'px';
+        dot.style.top = this._mapLinear(objectY[propY], data.y.min, data.y.max, area.clientHeight, 0) + 'px';
+
+        Object.defineProperty( objectX, propX, {
+            set: val => { 
+                this.propReferences[propXReferenceIndex] = val;
+                dot.style.left = this._mapLinear(val, data.x.min, data.x.max, 0, area.clientWidth) + 'px';
+                vector_value.textContent = String( val ) + ', ' + objectY[propY];
+            },
+            get: () => { 
+                return this.propReferences[propXReferenceIndex];
+            },
+            enumerable: false
+        });
+
+        Object.defineProperty( objectY, propY, {
+            set: val => { 
+                this.propReferences[propYReferenceIndex] = val;
+                dot.style.top = this._mapLinear(val, data.y.min, data.y.max, area.clientHeight, 0) + 'px';
+                vector_value.textContent = objectX[propX] + ', ' + String( val );
+            },
+            get: () => { 
+                return this.propReferences[propYReferenceIndex];
+            },
+            enumerable: false
+        });
     }
 
     addFolder(name, options = {}) {
@@ -550,5 +562,9 @@ export default class GUI {
 
     kill() {
         this.wrapper.remove();
+    }
+
+    _mapLinear( x, a1, a2, b1, b2 ) {
+        return b1 + ( x - a1 ) * ( b2 - b1 ) / ( a2 - a1 );
     }
 }
