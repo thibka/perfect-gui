@@ -98,7 +98,8 @@ gui.addSlider('Slide this', { value: 5, min: 0, max: 10, step: .1 }, value => {
     console.log('Slider value : ' + value);
 });
 
-// Object-based slider, automatically updates the value of the object property
+// Object-based slider, automatically updates the value of the object property.
+// Directly updating the property will also update the slider.
 gui.addSlider('Slide this', { object: foo, prop: 'bar', min: 0, max: 10, step: .1 });
 ```
 </td></tr>
@@ -115,6 +116,15 @@ gui.addSwitch('Switch me!', true, state => {
 ```javascript
 gui.addList('Select one', ['apple', 'lime', 'peach'], function(item) {
     console.log('Selected item: ' + item);
+});
+```
+</td></tr>
+<tr><td>addVector2</td><td>
+
+```javascript
+let folder = gui.addVector2('Position', { 
+    x: { object: myObject.position, prop: 'x', min: -10, max: 10 },
+    y: { object: myObject.position, prop: 'y', min: -10, max: 10 },
 });
 ```
 </td></tr>

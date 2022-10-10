@@ -295,8 +295,7 @@ export default class GUI {
                 },
                 get: () => { 
                     return this.propReferences[propReferenceIndex];
-                },
-                enumerable: false
+                }
             });
         }
     }
@@ -451,8 +450,7 @@ export default class GUI {
             },
             get: () => { 
                 return this.propReferences[propXReferenceIndex];
-            },
-            enumerable: false
+            }
         });
 
         Object.defineProperty( objectY, propY, {
@@ -463,8 +461,7 @@ export default class GUI {
             },
             get: () => { 
                 return this.propReferences[propYReferenceIndex];
-            },
-            enumerable: false
+            }
         });
     }
 
