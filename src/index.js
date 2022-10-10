@@ -166,7 +166,7 @@ export default class GUI {
         });
     }
 
-    addButton(text, callback) {
+    button(text, callback) {
         let params = {
             text: text,
             callback: callback
@@ -185,7 +185,7 @@ export default class GUI {
         })
     }
     
-    addImage(text, path, callback) {
+    image(text, path, callback) {
         let params = {
             text: text,
             path: path,
@@ -220,7 +220,7 @@ export default class GUI {
         image.onclick = () => params.callback({ path: params.path, text: params.text });
     }
     
-    addSlider (text, sliderParams, callback) {
+    slider (text, sliderParams, callback) {
         this._checkMandatoryParams({
             min: 'number',
             max: 'number',
@@ -300,7 +300,7 @@ export default class GUI {
         }
     }
 
-    addSwitch(text, state, callback) {
+    toggle(text, state, callback) {
         let params = {
             text: text,
             state: state,
@@ -336,7 +336,7 @@ export default class GUI {
         });
     }
 
-    addList(text, list, callback) {
+    list(text, list, callback) {
         let params = {
             text: text,
             list: list,
@@ -376,7 +376,7 @@ export default class GUI {
         });
     }
 
-    addVector2(text, data, callback) {
+    vector2(text, data, callback) {
         this._checkMandatoryParams({
             text: 'string',
             data: 'object',
@@ -465,7 +465,7 @@ export default class GUI {
         });
     }
 
-    addFolder(name, options = {}) {
+    folder(name, options = {}) {
         let closed = typeof options.closed == 'boolean' ? options.closed : false;
 
         let params = {

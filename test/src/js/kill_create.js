@@ -11,7 +11,7 @@ export default function other() {
         name: 'GUI 1',
     });
 
-    gui_1.addButton('Create GUI panel', () => {
+    gui_1.button('Create GUI panel', () => {
         guis[guis.length] = new GUI({
             container,
             name: 'Created GUI',
@@ -20,7 +20,7 @@ export default function other() {
         });
     });
 
-    gui_1.addButton('Kill GUI panel', () => {
+    gui_1.button('Kill GUI panel', () => {
         const index = guis.length - 1;
         if ( index >= 0 ) {
             // Removes html elements

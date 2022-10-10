@@ -1,4 +1,4 @@
-import perfectGUI from '../../../src/index';
+import GUI from '../../../src/index';
 
 export default function vectors() {
     const data = {
@@ -8,12 +8,12 @@ export default function vectors() {
 
     const element = document.querySelector('#container-vectors .element');
 
-    const gui = new perfectGUI({
+    const gui = new GUI({
         name: 'Vectors',
         container: '#container-vectors'
     });
 
-    gui.addVector2('Position', {
+    gui.vector2('Position', {
         x: { object: data, prop: 'x', min: -50, max: 50 },
         y: { object: data, prop: 'y', min: -50, max: 50 },
     });

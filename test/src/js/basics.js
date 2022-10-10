@@ -13,33 +13,33 @@ export default function basics() {
         container: '#container-1'
     });
 
-    gui.addButton('Button', () => {
+    gui.button('Button', () => {
         element.style.backgroundColor = getRandomColor();
         element.style.backgroundImage = 'none';
     });
 
-    gui.addSlider('Slider (simple callback)', 
+    gui.slider('Slider (simple callback)', 
         { min: 0, max: 1, value: 1, step: .2 }, 
         value => {
             element.style.opacity = value;
         }
     );
 
-    gui.addSlider('Slider 2 (object binding)',
+    gui.slider('Slider 2 (object binding)',
         { object: position, prop: 'x', min: -30, max: 30, step: .1 }
     );
 
-    gui.addSwitch('Switch', true, state => {
+    gui.toggle('Switch', true, state => {
         if ( state ) element.classList.remove('round');
         else element.classList.add('round');
     });
 
-    gui.addList('List', ['red', 'pink', 'yellow', 'blue'], item => {
+    gui.list('List', ['red', 'pink', 'yellow', 'blue'], item => {
         element.style.backgroundColor = item;
         element.style.backgroundImage = 'none';
     });
 
-    gui.addImage('Image 1',
+    gui.image('Image 1',
         'https://images.unsplash.com/photo-1485254767195-60704c46702e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=512&q=80',
         evt => {
             element.style.backgroundImage = `url(${evt.path})`;
@@ -47,7 +47,7 @@ export default function basics() {
         }
     );
 
-    gui.addImage('Image 2',
+    gui.image('Image 2',
         'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=512&q=80',
         evt => {
             element.style.backgroundImage = `url(${evt.path})`;

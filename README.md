@@ -19,24 +19,21 @@ https://thibka.github.io/perfect-gui/public/
 npm i perfect-gui
 ```
 ```javascript
-import perfectGUI from 'perfect-gui';
+import GUI from 'perfect-gui';
 ```
 
 ## Usage
 
 ```javascript
-const gui = new perfectGUI();
+const gui = new GUI();
 
-gui.addButton('Click me', doSomething);
+gui.button('Click me', callback);
 
-function doSomething() {
-    // ...
-}
 ```
 
 ## Options
 ```javascript
-const gui = new perfectGUI({
+const gui = new GUI({
     name: 'My GUI',
     // Name of the panel. 
     // Default is null.
@@ -50,14 +47,14 @@ const gui = new perfectGUI({
     // Default is 290.
     
     closed: false, 
-    // Defines whether the panel should be open or closed on load. 
+    // Defines whether the panel should be open or closed by default. 
     // Default is false (open).
 
     position: 'bottom right',
     // Defines where to place the panel on screen.
     // Accepted values are 'top', 'bottom', 'left' and 'right' 
     // in no particular order ('bottom right' = 'right bottom').
-    // If multiple instances have the same position, they will stack horizontally.
+    // If multiple instances have the same position, they will be stacked horizontally.
     // Default is 'top left'.
 
     draggable: false,
@@ -74,67 +71,67 @@ const gui = new perfectGUI({
 ## Methods
 <table>
 <tr><th>Method</th><th>Example</th></tr>
-<tr><td>addButton</td><td>
+<tr><td>button</td><td>
 
 ```javascript
-gui.addButton('Click me!', function() {
+gui.button('Click me!', () => {
     ...
 });
 ```
 </td></tr>
-<tr><td>addImage</td><td>
+<tr><td>image</td><td>
 
 ```javascript
-gui.addImage('Click this', 'path/to/image', function {
+gui.image('Click this', 'path/to/image', () => {
     ...
 });
 ```
 </td></tr>
-<tr><td>addSlider</td><td>
+<tr><td>slider</td><td>
 
 ```javascript
 // Simple slider, only returns a value to the callback
-gui.addSlider('Slide this', { value: 5, min: 0, max: 10, step: .1 }, value => {
+gui.slider('Slide this', { value: 5, min: 0, max: 10, step: .1 }, value => {
     console.log('Slider value : ' + value);
 });
 
 // Object-based slider, automatically updates the value of the object property.
 // Directly updating the property will also update the slider.
-gui.addSlider('Slide this', { object: foo, prop: 'bar', min: 0, max: 10, step: .1 });
+gui.slider('Slide this', { object: foo, prop: 'bar', min: 0, max: 10, step: .1 });
 ```
 </td></tr>
-<tr><td>addSwitch</td><td>
+<tr><td>toggle</td><td>
 
 ```javascript
-gui.addSwitch('Switch me!', true, state => {
-    console.log('Switched boolean value: ' + state);
+gui.toggle('Toggle me!', true, state => {
+    console.log('Toggle boolean value: ' + state);
 });
 ```
 </td></tr>
-<tr><td>addList</td><td>
+<tr><td>list</td><td>
 
 ```javascript
-gui.addList('Select one', ['apple', 'lime', 'peach'], function(item) {
+gui.list('Select one', ['apple', 'lime', 'peach'], function(item) {
     console.log('Selected item: ' + item);
 });
 ```
 </td></tr>
-<tr><td>addVector2</td><td>
+<tr><td>vector2</td><td>
 
 ```javascript
-let folder = gui.addVector2('Position', { 
+let folder = gui.vector2('Position', { 
     x: { object: myObject.position, prop: 'x', min: -10, max: 10 },
     y: { object: myObject.position, prop: 'y', min: -10, max: 10 },
 });
 ```
 </td></tr>
-<tr><td>addFolder</td><td>
+<tr><td>folder</td><td>
 
 ```javascript
-let folder = gui.addFolder('folder name', { 
+let folder = gui.folder('folder name', { 
     closed: false // default is false
 });
-folder.addButton('click me!', callback);
+folder.button('click me!', callback);
 ```
 </td></tr>
 <tr><td>toggleClose</td><td>

@@ -9,15 +9,15 @@ export default function folders() {
         container: '#container-3'
     });
 
-    let folder_1 = gui.addFolder('Folder 1 (open)');
+    let folder_1 = gui.folder('Folder 1 (open)');
 
-    folder_1.addButton("Random color", () => {
+    folder_1.button("Random color", () => {
         element.style.backgroundColor = getRandomColor();
     });
 
-    let folder_2 = gui.addFolder('Folder 2 (closed)', { closed: true });
+    let folder_2 = gui.folder('Folder 2 (closed)', { closed: true });
 
-    folder_2.addButton("Random color", () => {
+    folder_2.button("Random color", () => {
         element.style.backgroundColor = getRandomColor();
     });
 }
