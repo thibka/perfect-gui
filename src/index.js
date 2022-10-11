@@ -232,7 +232,7 @@ export default class GUI {
         let object; 
         let prop;
 
-        if ( sliderParams.value ) {
+        if ( typeof sliderParams.value == 'number' ) {
             this._checkMandatoryParams({
                 value: 'number'
             }, sliderParams);
@@ -271,7 +271,7 @@ export default class GUI {
         var slider_value = this._createElement({
             parent: container,
             class: 'p-gui__slider-value',
-            textContent: isObject ? String(object[prop]) : sliderParams.value
+            textContent: isObject ? String(object[prop]) : String(sliderParams.value)
         });
     
         slider_ctrl.addEventListener('input', () => {
