@@ -221,16 +221,14 @@ export default class GUI {
     }
     
     slider (text, sliderParams, callback) {
-        this._checkMandatoryParams({
-            min: 'number',
-            max: 'number',
-        }, sliderParams);
-
         let isObject = false;
         let propReferenceIndex = null;
         let object; 
         let prop;
-        let step = sliderParams.step || (sliderParams.max - sliderParams.min) / 100;
+        
+        const min = sliderParams.min ?? 0;
+        const max = sliderParams.max ?? 1;
+        const step = sliderParams.step || (max - min) / 100;
 
         if ( typeof sliderParams.value == 'number' ) {
             this._checkMandatoryParams({
@@ -261,8 +259,8 @@ export default class GUI {
             class: 'p-gui__slider-ctrl',
             customAttributes: {
                 type: 'range',
-                min: sliderParams.min,
-                max: sliderParams.max,
+                min,
+                max,
                 step,
                 value: isObject ? object[prop] : sliderParams.value
             }

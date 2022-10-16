@@ -91,14 +91,16 @@ gui.image('Click this', 'path/to/image', () => {
 
 ```javascript
 // Simple slider, only returns a value to the callback
-// step parameter is optional
+// min parameter is optional, default is 0
+// max parameter is optional, default is 1
+// step parameter is optional, default is (max - min) * 0.01
 gui.slider('Slide this', { value: 5, min: 0, max: 10, step: .1 }, value => {
     console.log('Slider value : ' + value);
 });
 
 // Object-based slider, automatically updates the value of the object property.
 // Directly updating the property will also update the slider.
-// step parameter is optional
+// callback is optional
 gui.slider('Slide this', { object: foo, prop: 'bar', min: 0, max: 10, step: .1 });
 ```
 </td></tr>
