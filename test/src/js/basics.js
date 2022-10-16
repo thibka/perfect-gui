@@ -19,7 +19,7 @@ export default function basics() {
     });
 
     gui.slider('Slider (simple callback)', 
-        { min: 0, max: 1, value: 1, step: .2 }, 
+        { value: 1, min: 0, max: 1 }, 
         value => {
             element.style.opacity = value;
         }

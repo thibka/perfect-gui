@@ -224,13 +224,13 @@ export default class GUI {
         this._checkMandatoryParams({
             min: 'number',
             max: 'number',
-            step: 'number'
         }, sliderParams);
 
         let isObject = false;
         let propReferenceIndex = null;
         let object; 
         let prop;
+        let step = sliderParams.step || (sliderParams.max - sliderParams.min) / 100;
 
         if ( typeof sliderParams.value == 'number' ) {
             this._checkMandatoryParams({
@@ -263,7 +263,7 @@ export default class GUI {
                 type: 'range',
                 min: sliderParams.min,
                 max: sliderParams.max,
-                step: sliderParams.step,
+                step,
                 value: isObject ? object[prop] : sliderParams.value
             }
         });
