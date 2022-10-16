@@ -15,6 +15,10 @@ export default function folders() {
         element.style.backgroundColor = getRandomColor();
     });
 
+    folder_1.slider("Size", { value: 1 }, value => {
+        element.style.transform = `scale(${value})`;
+    });
+
     let folder_2 = gui.folder('Folder 2 (closed)', { closed: true });
 
     folder_2.button("Random color", () => {

@@ -10,6 +10,8 @@ export default class GUI {
             this.position_type = 'fixed';
         }
 
+        this.propReferences = [];
+
         if ( options.isFolder ) {
             this._folderConstructor(options.folderOptions);
             return;
@@ -77,8 +79,6 @@ export default class GUI {
         if (options.closed) this.toggleClose();
 
         this.folders = [];
-
-        this.propReferences = [];
     }
 
     _folderConstructor(folderOptions) {
@@ -478,8 +478,15 @@ export default class GUI {
         this.imageContainer = null;
 
         let className = 'p-gui__folder';
-        if (this.folders.length == 0) className += ' p-gui__folder--first';
-        if (closed) className += ' p-gui__folder--closed';
+        
+        if (this.folders.length == 0) {
+            className += ' p-gui__folder--first';
+        }
+        
+        if (closed) {
+            className += ' p-gui__folder--closed';
+        }
+        
         let container = this._createElement({
             class: className
         });
