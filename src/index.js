@@ -264,7 +264,7 @@ export default class GUI {
                 min: sliderParams.min,
                 max: sliderParams.max,
                 step: sliderParams.step,
-                value: sliderParams.value
+                value: isObject ? object[prop] : sliderParams.value
             }
         });
     
