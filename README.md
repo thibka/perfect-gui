@@ -91,8 +91,7 @@ gui.image('Click this', 'path/to/image', () => {
 
 ```javascript
 // Simple slider, only returns a value to the callback
-// min parameter is optional, default is 0
-// max parameter is optional, default is 1
+// min and max parameters are optional, default is 0 (min) and 1 (max)
 // step parameter is optional, default is (max - min) * 0.01
 gui.slider('Slide this', { value: 5, min: 0, max: 10, step: .1 }, value => {
     console.log('Slider value : ' + value);
@@ -123,6 +122,7 @@ gui.list('Select one', ['apple', 'lime', 'peach'], function(item) {
 <tr><td>vector2</td><td>
 
 ```javascript
+// min and max parameters are optional, default is 0 (min) and 1 (max)
 let folder = gui.vector2('Position', { 
     x: { object: myObject.position, prop: 'x', min: -10, max: 10 },
     y: { object: myObject.position, prop: 'y', min: -10, max: 10 },

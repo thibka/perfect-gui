@@ -378,18 +378,15 @@ export default class GUI {
         this._checkMandatoryParams({
             text: 'string',
             data: 'object',
-            minX: 'number',
-            maxX: 'number',
-            minY: 'number',
-            maxY: 'number',
         }, {
             text,
             data,
-            minX: data.x.min,
-            maxX: data.x.max,
-            minY: data.y.min,
-            maxY: data.y.max,
         });
+
+        const minX = data.x.min ?? 0;
+        const maxX = data.x.max ?? 1;
+        const minY = data.y.min ?? 0;
+        const maxY = data.y.max ?? 1;
 
         const objectX = data.x.object;
         const propX = data.x.prop;
@@ -417,8 +414,8 @@ export default class GUI {
             el: 'div',
             class: 'p-gui__vector2-area',
             onclick: (evt) => {
-                objectX[propX] = parseFloat(this._mapLinear(evt.offsetX, 0, area.clientWidth, data.x.min, data.x.max).toFixed(1));
-                objectY[propY] = parseFloat(this._mapLinear(evt.offsetY, 0, area.clientHeight, data.y.max, data.y.min).toFixed(1));
+                objectX[propX] = parseFloat(this._mapLinear(evt.offsetX, 0, area.clientWidth, minX, maxX).toFixed(1));
+                objectY[propY] = parseFloat(this._mapLinear(evt.offsetY, 0, area.clientHeight, maxY, minY).toFixed(1));
             }
         });
 
@@ -437,13 +434,13 @@ export default class GUI {
             class: 'p-gui__vector2-dot'
         });
 
-        dot.style.left = this._mapLinear(objectX[propX], data.x.min, data.x.max, 0, area.clientWidth) + 'px';
-        dot.style.top = this._mapLinear(objectY[propY], data.y.min, data.y.max, area.clientHeight, 0) + 'px';
+        dot.style.left = this._mapLinear(objectX[propX], minX, maxX, 0, area.clientWidth) + 'px';
+        dot.style.top = this._mapLinear(objectY[propY], minY, maxY, area.clientHeight, 0) + 'px';
 
         Object.defineProperty( objectX, propX, {
             set: val => { 
                 this.propReferences[propXReferenceIndex] = val;
-                dot.style.left = this._mapLinear(val, data.x.min, data.x.max, 0, area.clientWidth) + 'px';
+                dot.style.left = this._mapLinear(val, minX, maxX, 0, area.clientWidth) + 'px';
                 vector_value.textContent = String( val ) + ', ' + objectY[propY];
             },
             get: () => { 
@@ -454,7 +451,7 @@ export default class GUI {
         Object.defineProperty( objectY, propY, {
             set: val => { 
                 this.propReferences[propYReferenceIndex] = val;
-                dot.style.top = this._mapLinear(val, data.y.min, data.y.max, area.clientHeight, 0) + 'px';
+                dot.style.top = this._mapLinear(val, minY, maxY, area.clientHeight, 0) + 'px';
                 vector_value.textContent = objectX[propX] + ', ' + String( val );
             },
             get: () => { 
