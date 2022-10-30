@@ -123,7 +123,7 @@ gui.list('Select one', ['apple', 'lime', 'peach'], function(item) {
 
 ```javascript
 // min and max parameters are optional, default is 0 (min) and 1 (max)
-let folder = gui.vector2('Position', { 
+gui.vector2('Position', { 
     x: { object: myObject.position, prop: 'x', min: -10, max: 10 },
     y: { object: myObject.position, prop: 'y', min: -10, max: 10 },
 });
@@ -132,7 +132,8 @@ let folder = gui.vector2('Position', {
 <tr><td>folder</td><td>
 
 ```javascript
-let folder = gui.folder('folder name', { 
+let folder = gui.folder({ 
+    name: 'folder name',
     closed: false // default is false
 });
 folder.button('click me!', callback);

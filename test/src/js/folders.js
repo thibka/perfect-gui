@@ -9,19 +9,19 @@ export default function folders() {
         container: '#container-3'
     });
 
-    let folder_1 = gui.folder('Folder 1 (open)');
+    let folder_1 = gui.folder({ name: 'Folder 1 (open)' });
 
-    folder_1.button("Random color", () => {
+    folder_1.button('Random color', () => {
         element.style.backgroundColor = getRandomColor();
     });
 
-    folder_1.slider("Size", { value: 1 }, value => {
+    folder_1.slider('Size', { value: 1 }, value => {
         element.style.transform = `scale(${value})`;
     });
 
-    let folder_2 = gui.folder('Folder 2 (closed)', { closed: true });
+    let folder_2 = gui.folder({ name: 'Folder 2 (closed)', closed: true });
 
-    folder_2.button("Random color", () => {
+    folder_2.button('Random color', () => {
         element.style.backgroundColor = getRandomColor();
     });
 }

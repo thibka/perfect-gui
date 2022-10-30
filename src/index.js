@@ -460,17 +460,9 @@ export default class GUI {
         });
     }
 
-    folder(name, options = {}) {
+    folder(options = {}) {
         let closed = typeof options.closed == 'boolean' ? options.closed : false;
-
-        let params = {
-            name,
-            closed
-        };
-        this._checkMandatoryParams({
-            name: 'string',
-            closed: 'boolean'
-        }, params);
+        let name = options.name || '';
 
         this.imageContainer = null;
 
@@ -489,7 +481,7 @@ export default class GUI {
         });
         
         let folderHeader = this._createElement({
-            innerHTML: `<span class="p-gui__folder-arrow"></span>${params.name}`,
+            innerHTML: `<span class="p-gui__folder-arrow"></span>${name}`,
             class: 'p-gui__folder-header',
             onclick: function() {
                 this.parentNode.classList.toggle('p-gui__folder--closed');

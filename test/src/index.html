@@ -151,7 +151,7 @@
 
         <h2>Folders</h2>
 
-        <p>Folders can be closed by default by setting the <i>open</i> parameter to <span class="code-inline">false</span>.</p>
+        <p>Folders can be closed by default by setting the <i>closed</i> parameter to <span class="code-inline">true</span>.</p>
 
         <div id="container-3" class="container">
             <div class="element"></div>
@@ -159,22 +159,27 @@
 
         <div class="code-button" onclick="document.getElementById('code-block-folders').classList.toggle('code-block--hidden')">See code</div>
         <div id="code-block-folders" class="code-block code-block--hidden">
-        <!-- HTML generated using hilite.me --><div style="background: #272822; overflow:auto;width:auto;;"><pre style="margin: 0; line-height: 125%"><span style="color: #66d9ef">const</span> <span style="color: #a6e22e">gui</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">new</span> <span style="color: #a6e22e">GUI</span><span style="color: #f8f8f2">({</span>
+        <!-- HTML generated using hilite.me --><div style="background: #272822; overflow:auto;width:auto;;"><pre style="margin: 0; line-height: 125%"><span style="color: #66d9ef">const</span> <span style="color: #a6e22e">gui</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">new</span> <span style="color: #a6e22e">perfectGUI</span><span style="color: #f8f8f2">({</span>
     <span style="color: #a6e22e">name</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;Folders&#39;</span>
 <span style="color: #f8f8f2">});</span>
 
-<span style="color: #66d9ef">let</span> <span style="color: #a6e22e">folder_1</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">gui</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">folder</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;Folder 1&#39;</span><span style="color: #f8f8f2">);</span>
+<span style="color: #66d9ef">let</span> <span style="color: #a6e22e">folder_1</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">gui</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">folder</span><span style="color: #f8f8f2">({</span> <span style="color: #a6e22e">name</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;Folder 1 (open)&#39;</span> <span style="color: #f8f8f2">});</span>
 
-<span style="color: #a6e22e">folder_1</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">button</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&quot;Random color&quot;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">()</span> <span style="color: #f92672">=&gt;</span> <span style="color: #f8f8f2">{</span>
+<span style="color: #a6e22e">folder_1</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">button</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;Random color&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">()</span> <span style="color: #f92672">=&gt;</span> <span style="color: #f8f8f2">{</span>
     <span style="color: #a6e22e">element</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">style</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">backgroundColor</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">getRandomColor</span><span style="color: #f8f8f2">();</span>
 <span style="color: #f8f8f2">});</span>
 
-<span style="color: #66d9ef">let</span> <span style="color: #a6e22e">folder_2</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">gui</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">folder</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;Folder 2&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #66d9ef">false</span><span style="color: #f8f8f2">);</span>
+<span style="color: #a6e22e">folder_1</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">slider</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;Size&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">{</span> <span style="color: #a6e22e">value</span><span style="color: #f92672">:</span> <span style="color: #ae81ff">1</span> <span style="color: #f8f8f2">},</span> <span style="color: #a6e22e">value</span> <span style="color: #f92672">=&gt;</span> <span style="color: #f8f8f2">{</span>
+    <span style="color: #a6e22e">element</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">style</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">transform</span> <span style="color: #f92672">=</span> <span style="color: #960050; background-color: #1e0010">`</span><span style="color: #a6e22e">scale</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">$</span><span style="color: #f8f8f2">{</span><span style="color: #a6e22e">value</span><span style="color: #f8f8f2">})</span><span style="color: #960050; background-color: #1e0010">`</span><span style="color: #f8f8f2">;</span>
+<span style="color: #f8f8f2">});</span>
 
-<span style="color: #a6e22e">folder_2</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">button</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&quot;Random color&quot;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">()</span> <span style="color: #f92672">=&gt;</span> <span style="color: #f8f8f2">{</span>
+<span style="color: #66d9ef">let</span> <span style="color: #a6e22e">folder_2</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">gui</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">folder</span><span style="color: #f8f8f2">({</span> <span style="color: #a6e22e">name</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;Folder 2 (closed)&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">closed</span><span style="color: #f92672">:</span> <span style="color: #66d9ef">true</span> <span style="color: #f8f8f2">});</span>
+
+<span style="color: #a6e22e">folder_2</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">button</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;Random color&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">()</span> <span style="color: #f92672">=&gt;</span> <span style="color: #f8f8f2">{</span>
     <span style="color: #a6e22e">element</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">style</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">backgroundColor</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">getRandomColor</span><span style="color: #f8f8f2">();</span>
 <span style="color: #f8f8f2">});</span>
 </pre></div>
+    
         </div>
     
         <h2>Other options</h2>
