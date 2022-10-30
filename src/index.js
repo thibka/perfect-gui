@@ -220,28 +220,28 @@ export default class GUI {
         image.onclick = () => params.callback({ path: params.path, text: params.text });
     }
     
-    slider (text, sliderParams, callback) {
+    slider (params, callback) {
         let isObject = false;
         let propReferenceIndex = null;
         let object; 
         let prop;
         
-        const min = sliderParams.min ?? 0;
-        const max = sliderParams.max ?? 1;
-        const step = sliderParams.step || (max - min) / 100;
+        const min = params.min ?? 0;
+        const max = params.max ?? 1;
+        const step = params.step || (max - min) / 100;
 
-        if ( typeof sliderParams.value == 'number' ) {
+        if ( typeof params.value == 'number' ) {
             this._checkMandatoryParams({
                 value: 'number'
-            }, sliderParams);
+            }, params);
         } else {
             this._checkMandatoryParams({
                 object: 'object',
                 prop: 'string'
-            }, sliderParams);
+            }, params);
 
-            object = sliderParams.object;
-            prop = sliderParams.prop;
+            object = params.object;
+            prop = params.prop;
             propReferenceIndex = this.propReferences.push(object[prop]) - 1;
             isObject = true;
         }
@@ -250,7 +250,7 @@ export default class GUI {
     
         var container = this._createElement({
             class: 'p-gui__slider',
-            textContent: text
+            textContent: params.name || prop
         });
     
         var slider_ctrl = this._createElement({
@@ -262,14 +262,14 @@ export default class GUI {
                 min,
                 max,
                 step,
-                value: isObject ? object[prop] : sliderParams.value
+                value: isObject ? object[prop] : params.value
             }
         });
     
         var slider_value = this._createElement({
             parent: container,
             class: 'p-gui__slider-value',
-            textContent: isObject ? String(object[prop]) : String(sliderParams.value)
+            textContent: isObject ? String(object[prop]) : String(params.value)
         });
     
         slider_ctrl.addEventListener('input', () => {

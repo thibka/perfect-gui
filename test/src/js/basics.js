@@ -18,15 +18,13 @@ export default function basics() {
         element.style.backgroundImage = 'none';
     });
 
-    gui.slider('Slider (simple callback)', 
-        { value: 1 }, 
+    gui.slider({ name: 'Slider (simple callback)', value: 1 }, 
         value => {
             element.style.opacity = value;
         }
     );
 
-    gui.slider('Slider 2 (object binding)',
-        { object: position, prop: 'x', min: -30, max: 30, step: .1 }
+    gui.slider({ name: 'Slider 2 (object binding)', object: position, prop: 'x', min: -30, max: 30, step: .1 }
     );
 
     gui.toggle('Switch', true, state => {

@@ -197,6 +197,7 @@ return /* css */`
     font-size: 11px;
     color: white;
     position: relative;
+    min-height: 14px;
 }
 
 .p-gui__slider-ctrl {

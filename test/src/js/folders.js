@@ -15,7 +15,7 @@ export default function folders() {
         element.style.backgroundColor = getRandomColor();
     });
 
-    folder_1.slider('Size', { value: 1 }, value => {
+    folder_1.slider({ name: 'Size', value: 1 }, value => {
         element.style.transform = `scale(${value})`;
     });
 
