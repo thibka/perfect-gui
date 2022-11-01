@@ -71,7 +71,6 @@ export default class GUI {
         this._addStyles(`#p-gui-${this.instanceId} {
             width: ${this.wrapperWidth}px;
             max-height: ${this.maxHeight}px;
-            overflow: scroll;
             transform: translate3d(${this.xOffset}px,${this.yOffset}px,0);
             ${verticalCSSPositioning}
         }`);

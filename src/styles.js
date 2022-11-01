@@ -17,7 +17,7 @@ return /* css */`
     flex-wrap: wrap;
     font-family: Verdana, Arial, sans-serif;
     width: 290px;
-    overflow: hidden;
+    overflow: auto;
     box-shadow: 0 0 10px black;
     box-sizing: border-box;
     z-index: 99999;
