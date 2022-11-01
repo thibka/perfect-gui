@@ -155,7 +155,7 @@ export default class GUI {
         this.stylesheet.innerHTML += styles;
     }
     
-    _addWrapper() {        
+    _addWrapper() {
         this.wrapper = this._createElement({
             parent: this.container,
             id: 'p-gui-'+this.instanceId,
@@ -289,7 +289,7 @@ export default class GUI {
             }
 
             if (typeof callback == "function") {
-                callback(slider_ctrl.value);
+                callback(parseFloat(slider_ctrl.value));
             }            
         });
 
