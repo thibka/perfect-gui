@@ -27,6 +27,7 @@ return /* css */`
 .p-gui--collapsed {
     height: 0;
     padding: 21px 10px 0 10px;
+    overflow: hidden;
 }
 
 .p-gui__header {
