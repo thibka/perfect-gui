@@ -29,7 +29,7 @@ export default class GUI {
         }        
         this.instanceId = GUI[GUI.instanceCounter];
         
-        this.wrapperWidth = (options != undefined && options.width) ? options.width : 290;
+        this.wrapperWidth = options.width || 290;
         this.stylesheet = document.createElement('style');
         this.stylesheet.setAttribute('type', 'text/css');
         this.stylesheet.setAttribute('id', 'lm-gui-stylesheet');
@@ -60,8 +60,18 @@ export default class GUI {
         this.position = {prevX:this.xOffset, prevY:this.yOffset, x:this.xOffset, y:this.yOffset};
 
         let verticalCSSPositioning = this.screenCorner.y == 'top' ? '' : 'top: auto; bottom: 0;';
+        if ( options.maxHeight ) {
+            this.maxHeight = options.maxHeight;
+        } else {
+            this.maxHeight = Math.min(this.container.clientHeight, window.innerHeight)
+        }
+        window.addEventListener('resize', () => {
+            this.maxHeight = Math.min(options.maxHeight || '', Math.min(this.container.clientHeight, window.innerHeight));
+        });
         this._addStyles(`#p-gui-${this.instanceId} {
             width: ${this.wrapperWidth}px;
+            max-height: ${this.maxHeight}px;
+            overflow: scroll;
             transform: translate3d(${this.xOffset}px,${this.yOffset}px,0);
             ${verticalCSSPositioning}
         }`);

@@ -26,11 +26,28 @@ export default function other() {
 
     const gui_3 = new GUI({
         container,
-        name: 'GUI 3 (closed)',
+        name: 'GUI 3 (closed, scrollable)',
         closed: true,
     });
 
     gui_3.button('gui_2.toggleClose();', () => {
         gui_2.toggleClose();
     });
+
+    gui_3.button('lorem', () => {});
+    gui_3.button('ipsum', () => {});
+    gui_3.button('dolor', () => {});
+    gui_3.button('sit', () => {});
+    gui_3.button('amet', () => {});
+    gui_3.button('lorem', () => {});
+    gui_3.button('ipsum', () => {});
+    let f = gui_3.folder('dolor');
+    f.button('dolor', () => {});
+    f.button('dolor', () => {});
+    f.button('dolor', () => {});
+    gui_3.button('sit', () => {});
+    gui_3.button('amet', () => {});
+    gui_3.button('lorem', () => {});
+    gui_3.button('ipsum', () => {});
+    gui_3.button('ipsum', () => {});
 }
