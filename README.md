@@ -166,5 +166,4 @@ gui.toggleClose();
 
 
 ## To do
-- Adding scrollbars if window is too short
 - Adding color palette component
