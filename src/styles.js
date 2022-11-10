@@ -10,7 +10,7 @@ return /* css */`
     top: 0;
     left: 0;
     transform: translate3d(0,0,0);
-    padding: 20px 0px 4px 0px;
+    padding-top: 21px;
     background: #2e2e2e;
     display: flex;
     justify-content: center;
@@ -22,6 +22,8 @@ return /* css */`
     box-sizing: border-box;
     z-index: 99999;
     user-select: none;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
 }
 
 .p-gui--collapsed {
@@ -36,7 +38,7 @@ return /* css */`
     left: 0;
     width: 100%;
     height: 20px;
-    background-color: #111111;
+    background-color: rgba(0, 0, 0, .8);
     border-bottom: 1px solid #484848;
     cursor: grab;
     color: grey;
@@ -65,17 +67,15 @@ return /* css */`
 
 .p-gui__image-container {
     width: 100%;
-    padding: 0 10px;
     display: flex;
     flex-wrap: wrap;
-    margin-bottom: 5px;
 }
 
 .p-gui__image {
-    width: 30.33%;
-    height: 80px;
+    width: calc(33.33% - 10px);
+    aspect-ratio: 1 / 1;
     background-size: cover;
-    margin: 5px 1.5% 17px 1.5%;
+    margin: 5px 5px 19px 5px;
     cursor: pointer;
     position: relative;
 }
@@ -86,6 +86,7 @@ return /* css */`
     color: #eee;
     font-size: 11px;
     text-shadow: 0 -1px 0 #111;
+    white-space: nowrap;
 }
 
 .p-gui__button, 
@@ -93,28 +94,42 @@ return /* css */`
 .p-gui__list,
 .p-gui__vector2 {
     width: 100%;
-    margin: 3px;
     padding: 7px;
-    background: #1b1b1b;
     font-size: 11px;
     color: white;
     border-bottom: 1px solid #00ff89;
     cursor: pointer;
     position: relative;
     box-sizing: border-box;
+    margin-bottom: 3px;
+}
+
+.p-gui__button,
+.p-gui__switch {
+    margin-right: 2px;
+    margin-left: 2px;
+    background: rgba(0, 0, 0, .3);
+}
+
+.p-gui__folder .p-gui__button,
+.p-gui__folder .p-gui__switch {
+    margin-right: 0;
+    margin-left: 0;
 }
 
 .p-gui__vector2 {
+    background: transparent;
     border-bottom: 1px solid #ff9999;
     aspect-ratio: 1;
+    padding-bottom: 0;
 }
 
 .p-gui__vector2-area {
     position: relative;
-    background: black;
-    margin-top: 11px;
+    background: rgba(0, 0, 0, .3);
+    margin-top: 8px;
     width: 100%;
-    height: calc(100% - 33px);
+    height: calc(100% - 28px);
 }
 
 .p-gui__vector2-line {
@@ -159,7 +174,7 @@ return /* css */`
 
 .p-gui__button:hover,
 .p-gui__switch:hover {
-    background: #101010;
+    background: rgba(0, 0, 0, .75);
 }
 
 .p-gui__switch-checkbox {
@@ -192,9 +207,8 @@ return /* css */`
 
 .p-gui__slider {
     width: 100%;
-    margin: 3px 3px 9px 3px;
+    margin-bottom: 8px;
     padding: 7px;
-    background: #1b1b1b;
     font-size: 11px;
     color: white;
     position: relative;
@@ -254,7 +268,7 @@ return /* css */`
     display: flex;
     flex-wrap: wrap;
     border-left: 2px solid grey;
-    margin-top: 5px;
+    padding: 0 3px;
 }
 
 .p-gui__folder--first {
@@ -268,14 +282,15 @@ return /* css */`
 .p-gui__folder-header {
     padding: 5px;
     font-size: 11px;
-    background-color: #222222;
+    background-color: rgba(0, 0, 0, .5);
     color: white;
     cursor: pointer;
     width: 100%;
+    margin: 0 -2px 2px -3px;
 }
 
 .p-gui__folder-header:hover {
-    background-color: #111111;
+    background-color: rgba(0, 0, 0, .75);
 }
 
 .p-gui__folder-arrow {
@@ -290,13 +305,6 @@ return /* css */`
 
 .p-gui__folder--closed .p-gui__folder-arrow {
     transform: rotate(0deg);
-}
-
-.p-gui__folder .p-gui__button, 
-.p-gui__folder .p-gui__switch,
-.p-gui__folder .p-gui__slider,
-.p-gui__folder .p-gui__list {
-    margin-left: 6px;
 }
 `
 };

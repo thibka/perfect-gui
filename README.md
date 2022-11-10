@@ -65,6 +65,9 @@ const gui = new GUI({
     // If set to true, the panel position will be reset when the screen is resized.
     // If a panel has been dragged, it won't be be affected.
     // Default is true.
+
+    color: '#bada55',
+    // Default is #2e2e2e
 });
 ```
 
@@ -147,7 +150,8 @@ gui.vector2('Position', {
 ```javascript
 let folder = gui.folder({ 
     name: 'folder name',
-    closed: false // default is false
+    closed: false, // default is false,
+    color: '#226666' // default is #434343
 });
 folder.button('click me!', callback);
 ```

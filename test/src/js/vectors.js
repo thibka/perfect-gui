@@ -10,7 +10,7 @@ export default function vectors() {
 
     const gui = new GUI({
         name: 'Vectors',
-        container: '#container-vectors'
+        container: '#container-vectors',
     });
 
     gui.vector2('Position', {

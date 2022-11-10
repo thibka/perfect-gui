@@ -8,7 +8,7 @@ export default function other() {
         container,
         name: 'GUI 1 (drag me!)',
         width: 500,
-        draggable: true
+        draggable: true,
     });
     gui_1.button('Custom width using the `width` option', () => {});
 
@@ -30,24 +30,23 @@ export default function other() {
         closed: true,
     });
 
-    gui_3.button('gui_2.toggleClose();', () => {
-        gui_2.toggleClose();
-    });
+    let f1 = gui_3.folder({ name: 'folder', color: '#33329f' });
+    for (let i = 0; i < 3; i ++) {
+        f1.button('btn '+ i, () => {});
+    }
+    let f2 = gui_3.folder({ name: 'folder', color: '#9f3293' });
+    for (let i = 0; i < 3; i ++) {
+        f2.button('btn '+ i, () => {});
+    }
+    for (let i = 0; i < 10; i ++) {
+        gui_3.button('btn '+ i, () => {});
+    }
 
-    gui_3.button('lorem', () => {});
-    gui_3.button('ipsum', () => {});
-    gui_3.button('dolor', () => {});
-    gui_3.button('sit', () => {});
-    gui_3.button('amet', () => {});
-    gui_3.button('lorem', () => {});
-    gui_3.button('ipsum', () => {});
-    let f = gui_3.folder('dolor');
-    f.button('dolor', () => {});
-    f.button('dolor', () => {});
-    f.button('dolor', () => {});
-    gui_3.button('sit', () => {});
-    gui_3.button('amet', () => {});
-    gui_3.button('lorem', () => {});
-    gui_3.button('ipsum', () => {});
-    gui_3.button('ipsum', () => {});
+    const gui_4 = new GUI({
+        container,
+        position: 'bottom right',
+        name: 'GUI 4 (custom color)',
+        color: '#226666'
+    });
+    gui_4.button('lorem', () => {});
 }

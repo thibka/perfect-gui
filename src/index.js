@@ -18,6 +18,7 @@ export default class GUI {
         }
 
         this.name = (options != undefined && typeof options.name == "string") ? options.name : ''; 
+        this.color = options.color || null; 
 
         if ( this instanceof GUI ) {
             if ( typeof GUI[GUI.instanceCounter] != 'number' ) {
@@ -59,7 +60,6 @@ export default class GUI {
         this.yOffset = 0;
         this.position = {prevX:this.xOffset, prevY:this.yOffset, x:this.xOffset, y:this.yOffset};
 
-        let verticalCSSPositioning = this.screenCorner.y == 'top' ? '' : 'top: auto; bottom: 0;';
         if ( options.maxHeight ) {
             this.maxHeight = options.maxHeight;
         } else {
@@ -72,7 +72,8 @@ export default class GUI {
             width: ${this.wrapperWidth}px;
             max-height: ${this.maxHeight}px;
             transform: translate3d(${this.xOffset}px,${this.yOffset}px,0);
-            ${verticalCSSPositioning}
+            ${ this.screenCorner.y == 'top' ? '' : 'top: auto; bottom: 0;' }
+            ${ this.color ? 'background: ' + this.color + ';' : '' }
         }`);
 
         if (options.autoRepositioning != false) window.addEventListener('resize', this._handleResize.bind(this));
@@ -165,7 +166,8 @@ export default class GUI {
         this.header = this._createElement({
             parent: this.wrapper,
             class: 'p-gui__header',
-            textContent: this.name
+            textContent: this.name,
+            inline: `${ this.color ? 'border-color: ' + this.color + ';' : ''}`
         });
     
         this._createElement({
@@ -472,6 +474,7 @@ export default class GUI {
     folder(options = {}) {
         let closed = typeof options.closed == 'boolean' ? options.closed : false;
         let name = options.name || '';
+        let color = options.color || null;
 
         this.imageContainer = null;
 
@@ -486,7 +489,8 @@ export default class GUI {
         }
         
         let container = this._createElement({
-            class: className
+            class: className,
+            inline: color ? `background-color: ${color};`: null,
         });
         
         let folderHeader = this._createElement({
@@ -496,10 +500,10 @@ export default class GUI {
                 this.parentNode.classList.toggle('p-gui__folder--closed');
             },
             parent: container
-        })
+        });
 
         let folder = new GUI({isFolder: true, folderOptions: {
-            wrapper: container
+            wrapper: container,
         }});
         this.folders.push(folder);
         return folder;
