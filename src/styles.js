@@ -229,7 +229,7 @@ return /* css */`
     box-sizing: border-box;
     cursor: pointer;
     position: absolute;
-    bottom: -5px;
+    bottom: -4px; /* 5px height -1px de dépassement du curseur */
     right: 0;
     height: 5px;
     width: 100%;
@@ -244,6 +244,7 @@ return /* css */`
     background-color: transparent;  /* supprimé définie sur l'input */
 }
 
+/* Curseur */
 .p-gui__slider-ctrl::-webkit-slider-thumb {
     -webkit-appearance: none;       /* également nécessaire sur le curseur */
     width: 15px;
