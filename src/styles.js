@@ -108,6 +108,15 @@ return /* css */`
 .p-gui__switch {
     margin-right: 2px;
     margin-left: 2px;
+    border: 1px solid rgba(0,0,0,.5);
+    border-bottom: 1px solid #00ff89;
+    border-radius: 2px;
+    background: rgba(0, 0, 0, .3);
+    background: linear-gradient(180deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 5%, rgba(0,0,0,0) 95%, rgba(0,0,0,0.3) 100%);
+}
+
+.p-gui__button:hover,
+.p-gui__switch:hover {
     background: rgba(0, 0, 0, .3);
 }
 
@@ -172,11 +181,6 @@ return /* css */`
     cursor: default;
 }
 
-.p-gui__button:hover,
-.p-gui__switch:hover {
-    background: rgba(0, 0, 0, .75);
-}
-
 .p-gui__switch-checkbox {
     width: 5px;
     height: 5px;
@@ -234,21 +238,21 @@ return /* css */`
 
 /* la zone de déplacement */
 .p-gui__slider-ctrl::-webkit-slider-runnable-track {
-    height: 12px;
+    height: 13px;
     border: none;
     border-radius: 0;
     background-color: transparent;  /* supprimé définie sur l'input */
 }
 
-/* le curseur */
 .p-gui__slider-ctrl::-webkit-slider-thumb {
     -webkit-appearance: none;       /* également nécessaire sur le curseur */
-    width: 12px;
-    height: inherit;                /* s'adapte à la hauteur de l'input */
-    border: none;
-    border-radius: 50%;               /* pris en compte sur Webkit et Edge */
+    width: 15px;
+    height: 7px;
+    border: none;             /* pris en compte sur Webkit et Edge */
     background: white;       /* pris en compte sur Webkit only */
-    border: 2px solid #00a1ff;
+    position: relative;
+    top: 3px;
+    border-radius: 1px;
 }
 
 .p-gui__slider-value,
