@@ -246,13 +246,14 @@ export default class GUI {
                 value: 'number'
             }, params);
         } else {
+            object = params.obj || params.object;
+            prop = params.prop || params.property;
+            
             this._checkMandatoryParams({
                 object: 'object',
                 prop: 'string'
-            }, params);
+            }, {object, prop});
 
-            object = params.object;
-            prop = params.prop;
             propReferenceIndex = this.propReferences.push(object[prop]) - 1;
             isObject = true;
         }
@@ -399,12 +400,12 @@ export default class GUI {
         const minY = data.y.min ?? 0;
         const maxY = data.y.max ?? 1;
 
-        const objectX = data.x.object;
-        const propX = data.x.prop;
+        const objectX = data.x.obj || data.x.object;
+        const propX = data.x.prop || data.x.property;
         const propXReferenceIndex = this.propReferences.push(objectX[propX]) - 1;
         
-        const objectY = data.y.object;
-        const propY = data.y.prop;
+        const objectY = data.y.obj || data.y.object;
+        const propY = data.y.prop || data.y.property;
         const propYReferenceIndex = this.propReferences.push(objectY[propY]) - 1;
 
         this.imageContainer = null;

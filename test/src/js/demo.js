@@ -28,17 +28,17 @@ export default function()
 
     folder1.image(
         'The officer',
-        require('../img/DALL·E 2022-11-13 20.11.16 - portrait of a squirrel in an officier suit, style of a Rembrandt painting.png'),
+        require('../img/DALL·E-2022-11-13-20.11.16---portrait-of-a-squirrel-in-an-officier-suit,-style-of-a-Rembrandt-painting.jpg'),
         () => {}
     );
     folder1.image(
         'Weird dream',
-        require('../img/DALL·E 2022-11-13 20.11.52 - a blonde girl riding a whale in the style of hopper.png'),
+        require('../img/DALL·E-2022-11-13-20.11.52---a-blonde-girl-riding-a-whale-in-the-style-of-hopper.jpg'),
         () => {}
     );
     folder1.image(
         'Friends',
-        require('../img/DALL·E 2022-11-13 20.13.55 - 1 blonde haired girl with her orange cat, watching the whales in Tadoussac, Canada. In the style of an oil painting..png'),
+        require('../img/DALL·E-2022-11-13-20.13.55---1-blonde-haired-girl-with-her-orange-cat,-watching-the-whales-in-Tadoussac,-Canada.-In-the-style-of-an-oil-painting..jpg'),
         () => {}
     );
 

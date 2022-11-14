@@ -61,7 +61,7 @@ const gui = new GUI({
     // Defines if the panel can be manually moved across the screen.
     // Default is false.
 
-    autoRepositioning: true
+    autoRepositioning: true,
     // If set to true, the panel position will be reset when the screen is resized.
     // If a panel has been dragged, it won't be be affected.
     // Default is true.
@@ -77,15 +77,13 @@ const gui = new GUI({
 <tr><td>button</td><td>
 
 ```javascript
-gui.button('Click me!', () => {
-    ...
-});
+gui.button('Click me!', callback);
 ```
 </td></tr>
 <tr><td>image</td><td>
 
 ```javascript
-gui.image('Click this', 'path/to/image', () => {
+gui.image('Click this', 'path/to/image', (path) => {
     ...
 });
 ```
@@ -168,4 +166,4 @@ gui.toggleClose();
 ## To do
 - Color palette component
 - Vector2 drag & drop
-
+- Style list component

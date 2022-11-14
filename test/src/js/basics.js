@@ -25,7 +25,7 @@ export default function basics() {
         }
     );
 
-    gui.slider({ name: 'Slider 2 (object binding)', object: position, prop: 'x', min: -30, max: 30, step: .1 }
+    gui.slider({ name: 'Slider 2 (object binding)', obj: position, prop: 'x', min: -30, max: 30, step: .1 }
     );
 
     gui.toggle('Switch', true, state => {
