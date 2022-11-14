@@ -18,7 +18,7 @@ return /* css */`
     font-family: Verdana, Arial, sans-serif;
     width: 290px;
     overflow: auto;
-    box-shadow: 0 0 10px black;
+    box-shadow: 0 0 5px black;
     box-sizing: border-box;
     z-index: 99999;
     user-select: none;
@@ -75,7 +75,7 @@ return /* css */`
     width: calc(33.33% - 10px);
     aspect-ratio: 1 / 1;
     background-size: cover;
-    margin: 5px 5px 19px 5px;
+    margin: 1px 5px 19px 5px;
     cursor: pointer;
     position: relative;
 }
@@ -184,7 +184,7 @@ return /* css */`
 .p-gui__switch-checkbox {
     width: 5px;
     height: 5px;
-    background-color: #343434;
+    background-color: rgba(0, 0, 0, .5);
     position: absolute;
     top: 0;
     right: 8px;

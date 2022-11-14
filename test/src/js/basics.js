@@ -11,6 +11,7 @@ export default function basics() {
     const gui = new GUI({
         name: 'Basics',
         container: '#container-1',
+        draggable: true
     });
 
     gui.button('Button', () => {

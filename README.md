@@ -7,7 +7,7 @@ Features:
 - easy positioning
 - draggable panels
 
-<img src="https://raw.githubusercontent.com/thibka/thibka.github.io/master/perfect-gui/_data/capture.png" width="464"/>  
+<img src="https://raw.githubusercontent.com/thibka/thibka.github.io/master/perfect-gui/_data/capture.png" width="580"/>  
 
 ## Demo
 https://thibka.github.io/perfect-gui/public/
@@ -166,4 +166,6 @@ gui.toggleClose();
 
 
 ## To do
-- Adding color palette component
+- Color palette component
+- Vector2 drag & drop
+
