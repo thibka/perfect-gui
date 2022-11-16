@@ -96,12 +96,12 @@ export default class GUI {
     }
 
     _parseScreenCorner(position) {
-        let parsedPosition = {x: 'left', y: 'top'};
+        let parsedPosition = {x: 'right', y: 'top'};
 
         if (position == undefined) return parsedPosition;
-        else if (typeof position != 'string') console.error('[perfect-gui] The position option must be a string.');
+        else if (typeof position != 'string') console.error('[perfect-gui] Position must be a string.');
 
-        if (position.includes('right')) parsedPosition.x = 'right';
+        if (position.includes('left')) parsedPosition.x = 'left';
         if (position.includes('bottom')) parsedPosition.y = 'bottom';
 
         return parsedPosition;

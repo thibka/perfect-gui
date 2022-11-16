@@ -16,7 +16,8 @@ export default function other() {
             container,
             name: 'Created GUI',
             position: 'bottom left',
-            width: 150
+            width: 150,
+            color: 'red'
         });
     });
 

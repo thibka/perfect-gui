@@ -14,17 +14,15 @@ https://thibka.github.io/perfect-gui/public/
 
 ## Install
 
-### NPM
 ```bash
 npm i perfect-gui
-```
-```javascript
-import GUI from 'perfect-gui';
 ```
 
 ## Usage
 
 ```javascript
+import GUI from 'perfect-gui';
+
 const gui = new GUI();
 
 gui.button('Click me', callback);
@@ -45,17 +43,20 @@ const gui = new GUI({
     width: 250,
     // Width of the panel (in pixels). 
     // Default is 290.
+
+    maxHeight: 500,
+    // Maximum height beyond which scrolling is necessary. 
+    // Default is the smallest value between the height of the window and the height of the container.
     
     closed: false, 
-    // Defines whether the panel should be open or closed by default. 
-    // Default is false (open).
+    // Defines whether the panel should be closed by default. 
+    // Default is false.
 
     position: 'bottom right',
     // Defines where to place the panel on screen.
-    // Accepted values are 'top', 'bottom', 'left' and 'right' 
-    // in no particular order ('bottom right' = 'right bottom').
+    // Accepted values are 'top', 'bottom', 'left' and 'right' in no particular order ('bottom right' = 'right bottom').
     // If multiple instances have the same position, they will be stacked horizontally.
-    // Default is 'top left'.
+    // Default is 'top right'.
 
     draggable: false,
     // Defines if the panel can be manually moved across the screen.

@@ -24,7 +24,7 @@ export default function multiple() {
     
     const gui_3 = new GUI({
         name: 'GUI 3',
-        position: 'top right',
+        position: 'top left',
         container: '#container-2'
     });
     
