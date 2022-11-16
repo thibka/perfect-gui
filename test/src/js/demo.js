@@ -13,7 +13,6 @@ export default function()
         name: 'Control panel'
     });
 
-
     gui.button("Randomize color", () => {
         element.style.backgroundColor = get_random_color();
     });
@@ -62,5 +61,5 @@ export default function()
         x: {min: -10, max: 10, object: position, prop: 'x'},
         y: {min: -10, max: 10, object: position, prop: 'y'},
     }, () => {});
-    gui2.button('Randomize', () => {});
+    gui2.color('Color', '#ffd170', () => {});
 }
