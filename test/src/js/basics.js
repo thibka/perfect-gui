@@ -25,8 +25,7 @@ export default function basics() {
         }
     );
 
-    gui.slider({ name: 'Slider 2 (object binding)', obj: position, prop: 'x', min: -30, max: 30, step: .1 }
-    );
+    gui.slider({ name: 'Slider 2 (object binding)', obj: position, prop: 'x', min: -30, max: 30, step: .1 });
 
     gui.toggle('Switch', true, state => {
         if ( state ) element.classList.remove('round');
@@ -34,8 +33,8 @@ export default function basics() {
     });
 
     gui.list('List', ['red', 'pink', 'yellow', 'blue'], item => {
-        element.style.backgroundColor = item;
         element.style.backgroundImage = 'none';
+        element.style.backgroundColor = item;
     });
 
     gui.image('Image 1',
@@ -53,6 +52,11 @@ export default function basics() {
             document.querySelector('#container-1 .note').textContent = "Photo by Milad Fakurian on Unsplash";
         }
     );
+
+    gui.color('Color', '#ff0000', color => {
+        element.style.backgroundImage = 'none';
+        element.style.backgroundColor = color;
+    });
 
     function loop() {
         element.style.transform = `translateX(${position.x}px)`;

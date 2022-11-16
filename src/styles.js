@@ -92,7 +92,8 @@ return /* css */`
 .p-gui__button, 
 .p-gui__switch,
 .p-gui__list,
-.p-gui__vector2 {
+.p-gui__vector2,
+.p-gui__color {
     width: 100%;
     padding: 7px;
     font-size: 11px;
@@ -177,10 +178,6 @@ return /* css */`
     pointer-events: none;
 }
 
-.p-gui__list {
-    cursor: default;
-}
-
 .p-gui__switch-checkbox {
     width: 5px;
     height: 5px;
@@ -199,7 +196,13 @@ return /* css */`
     box-shadow: 0 0 5px #00ff89;
 }
 
-.p-gui__list-dropdown {
+.p-gui__list,
+.p-gui__color {
+    cursor: default;
+}
+
+.p-gui__list-dropdown,
+.p-gui__color-picker {
     position: absolute;
     right: 5px;
     top: 0;
@@ -207,6 +210,21 @@ return /* css */`
     margin: auto;
     height: 18px;
     cursor: pointer;
+}
+
+.p-gui__color-picker {
+    -webkit-appearance: none;
+    padding: 0;
+    background-color: transparent;
+    height: 15px;
+    border: 1px solid #222222;
+}
+
+.p-gui__color-picker::-webkit-color-swatch-wrapper {
+	padding: 0;
+}
+.p-gui__color-picker::-webkit-color-swatch {
+	border: none;
 }
 
 .p-gui__slider {

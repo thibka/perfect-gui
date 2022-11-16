@@ -143,6 +143,14 @@ gui.vector2('Position', {
 });
 ```
 </td></tr>
+<tr><td>color</td><td>
+
+```javascript
+gui.color('Color', '#ff0000', color => {
+    console.log('Selected color:', color);
+});
+```
+</td></tr>
 <tr><td>folder</td><td>
 
 ```javascript
@@ -164,6 +172,6 @@ gui.toggleClose();
 
 
 ## To do
-- Color palette component
 - Vector2 drag & drop
 - Style list component
+- Image button selection outline

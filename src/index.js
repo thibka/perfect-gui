@@ -18,7 +18,7 @@ export default class GUI {
         }
 
         this.name = (options != undefined && typeof options.name == "string") ? options.name : ''; 
-        this.color = options.color || null; 
+        this.backgroundColor = options.color || null; 
 
         if ( this instanceof GUI ) {
             if ( typeof GUI[GUI.instanceCounter] != 'number' ) {
@@ -73,7 +73,7 @@ export default class GUI {
             max-height: ${this.maxHeight}px;
             transform: translate3d(${this.xOffset}px,${this.yOffset}px,0);
             ${ this.screenCorner.y == 'top' ? '' : 'top: auto; bottom: 0;' }
-            ${ this.color ? 'background: ' + this.color + ';' : '' }
+            ${ this.backgroundColor ? 'background: ' + this.backgroundColor + ';' : '' }
         }`);
 
         if (options.autoRepositioning != false) window.addEventListener('resize', this._handleResize.bind(this));
@@ -142,6 +142,8 @@ export default class GUI {
         if (element.onchange) domElement.onchange = element.onchange;
         if (element.textContent) domElement.textContent = element.textContent;
         if (element.innerHTML) domElement.innerHTML = element.innerHTML;
+        if (element.type) domElement.type = element.type;
+        if (element.value) domElement.value = element.value;
         if (element.customAttributes) {
             for (var i in element.customAttributes) {
                 domElement.setAttribute(i, element.customAttributes[i]);
@@ -167,7 +169,7 @@ export default class GUI {
             parent: this.wrapper,
             class: 'p-gui__header',
             textContent: this.name,
-            inline: `${ this.color ? 'border-color: ' + this.color + ';' : ''}`
+            inline: `${ this.backgroundColor ? 'border-color: ' + this.backgroundColor + ';' : ''}`
         });
     
         this._createElement({
@@ -470,6 +472,28 @@ export default class GUI {
                 return this.propReferences[propYReferenceIndex];
             }
         });
+    }
+
+    color(text, value, callback) {
+        const container = this._createElement({
+            el: 'div',
+            class: 'p-gui__color',
+            textContent: text,
+        });
+
+        const colorpicker = this._createElement({
+            parent: container,
+            el: 'input',
+            class: 'p-gui__color-picker',
+            type: 'color',
+            value
+        });
+
+        if (callback) {
+            colorpicker.addEventListener('input', () => {
+                callback(colorpicker.value);
+            });
+        }
     }
 
     folder(options = {}) {

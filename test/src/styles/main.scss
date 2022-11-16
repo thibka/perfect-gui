@@ -94,7 +94,7 @@ pre {
     background-position: center;
     background-repeat: no-repeat;
     border: 1px solid black;
-    transition: .1s transform ease, .3s border-radius ease, .3s background-color linear;
+    transition: .1s transform ease, .3s border-radius ease;
 }
 
 .element.round {
