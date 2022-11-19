@@ -72,7 +72,12 @@ export default class GUI {
     }
 
     _styleInstance() {
-        this.xOffset = this.screenCorner.x == 'left' ? 0 : this.container.clientWidth - this.wrapperWidth;
+        if (this.screenCorner.x == 'left') {
+            this.xOffset = 0;
+        } else {
+            this.xOffset = this.container.clientWidth - this.wrapperWidth - this._getScrollbarWidth(this.container);
+        }
+
         if (this.instanceId > 0) {
             let existingDomInstances = this.container.querySelectorAll('.p-gui');
             for (let i = 0; i < existingDomInstances.length; i++) {
@@ -87,7 +92,12 @@ export default class GUI {
             }
         }
         this.yOffset = 0;
-        this.position = {prevX:this.xOffset, prevY:this.yOffset, x:this.xOffset, y:this.yOffset};
+        this.position = {
+            prevX: this.xOffset, 
+            prevY: this.yOffset, 
+            x: this.xOffset, 
+            y: this.yOffset
+        };
 
         this._addStyles(`#p-gui-${this.instanceId} {
             width: ${this.wrapperWidth}px;
