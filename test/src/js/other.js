@@ -7,7 +7,7 @@ export default function other() {
     const gui_1 = new GUI({
         container,
         name: 'GUI 1 (drag me!)',
-        width: 500,
+        width: 450,
         draggable: true,
     });
     gui_1.button('Custom width using the `width` option', () => {});

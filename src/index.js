@@ -2,6 +2,7 @@ import styles from './styles';
 
 export default class GUI {
     constructor(options = {}) {
+        // Process options
         if ( options.container ) {
             this.container = typeof options.container == "string" ? document.querySelector(options.container) : options.container;
             this.position_type = 'absolute';
@@ -18,7 +19,16 @@ export default class GUI {
         }
 
         this.name = (options != undefined && typeof options.name == "string") ? options.name : ''; 
+        
         this.backgroundColor = options.color || null; 
+
+        this.maxHeight = Math.min(this.container.clientHeight, window.innerHeight)
+        if ( options.maxHeight ) {
+            this.initMaxHeight = options.maxHeight;
+            this.maxHeight = Math.min(this.initMaxHeight, this.maxHeight);
+        }
+
+        this.screenCorner = this._parseScreenCorner(options.position);
 
         if ( this instanceof GUI ) {
             if ( typeof GUI[GUI.instanceCounter] != 'number' ) {
@@ -39,10 +49,29 @@ export default class GUI {
         // Common styles
         if (this.instanceId == 0) {
             this._addStyles(`${styles(this.position_type)}`);
+        }        
+
+        // Instance specific styles
+        this._styleInstance();        
+
+        if (options.autoRepositioning != false) {
+            window.addEventListener('resize', this._handleResize.bind(this));
         }
-       
-        // Instance styles
-        this.screenCorner = this._parseScreenCorner(options.position);
+                
+        this._addWrapper();
+        this.wrapper.setAttribute('data-corner-x', this.screenCorner.x);
+        this.wrapper.setAttribute('data-corner-y', this.screenCorner.y);
+    
+        this.hasBeenDragged = false;
+        if (options.draggable == true) this._makeDraggable();
+
+        this.closed = false;
+        if (options.closed) this.toggleClose();
+
+        this.folders = [];
+    }
+
+    _styleInstance() {
         this.xOffset = this.screenCorner.x == 'left' ? 0 : this.container.clientWidth - this.wrapperWidth;
         if (this.instanceId > 0) {
             let existingDomInstances = this.container.querySelectorAll('.p-gui');
@@ -60,14 +89,6 @@ export default class GUI {
         this.yOffset = 0;
         this.position = {prevX:this.xOffset, prevY:this.yOffset, x:this.xOffset, y:this.yOffset};
 
-        if ( options.maxHeight ) {
-            this.maxHeight = options.maxHeight;
-        } else {
-            this.maxHeight = Math.min(this.container.clientHeight, window.innerHeight)
-        }
-        window.addEventListener('resize', () => {
-            this.maxHeight = Math.min(options.maxHeight || '', Math.min(this.container.clientHeight, window.innerHeight));
-        });
         this._addStyles(`#p-gui-${this.instanceId} {
             width: ${this.wrapperWidth}px;
             max-height: ${this.maxHeight}px;
@@ -75,20 +96,6 @@ export default class GUI {
             ${ this.screenCorner.y == 'top' ? '' : 'top: auto; bottom: 0;' }
             ${ this.backgroundColor ? 'background: ' + this.backgroundColor + ';' : '' }
         }`);
-
-        if (options.autoRepositioning != false) window.addEventListener('resize', this._handleResize.bind(this));
-                
-        this._addWrapper();
-        this.wrapper.setAttribute('data-corner-x', this.screenCorner.x);
-        this.wrapper.setAttribute('data-corner-y', this.screenCorner.y);
-    
-        this.hasBeenDragged = false;
-        if (options.draggable == true) this._makeDraggable();
-
-        this.closed = false;
-        if (options.closed) this.toggleClose();
-
-        this.folders = [];
     }
 
     _folderConstructor(folderOptions) {
@@ -107,8 +114,20 @@ export default class GUI {
         return parsedPosition;
     }
 
+    _getScrollbarWidth(element) {
+        if (element === document.body) {
+            return window.innerWidth - document.documentElement.clientWidth;
+        } else {
+            return element.offsetWidth - element.clientWidth;
+        }
+    }
+
     _handleResize() {
-        if (this.hasBeenDragged) return;
+        this.maxHeight = Math.min(this.initMaxHeight, Math.min(this.container.clientHeight, window.innerHeight));
+
+        if (this.hasBeenDragged) {
+            return;
+        }
 
         this.xOffset = this.screenCorner.x == 'left' ? 0 : this.container.clientWidth - this.wrapperWidth;
         if (this.instanceId > 0) {
@@ -131,8 +150,7 @@ export default class GUI {
     }
 
     _createElement(element) {
-        // DOM
-        element.el = element.el ? element.el : 'div';
+        element.el = element.el || 'div';
         var domElement = document.createElement(element.el);
         if (element.id) domElement.id = element.id;
         if (element.class) domElement.className = element.class;
