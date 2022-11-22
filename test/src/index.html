@@ -9,10 +9,19 @@
 </head>
 
 <body>
-    <div class="wrapper">
+<div class="wrapper">
+    <div class="sidebar">
+        <a class="sidebar__item" href="#basics">Basics</a>
+        <a class="sidebar__item" href="#vectors">Vectors</a>
+        <a class="sidebar__item" href="#positioning">Positioning</a>
+        <a class="sidebar__item" href="#folders">Folders</a>
+        <a class="sidebar__item" href="#other-options">Other options</a>
+        <a class="sidebar__item" href="#killing-creating">Killing and creating dynamically</a>
+    </div>
+    <div class="main">
         <h1>Perfect GUI API</h1>
 
-        <h2>Basics</h2>
+        <h2 id="basics">Basics</h2>
 
         <div id="container-1" class="container">
             <div class="element"></div>
@@ -73,7 +82,7 @@
     
         </div>
         
-        <h2>Vectors</h2>
+        <h2 id="vectors">Vectors</h2>
 
         <div id="container-vectors" class="container">
             <div class="element"></div>
@@ -105,7 +114,7 @@
 </pre></div>
         </div>
 
-        <h2>Positioning</h2>
+        <h2 id="positioning">Positioning</h2>
 
         <p>GUI instances can be positioned in any corner of the screen / container.</p>
         <p>When multiple instances share the same position (like GUI 1 and GUI 2 in the example below), they are stacked next to each other.</p>
@@ -149,7 +158,7 @@
         </div>
 
 
-        <h2>Folders</h2>
+        <h2 id="folders">Folders</h2>
 
         <p>Folders can be closed by default by setting the <i>closed</i> option to <span class="code-inline">true</span>.</p>
         <p>Each folder can have a different color with the <span class="code-inline">color</span> option.</p>
@@ -184,7 +193,7 @@
     
         </div>
     
-        <h2>Other options</h2>
+        <h2 id="other-options">Other options</h2>
 
         <p>GUI panels can be dragged around with the <span class="code-inline">draggable</span> option.</p>
         <p>They can also have a custom width, by using the <span class="code-inline">width</span> option.</p>
@@ -243,7 +252,7 @@
 
         </div>
 
-        <h2>Killing and creating dynamically</h2>
+        <h2 id="killing-creating">Killing and creating dynamically</h2>
 
         <p>There is no .kill() method at the moment, so instances have to be killed "manually".</p>
 
@@ -282,6 +291,7 @@
 </pre></div>
         </div>
     </div>
+</div>
 </body>
 
 </html>

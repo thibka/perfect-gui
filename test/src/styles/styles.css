@@ -1,30 +1,84 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+@import url('https://api.fontshare.com/v2/css?f[]=general-sans@200,300,400,500,600,700&display=swap');
+
+:root {
+    --black: rgb(17, 17, 17);
+    --white: rgb(246, 246, 232);
+    --grey: #ffffff33;
+    --sans: 'General Sans', serif;
+}
+
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
 html, body {
     height: 100%;
+    overscroll-behavior: none;
+}
+
+html {
+    font-size: 10px;
 }
 
 body {
     margin: 0;
-    background-color: white;
-    color: black;
+    background-color: var(--black);
+    color: var(--white);
     font-family: Arial, sans-serif;
 }
 
 .wrapper {
+    display: flex;
+    flex-direction: row;
+    font-size: 1.2rem;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 200px;
+    border-right: 1px solid var(--grey);
+    height: 100%;
+}
+
+.sidebar__item {
+    padding: 20px 40px;
+    text-transform: uppercase;
+    opacity: .8;
+    display: block;
+}
+
+.sidebar__item:hover {
+    opacity: 1;
+} 
+
+.sidebar__item:first-of-type {
+    margin-top: 50px;
+}
+
+.main {
     width: 800px;
     margin: 0 auto;
+    padding-left: 200px;
     padding-bottom: 100px;
 }
 
-@media (max-width: 900px) {
-    .wrapper {
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 160px;
+    }
+
+    .main {
         width: 700px;
-        padding: 0 20px 100px 20px;
+        padding: 0 20px 100px 180px;
     }
 }
 
 h1, h2 {
-    font-family: 'Montserrat', sans-serif;
+    font-family: var(--sans), sans-serif;
+    font-weight: normal;
 }
 
 h1 {
@@ -39,6 +93,11 @@ p {
     line-height: 1.4;
 }
 
+a {
+    color: var(--white);
+    text-decoration: none;
+}
+
 .code-button {
     text-decoration: underline;
     cursor: pointer;
@@ -51,7 +110,7 @@ p {
 
 .code-inline {
     font-family: monospace;
-    background-color: black;
+    background-color: #333333;
     color: #a6e22e;
     padding: 3px 6px;
     border-radius: 3px;
@@ -64,11 +123,11 @@ div:has(pre) {
 pre {
     padding: 20px; 
     border-radius: 5px;
-    font-size: 1.2em;
+    font-size: 1.2rem;
 }
 
 .container {
-    background-color: #111;
+    background-color: #eee;
     transition: .3s all ease;
     background-position: center;
     background-size: cover;
@@ -93,7 +152,6 @@ pre {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    border: 1px solid black;
     transition: .1s transform ease, .3s border-radius ease;
 }
 
@@ -105,8 +163,7 @@ pre {
     position: absolute;
     bottom: 10px;
     left: 20px;
-    text-shadow: 0 0 1px black, 0 0 1px black;
     font-family: arial;
-    color: white;
-    font-size: 10px;
+    color: var(--black);
+    font-size: 1rem;
 }

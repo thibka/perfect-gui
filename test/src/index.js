@@ -1,4 +1,4 @@
-import './styles/main.scss';
+import './styles/styles.css';
 //import demo from './js/demo';
 import basics from './js/basics';
 import vectors from './js/vectors';
