@@ -53,14 +53,15 @@ export default class GUI {
 
         // Instance specific styles
         this._styleInstance();        
-
-        if (options.autoRepositioning != false) {
-            window.addEventListener('resize', this._handleResize.bind(this));
-        }
                 
         this._addWrapper();
         this.wrapper.setAttribute('data-corner-x', this.screenCorner.x);
         this.wrapper.setAttribute('data-corner-y', this.screenCorner.y);
+
+        if (options.autoRepositioning != false) {
+            window.addEventListener('resize', this._handleResize.bind(this));
+        }
+        this._handleResize();
     
         this.hasBeenDragged = false;
         if (options.draggable == true) this._makeDraggable();
