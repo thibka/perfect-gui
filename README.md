@@ -18,7 +18,7 @@ https://thibka.github.io/perfect-gui/public/
 npm i perfect-gui
 ```
 
-## Usage
+## Hello world
 
 ```javascript
 import GUI from 'perfect-gui';
@@ -26,7 +26,6 @@ import GUI from 'perfect-gui';
 const gui = new GUI();
 
 gui.button('Click me', callback);
-
 ```
 
 ## Options

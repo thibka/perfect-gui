@@ -1,5 +1,7 @@
+import './styles/prism.css';
 import './styles/styles.css';
 //import demo from './js/demo';
+import './js/prism';
 import basics from './js/basics';
 import vectors from './js/vectors';
 import multiple from './js/multiple';

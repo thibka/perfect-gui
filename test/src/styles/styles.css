@@ -122,8 +122,8 @@ div:has(pre) {
     border-radius: 5px;
 }
 
-pre {
-    padding: 20px; 
+pre[class*=language-] {
+    padding: 30px; 
     border-radius: 5px;
     font-size: 1.2rem;
 }

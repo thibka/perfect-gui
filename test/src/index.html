@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title></title>
+    <title>Perfect GUI</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
@@ -19,6 +19,7 @@
         <a class="sidebar__item" href="#killing-creating">Killing and creating dynamically</a>
     </div>
     <div class="main">
+
         <h1>Perfect GUI API</h1>
 
         <h2 id="basics">Basics</h2>
@@ -30,55 +31,54 @@
 
         <div class="code-button" onclick="document.getElementById('code-block-basics').classList.toggle('code-block--hidden')">See code</div>
         <div id="code-block-basics" class="code-block code-block--hidden">
-        <!-- HTML generated using hilite.me --><div style="background: #272822; overflow:auto;width:auto;;"><pre style="margin: 0; line-height: 125%"><span style="color: #66d9ef">const</span> <span style="color: #a6e22e">position</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #a6e22e">x</span><span style="color: #f92672">:</span> <span style="color: #ae81ff">0</span>
-<span style="color: #f8f8f2">};</span>
+            <pre><code class="language-js">const position = {
+    x: 0
+};
 
-<span style="color: #66d9ef">const</span> <span style="color: #a6e22e">gui</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">new</span> <span style="color: #a6e22e">GUI</span><span style="color: #f8f8f2">({</span> <span style="color: #a6e22e">name</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;Basics&#39;</span> <span style="color: #f8f8f2">});</span>
+const gui = new GUI({ name: 'Basics' });
 
-<span style="color: #a6e22e">gui</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">button</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;Button&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">changeColor</span><span style="color: #f8f8f2">);</span>
+gui.button('Button', changeColor);
 
-<span style="color: #a6e22e">gui</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">slider</span><span style="color: #f8f8f2">({</span> <span style="color: #a6e22e">name</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;Slider (simple callback)&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">value</span><span style="color: #f92672">:</span> <span style="color: #ae81ff">1</span> <span style="color: #f8f8f2">},</span> 
-    <span style="color: #a6e22e">value</span> <span style="color: #f92672">=&gt;</span> <span style="color: #a6e22e">element</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">style</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">opacity</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">value</span> 
-<span style="color: #f8f8f2">);</span>
+gui.slider({ name: 'Slider (simple callback)', value: 1 }, 
+    value => element.style.opacity = value 
+);
 
-<span style="color: #a6e22e">gui</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">slider</span><span style="color: #f8f8f2">({</span> 
-    <span style="color: #a6e22e">name</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;Slider 2 (object binding)&#39;</span><span style="color: #f8f8f2">,</span> 
-    <span style="color: #a6e22e">obj</span><span style="color: #f92672">:</span> <span style="color: #a6e22e">position</span><span style="color: #f8f8f2">,</span> 
-    <span style="color: #a6e22e">prop</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;x&#39;</span><span style="color: #f8f8f2">,</span> 
-    <span style="color: #a6e22e">min</span><span style="color: #f92672">:</span> <span style="color: #f92672">-</span><span style="color: #ae81ff">30</span><span style="color: #f8f8f2">,</span> 
-    <span style="color: #a6e22e">max</span><span style="color: #f92672">:</span> <span style="color: #ae81ff">30</span><span style="color: #f8f8f2">,</span> 
-    <span style="color: #a6e22e">step</span><span style="color: #f92672">:</span> <span style="color: #f8f8f2">.</span><span style="color: #ae81ff">1</span> 
-<span style="color: #f8f8f2">});</span>
+gui.slider({ 
+    name: 'Slider 2 (object binding)', 
+    obj: position, 
+    prop: 'x', 
+    min: -30, 
+    max: 30, 
+    step: .1 
+});
 
-<span style="color: #a6e22e">gui</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">toggle</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;Switch&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #66d9ef">true</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">state</span> <span style="color: #f92672">=&gt;</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">(</span> <span style="color: #a6e22e">state</span> <span style="color: #f8f8f2">)</span> <span style="color: #a6e22e">element</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">classList</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">remove</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;round&#39;</span><span style="color: #f8f8f2">);</span>
-    <span style="color: #66d9ef">else</span> <span style="color: #a6e22e">element</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">classList</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">add</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;round&#39;</span><span style="color: #f8f8f2">);</span>
-<span style="color: #f8f8f2">});</span>
+gui.toggle('Switch', true, state => {
+    if ( state ) element.classList.remove('round');
+    else element.classList.add('round');
+});
 
-<span style="color: #a6e22e">gui</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">list</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;List&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">[</span><span style="color: #e6db74">&#39;red&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&#39;pink&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&#39;yellow&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&#39;blue&#39;</span><span style="color: #f8f8f2">],</span> <span style="color: #a6e22e">item</span> <span style="color: #f92672">=&gt;</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #a6e22e">element</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">style</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">backgroundColor</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">item</span><span style="color: #f8f8f2">;</span>
-<span style="color: #f8f8f2">});</span>
+gui.list('List', ['red', 'pink', 'yellow', 'blue'], item => {
+    element.style.backgroundColor = item;
+});
 
-<span style="color: #a6e22e">gui</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">image</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;Image 1&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&#39;path/to/image-1.jpg&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">evt</span> <span style="color: #f92672">=&gt;</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #a6e22e">element</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">style</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">backgroundImage</span> <span style="color: #f92672">=</span> <span style="color: #960050; background-color: #1e0010">`</span><span style="color: #a6e22e">url</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">$</span><span style="color: #f8f8f2">{</span><span style="color: #a6e22e">evt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">path</span><span style="color: #f8f8f2">})</span><span style="color: #960050; background-color: #1e0010">`</span><span style="color: #f8f8f2">;</span>
-<span style="color: #f8f8f2">});</span>
+gui.image('Image 1', 'path/to/image-1.jpg', evt => {
+    element.style.backgroundImage = `url(${evt.path})`;
+});
 
-<span style="color: #a6e22e">gui</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">image</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;Image 2&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&#39;path/to/image-2.jpg&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">evt</span> <span style="color: #f92672">=&gt;</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #a6e22e">element</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">style</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">backgroundImage</span> <span style="color: #f92672">=</span> <span style="color: #960050; background-color: #1e0010">`</span><span style="color: #a6e22e">url</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">$</span><span style="color: #f8f8f2">{</span><span style="color: #a6e22e">evt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">path</span><span style="color: #f8f8f2">})</span><span style="color: #960050; background-color: #1e0010">`</span><span style="color: #f8f8f2">;</span>
-<span style="color: #f8f8f2">});</span>
+gui.image('Image 2', 'path/to/image-2.jpg', evt => {
+    element.style.backgroundImage = `url(${evt.path})`;
+});
 
-<span style="color: #a6e22e">gui</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">color</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;Color&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&#39;#ff0000&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">color</span> <span style="color: #f92672">=&gt;</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #a6e22e">element</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">style</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">backgroundColor</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">color</span><span style="color: #f8f8f2">;</span>
-<span style="color: #f8f8f2">});</span>
+gui.color('Color', '#ff0000', color => {
+    element.style.backgroundColor = color;
+});
 
-<span style="color: #66d9ef">function</span> <span style="color: #a6e22e">loop</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #a6e22e">element</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">style</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">transform</span> <span style="color: #f92672">=</span> <span style="color: #960050; background-color: #1e0010">`</span><span style="color: #a6e22e">translateX</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">$</span><span style="color: #f8f8f2">{</span><span style="color: #a6e22e">position</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">x</span><span style="color: #f8f8f2">}</span><span style="color: #a6e22e">px</span><span style="color: #f8f8f2">)</span><span style="color: #960050; background-color: #1e0010">`</span><span style="color: #f8f8f2">;</span>
-    <span style="color: #a6e22e">requestAnimationFrame</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">loop</span><span style="color: #f8f8f2">);</span>
-<span style="color: #f8f8f2">}</span>
+function loop() {
+    element.style.transform = `translateX(${position.x}px)`;
+    requestAnimationFrame(loop);
+}
 
-<span style="color: #a6e22e">loop</span><span style="color: #f8f8f2">();</span>
-</pre></div>    
+loop();</code></pre>   
     
         </div>
         
@@ -91,27 +91,26 @@
 
         <div class="code-button" onclick="document.getElementById('code-block-vectors').classList.toggle('code-block--hidden')">See code</div>
         <div id="code-block-vectors" class="code-block code-block--hidden">
-        <!-- HTML generated using hilite.me --><div style="background: #272822; overflow:auto;width:auto;;"><pre style="margin: 0; line-height: 125%"><span style="color: #66d9ef">const</span> <span style="color: #a6e22e">position</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #a6e22e">x</span><span style="color: #f92672">:</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">,</span>
-    <span style="color: #a6e22e">y</span><span style="color: #f92672">:</span> <span style="color: #ae81ff">0</span>
-<span style="color: #f8f8f2">}</span>
+            <pre><code class="language-js">const position = {
+    x: 0,
+    y: 0
+}
 
-<span style="color: #66d9ef">const</span> <span style="color: #a6e22e">gui</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">new</span> <span style="color: #a6e22e">perfectGUI</span><span style="color: #f8f8f2">({</span>
-    <span style="color: #a6e22e">name</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;Vectors&#39;</span>
-<span style="color: #f8f8f2">});</span>
+const gui = new perfectGUI({
+    name: 'Vectors'
+});
 
-<span style="color: #a6e22e">gui</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">vector2</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;Position&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #a6e22e">x</span><span style="color: #f92672">:</span> <span style="color: #f8f8f2">{</span> <span style="color: #a6e22e">object</span><span style="color: #f92672">:</span> <span style="color: #a6e22e">position</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">prop</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;x&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">min</span><span style="color: #f92672">:</span> <span style="color: #f92672">-</span><span style="color: #ae81ff">50</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">max</span><span style="color: #f92672">:</span> <span style="color: #ae81ff">50</span> <span style="color: #f8f8f2">},</span>
-    <span style="color: #a6e22e">y</span><span style="color: #f92672">:</span> <span style="color: #f8f8f2">{</span> <span style="color: #a6e22e">object</span><span style="color: #f92672">:</span> <span style="color: #a6e22e">position</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">prop</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;y&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">min</span><span style="color: #f92672">:</span> <span style="color: #f92672">-</span><span style="color: #ae81ff">50</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">max</span><span style="color: #f92672">:</span> <span style="color: #ae81ff">50</span> <span style="color: #f8f8f2">},</span>
-<span style="color: #f8f8f2">});</span>
+gui.vector2('Position', {
+    x: { object: position, prop: 'x', min: -50, max: 50 },
+    y: { object: position, prop: 'y', min: -50, max: 50 },
+});
 
-<span style="color: #66d9ef">function</span> <span style="color: #a6e22e">loop</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #a6e22e">element</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">style</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">transform</span> <span style="color: #f92672">=</span> <span style="color: #960050; background-color: #1e0010">`</span><span style="color: #a6e22e">translate</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">$</span><span style="color: #f8f8f2">{</span><span style="color: #a6e22e">position</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">x</span><span style="color: #f8f8f2">}</span><span style="color: #a6e22e">px</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">$</span><span style="color: #f8f8f2">{</span><span style="color: #f92672">-</span><span style="color: #a6e22e">position</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">y</span><span style="color: #f8f8f2">}</span><span style="color: #a6e22e">px</span><span style="color: #f8f8f2">)</span><span style="color: #960050; background-color: #1e0010">`</span><span style="color: #f8f8f2">;</span>
-    <span style="color: #a6e22e">requestAnimationFrame</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">loop</span><span style="color: #f8f8f2">);</span>
-<span style="color: #f8f8f2">}</span>
+function loop() {
+    element.style.transform = `translate(${position.x}px, ${-position.y}px)`;
+    requestAnimationFrame(loop);
+}
 
-<span style="color: #a6e22e">loop</span><span style="color: #f8f8f2">();</span>
-</pre></div>
+loop();</code></pre>  
         </div>
 
         <h2 id="positioning">Positioning</h2>
@@ -125,36 +124,36 @@
 
         <div class="code-button" onclick="document.getElementById('code-block-positioning').classList.toggle('code-block--hidden')">See code</div>
         <div id="code-block-positioning" class="code-block code-block--hidden">
-       <!-- HTML generated using hilite.me --><div style="background: #272822; overflow:auto;width:auto;;"><pre style="margin: 0; line-height: 125%"><span style="color: #66d9ef">const</span> <span style="color: #a6e22e">gui_1</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">new</span> <span style="color: #a6e22e">GUI</span><span style="color: #f8f8f2">({</span>
-    <span style="color: #a6e22e">name</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;GUI 1&#39;</span><span style="color: #f8f8f2">,</span>
-    <span style="color: #a6e22e">width</span><span style="color: #f92672">:</span> <span style="color: #ae81ff">200</span>
-<span style="color: #f8f8f2">});</span>
+            <pre><code class="language-js">const gui_1 = new GUI({
+    name: 'GUI 1',
+    width: 200
+});
 
-<span style="color: #a6e22e">gui_1</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">button</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;Buttons can handle multiple lines of text.&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">()</span> <span style="color: #f92672">=&gt;</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #a6e22e">element</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">style</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">backgroundColor</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">getRandomColor</span><span style="color: #f8f8f2">();</span>
-<span style="color: #f8f8f2">});</span>
+gui_1.button('Buttons can handle multiple lines of text.', () => {
+    element.style.backgroundColor = getRandomColor();
+});
 
-<span style="color: #66d9ef">const</span> <span style="color: #a6e22e">gui_2</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">new</span> <span style="color: #a6e22e">GUI</span><span style="color: #f8f8f2">({</span>
-    <span style="color: #a6e22e">name</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;GUI 2&#39;</span><span style="color: #f8f8f2">,</span>
-    <span style="color: #a6e22e">width</span><span style="color: #f92672">:</span> <span style="color: #ae81ff">200</span>
-<span style="color: #f8f8f2">});</span>
+const gui_2 = new GUI({
+    name: 'GUI 2',
+    width: 200
+});
 
-<span style="color: #a6e22e">gui_2</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">button</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;Button&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">()</span> <span style="color: #f92672">=&gt;</span> <span style="color: #a6e22e">element</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">style</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">backgroundColor</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">getRandomColor</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">);</span>
+gui_2.button('Button', () => element.style.backgroundColor = getRandomColor() );
 
-<span style="color: #66d9ef">const</span> <span style="color: #a6e22e">gui_3</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">new</span> <span style="color: #a6e22e">GUI</span><span style="color: #f8f8f2">({</span>
-    <span style="color: #a6e22e">name</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;GUI 3&#39;</span><span style="color: #f8f8f2">,</span>
-    <span style="color: #a6e22e">position</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;top left&#39;</span>
-<span style="color: #f8f8f2">});</span>
+const gui_3 = new GUI({
+    name: 'GUI 3',
+    position: 'top left'
+});
 
-<span style="color: #a6e22e">gui_3</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">button</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;Button&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">()</span> <span style="color: #f92672">=&gt;</span> <span style="color: #a6e22e">element</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">style</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">backgroundColor</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">getRandomColor</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">);</span>
+gui_3.button('Button', () => element.style.backgroundColor = getRandomColor() );
 
-<span style="color: #66d9ef">const</span> <span style="color: #a6e22e">gui_4</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">new</span> <span style="color: #a6e22e">GUI</span><span style="color: #f8f8f2">({</span>
-    <span style="color: #a6e22e">name</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;GUI 4&#39;</span><span style="color: #f8f8f2">,</span>
-    <span style="color: #a6e22e">position</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;bottom right&#39;</span>
-<span style="color: #f8f8f2">});</span>
+const gui_4 = new GUI({
+    name: 'GUI 4',
+    position: 'bottom right'
+});
 
-<span style="color: #a6e22e">gui_4</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">button</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;Button&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">()</span> <span style="color: #f92672">=&gt;</span> <span style="color: #a6e22e">element</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">style</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">backgroundColor</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">getRandomColor</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">);</span>
-</pre></div>
+gui_4.button('Button', () => element.style.backgroundColor = getRandomColor() );</code></pre>
+
         </div>
 
 
@@ -169,27 +168,25 @@
 
         <div class="code-button" onclick="document.getElementById('code-block-folders').classList.toggle('code-block--hidden')">See code</div>
         <div id="code-block-folders" class="code-block code-block--hidden">
-        <!-- HTML generated using hilite.me --><div style="background: #272822; overflow:auto;width:auto;;"><pre style="margin: 0; line-height: 125%"><span style="color: #66d9ef">const</span> <span style="color: #a6e22e">gui</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">new</span> <span style="color: #a6e22e">perfectGUI</span><span style="color: #f8f8f2">({</span>
-    <span style="color: #a6e22e">name</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;Folders&#39;</span>
-<span style="color: #f8f8f2">});</span>
+            <pre><code class="language-js">const gui = new perfectGUI({
+    name: 'Folders'
+});
 
-<span style="color: #66d9ef">let</span> <span style="color: #a6e22e">folder_1</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">gui</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">folder</span><span style="color: #f8f8f2">({</span> <span style="color: #a6e22e">name</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;Folder 1&#39;</span> <span style="color: #f8f8f2">});</span>
+let folder_1 = gui.folder({ name: 'Folder 1' });
 
-<span style="color: #a6e22e">folder_1</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">button</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;Random color&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">()</span> <span style="color: #f92672">=&gt;</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #a6e22e">element</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">style</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">backgroundColor</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">getRandomColor</span><span style="color: #f8f8f2">();</span>
-<span style="color: #f8f8f2">});</span>
+folder_1.button('Random color', () => {
+    element.style.backgroundColor = getRandomColor();
+});
 
-<span style="color: #a6e22e">folder_1</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">slider</span><span style="color: #f8f8f2">({</span> <span style="color: #a6e22e">name</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;Size&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">value</span><span style="color: #f92672">:</span> <span style="color: #ae81ff">1</span> <span style="color: #f8f8f2">},</span> <span style="color: #a6e22e">value</span> <span style="color: #f92672">=&gt;</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #a6e22e">element</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">style</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">transform</span> <span style="color: #f92672">=</span> <span style="color: #960050; background-color: #1e0010">`</span><span style="color: #a6e22e">scale</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">$</span><span style="color: #f8f8f2">{</span><span style="color: #a6e22e">value</span><span style="color: #f8f8f2">})</span><span style="color: #960050; background-color: #1e0010">`</span><span style="color: #f8f8f2">;</span>
-<span style="color: #f8f8f2">});</span>
+folder_1.slider({ name: 'Size', value: 1 }, value => {
+    element.style.transform = `scale(${value})`;
+});
 
-<span style="color: #66d9ef">let</span> <span style="color: #a6e22e">folder_2</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">gui</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">folder</span><span style="color: #f8f8f2">({</span> <span style="color: #a6e22e">name</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;Folder 2&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">closed</span><span style="color: #f92672">:</span> <span style="color: #66d9ef">true</span> <span style="color: #f8f8f2">});</span>
+let folder_2 = gui.folder({ name: 'Folder 2', closed: true });
 
-<span style="color: #a6e22e">folder_2</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">button</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;Random color&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">()</span> <span style="color: #f92672">=&gt;</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #a6e22e">element</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">style</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">backgroundColor</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">getRandomColor</span><span style="color: #f8f8f2">();</span>
-<span style="color: #f8f8f2">});</span>
-</pre></div>
-    
+folder_2.button('Random color', () => {
+    element.style.backgroundColor = getRandomColor();
+});</code></pre>
     
         </div>
     
@@ -206,49 +203,48 @@
 
         <div class="code-button" onclick="document.getElementById('code-block-containers').classList.toggle('code-block--hidden')">See code</div>
         <div id="code-block-containers" class="code-block code-block--hidden">
-        <!-- HTML generated using hilite.me --><div style="background: #272822; overflow:auto;width:auto;;"><pre style="margin: 0; line-height: 125%"><span style="color: #66d9ef">const</span> <span style="color: #a6e22e">gui_1</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">new</span> <span style="color: #a6e22e">GUI</span><span style="color: #f8f8f2">({</span>
-    <span style="color: #a6e22e">name</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;GUI 1 (drag me!)&#39;</span><span style="color: #f8f8f2">,</span>
-    <span style="color: #a6e22e">width</span><span style="color: #f92672">:</span> <span style="color: #ae81ff">500</span><span style="color: #f8f8f2">,</span>
-    <span style="color: #a6e22e">draggable</span><span style="color: #f92672">:</span> <span style="color: #66d9ef">true</span>
-<span style="color: #f8f8f2">});</span>
-<span style="color: #a6e22e">gui_1</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">button</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;Custom width using the `width` option&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">()</span> <span style="color: #f92672">=&gt;</span> <span style="color: #f8f8f2">{});</span>
+            <pre><code class="language-js">const gui_1 = new GUI({
+    name: 'GUI 1 (drag me!)',
+    width: 500,
+    draggable: true
+});
+gui_1.button('Custom width using the `width` option', () => {});
 
-<span style="color: #66d9ef">const</span> <span style="color: #a6e22e">gui_2</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">new</span> <span style="color: #a6e22e">GUI</span><span style="color: #f8f8f2">({</span>
-    <span style="color: #a6e22e">name</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;GUI 2 (drag me!)&#39;</span><span style="color: #f8f8f2">,</span>
-    <span style="color: #a6e22e">close</span><span style="color: #f92672">:</span> <span style="color: #66d9ef">true</span><span style="color: #f8f8f2">,</span>
-    <span style="color: #a6e22e">draggable</span><span style="color: #f92672">:</span> <span style="color: #66d9ef">true</span><span style="color: #f8f8f2">,</span>
-    <span style="color: #a6e22e">position</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;bottom left&#39;</span>
-<span style="color: #f8f8f2">});</span>
+const gui_2 = new GUI({
+    name: 'GUI 2 (drag me!)',
+    close: true,
+    draggable: true,
+    position: 'bottom left'
+});
 
-<span style="color: #a6e22e">gui_2</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">button</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;gui_1.toggleClose();&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">()</span> <span style="color: #f92672">=&gt;</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #a6e22e">gui_1</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">toggleClose</span><span style="color: #f8f8f2">();</span>
-<span style="color: #f8f8f2">});</span>
+gui_2.button('gui_1.toggleClose();', () => {
+    gui_1.toggleClose();
+});
 
-<span style="color: #66d9ef">const</span> <span style="color: #a6e22e">gui_3</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">new</span> <span style="color: #a6e22e">GUI</span><span style="color: #f8f8f2">({</span>
-    <span style="color: #a6e22e">name</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;GUI 3 (closed, scrollable)&#39;</span><span style="color: #f8f8f2">,</span>
-    <span style="color: #a6e22e">closed</span><span style="color: #f92672">:</span> <span style="color: #66d9ef">true</span><span style="color: #f8f8f2">,</span>
-<span style="color: #f8f8f2">});</span>
+const gui_3 = new GUI({
+    name: 'GUI 3 (closed, scrollable)',
+    closed: true,
+});
 
-<span style="color: #66d9ef">let</span> <span style="color: #a6e22e">f1</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">gui_3</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">folder</span><span style="color: #f8f8f2">({</span> <span style="color: #a6e22e">name</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;folder&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">color</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;#33329f&#39;</span> <span style="color: #f8f8f2">});</span>
-<span style="color: #66d9ef">for</span> <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">let</span> <span style="color: #a6e22e">i</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">i</span> <span style="color: #f92672">&lt;</span> <span style="color: #ae81ff">3</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">i</span> <span style="color: #f92672">++</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #a6e22e">f1</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">button</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;btn &#39;</span><span style="color: #f92672">+</span> <span style="color: #a6e22e">i</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">()</span> <span style="color: #f92672">=&gt;</span> <span style="color: #f8f8f2">{});</span>
-<span style="color: #f8f8f2">}</span>
-<span style="color: #66d9ef">let</span> <span style="color: #a6e22e">f2</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">gui_3</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">folder</span><span style="color: #f8f8f2">({</span> <span style="color: #a6e22e">name</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;folder&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">color</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;#9f3293&#39;</span> <span style="color: #f8f8f2">});</span>
-<span style="color: #66d9ef">for</span> <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">let</span> <span style="color: #a6e22e">i</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">i</span> <span style="color: #f92672">&lt;</span> <span style="color: #ae81ff">3</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">i</span> <span style="color: #f92672">++</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #a6e22e">f2</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">button</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;btn &#39;</span><span style="color: #f92672">+</span> <span style="color: #a6e22e">i</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">()</span> <span style="color: #f92672">=&gt;</span> <span style="color: #f8f8f2">{});</span>
-<span style="color: #f8f8f2">}</span>
-<span style="color: #66d9ef">for</span> <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">let</span> <span style="color: #a6e22e">i</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">i</span> <span style="color: #f92672">&lt;</span> <span style="color: #ae81ff">10</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">i</span> <span style="color: #f92672">++</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #a6e22e">gui_3</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">button</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;btn &#39;</span><span style="color: #f92672">+</span> <span style="color: #a6e22e">i</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">()</span> <span style="color: #f92672">=&gt;</span> <span style="color: #f8f8f2">{});</span>
-<span style="color: #f8f8f2">}</span>
+let f1 = gui_3.folder({ name: 'folder', color: '#33329f' });
+for (let i = 0; i < 3; i ++) {
+    f1.button('btn '+ i, () => {});
+}
+let f2 = gui_3.folder({ name: 'folder', color: '#9f3293' });
+for (let i = 0; i < 3; i ++) {
+    f2.button('btn '+ i, () => {});
+}
+for (let i = 0; i < 10; i ++) {
+    gui_3.button('btn '+ i, () => {});
+}
 
-<span style="color: #66d9ef">const</span> <span style="color: #a6e22e">gui_4</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">new</span> <span style="color: #a6e22e">GUI</span><span style="color: #f8f8f2">({</span>
-    <span style="color: #a6e22e">name</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;GUI 4 (custom color)&#39;</span><span style="color: #f8f8f2">,</span>
-    <span style="color: #a6e22e">position</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;bottom right&#39;</span><span style="color: #f8f8f2">,</span>
-    <span style="color: #a6e22e">color</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;#226666&#39;</span>
-<span style="color: #f8f8f2">});</span>
+const gui_4 = new GUI({
+    name: 'GUI 4 (custom color)',
+    position: 'bottom right',
+    color: '#226666'
+});
 
-<span style="color: #a6e22e">gui_4</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">button</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;lorem&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">()</span> <span style="color: #f92672">=&gt;</span> <span style="color: #f8f8f2">{});</span>
-</pre></div>
+gui_4.button('lorem', () => {});</code></pre>
 
         </div>
 
@@ -260,35 +256,34 @@
 
         <div class="code-button" onclick="document.getElementById('code-block-killing').classList.toggle('code-block--hidden')">See code</div>
         <div id="code-block-killing" class="code-block code-block--hidden">
-        <!-- HTML generated using hilite.me --><div style="background: #272822; overflow:auto;width:auto;;"><pre style="margin: 0; line-height: 125%"><span style="color: #66d9ef">const</span> <span style="color: #a6e22e">guis</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">[];</span>
+            <pre><code class="language-js">const guis = [];
 
-<span style="color: #66d9ef">let</span> <span style="color: #a6e22e">gui_1</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">new</span> <span style="color: #a6e22e">GUI</span><span style="color: #f8f8f2">({</span>
-    <span style="color: #a6e22e">name</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;GUI 1&#39;</span><span style="color: #f8f8f2">,</span>
-<span style="color: #f8f8f2">});</span>
+let gui_1 = new GUI({
+    name: 'GUI 1',
+});
 
-<span style="color: #a6e22e">gui_1</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">button</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;Create GUI panel&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">()</span> <span style="color: #f92672">=&gt;</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #a6e22e">guis</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">guis</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">length</span><span style="color: #f8f8f2">]</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">new</span> <span style="color: #a6e22e">GUI</span><span style="color: #f8f8f2">({</span>
-        <span style="color: #a6e22e">name</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;Created GUI&#39;</span><span style="color: #f8f8f2">,</span>
-        <span style="color: #a6e22e">position</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&#39;bottom left&#39;</span><span style="color: #f8f8f2">,</span>
-        <span style="color: #a6e22e">width</span><span style="color: #f92672">:</span> <span style="color: #ae81ff">150</span><span style="color: #f8f8f2">,</span>
-        <span style="color: #a6e22e">color</span><span style="color: #f92672">:</span> <span style="color: #ae81ff">'red'</span>
-    <span style="color: #f8f8f2">});</span>
-<span style="color: #f8f8f2">});</span>
+gui_1.button('Create GUI panel', () => {
+    guis[guis.length] = new GUI({
+        name: 'Created GUI',
+        position: 'bottom left',
+        width: 150,
+        color: 'red'
+    });
+});
 
-<span style="color: #a6e22e">gui_1</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">button</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;Kill GUI panel&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">()</span> <span style="color: #f92672">=&gt;</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #66d9ef">const</span> <span style="color: #a6e22e">index</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">guis</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">length</span> <span style="color: #f92672">-</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">;</span>
-    <span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">(</span> <span style="color: #a6e22e">index</span> <span style="color: #f92672">&gt;=</span> <span style="color: #ae81ff">0</span> <span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
-        <span style="color: #75715e">// Removes html elements</span>
-        <span style="color: #a6e22e">guis</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">index</span><span style="color: #f8f8f2">].</span><span style="color: #a6e22e">wrapper</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">remove</span><span style="color: #f8f8f2">();</span> 
+gui_1.button('Kill GUI panel', () => {
+    const index = guis.length - 1;
+    if ( index >= 0 ) {
+        // Removes html elements
+        guis[index].wrapper.remove(); 
 
-        <span style="color: #75715e">// Frees up memory</span>
-        <span style="color: #a6e22e">guis</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">index</span><span style="color: #f8f8f2">]</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">null</span><span style="color: #f8f8f2">;</span>
+        // Frees up memory
+        guis[index] = null;
 
-        <span style="color: #75715e">// Removes null value from array</span>
-        <span style="color: #a6e22e">guis</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">splice</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">index</span><span style="color: #f8f8f2">,</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">);</span>
-    <span style="color: #f8f8f2">}</span>
-<span style="color: #f8f8f2">});</span>
-</pre></div>
+        // Removes null value from array
+        guis.splice(index, 1);
+    }
+});</code></pre>
         </div>
     </div>
 </div>
