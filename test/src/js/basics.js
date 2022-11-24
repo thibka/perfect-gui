@@ -38,18 +38,16 @@ export default function basics() {
     });
 
     gui.image('Image 1',
-        'https://images.unsplash.com/photo-1485254767195-60704c46702e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=512&q=80',
+        'https://raw.githubusercontent.com/thibka/thibka.github.io/master/perfect-gui/_data/img/DALL·E-2022-11-13-20.11.16---portrait-of-a-squirrel-in-an-officier-suit,-style-of-a-Rembrandt-painting.jpg',
         evt => {
             element.style.backgroundImage = `url(${evt.path})`;
-            document.querySelector('#container-1 .note').textContent = "Photo by Joel Filipe on Unsplash";
         }
     );
 
     gui.image('Image 2',
-        'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=512&q=80',
+        'https://raw.githubusercontent.com/thibka/thibka.github.io/master/perfect-gui/_data/img/DALL·E-2022-11-13-20.13.55---1-blonde-haired-girl-with-her-orange-cat,-watching-the-whales-in-Tadoussac,-Canada.-In-the-style-of-an-oil-painting..jpg',
         evt => {
             element.style.backgroundImage = `url(${evt.path})`;
-            document.querySelector('#container-1 .note').textContent = "Photo by Milad Fakurian on Unsplash";
         }
     );
 
