@@ -459,6 +459,19 @@ export default class GUI {
             onclick: (evt) => {
                 objectX[propX] = parseFloat(this._mapLinear(evt.offsetX, 0, area.clientWidth, minX, maxX).toFixed(1));
                 objectY[propY] = parseFloat(this._mapLinear(evt.offsetY, 0, area.clientHeight, maxY, minY).toFixed(1));
+            },
+        });
+        let pointer_is_down = false;
+        area.addEventListener('pointerdown', (evt) => {
+            pointer_is_down = true;
+        });
+        area.addEventListener('pointerup', () => {
+            pointer_is_down = false;
+        });
+        area.addEventListener('pointermove', (evt) => {
+            if (pointer_is_down) {
+                objectX[propX] = parseFloat(this._mapLinear(evt.offsetX, 0, area.clientWidth, minX, maxX).toFixed(1));
+                objectY[propY] = parseFloat(this._mapLinear(evt.offsetY, 0, area.clientHeight, maxY, minY).toFixed(1));
             }
         });
 

@@ -172,6 +172,4 @@ gui.toggleClose();
 
 
 ## To do
-- Vector2 drag & drop
 - Style list component
-- Image button selection outline
