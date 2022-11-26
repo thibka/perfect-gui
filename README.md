@@ -83,8 +83,8 @@ gui.button('Click me!', callback);
 <tr><td>image</td><td>
 
 ```javascript
-gui.image('Click this', 'path/to/image', (path) => {
-    ...
+gui.image('Click this', 'image.jpg', e => {
+    console.log(e.path, e.text)
 });
 ```
 </td></tr>
@@ -94,8 +94,8 @@ gui.image('Click this', 'path/to/image', (path) => {
 // Simple slider, only returns a value to the callback
 // min and max parameters are optional, default is 0 (min) and 1 (max)
 // step parameter is optional, default is (max - min) * 0.01
-gui.slider({ 
-    name: 'Slide this', 
+gui.slider({
+    name 'Slide this', 
     value: 5, 
     min: 0,     // default is 0
     max: 10,    // default is 1
@@ -108,12 +108,8 @@ gui.slider({
 // Directly updating the property will also update the slider.
 // callback is optional
 gui.slider({ 
-    name 'Slide this', 
     object: foo, 
-    prop: 'bar', 
-    min: 0, 
-    max: 10, 
-    step: .1 
+    prop: 'bar'
 });
 ```
 </td></tr>

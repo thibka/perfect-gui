@@ -87,6 +87,9 @@ return /* css */`
     font-size: 11px;
     text-shadow: 0 -1px 0 #111;
     white-space: nowrap;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .p-gui__button, 

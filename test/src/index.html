@@ -29,12 +29,24 @@
 <body>
 <div class="wrapper">
     <div class="sidebar">
-        <a class="sidebar__item" href="#basics">Basics</a>
-        <a class="sidebar__item" href="#vectors">Vectors</a>
-        <a class="sidebar__item" href="#positioning">Positioning</a>
-        <a class="sidebar__item" href="#folders">Folders</a>
-        <a class="sidebar__item" href="#other-options">Other options</a>
-        <a class="sidebar__item" href="#killing-creating">Killing and creating dynamically</a>
+        <a class="sidebar__title" href="#basics">Methods</a>
+            <a class="sidebar__item" href="#basics">.button()</a>
+            <a class="sidebar__item" href="#basics">.slider()</a>
+            <a class="sidebar__item" href="#basics">.toggle()</a>
+            <a class="sidebar__item" href="#basics">.list()</a>
+            <a class="sidebar__item" href="#basics">.image()</a>
+            <a class="sidebar__item" href="#basics">.color()</a>
+            <a class="sidebar__item" href="#vectors">.vector2()</a>
+            <a class="sidebar__item" href="#folders">.folder()</a>
+            <a class="sidebar__item" href="#other-options">.toggleClose()</a>
+        <a class="sidebar__title" href="#other-options">Options</a>
+            <a class="sidebar__item" href="#other-options">name</a>
+            <a class="sidebar__item" href="#positioning">position</a>
+            <a class="sidebar__item" href="#other-options">close</a>
+            <a class="sidebar__item" href="#other-options">width</a>
+            <a class="sidebar__item" href="#other-options">maxHeight</a>
+            <a class="sidebar__item" href="#other-options">color</a>
+        <a class="sidebar__title" href="#killing-creating">Killing and creating dynamically</a>
     </div>
     <div class="main">
         <div class="title">
@@ -52,9 +64,7 @@
 
         <div class="code-button" onclick="document.getElementById('code-block-basics').classList.toggle('code-block--hidden')">See code</div>
         <div id="code-block-basics" class="code-block code-block--hidden">
-            <pre><code class="language-js">const position = {
-    x: 0
-};
+            <pre><code class="language-js">const position = { x: 0 };
 
 const gui = new GUI({ name: 'Basics' });
 
@@ -71,10 +81,12 @@ gui.slider({
     min: -30, 
     max: 30, 
     step: .1 
+}, () => {
+    element.style.transform = `translateX(${position.x}px)`;
 });
 
 gui.toggle('Switch', true, state => {
-    if ( state ) element.classList.remove('round');
+    if (state) element.classList.remove('round');
     else element.classList.add('round');
 });
 
@@ -82,24 +94,22 @@ gui.list('List', ['red', 'pink', 'yellow', 'blue'], item => {
     element.style.backgroundColor = item;
 });
 
-gui.image('Image 1', 'path/to/image-1.jpg', evt => {
-    element.style.backgroundImage = `url(${evt.path})`;
+gui.image('Image 1', 'path/to/image-1.jpg', e => {
+    element.style.backgroundImage = `url(${e.path})`;
 });
 
-gui.image('Image 2', 'path/to/image-2.jpg', evt => {
-    element.style.backgroundImage = `url(${evt.path})`;
+gui.image('Image 2', 'path/to/image-2.jpg', e => {
+    element.style.backgroundImage = `url(${e.path})`;
+});
+
+gui.image('Image 3', 'path/to/image-3.jpg', e => {
+    element.style.backgroundImage = `url(${e.path})`;
 });
 
 gui.color('Color', '#ff0000', color => {
     element.style.backgroundColor = color;
 });
-
-function loop() {
-    element.style.transform = `translateX(${position.x}px)`;
-    requestAnimationFrame(loop);
-}
-
-loop();</code></pre>   
+</code></pre>   
     
         </div>
         
