@@ -9,6 +9,10 @@ import folders from './js/folders';
 import other from './js/other';
 import kill_create from './js/kill_create';
 
+let subtitle = ['probably not', 'maybe not', 'almost', 'nearly'];
+subtitle = subtitle[Math.floor(Math.random() * subtitle.length)];
+document.getElementById('subtitle-random').textContent = subtitle;
+
 //demo();
 
 basics();
