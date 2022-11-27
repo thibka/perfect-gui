@@ -10,7 +10,7 @@ Features:
 <img src="https://raw.githubusercontent.com/thibka/thibka.github.io/master/perfect-gui/_data/capture.png" width="580"/>  
 
 ## API
-https://thibka.github.io/perfect-gui/public/
+[Documentation](https://thibka.github.io/perfect-gui/public/)
 
 ## Install
 
