@@ -18,7 +18,7 @@ return /* css */`
     font-family: Verdana, Arial, sans-serif;
     width: 290px;
     overflow: auto;
-    box-shadow: 0 0 5px black;
+    box-shadow: 0 0 2px black;
     box-sizing: border-box;
     z-index: 99999;
     user-select: none;
@@ -67,17 +67,19 @@ return /* css */`
 
 .p-gui__image-container {
     width: 100%;
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 32%);
+    justify-content: space-between;
+    padding: 0 2%;
 }
 
 .p-gui__image {
-    width: calc(33.33% - 10px);
     aspect-ratio: 1 / 1;
     background-size: cover;
-    margin: 1px 5px 19px 5px;
     cursor: pointer;
     position: relative;
+    margin-top: 1px;
+    margin-bottom: 19px;
 }
 
 .p-gui__image-text {
@@ -211,15 +213,23 @@ return /* css */`
     top: 0;
     bottom: 0;
     margin: auto;
-    height: 18px;
+    height: 21px;
     cursor: pointer;
+}
+
+.p-gui__list-dropdown {
+    background: rgba(0,0,0,.25);
+    color: white;
+    border: 1px solid rgba(0,0,0,.5);
+    border-radius: 3px;
+    padding: 0 12px;
+    top: -1px;
 }
 
 .p-gui__color-picker {
     -webkit-appearance: none;
     padding: 0;
     background-color: transparent;
-    height: 15px;
     border: 1px solid #222222;
 }
 
@@ -290,7 +300,6 @@ return /* css */`
     background: #434343;
     overflow: hidden;
     margin-bottom: 3px;
-    padding-bottom: 1px;
     display: flex;
     flex-wrap: wrap;
     border-left: 2px solid grey;

@@ -72,101 +72,14 @@ const gui = new GUI({
 });
 ```
 
-## Methods
-<table>
-<tr><th>Method</th><th>Example</th></tr>
-<tr><td>button</td><td>
+## [Methods](https://thibka.github.io/perfect-gui/public/)
 
-```javascript
-gui.button('Click me!', callback);
-```
-</td></tr>
-<tr><td>image</td><td>
-
-```javascript
-gui.image('Click this', 'image.jpg', e => {
-    console.log(e.path, e.text)
-});
-```
-</td></tr>
-<tr><td>slider</td><td>
-
-```javascript
-// Simple slider, only returns a value to the callback
-// min and max parameters are optional, default is 0 (min) and 1 (max)
-// step parameter is optional, default is (max - min) * 0.01
-gui.slider({
-    name 'Slide this', 
-    value: 5, 
-    min: 0,     // default is 0
-    max: 10,    // default is 1
-    step: .1    // default is (max - min) * 0.01
-}, value => {   // optional callback
-    console.log('Slider value : ' + value);
-});
-
-// Object-based slider, automatically updates the value of the object property.
-// Directly updating the property will also update the slider.
-// callback is optional
-gui.slider({ 
-    object: foo, 
-    prop: 'bar'
-});
-```
-</td></tr>
-<tr><td>toggle</td><td>
-
-```javascript
-gui.toggle('Toggle me!', true, state => {
-    console.log('Toggle boolean value: ' + state);
-});
-```
-</td></tr>
-<tr><td>list</td><td>
-
-```javascript
-gui.list('Select one', ['apple', 'lime', 'peach'], function(item) {
-    console.log('Selected item: ' + item);
-});
-```
-</td></tr>
-<tr><td>vector2</td><td>
-
-```javascript
-// min and max parameters are optional, default is 0 (min) and 1 (max)
-gui.vector2('Position', { 
-    x: { object: myObject.position, prop: 'x', min: -10, max: 10 },
-    y: { object: myObject.position, prop: 'y', min: -10, max: 10 },
-});
-```
-</td></tr>
-<tr><td>color</td><td>
-
-```javascript
-gui.color('Color', '#ff0000', color => {
-    console.log('Selected color:', color);
-});
-```
-</td></tr>
-<tr><td>folder</td><td>
-
-```javascript
-let folder = gui.folder({ 
-    name: 'folder name',
-    closed: false, // default is false,
-    color: '#226666' // default is #434343
-});
-folder.button('click me!', callback);
-```
-</td></tr>
-<tr><td>toggleClose</td><td>
-
-```javascript
-gui.toggleClose();
-```
-</td></tr>
-</table>
-
-
-## To do
-- Style list component
+* [button](https://thibka.github.io/perfect-gui/public/#button)
+* [slider](https://thibka.github.io/perfect-gui/public/#slider)
+* [toggle](https://thibka.github.io/perfect-gui/public/#toggle)
+* [list](https://thibka.github.io/perfect-gui/public/#list)
+* [image](https://thibka.github.io/perfect-gui/public/#image)
+* [color](https://thibka.github.io/perfect-gui/public/#color)
+* [vector2](https://thibka.github.io/perfect-gui/public/#vector2)
+* [folder](https://thibka.github.io/perfect-gui/public/#folder)
+* [toggleClose](https://thibka.github.io/perfect-gui/public)

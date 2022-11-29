@@ -1,9 +1,10 @@
-@import url('https://api.fontshare.com/v2/css?f[]=general-sans@200,300,400,500,600,700&display=swap');
+@import url('https://api.fontshare.com/v2/css?f[]=general-sans@400,600&display=swap');
 
 :root {
     --black: rgb(17, 17, 17);
     --white: rgb(246, 246, 232);
     --grey: #ffffff33;
+    --green: #06ff89;
     --sans: 'General Sans', serif;
     --h1-size: 2.6rem;
     --h2-size: 2.2rem;
@@ -13,6 +14,7 @@
 * {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-size: 1.5rem;
 }
 
 html, body {
@@ -34,47 +36,6 @@ body {
 .wrapper {
     display: flex;
     flex-direction: row;
-    font-size: 1.2rem;
-}
-
-.sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    border-right: 1px solid var(--grey);
-    height: 100%;
-    background-color: #1b1b1b;
-    width: 120px;
-    padding: 40px;
-    z-index: 1;
-}
-
-.sidebar__title {
-    opacity: .8;
-    display: block;
-    margin-top: 4rem;
-    margin-bottom: 2rem;
-    font-size: 1.8rem;
-}
-
-.sidebar__item {
-    opacity: .8;
-    display: block;
-    font-size: var(--body-size);
-    margin-bottom: 1rem;
-    margin-left: 1rem;
-}
-
-.sidebar__item:hover {
-    opacity: 1;
-} 
-
-.sidebar__item:first-of-type {
-    
-}
-
-.sidebar__item:last-of-type {
-    margin-bottom: 4rem;
 }
 
 .main {
@@ -85,10 +46,6 @@ body {
 }
 
 @media (max-width: 1024px) {
-    .sidebar {
-        width: 120px;
-    }
-
     .main {
         width: 700px;
         padding: 0 20px 100px 230px;
@@ -103,19 +60,23 @@ body {
 
 .subtitle {
     opacity: .6;
+}
+
+.subtitle,
+.subtitle span {
     font-size: 1.2rem;
 }
 
 .link {
     padding: 10px;
-    border-bottom: 1px solid var(--white);
+    border-bottom: 1px solid var(--green);
     margin-left: 20px;
     font-size: var(--body-size);
 }
 
 h1, h2 {
     font-family: var(--sans), sans-serif;
-    font-weight: normal;
+    font-weight: 600;
 }
 
 h1 {
@@ -125,12 +86,12 @@ h1 {
 }
 
 h2 {
-    margin-top: 80px;
+    margin-top: 110px;
     font-size: var(--h2-size);
 }
 
-p {
-    line-height: 1.4;
+p, li {
+    line-height: 1.5;
     font-size: var(--body-size);
 }
 
@@ -156,7 +117,7 @@ a {
     font-family: monospace;
     background-color: #333333;
     color: #a6e22e;
-    padding: 3px 6px;
+    padding: 1px 6px;
     border-radius: 3px;
 }
 
@@ -167,7 +128,7 @@ div:has(pre) {
 pre[class*=language-] {
     padding: 30px; 
     border-radius: 5px;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
 }
 
 .container {
@@ -183,6 +144,10 @@ pre[class*=language-] {
     border-radius: 5px;
 }
 
+.container--small {
+    height: 200px;
+}
+
 .element {
     width: 100px;
     height: 100px;
@@ -192,11 +157,18 @@ pre[class*=language-] {
     right: 0;
     bottom: 0;
     margin: auto;
-    background-color: red;
+    background-color: var(--green);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     transition: .1s transform ease, .3s border-radius ease;
+    border-radius: 3px;
+}
+
+.element.left {
+    left: calc((50% - 145px) - 50px);
+    right: 0px;
+    margin: auto 0px;
 }
 
 .element.round {

@@ -1,0 +1,21 @@
+table {
+    width: 100%;
+    font-size: 1.4rem;
+    color: var(--white);
+}
+
+th {
+    border-bottom: 1px solid var(--grey);
+}
+
+th, td {
+    text-align: left;
+    border-right: 1px solid var(--grey);
+    padding: 1rem;
+    line-height: 1.5;
+}
+
+th:last-of-type,
+td:last-of-type {
+    border-right: none;
+}

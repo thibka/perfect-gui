@@ -1,7 +1,7 @@
 import GUI from '../../../src/index';
 
 export default function vectors() {
-    const data = {
+    const position = {
         x: 0,
         y: 0
     }
@@ -13,13 +13,13 @@ export default function vectors() {
         container: '#container-vectors',
     });
 
-    gui.vector2('Position', {
-        x: { object: data, prop: 'x', min: -50, max: 50 },
-        y: { object: data, prop: 'y', min: -50, max: 50 },
-    });
+    gui.vector2({ name: 'Position', data: {
+        x: { object: position, prop: 'x', min: -50, max: 50 },
+        y: { object: position, prop: 'y', min: -50, max: 50 },
+    }});
 
     function loop() {
-        element.style.transform = `translate(${data.x}px, ${-data.y}px)`;
+        element.style.transform = `translate(${position.x}px, ${-position.y}px)`;
         requestAnimationFrame(loop);
     }
     

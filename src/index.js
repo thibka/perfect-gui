@@ -73,10 +73,11 @@ export default class GUI {
     }
 
     _styleInstance() {
+        let scrollbar_width = this._getScrollbarWidth(this.container);
         if (this.screenCorner.x == 'left') {
             this.xOffset = 0;
         } else {
-            this.xOffset = this.container.clientWidth - this.wrapperWidth - this._getScrollbarWidth(this.container);
+            this.xOffset = this.container.clientWidth - this.wrapperWidth - scrollbar_width;
         }
 
         if (this.instanceId > 0) {
@@ -140,7 +141,8 @@ export default class GUI {
             return;
         }
 
-        this.xOffset = this.screenCorner.x == 'left' ? 0 : this.container.clientWidth - this.wrapperWidth;
+        let scrollbar_width = this._getScrollbarWidth(this.container);
+        this.xOffset = this.screenCorner.x == 'left' ? 0 : this.container.clientWidth - this.wrapperWidth - scrollbar_width;
         if (this.instanceId > 0) {
             let existingDomInstances = this.container.querySelectorAll(`.p-gui:not(#${this.wrapper.id}):not([data-dragged])`);
             for (let i = 0; i < existingDomInstances.length; i++) {
@@ -208,36 +210,53 @@ export default class GUI {
         });
     }
 
-    button(text, callback) {
-        let params = {
-            text: text,
-            callback: callback
-        };
-        this._checkMandatoryParams({
-            text: 'string',
-            callback: 'function'
-        }, params);
+    button(name, callback) {
+        if (typeof name != 'string') {
+            if (typeof name == 'object' && name?.hasOwnProperty('name')) {
+                name = name.name;
+            } else {
+                name = ' ';
+            }
+        }
+        if (name === '') {
+            name = ' ';
+        }
 
         this.imageContainer = null;
 
+        if (typeof callback != 'function') {
+            callback = () => {};
+        }
+        
         this._createElement({
             class: 'p-gui__button',
-            onclick: params.callback,
-            textContent: params.text
-        })
+            textContent: name,
+            onclick: callback
+        });
     }
     
-    image(text, path, callback) {
-        let params = {
-            text: text,
-            path: path,
-            callback: callback
-        };
-        this._checkMandatoryParams({
-            text: 'string',
-            path: 'string',
-            callback: 'function'
-        }, params);
+    image(params = {}, callback) {
+        if (typeof params != 'object') {
+            throw Error(`[GUI] image() first parameter must be an object. Received: ${typeof params}.`);
+        }
+        
+        let path;
+        if (typeof params.path == 'string') {
+            path = params.path;
+        } else {
+            if (typeof params.path == undefined) {
+                throw Error(`[GUI] image() path must be provided.`);
+            } else {
+                throw Error(`[GUI] image() path must be a string.`);
+            }
+        }
+        let filename = path.replace(/^.*[\\\/]/, '');
+        let name;
+        if (params.name == undefined) {
+            name = filename;
+        } else {
+            name = typeof params.name == 'string' ? params.name || ' ' : ' ';
+        }
                 
         if (!this.imageContainer) {
             this.imageContainer = this._createElement({
@@ -248,7 +267,7 @@ export default class GUI {
         // Image
         var image = this._createElement({
             class: 'p-gui__image',
-            inline: `background-image: url(${params.path})`,
+            inline: `background-image: url(${path})`,
             parent: this.imageContainer
         })
         
@@ -256,44 +275,64 @@ export default class GUI {
         this._createElement({
             parent: image,
             class: 'p-gui__image-text',
-            textContent: params.text
+            textContent: name
         })    
         
-        image.onclick = () => params.callback({ path: params.path, text: params.text });
+        if (typeof callback == 'function') {
+            image.onclick = () => callback({ path, text: name });
+        }
     }
     
-    slider (params, callback) {
+    slider (params = {}, callback) {
+        if (typeof params != 'object') {
+            throw Error(`[GUI] slider() first parameter must be an object. Received: ${typeof params}.`);
+        }
+
+        let name = typeof params.name == 'string' ? params.name || ' ' : ' ';
         let isObject = false;
         let propReferenceIndex = null;
-        let object; 
-        let prop;
-        
-        const min = params.min ?? 0;
-        const max = params.max ?? 1;
-        const step = params.step || (max - min) / 100;
+        let obj = params.obj || params.object; 
+        let prop = params.prop || params.property;
+        let value = typeof params.value == 'number' ? params.value : null;
+        let min = params.min ?? 0;
+        let max = params.max ?? 1;
+        let step = params.step || (max - min) / 100;
 
-        if ( typeof params.value == 'number' ) {
-            this._checkMandatoryParams({
-                value: 'number'
-            }, params);
-        } else {
-            object = params.obj || params.object;
-            prop = params.prop || params.property;
-            
-            this._checkMandatoryParams({
-                object: 'object',
-                prop: 'string'
-            }, {object, prop});
+        // callback mode
+        if ( value !== null ) {
+            if (prop != undefined || obj != undefined) {
+                console.warn(`[GUI] slider() "obj" and "property" parameters are ignored when a "value" parameter is used.`);
+            }
+        }
+        // object-binding
+        else if (prop != undefined && obj != undefined) {
+            if (typeof prop != 'string') {
+                throw Error(`[GUI] slider() "prop" (or "property") parameter must be an string. Received: ${typeof prop}.`);
+            }
+            if (typeof obj != 'object') {
+                throw Error(`[GUI] slider() "obj" (or "object") parameter must be an object. Received: ${typeof obj}.`);
+            }
 
-            propReferenceIndex = this.propReferences.push(object[prop]) - 1;
+            if (name == ' ') {
+                name = prop;
+            }
+
+            propReferenceIndex = this.propReferences.push(obj[prop]) - 1;
             isObject = true;
+        }
+        else {
+            if ((prop != undefined && obj == undefined) || (prop == undefined && obj == undefined)) {
+                console.warn(`[GUI] slider() "obj" and "prop" parameters must be used together.`);
+            }
+
+            value = (max - min) / 2;
         }
 
         this.imageContainer = null;
     
         var container = this._createElement({
             class: 'p-gui__slider',
-            textContent: params.name || prop
+            textContent: name
         });
     
         var slider_ctrl = this._createElement({
@@ -305,21 +344,21 @@ export default class GUI {
                 min,
                 max,
                 step,
-                value: isObject ? object[prop] : params.value
+                value: isObject ? obj[prop] : value
             }
         });
     
         var slider_value = this._createElement({
             parent: container,
             class: 'p-gui__slider-value',
-            textContent: isObject ? String(object[prop]) : String(params.value)
+            textContent: isObject ? String(obj[prop]) : String(value)
         });
     
         slider_ctrl.addEventListener('input', () => {
             slider_value.textContent = slider_ctrl.value;
 
             if ( isObject ) {
-                object[prop] = slider_ctrl.value;
+                obj[prop] = slider_ctrl.value;
             }
 
             if (typeof callback == "function") {
@@ -328,7 +367,7 @@ export default class GUI {
         });
 
         if ( isObject ) {
-            Object.defineProperty( object, prop, {
+            Object.defineProperty( obj, prop, {
                 set: val => { 
                     this.propReferences[propReferenceIndex] = val;
                     slider_ctrl.value = val;
@@ -341,17 +380,13 @@ export default class GUI {
         }
     }
 
-    toggle(text, state, callback) {
-        let params = {
-            text: text,
-            state: state,
-            callback: callback
-        };
-        this._checkMandatoryParams({
-            text: 'string',
-            state: 'boolean',
-            callback: 'function'
-        }, params);
+    toggle(params = {}, callback) {
+        if (typeof params != 'object') {
+            throw Error(`[GUI] toggle() first parameter must be an object. Received: ${typeof params}.`);
+        }
+
+        let name = typeof params.name == 'string' ? params.name || ' ' : ' ';
+        let value = params.value === true ? true : false;
 
         this.imageContainer = null;
 
@@ -359,41 +394,40 @@ export default class GUI {
             class: 'p-gui__switch',
             onclick: (ev) => {
                 let checkbox = ev.target.childNodes[1], 
-                    state = true;
+                    value = true;
                 if (checkbox.classList.contains('p-gui__switch-checkbox--active')) {
-                    state = false;
+                    value = false;
                 }
-                checkbox.classList.toggle('p-gui__switch-checkbox--active')
-                params.callback(state)
+                checkbox.classList.toggle('p-gui__switch-checkbox--active');
+                if (typeof callback == 'function') {
+                    callback(value);
+                }
             },
-            textContent: params.text
+            textContent: name
         });
 
-        let activeClass = state ? " p-gui__switch-checkbox--active" : "";
+        let activeClass = value ? ' p-gui__switch-checkbox--active' : '';
 
         this._createElement({
             parent: switchContainer,
-            class: "p-gui__switch-checkbox" + activeClass
+            class: 'p-gui__switch-checkbox' + activeClass
         });
     }
 
-    list(text, list, callback) {
-        let params = {
-            text: text,
-            list: list,
-            callback: callback
-        };
-        this._checkMandatoryParams({
-            text: 'string',
-            list: 'object',
-            callback: 'function'
-        }, params);
+    list(params = {}, callback) {  
+        if (typeof params != 'object') {
+            throw Error(`[GUI] list() first parameter must be an object. Received: ${typeof params}.`);
+        }
+
+        let name = typeof params.name == 'string' ? params.name : ' ';
+        let values = Array.isArray(params.values) ? params.values : null;
+        callback = typeof callback == 'function' ? callback : null;
 
         this.imageContainer = null;
 
         let container = this._createElement({
             class: 'p-gui__list',
-            textContent: params.text
+            textContent: name
         });
 
         let select = this._createElement({
@@ -401,11 +435,13 @@ export default class GUI {
             el: 'select',
             class: 'p-gui__list-dropdown',
             onchange: (ev) => {
-                params.callback(ev.target.value);
+                if (callback) {
+                    callback(ev.target.value);
+                }
             }
         });
 
-        list.forEach(item => {
+        values.forEach(item => {
             this._createElement({
                 parent: select,
                 el: 'option',
@@ -417,33 +453,40 @@ export default class GUI {
         });
     }
 
-    vector2(text, data, callback) {
-        this._checkMandatoryParams({
-            text: 'string',
-            data: 'object',
-        }, {
-            text,
-            data,
-        });
+    options(params, callback) {
+        if (typeof params != 'object') {
+            throw Error(`[GUI] options() first parameter must be an object. Received: ${typeof params}.`);
+        }
+        this.list(params, callback);
+    }
 
-        const minX = data.x.min ?? 0;
-        const maxX = data.x.max ?? 1;
-        const minY = data.y.min ?? 0;
-        const maxY = data.y.max ?? 1;
+    vector2( params = {}, callback) {
+        if (typeof params != 'object') {
+            throw Error(`[GUI] vector2() first parameter must be an object. Received: ${typeof params}.`);
+        }
 
-        const objectX = data.x.obj || data.x.object;
-        const propX = data.x.prop || data.x.property;
+        let name = typeof params.name == 'string' ? params.name || ' ' : ' ';
+
+        const minX = params.x.min ?? 0;
+        const maxX = params.x.max ?? 1;
+        const minY = params.y.min ?? 0;
+        const maxY = params.y.max ?? 1;
+
+        const objectX = params.x.obj || params.x.object;
+        const propX = params.x.prop || params.x.property;
         const propXReferenceIndex = this.propReferences.push(objectX[propX]) - 1;
         
-        const objectY = data.y.obj || data.y.object;
-        const propY = data.y.prop || data.y.property;
+        const objectY = params.y.obj || params.y.object;
+        const propY = params.y.prop || params.y.property;
         const propYReferenceIndex = this.propReferences.push(objectY[propY]) - 1;
+
+        callback = typeof callback == 'function' ? callback : null;
 
         this.imageContainer = null;
 
         const container = this._createElement({
             class: 'p-gui__vector2',
-            textContent: text
+            textContent: name
         });
 
         const vector_value = this._createElement({
@@ -459,6 +502,10 @@ export default class GUI {
             onclick: (evt) => {
                 objectX[propX] = parseFloat(this._mapLinear(evt.offsetX, 0, area.clientWidth, minX, maxX).toFixed(1));
                 objectY[propY] = parseFloat(this._mapLinear(evt.offsetY, 0, area.clientHeight, maxY, minY).toFixed(1));
+
+                if (callback) {
+                    callback(objectX[propX], objectX[propY]);
+                }
             },
         });
         let pointer_is_down = false;
@@ -472,6 +519,10 @@ export default class GUI {
             if (pointer_is_down) {
                 objectX[propX] = parseFloat(this._mapLinear(evt.offsetX, 0, area.clientWidth, minX, maxX).toFixed(1));
                 objectY[propY] = parseFloat(this._mapLinear(evt.offsetY, 0, area.clientHeight, maxY, minY).toFixed(1));
+
+                if (callback) {
+                    callback(objectX[propX], objectX[propY]);
+                }
             }
         });
 
@@ -516,11 +567,27 @@ export default class GUI {
         });
     }
 
-    color(text, value, callback) {
+    color(params = {}, callback) {
+        if (typeof params != 'object') {
+            throw Error(`[GUI] color() first parameter must be an object. Received: ${typeof params}.`);
+        }
+
+        let name = typeof params.name == 'string' ? params.name || ' ' : ' ';
+        let value;
+        if (typeof params.value == 'string') {
+            if (params.value.length != 7 || params.value[0] != '#') {
+                console.error(`[GUI] color() 'value' parameter must be an hexadecimal string in the format "#ffffff". Received: "${params.value}".`)
+            }
+            else {
+                value = params.value;
+            }
+        }
+        if (!value) value = '#000000';
+
         const container = this._createElement({
             el: 'div',
             class: 'p-gui__color',
-            textContent: text,
+            textContent: name,
         });
 
         const colorpicker = this._createElement({
@@ -531,7 +598,7 @@ export default class GUI {
             value
         });
 
-        if (callback) {
+        if (typeof callback == 'function') {
             colorpicker.addEventListener('input', () => {
                 callback(colorpicker.value);
             });
@@ -574,21 +641,6 @@ export default class GUI {
         }});
         this.folders.push(folder);
         return folder;
-    }
-    
-    _checkMandatoryParams(mandatoryParams, params) {
-        var errors = [];
-        for (var i in mandatoryParams) {
-            let typeTest = typeof params[i] == mandatoryParams[i];
-            if (!typeTest) {
-                errors.push(i);
-            }
-        };
-        if (errors.length > 0) {
-            errors.forEach(error => {
-                throw Error(`[GUI] Missing '${error}' parameter`);
-            })
-        }
     }
     
     _makeDraggable() {
