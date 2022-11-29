@@ -6,7 +6,7 @@ Features:
 - multiple panels
 - easy positioning
 - draggable panels
-- two-dimensional vector vizualisation
+- two-dimensional vector visualization
 
 <img src="https://raw.githubusercontent.com/thibka/thibka.github.io/master/perfect-gui/_data/capture.png" width="580"/>  
 
