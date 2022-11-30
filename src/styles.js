@@ -46,6 +46,7 @@ return /* css */`
     line-height: 20px;
     padding-left: 8px;
     box-sizing: border-box;
+    touch-action: none;
 }
 
 .p-gui__header-close {

@@ -645,8 +645,8 @@ export default class GUI {
     
     _makeDraggable() {
         var that = this;
-        this.header.addEventListener('mousedown', dragMouseDown);
-        this.header.addEventListener('mouseup', dragMouseUp);
+        this.header.addEventListener('pointerdown', dragMouseDown);
+        this.header.addEventListener('pointerup', dragMouseUp);
     
         function dragMouseDown(ev) {             
             ev.preventDefault();
@@ -657,7 +657,7 @@ export default class GUI {
             that.position.prevX = ev.clientX;
             that.position.prevY = ev.clientY;  
 
-            document.addEventListener('mousemove', dragElement);
+            document.addEventListener('pointermove', dragElement);
         }
     
         function dragElement(ev) {
@@ -674,7 +674,7 @@ export default class GUI {
         }
 
         function dragMouseUp(ev) {
-            document.removeEventListener('mousemove', dragElement);
+            document.removeEventListener('pointermove', dragElement);
         }
     }
 
