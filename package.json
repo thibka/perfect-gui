@@ -1,11 +1,8 @@
 {
   "name": "perfect-gui",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "Nice and simple GUI for JavaScript",
   "main": "src/index.js",
-  "directories": {
-    "example": "examples"
-  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
