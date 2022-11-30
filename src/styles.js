@@ -146,6 +146,7 @@ return /* css */`
     margin-top: 8px;
     width: 100%;
     height: calc(100% - 28px);
+    touch-action: none;
 }
 
 .p-gui__vector2-line {
