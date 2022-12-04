@@ -22,7 +22,11 @@ export default class GUI {
         
         this.backgroundColor = options.color || null; 
 
-        this.maxHeight = Math.min(this.container.clientHeight, window.innerHeight)
+        if (this.container == document.body) {
+            this.maxHeight = window.innerHeight;
+        } else {
+            this.maxHeight = Math.min(this.container.clientHeight, window.innerHeight)
+        }
         if ( options.maxHeight ) {
             this.initMaxHeight = options.maxHeight;
             this.maxHeight = Math.min(this.initMaxHeight, this.maxHeight);
@@ -135,7 +139,14 @@ export default class GUI {
     }
 
     _handleResize() {
-        this.maxHeight = Math.min(this.initMaxHeight, Math.min(this.container.clientHeight, window.innerHeight));
+        if (this.container == document.body) {
+            this.maxHeight = window.innerHeight;
+        } else {
+            this.maxHeight = Math.min(this.container.clientHeight, window.innerHeight)
+        }
+        if (this.initMaxHeight) {
+            this.maxHeight = Math.min(this.initMaxHeight, this.maxHeight);
+        }
 
         if (this.hasBeenDragged) {
             return;
