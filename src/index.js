@@ -621,6 +621,7 @@ export default class GUI {
         let closed = typeof options.closed == 'boolean' ? options.closed : false;
         let name = options.name || '';
         let color = options.color || null;
+        let maxHeight = options.maxHeight || null;
 
         this.imageContainer = null;
 
@@ -633,10 +634,13 @@ export default class GUI {
         if (closed) {
             className += ' p-gui__folder--closed';
         }
+
+        let container_style = color ? `background-color: ${color};` : '';
+        container_style += maxHeight ? `max-height: ${maxHeight}px;` : '';
         
         let container = this._createElement({
             class: className,
-            inline: color ? `background-color: ${color};`: null,
+            inline: container_style,
         });
         
         let folderHeader = this._createElement({
