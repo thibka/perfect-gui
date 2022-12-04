@@ -147,6 +147,7 @@ export default class GUI {
         if (this.initMaxHeight) {
             this.maxHeight = Math.min(this.initMaxHeight, this.maxHeight);
         }
+        this.wrapper.style.maxHeight = this.maxHeight + 'px';
 
         if (this.hasBeenDragged) {
             return;
