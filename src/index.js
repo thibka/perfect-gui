@@ -12,6 +12,7 @@ export default class GUI {
         }
 
         this.propReferences = [];
+        this.folders = [];
 
         if ( options.isFolder ) {
             this._folderConstructor(options.folderOptions);
@@ -72,8 +73,6 @@ export default class GUI {
 
         this.closed = false;
         if (options.closed) this.toggleClose();
-
-        this.folders = [];
     }
 
     _styleInstance() {
@@ -512,8 +511,8 @@ export default class GUI {
             el: 'div',
             class: 'p-gui__vector2-area',
             onclick: (evt) => {
-                objectX[propX] = parseFloat(this._mapLinear(evt.offsetX, 0, area.clientWidth, minX, maxX).toFixed(1));
-                objectY[propY] = parseFloat(this._mapLinear(evt.offsetY, 0, area.clientHeight, maxY, minY).toFixed(1));
+                objectX[propX] = parseFloat(this._mapLinear(evt.offsetX, 0, area.clientWidth, minX, maxX).toFixed(2));
+                objectY[propY] = parseFloat(this._mapLinear(evt.offsetY, 0, area.clientHeight, maxY, minY).toFixed(2));
 
                 if (callback) {
                     callback(objectX[propX], objectX[propY]);
@@ -529,8 +528,8 @@ export default class GUI {
         });
         area.addEventListener('pointermove', (evt) => {
             if (pointer_is_down) {
-                objectX[propX] = parseFloat(this._mapLinear(evt.offsetX, 0, area.clientWidth, minX, maxX).toFixed(1));
-                objectY[propY] = parseFloat(this._mapLinear(evt.offsetY, 0, area.clientHeight, maxY, minY).toFixed(1));
+                objectX[propX] = parseFloat(this._mapLinear(evt.offsetX, 0, area.clientWidth, minX, maxX).toFixed(2));
+                objectY[propY] = parseFloat(this._mapLinear(evt.offsetY, 0, area.clientHeight, maxY, minY).toFixed(2));
 
                 if (callback) {
                     callback(objectX[propX], objectX[propY]);
@@ -630,7 +629,7 @@ export default class GUI {
         if (this.folders.length == 0) {
             className += ' p-gui__folder--first';
         }
-        
+
         if (closed) {
             className += ' p-gui__folder--closed';
         }
