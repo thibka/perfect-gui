@@ -24,6 +24,7 @@ return /* css */`
     user-select: none;
     border-bottom-right-radius: 3px;
     border-bottom-left-radius: 3px;
+    cursor: auto;
 }
 
 .p-gui * {
