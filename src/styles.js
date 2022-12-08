@@ -31,6 +31,25 @@ return /* css */`
     font-size: 11px;
 }
 
+.p-gui::-webkit-scrollbar,
+.p-gui *::-webkit-scrollbar {
+    width: 10px;
+}
+
+.p-gui::-webkit-scrollbar-track,
+.p-gui *::-webkit-scrollbar-track {
+    background: #2f2f2f; 
+    border-radius: 3px;
+}
+
+.p-gui::-webkit-scrollbar-thumb,
+.p-gui *::-webkit-scrollbar-thumb {
+    background: #757576; 
+    border-radius: 10px;
+    box-sizing: border-box;
+    border: 1px solid #2f2f2f;
+}
+
 .p-gui--collapsed {
     height: 0;
     padding: 21px 10px 0 10px;
@@ -316,6 +335,7 @@ return /* css */`
 
 .p-gui__folder--closed {
     height: 22px;
+    overflow: hidden;
 }
 
 .p-gui__folder-header {
