@@ -16,8 +16,22 @@ A nice, simple and (probably not) perfect GUI for JavaScript.
 
 ## Install
 
+### With NPM
+
 ```bash
 npm i perfect-gui
+```
+
+### Import from a CDN
+
+```javascript
+<script type="importmap">
+  {
+    "imports": {
+      "perfect-gui": "https://unpkg.com/perfect-gui@latest/dist/perfect-gui.mjs",
+    }
+  }
+</script>
 ```
 
 ## Hello world
