@@ -225,13 +225,12 @@ export default class GUI {
         let name = '';
         if (typeof options != 'string') {
             if (typeof options == 'object' && options?.hasOwnProperty('name')) {
-                name = options.name;
+                name = options.name == '' ? ' ' : options.name;
             } else {
                 name = ' ';
             }
-        }
-        if (name === '') {
-            name = ' ';
+        } else {
+            name = options == '' ? ' ' : options;
         }
 
         this.imageContainer = null;
@@ -240,7 +239,7 @@ export default class GUI {
             callback = () => {};
         }
 
-        let create_options = {
+        /* let create_options = {
             class: 'p-gui__button',
             textContent: name,
             onclick: callback
@@ -250,7 +249,19 @@ export default class GUI {
             create_options.inline = 'background-color: ' + options.color;
         }
         
-        this._createElement(create_options);
+        this._createElement(create_options); */
+        
+        
+        const el = this._createElement({
+            class: 'p-gui__button',
+            textContent: name,
+            onclick: callback
+        });
+
+        if (typeof options.color == 'string') {
+            el.style.setProperty('--color-accent', options.color);
+            el.style.setProperty('--color-accent-hover', options.hoverColor || options.color);
+        }
     }
     
     image(params = {}, callback) {

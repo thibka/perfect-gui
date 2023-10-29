@@ -1,4 +1,4 @@
-function y(w) {
+function w(y) {
   return (
     /* css */
     `
@@ -10,7 +10,7 @@ function y(w) {
         --color-accent: #1681ca;
         --color-accent-hover: #218fda;
     
-        position: ${w};
+        position: ${y};
         top: 0;
         left: 0;
         transform: translate3d(0,0,0);
@@ -405,7 +405,7 @@ class h {
       this._folderConstructor(e.folderOptions);
       return;
     }
-    this.name = e != null && typeof e.name == "string" ? e.name : "", this.backgroundColor = e.color || null, this.container == document.body ? this.maxHeight = window.innerHeight : this.maxHeight = Math.min(this.container.clientHeight, window.innerHeight), e.maxHeight && (this.initMaxHeight = e.maxHeight, this.maxHeight = Math.min(this.initMaxHeight, this.maxHeight)), this.screenCorner = this._parseScreenCorner(e.position), this instanceof h && (typeof h[h.instanceCounter] != "number" ? h[h.instanceCounter] = 0 : h[h.instanceCounter]++), this.instanceId = h[h.instanceCounter], this.wrapperWidth = e.width || 290, this.stylesheet = document.createElement("style"), this.stylesheet.setAttribute("type", "text/css"), this.stylesheet.setAttribute("id", "lm-gui-stylesheet"), document.head.append(this.stylesheet), this.instanceId == 0 && this._addStyles(`${y(this.position_type)}`), this._styleInstance(), this._addWrapper(), this.wrapper.setAttribute("data-corner-x", this.screenCorner.x), this.wrapper.setAttribute("data-corner-y", this.screenCorner.y), e.autoRepositioning != !1 && window.addEventListener("resize", this._handleResize.bind(this)), this._handleResize(), this.hasBeenDragged = !1, e.draggable == !0 && this._makeDraggable(), this.closed = !1, e.closed && this.toggleClose();
+    this.name = e != null && typeof e.name == "string" ? e.name : "", this.backgroundColor = e.color || null, this.container == document.body ? this.maxHeight = window.innerHeight : this.maxHeight = Math.min(this.container.clientHeight, window.innerHeight), e.maxHeight && (this.initMaxHeight = e.maxHeight, this.maxHeight = Math.min(this.initMaxHeight, this.maxHeight)), this.screenCorner = this._parseScreenCorner(e.position), this instanceof h && (typeof h[h.instanceCounter] != "number" ? h[h.instanceCounter] = 0 : h[h.instanceCounter]++), this.instanceId = h[h.instanceCounter], this.wrapperWidth = e.width || 290, this.stylesheet = document.createElement("style"), this.stylesheet.setAttribute("type", "text/css"), this.stylesheet.setAttribute("id", "lm-gui-stylesheet"), document.head.append(this.stylesheet), this.instanceId == 0 && this._addStyles(`${w(this.position_type)}`), this._styleInstance(), this._addWrapper(), this.wrapper.setAttribute("data-corner-x", this.screenCorner.x), this.wrapper.setAttribute("data-corner-y", this.screenCorner.y), e.autoRepositioning != !1 && window.addEventListener("resize", this._handleResize.bind(this)), this._handleResize(), this.hasBeenDragged = !1, e.draggable == !0 && this._makeDraggable(), this.closed = !1, e.closed && this.toggleClose();
   }
   _styleInstance() {
     let e = this._getScrollbarWidth(this.container);
@@ -477,14 +477,14 @@ class h {
   }
   button(e, t) {
     let i = "";
-    typeof e != "string" && (typeof e == "object" && (e != null && e.hasOwnProperty("name")) ? i = e.name : i = " "), i === "" && (i = " "), this.imageContainer = null, typeof t != "function" && (t = () => {
+    typeof e != "string" ? typeof e == "object" && (e != null && e.hasOwnProperty("name")) ? i = e.name == "" ? " " : e.name : i = " " : i = e == "" ? " " : e, this.imageContainer = null, typeof t != "function" && (t = () => {
     });
-    let r = {
+    const r = this._createElement({
       class: "p-gui__button",
       textContent: i,
       onclick: t
-    };
-    typeof e.color == "string" && (r.inline = "background-color: " + e.color), this._createElement(r);
+    });
+    typeof e.color == "string" && (r.style.setProperty("--color-accent", e.color), r.style.setProperty("--color-accent-hover", e.hoverColor || e.color));
   }
   image(e = {}, t) {
     if (typeof e != "object")
