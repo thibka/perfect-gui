@@ -221,10 +221,11 @@ export default class GUI {
         });
     }
 
-    button(name, callback) {
-        if (typeof name != 'string') {
-            if (typeof name == 'object' && name?.hasOwnProperty('name')) {
-                name = name.name;
+    button(options, callback) {
+        let name = '';
+        if (typeof options != 'string') {
+            if (typeof options == 'object' && options?.hasOwnProperty('name')) {
+                name = options.name;
             } else {
                 name = ' ';
             }
@@ -238,12 +239,18 @@ export default class GUI {
         if (typeof callback != 'function') {
             callback = () => {};
         }
-        
-        this._createElement({
+
+        let create_options = {
             class: 'p-gui__button',
             textContent: name,
             onclick: callback
-        });
+        };
+
+        if (typeof options.color == 'string') {
+            create_options.inline = 'background-color: ' + options.color;
+        }
+        
+        this._createElement(create_options);
     }
     
     image(params = {}, callback) {
