@@ -286,6 +286,9 @@ export default class GUI {
         } else {
             name = typeof params.name == 'string' ? params.name || ' ' : ' ';
         }
+
+        const selected = params.selected === true;
+        const selectionBorder = params.selectionBorder !== false;
                 
         if (!this.imageContainer) {
             this.imageContainer = this._createElement({
@@ -299,6 +302,10 @@ export default class GUI {
             inline: `background-image: url(${path})`,
             parent: this.imageContainer
         })
+
+        if (selected && selectionBorder) {
+            image.classList.add('p-gui__image--selected');
+        }
         
         // Text inside image
         this._createElement({
@@ -308,7 +315,16 @@ export default class GUI {
         })    
         
         if (typeof callback == 'function') {
-            image.onclick = () => callback({ path, text: name });
+            image.onclick = () => {
+                let selected = this.imageContainer.querySelectorAll('.p-gui__image--selected');
+                for (let i = 0; i < selected.length; i++) {
+                    selected[i].classList.remove('p-gui__image--selected');
+                }
+                if (selectionBorder) {
+                    image.classList.add('p-gui__image--selected');
+                }
+                callback({ path, text: name });
+            };
         }
     }
     

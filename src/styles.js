@@ -113,6 +113,19 @@ export default function( position_type ) {
         position: relative;
         margin-top: 1px;
         margin-bottom: 19px;
+        border-radius: var(--main-border-radius);
+    }
+
+    .p-gui__image--selected::after {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        content: '';
+        border: 1px solid #06FF89;
+        box-sizing: border-box;
+        border-radius: var(--main-border-radius);
     }
     
     .p-gui__image-text {
