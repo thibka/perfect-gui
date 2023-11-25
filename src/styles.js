@@ -100,20 +100,21 @@ export default function( position_type ) {
     
     .p-gui__image-container {
         width: 100%;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, 32%);
-        justify-content: space-between;
         padding: 0 2%;
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
     }
     
     .p-gui__image {
-        aspect-ratio: 1 / 1;
         background-size: cover;
         cursor: pointer;
         position: relative;
-        margin-top: 1px;
-        margin-bottom: 19px;
+        margin: 1px 2.5px 19px 2.5px;
         border-radius: var(--main-border-radius);
+        flex: 0 0 calc(33.333% - 5px);
+        height: 90px;
+        background-position: center;
     }
 
     .p-gui__image--selected::after {

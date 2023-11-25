@@ -289,19 +289,35 @@ export default class GUI {
 
         const selected = params.selected === true;
         const selectionBorder = params.selectionBorder !== false;
+        
+        // width & height options
+        let inline_styles = '';
+        if (params.width) {
+            if (typeof params.width == 'number') {
+                params.width += 'px';
+            }
+            inline_styles += `flex: 0 0 calc(${params.width} - 5px); `;
+        }
+        
+        if (params.height) {
+            if (typeof params.height == 'number') {
+                params.height += 'px';
+            }
+            inline_styles += `height: ${params.height}; `;
+        }
                 
         if (!this.imageContainer) {
             this.imageContainer = this._createElement({
                 class: 'p-gui__image-container'
             });
         }
-        
+
         // Image
         var image = this._createElement({
             class: 'p-gui__image',
-            inline: `background-image: url(${path})`,
+            inline: 'background-image: url(' + path + '); ' + inline_styles,
             parent: this.imageContainer
-        })
+        });
 
         if (selected && selectionBorder) {
             image.classList.add('p-gui__image--selected');
@@ -312,7 +328,9 @@ export default class GUI {
             parent: image,
             class: 'p-gui__image-text',
             textContent: name
-        })    
+        });
+        
+
         
         if (typeof callback == 'function') {
             image.onclick = () => {

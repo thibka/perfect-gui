@@ -97,20 +97,21 @@ function w(y) {
     
     .p-gui__image-container {
         width: 100%;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, 32%);
-        justify-content: space-between;
         padding: 0 2%;
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
     }
     
     .p-gui__image {
-        aspect-ratio: 1 / 1;
         background-size: cover;
         cursor: pointer;
         position: relative;
-        margin-top: 1px;
-        margin-bottom: 19px;
+        margin: 1px 2.5px 19px 2.5px;
         border-radius: var(--main-border-radius);
+        flex: 0 0 calc(33.333% - 5px);
+        height: 90px;
+        background-position: center;
     }
 
     .p-gui__image--selected::after {
@@ -412,13 +413,13 @@ function w(y) {
     `
   );
 }
-class h {
+class g {
   constructor(e = {}) {
     if (e.container ? (this.container = typeof e.container == "string" ? document.querySelector(e.container) : e.container, this.position_type = "absolute") : (this.container = document.body, this.position_type = "fixed"), this.propReferences = [], this.folders = [], e.isFolder) {
       this._folderConstructor(e.folderOptions);
       return;
     }
-    this.name = e != null && typeof e.name == "string" ? e.name : "", this.backgroundColor = e.color || null, this.container == document.body ? this.maxHeight = window.innerHeight : this.maxHeight = Math.min(this.container.clientHeight, window.innerHeight), e.maxHeight && (this.initMaxHeight = e.maxHeight, this.maxHeight = Math.min(this.initMaxHeight, this.maxHeight)), this.screenCorner = this._parseScreenCorner(e.position), this instanceof h && (typeof h[h.instanceCounter] != "number" ? h[h.instanceCounter] = 0 : h[h.instanceCounter]++), this.instanceId = h[h.instanceCounter], this.wrapperWidth = e.width || 290, this.stylesheet = document.createElement("style"), this.stylesheet.setAttribute("type", "text/css"), this.stylesheet.setAttribute("id", "lm-gui-stylesheet"), document.head.append(this.stylesheet), this.instanceId == 0 && this._addStyles(`${w(this.position_type)}`), this._styleInstance(), this._addWrapper(), this.wrapper.setAttribute("data-corner-x", this.screenCorner.x), this.wrapper.setAttribute("data-corner-y", this.screenCorner.y), e.autoRepositioning != !1 && window.addEventListener("resize", this._handleResize.bind(this)), this._handleResize(), this.hasBeenDragged = !1, e.draggable == !0 && this._makeDraggable(), this.closed = !1, e.closed && this.toggleClose();
+    this.name = e != null && typeof e.name == "string" ? e.name : "", this.backgroundColor = e.color || null, this.container == document.body ? this.maxHeight = window.innerHeight : this.maxHeight = Math.min(this.container.clientHeight, window.innerHeight), e.maxHeight && (this.initMaxHeight = e.maxHeight, this.maxHeight = Math.min(this.initMaxHeight, this.maxHeight)), this.screenCorner = this._parseScreenCorner(e.position), this instanceof g && (typeof g[g.instanceCounter] != "number" ? g[g.instanceCounter] = 0 : g[g.instanceCounter]++), this.instanceId = g[g.instanceCounter], this.wrapperWidth = e.width || 290, this.stylesheet = document.createElement("style"), this.stylesheet.setAttribute("type", "text/css"), this.stylesheet.setAttribute("id", "lm-gui-stylesheet"), document.head.append(this.stylesheet), this.instanceId == 0 && this._addStyles(`${w(this.position_type)}`), this._styleInstance(), this._addWrapper(), this.wrapper.setAttribute("data-corner-x", this.screenCorner.x), this.wrapper.setAttribute("data-corner-y", this.screenCorner.y), e.autoRepositioning != !1 && window.addEventListener("resize", this._handleResize.bind(this)), this._handleResize(), this.hasBeenDragged = !1, e.draggable == !0 && this._makeDraggable(), this.closed = !1, e.closed && this.toggleClose();
   }
   _styleInstance() {
     let e = this._getScrollbarWidth(this.container);
@@ -510,29 +511,30 @@ class h {
     let r = i.replace(/^.*[\\\/]/, ""), o;
     e.name == null ? o = r : o = typeof e.name == "string" && e.name || " ";
     const s = e.selected === !0, n = e.selectionBorder !== !1;
-    this.imageContainer || (this.imageContainer = this._createElement({
+    let a = "";
+    e.width && (typeof e.width == "number" && (e.width += "px"), a += `flex: 0 0 calc(${e.width} - 5px); `), e.height && (typeof e.height == "number" && (e.height += "px"), a += `height: ${e.height}; `), this.imageContainer || (this.imageContainer = this._createElement({
       class: "p-gui__image-container"
     }));
-    var a = this._createElement({
+    var l = this._createElement({
       class: "p-gui__image",
-      inline: `background-image: url(${i})`,
+      inline: "background-image: url(" + i + "); " + a,
       parent: this.imageContainer
     });
-    s && n && a.classList.add("p-gui__image--selected"), this._createElement({
-      parent: a,
+    s && n && l.classList.add("p-gui__image--selected"), this._createElement({
+      parent: l,
       class: "p-gui__image-text",
       textContent: o
-    }), typeof t == "function" && (a.onclick = () => {
-      let l = this.imageContainer.querySelectorAll(".p-gui__image--selected");
-      for (let g = 0; g < l.length; g++)
-        l[g].classList.remove("p-gui__image--selected");
-      n && a.classList.add("p-gui__image--selected"), t({ path: i, text: o });
+    }), typeof t == "function" && (l.onclick = () => {
+      let u = this.imageContainer.querySelectorAll(".p-gui__image--selected");
+      for (let d = 0; d < u.length; d++)
+        u[d].classList.remove("p-gui__image--selected");
+      n && l.classList.add("p-gui__image--selected"), t({ path: i, text: o });
     });
   }
   slider(e = {}, t) {
     if (typeof e != "object")
       throw Error(`[GUI] slider() first parameter must be an object. Received: ${typeof e}.`);
-    let i = typeof e.name == "string" && e.name || " ", r = !1, o = null, s = e.obj || e.object, n = e.prop || e.property, a = typeof e.value == "number" ? e.value : null, l = e.min ?? 0, g = e.max ?? 1, u = e.step || (g - l) / 100;
+    let i = typeof e.name == "string" && e.name || " ", r = !1, o = null, s = e.obj || e.object, n = e.prop || e.property, a = typeof e.value == "number" ? e.value : null, l = e.min ?? 0, u = e.max ?? 1, d = e.step || (u - l) / 100;
     if (a !== null)
       (n != null || s != null) && console.warn('[GUI] slider() "obj" and "property" parameters are ignored when a "value" parameter is used.');
     else if (n != null && s != null) {
@@ -542,24 +544,24 @@ class h {
         throw Error(`[GUI] slider() "obj" (or "object") parameter must be an object. Received: ${typeof s}.`);
       i == " " && (i = n), o = this.propReferences.push(s[n]) - 1, r = !0;
     } else
-      (n != null && s == null || n == null && s == null) && console.warn('[GUI] slider() "obj" and "prop" parameters must be used together.'), a = (g - l) / 2;
+      (n != null && s == null || n == null && s == null) && console.warn('[GUI] slider() "obj" and "prop" parameters must be used together.'), a = (u - l) / 2;
     this.imageContainer = null;
-    var d = this._createElement({
+    var h = this._createElement({
       class: "p-gui__slider",
       textContent: i
     }), f = this._createElement({
-      parent: d,
+      parent: h,
       el: "input",
       class: "p-gui__slider-ctrl",
       customAttributes: {
         type: "range",
         min: l,
-        max: g,
-        step: u,
+        max: u,
+        step: d,
         value: r ? s[n] : a
       }
     }), _ = this._createElement({
-      parent: d,
+      parent: h,
       class: "p-gui__slider-value",
       textContent: String(r ? s[n] : a)
     });
@@ -626,7 +628,7 @@ class h {
     if (typeof e != "object")
       throw Error(`[GUI] vector2() first parameter must be an object. Received: ${typeof e}.`);
     let i = typeof e.name == "string" && e.name || " ";
-    const r = e.x.min ?? 0, o = e.x.max ?? 1, s = e.y.min ?? 0, n = e.y.max ?? 1, a = e.x.obj || e.x.object, l = e.x.prop || e.x.property, g = this.propReferences.push(a[l]) - 1, u = e.y.obj || e.y.object, d = e.y.prop || e.y.property, f = this.propReferences.push(u[d]) - 1;
+    const r = e.x.min ?? 0, o = e.x.max ?? 1, s = e.y.min ?? 0, n = e.y.max ?? 1, a = e.x.obj || e.x.object, l = e.x.prop || e.x.property, u = this.propReferences.push(a[l]) - 1, d = e.y.obj || e.y.object, h = e.y.prop || e.y.property, f = this.propReferences.push(d[h]) - 1;
     t = typeof t == "function" ? t : null, this.imageContainer = null;
     const _ = this._createElement({
       class: "p-gui__vector2",
@@ -634,13 +636,13 @@ class h {
     }), b = this._createElement({
       parent: _,
       class: "p-gui__vector-value",
-      textContent: a[l] + ", " + u[d]
+      textContent: a[l] + ", " + d[h]
     }), c = this._createElement({
       parent: _,
       el: "div",
       class: "p-gui__vector2-area",
       onclick: (p) => {
-        a[l] = parseFloat(this._mapLinear(p.offsetX, 0, c.clientWidth, r, o).toFixed(2)), u[d] = parseFloat(this._mapLinear(p.offsetY, 0, c.clientHeight, n, s).toFixed(2)), t && t(a[l], a[d]);
+        a[l] = parseFloat(this._mapLinear(p.offsetX, 0, c.clientWidth, r, o).toFixed(2)), d[h] = parseFloat(this._mapLinear(p.offsetY, 0, c.clientHeight, n, s).toFixed(2)), t && t(a[l], a[h]);
       }
     });
     let m = !1;
@@ -649,7 +651,7 @@ class h {
     }), c.addEventListener("pointerup", () => {
       m = !1;
     }), c.addEventListener("pointermove", (p) => {
-      m && (a[l] = parseFloat(this._mapLinear(p.offsetX, 0, c.clientWidth, r, o).toFixed(2)), u[d] = parseFloat(this._mapLinear(p.offsetY, 0, c.clientHeight, n, s).toFixed(2)), t && t(a[l], a[d]));
+      m && (a[l] = parseFloat(this._mapLinear(p.offsetX, 0, c.clientWidth, r, o).toFixed(2)), d[h] = parseFloat(this._mapLinear(p.offsetY, 0, c.clientHeight, n, s).toFixed(2)), t && t(a[l], a[h]));
     }), this._createElement({
       parent: c,
       class: "p-gui__vector2-line p-gui__vector2-line-x"
@@ -661,12 +663,12 @@ class h {
       parent: c,
       class: "p-gui__vector2-dot"
     });
-    x.style.left = this._mapLinear(a[l], r, o, 0, c.clientWidth) + "px", x.style.top = this._mapLinear(u[d], s, n, c.clientHeight, 0) + "px", Object.defineProperty(a, l, {
+    x.style.left = this._mapLinear(a[l], r, o, 0, c.clientWidth) + "px", x.style.top = this._mapLinear(d[h], s, n, c.clientHeight, 0) + "px", Object.defineProperty(a, l, {
       set: (p) => {
-        this.propReferences[g] = p, x.style.left = this._mapLinear(p, r, o, 0, c.clientWidth) + "px", b.textContent = String(p) + ", " + u[d];
+        this.propReferences[u] = p, x.style.left = this._mapLinear(p, r, o, 0, c.clientWidth) + "px", b.textContent = String(p) + ", " + d[h];
       },
-      get: () => this.propReferences[g]
-    }), Object.defineProperty(u, d, {
+      get: () => this.propReferences[u]
+    }), Object.defineProperty(d, h, {
       set: (p) => {
         this.propReferences[f] = p, x.style.top = this._mapLinear(p, s, n, c.clientHeight, 0) + "px", b.textContent = a[l] + ", " + String(p);
       },
@@ -712,7 +714,7 @@ class h {
       },
       parent: a
     });
-    let l = new h({ isFolder: !0, folderOptions: {
+    let l = new g({ isFolder: !0, folderOptions: {
       wrapper: a
     } });
     return this.folders.push(l), l;
@@ -741,5 +743,5 @@ class h {
   }
 }
 export {
-  h as default
+  g as default
 };
