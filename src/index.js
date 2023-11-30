@@ -484,6 +484,18 @@ export default class GUI {
 
         let name = typeof params.name == 'string' ? params.name : ' ';
         let values = Array.isArray(params.values) ? params.values : null;
+        let value = (() => {
+            if (!values) {
+                return null;
+            }
+            if (typeof params.value == 'string') {
+                return values.indexOf(params.value);
+            }
+            if (typeof params.value == 'number') {
+                return params.value;
+            }
+        })();
+        console.log('->',value);
         callback = typeof callback == 'function' ? callback : null;
 
         this.imageContainer = null;
@@ -504,16 +516,23 @@ export default class GUI {
             }
         });
 
-        values.forEach(item => {
-            this._createElement({
-                parent: select,
-                el: 'option',
-                customAttributes: {
-                    value: item,
-                },
-                textContent: item
+        if (values) 
+        {
+            values.forEach((item, index) => 
+            {
+                let option = this._createElement({
+                    parent: select,
+                    el: 'option',
+                    customAttributes: {
+                        value: item,
+                    },
+                    textContent: item
+                });
+                if (value == index) {
+                    option.setAttribute('selected', '');
+                }
             });
-        });
+        }
     }
 
     options(params, callback) {
