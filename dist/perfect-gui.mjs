@@ -603,7 +603,7 @@ class u {
       if (typeof e.value == "number")
         return e.value;
     })();
-    console.log("->", o), t = typeof t == "function" ? t : null, this.imageContainer = null;
+    t = typeof t == "function" ? t : null, this.imageContainer = null;
     let s = this._createElement({
       class: "p-gui__list",
       textContent: i

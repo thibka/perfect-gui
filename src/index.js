@@ -495,7 +495,7 @@ export default class GUI {
                 return params.value;
             }
         })();
-        console.log('->',value);
+
         callback = typeof callback == 'function' ? callback : null;
 
         this.imageContainer = null;
