@@ -423,10 +423,11 @@ export default class GUI {
             if ( isObject ) {
                 obj[prop] = slider_ctrl.value;
             }
-
-            if (typeof callback == "function") {
-                callback(parseFloat(slider_ctrl.value));
-            }            
+            else {
+                if (typeof callback == "function") {
+                    callback(parseFloat(slider_ctrl.value));
+                }
+            }
         });
 
         if ( isObject ) {
@@ -435,6 +436,10 @@ export default class GUI {
                     this.propReferences[propReferenceIndex] = val;
                     slider_ctrl.value = val;
                     slider_value.textContent = String( val );
+
+                    if (typeof callback == "function") {
+                        callback(parseFloat(slider_ctrl.value));
+                    }            
                 },
                 get: () => { 
                     return this.propReferences[propReferenceIndex];
@@ -449,32 +454,102 @@ export default class GUI {
         }
 
         let name = typeof params.name == 'string' ? params.name || ' ' : ' ';
-        let value = params.value === true ? true : false;
+        let isObject = false;
+        let propReferenceIndex = null;
+        let obj = params.obj || params.object; 
+        let prop = params.prop || params.property;
+        let value = typeof params.value === 'boolean' ? params.value : null;
+
+        // callback mode
+        if ( value !== null ) {
+            if (prop != undefined || obj != undefined) {
+                console.warn(`[GUI] toggle() "obj" and "property" parameters are ignored when a "value" parameter is used.`);
+            }
+        }
+
+        // object-binding
+        else if (prop != undefined && obj != undefined) {
+            if (typeof prop != 'string') {
+                throw Error(`[GUI] toggle() "prop" (or "property") parameter must be an string. Received: ${typeof prop}.`);
+            }
+            if (typeof obj != 'object') {
+                throw Error(`[GUI] toggle() "obj" (or "object") parameter must be an object. Received: ${typeof obj}.`);
+            }
+
+            if (name == ' ') {
+                name = prop;
+            }
+
+            propReferenceIndex = this.propReferences.push(obj[prop]) - 1;
+            isObject = true;
+        }
+        else {
+            if ((prop != undefined && obj == undefined) || (prop == undefined && obj == undefined)) {
+                console.warn(`[GUI] toggle() "obj" and "prop" parameters must be used together.`);
+            }
+        }
 
         this.imageContainer = null;
 
-        let switchContainer = this._createElement({
+        const container = this._createElement({
             class: 'p-gui__switch',
             onclick: (ev) => {
-                let checkbox = ev.target.childNodes[1], 
-                    value = true;
+                const checkbox = ev.target.childNodes[1];
+                
+                let value = true;
+                
                 if (checkbox.classList.contains('p-gui__switch-checkbox--active')) {
                     value = false;
                 }
+                
                 checkbox.classList.toggle('p-gui__switch-checkbox--active');
-                if (typeof callback == 'function') {
-                    callback(value);
+
+                if ( isObject ) {
+                    obj[prop] = value;
+                }
+                
+                else {
+                    if (typeof callback == 'function') {
+                        callback(value);
+                    }
                 }
             },
             textContent: name
         });
 
-        let activeClass = value ? ' p-gui__switch-checkbox--active' : '';
+        let activeClass = (() => {
+            if (!isObject) {
+                return value ? ' p-gui__switch-checkbox--active' : '';
+            } else {
+                return obj[prop] ? ' p-gui__switch-checkbox--active' : '';
+            }
+        })();
 
-        this._createElement({
-            parent: switchContainer,
+        const checkbox = this._createElement({
+            parent: container,
             class: 'p-gui__switch-checkbox' + activeClass
         });
+
+        if ( isObject ) {
+            Object.defineProperty( obj, prop, {
+                set: val => { 
+                    this.propReferences[propReferenceIndex] = val;
+
+                    if (val) {
+                        checkbox.classList.add('p-gui__switch-checkbox--active');
+                    } else {
+                        checkbox.classList.remove('p-gui__switch-checkbox--active');
+                    }
+
+                    if (typeof callback == 'function') {
+                        callback(val);
+                    }
+                },
+                get: () => { 
+                    return this.propReferences[propReferenceIndex];
+                }
+            });
+        }
     }
 
     list(params = {}, callback) {  
