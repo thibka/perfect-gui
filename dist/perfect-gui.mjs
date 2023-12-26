@@ -1,4 +1,4 @@
-function w(y) {
+function w(m) {
   return (
     /* css */
     `
@@ -10,7 +10,7 @@ function w(y) {
         --color-accent: #1681ca;
         --color-accent-hover: #218fda;
     
-        position: ${y};
+        position: ${m};
         top: 0;
         left: 0;
         transform: translate3d(0,0,0);
@@ -413,13 +413,13 @@ function w(y) {
     `
   );
 }
-class f {
+class b {
   constructor(e = {}) {
     if (e.container ? (this.container = typeof e.container == "string" ? document.querySelector(e.container) : e.container, this.position_type = "absolute") : (this.container = document.body, this.position_type = "fixed"), this.propReferences = [], this.folders = [], e.isFolder) {
       this._folderConstructor(e.folderOptions);
       return;
     }
-    this.name = e != null && typeof e.name == "string" ? e.name : "", this.backgroundColor = e.color || null, this.container == document.body ? this.maxHeight = window.innerHeight : this.maxHeight = Math.min(this.container.clientHeight, window.innerHeight), e.maxHeight && (this.initMaxHeight = e.maxHeight, this.maxHeight = Math.min(this.initMaxHeight, this.maxHeight)), this.screenCorner = this._parseScreenCorner(e.position), this instanceof f && (typeof f[f.instanceCounter] != "number" ? f[f.instanceCounter] = 0 : f[f.instanceCounter]++), this.instanceId = f[f.instanceCounter], this.wrapperWidth = e.width || 290, this.stylesheet = document.createElement("style"), this.stylesheet.setAttribute("type", "text/css"), this.stylesheet.setAttribute("id", "lm-gui-stylesheet"), document.head.append(this.stylesheet), this.instanceId == 0 && this._addStyles(`${w(this.position_type)}`), this._styleInstance(), this._addWrapper(), this.wrapper.setAttribute("data-corner-x", this.screenCorner.x), this.wrapper.setAttribute("data-corner-y", this.screenCorner.y), e.autoRepositioning != !1 && window.addEventListener("resize", this._handleResize.bind(this)), this._handleResize(), this.hasBeenDragged = !1, e.draggable == !0 && this._makeDraggable(), this.closed = !1, e.closed && this.toggleClose();
+    this.name = e != null && typeof e.name == "string" ? e.name : "", this.backgroundColor = e.color || null, this.container == document.body ? this.maxHeight = window.innerHeight : this.maxHeight = Math.min(this.container.clientHeight, window.innerHeight), e.maxHeight && (this.initMaxHeight = e.maxHeight, this.maxHeight = Math.min(this.initMaxHeight, this.maxHeight)), this.screenCorner = this._parseScreenCorner(e.position), this instanceof b && (typeof b[b.instanceCounter] != "number" ? b[b.instanceCounter] = 0 : b[b.instanceCounter]++), this.instanceId = b[b.instanceCounter], this.wrapperWidth = e.width || 290, this.stylesheet = document.createElement("style"), this.stylesheet.setAttribute("type", "text/css"), this.stylesheet.setAttribute("id", "lm-gui-stylesheet"), document.head.append(this.stylesheet), this.instanceId == 0 && this._addStyles(`${w(this.position_type)}`), this._styleInstance(), this._addWrapper(), this.wrapper.setAttribute("data-corner-x", this.screenCorner.x), this.wrapper.setAttribute("data-corner-y", this.screenCorner.y), e.autoRepositioning != !1 && window.addEventListener("resize", this._handleResize.bind(this)), this._handleResize(), this.hasBeenDragged = !1, e.draggable == !0 && this._makeDraggable(), this.closed = !1, e.closed && this.toggleClose();
   }
   _styleInstance() {
     let e = this._getScrollbarWidth(this.container);
@@ -493,12 +493,12 @@ class f {
     let i = "";
     typeof e != "string" ? typeof e == "object" && (e != null && e.hasOwnProperty("name")) ? i = e.name == "" ? " " : e.name : i = " " : i = e == "" ? " " : e, this.imageContainer = null, typeof t != "function" && (t = () => {
     });
-    const r = this._createElement({
+    const n = this._createElement({
       class: "p-gui__button",
       textContent: i,
       onclick: t
     });
-    typeof e.color == "string" && (r.style.setProperty("--color-accent", e.color), r.style.setProperty("--color-accent-hover", e.hoverColor || e.color));
+    typeof e.color == "string" && (n.style.setProperty("--color-accent", e.color), n.style.setProperty("--color-accent-hover", e.hoverColor || e.color));
   }
   image(e = {}, t) {
     if (typeof e != "object")
@@ -508,9 +508,9 @@ class f {
       i = e.path;
     else
       throw typeof e.path == null ? Error("[GUI] image() path must be provided.") : Error("[GUI] image() path must be a string.");
-    let r = i.replace(/^.*[\\\/]/, ""), s;
-    e.name == null ? s = r : s = typeof e.name == "string" && e.name || " ";
-    const o = e.selected === !0, n = e.selectionBorder !== !1;
+    let n = i.replace(/^.*[\\\/]/, ""), s;
+    e.name == null ? s = n : s = typeof e.name == "string" && e.name || " ";
+    const r = e.selected === !0, o = e.selectionBorder !== !1;
     let a = "";
     e.width && (typeof e.width == "number" && (e.width += "px"), a += `flex: 0 0 calc(${e.width} - 5px); `), e.height && (typeof e.height == "number" && (e.height += "px"), a += `height: ${e.height}; `), this.imageContainer || (this.imageContainer = this._createElement({
       class: "p-gui__image-container"
@@ -520,56 +520,56 @@ class f {
       inline: "background-image: url(" + i + "); " + a,
       parent: this.imageContainer
     });
-    o && n && l.classList.add("p-gui__image--selected"), this._createElement({
+    r && o && l.classList.add("p-gui__image--selected"), this._createElement({
       parent: l,
       class: "p-gui__image-text",
       textContent: s
     }), typeof t == "function" && (l.onclick = () => {
-      let u = this.imageContainer.querySelectorAll(".p-gui__image--selected");
-      for (let p = 0; p < u.length; p++)
-        u[p].classList.remove("p-gui__image--selected");
-      n && l.classList.add("p-gui__image--selected"), t({ path: i, text: s });
+      let f = this.imageContainer.querySelectorAll(".p-gui__image--selected");
+      for (let d = 0; d < f.length; d++)
+        f[d].classList.remove("p-gui__image--selected");
+      o && l.classList.add("p-gui__image--selected"), t({ path: i, text: s });
     });
   }
   slider(e = {}, t) {
     if (typeof e != "object")
       throw Error(`[GUI] slider() first parameter must be an object. Received: ${typeof e}.`);
-    let i = typeof e.name == "string" && e.name || " ", r = !1, s = null, o = e.obj || e.object, n = e.prop || e.property, a = typeof e.value == "number" ? e.value : null, l = e.min ?? 0, u = e.max ?? 1, p = e.step || (u - l) / 100;
+    let i = typeof e.name == "string" && e.name || " ", n = !1, s = null, r = e.obj || e.object, o = e.prop || e.property, a = typeof e.value == "number" ? e.value : null, l = e.min ?? 0, f = e.max ?? 1, d = e.step || (f - l) / 100;
     if (a !== null)
-      (n != null || o != null) && console.warn('[GUI] slider() "obj" and "property" parameters are ignored when a "value" parameter is used.');
-    else if (n != null && o != null) {
-      if (typeof n != "string")
-        throw Error(`[GUI] slider() "prop" (or "property") parameter must be an string. Received: ${typeof n}.`);
-      if (typeof o != "object")
-        throw Error(`[GUI] slider() "obj" (or "object") parameter must be an object. Received: ${typeof o}.`);
-      i == " " && (i = n), s = this.propReferences.push(o[n]) - 1, r = !0;
+      (o != null || r != null) && console.warn('[GUI] slider() "obj" and "property" parameters are ignored when a "value" parameter is used.');
+    else if (o != null && r != null) {
+      if (typeof o != "string")
+        throw Error(`[GUI] slider() "prop" (or "property") parameter must be an string. Received: ${typeof o}.`);
+      if (typeof r != "object")
+        throw Error(`[GUI] slider() "obj" (or "object") parameter must be an object. Received: ${typeof r}.`);
+      i == " " && (i = o), s = this.propReferences.push(r[o]) - 1, n = !0;
     } else
-      (n != null && o == null || n == null && o == null) && console.warn('[GUI] slider() "obj" and "prop" parameters must be used together.'), a = (u - l) / 2;
+      (o != null && r == null || o == null && r == null) && console.warn('[GUI] slider() "obj" and "prop" parameters must be used together.'), a = (f - l) / 2;
     this.imageContainer = null;
-    var c = this._createElement({
+    var p = this._createElement({
       class: "p-gui__slider",
       textContent: i
-    }), g = this._createElement({
-      parent: c,
+    }), c = this._createElement({
+      parent: p,
       el: "input",
       class: "p-gui__slider-ctrl",
       customAttributes: {
         type: "range",
         min: l,
-        max: u,
-        step: p,
-        value: r ? o[n] : a
+        max: f,
+        step: d,
+        value: n ? r[o] : a
       }
-    }), b = this._createElement({
-      parent: c,
+    }), g = this._createElement({
+      parent: p,
       class: "p-gui__slider-value",
-      textContent: String(r ? o[n] : a)
+      textContent: String(n ? r[o] : a)
     });
-    g.addEventListener("input", () => {
-      b.textContent = g.value, r ? o[n] = g.value : typeof t == "function" && t(parseFloat(g.value));
-    }), r && Object.defineProperty(o, n, {
+    c.addEventListener("input", () => {
+      g.textContent = c.value, n ? r[o] = c.value : typeof t == "function" && t(parseFloat(c.value));
+    }), n && Object.defineProperty(r, o, {
       set: (_) => {
-        this.propReferences[s] = _, g.value = _, b.textContent = String(_), typeof t == "function" && t(parseFloat(g.value));
+        this.propReferences[s] = _, c.value = _, g.textContent = String(_), typeof t == "function" && t(parseFloat(c.value));
       },
       get: () => this.propReferences[s]
     });
@@ -577,35 +577,35 @@ class f {
   toggle(e = {}, t) {
     if (typeof e != "object")
       throw Error(`[GUI] toggle() first parameter must be an object. Received: ${typeof e}.`);
-    let i = typeof e.name == "string" && e.name || " ", r = !1, s = null, o = e.obj || e.object, n = e.prop || e.property, a = typeof e.value == "boolean" ? e.value : null;
+    let i = typeof e.name == "string" && e.name || " ", n = !1, s = null, r = e.obj || e.object, o = e.prop || e.property, a = typeof e.value == "boolean" ? e.value : null;
     if (a !== null)
-      (n != null || o != null) && console.warn('[GUI] toggle() "obj" and "property" parameters are ignored when a "value" parameter is used.');
-    else if (n != null && o != null) {
-      if (typeof n != "string")
-        throw Error(`[GUI] toggle() "prop" (or "property") parameter must be an string. Received: ${typeof n}.`);
-      if (typeof o != "object")
-        throw Error(`[GUI] toggle() "obj" (or "object") parameter must be an object. Received: ${typeof o}.`);
-      i == " " && (i = n), s = this.propReferences.push(o[n]) - 1, r = !0;
+      (o != null || r != null) && console.warn('[GUI] toggle() "obj" and "property" parameters are ignored when a "value" parameter is used.');
+    else if (o != null && r != null) {
+      if (typeof o != "string")
+        throw Error(`[GUI] toggle() "prop" (or "property") parameter must be an string. Received: ${typeof o}.`);
+      if (typeof r != "object")
+        throw Error(`[GUI] toggle() "obj" (or "object") parameter must be an object. Received: ${typeof r}.`);
+      i == " " && (i = o), s = this.propReferences.push(r[o]) - 1, n = !0;
     } else
-      (n != null && o == null || n == null && o == null) && console.warn('[GUI] toggle() "obj" and "prop" parameters must be used together.');
+      (o != null && r == null || o == null && r == null) && console.warn('[GUI] toggle() "obj" and "prop" parameters must be used together.');
     this.imageContainer = null;
     const l = this._createElement({
       class: "p-gui__switch",
-      onclick: (c) => {
-        const g = c.target.childNodes[1];
-        let b = !0;
-        g.classList.contains("p-gui__switch-checkbox--active") && (b = !1), g.classList.toggle("p-gui__switch-checkbox--active"), r ? o[n] = b : typeof t == "function" && t(b);
+      onclick: (p) => {
+        const c = p.target.childNodes[1];
+        let g = !0;
+        c.classList.contains("p-gui__switch-checkbox--active") && (g = !1), c.classList.toggle("p-gui__switch-checkbox--active"), n ? r[o] = g : typeof t == "function" && t(g);
       },
       textContent: i
     });
-    let u = (() => r ? o[n] ? " p-gui__switch-checkbox--active" : "" : a ? " p-gui__switch-checkbox--active" : "")();
-    const p = this._createElement({
+    let f = (() => n ? r[o] ? " p-gui__switch-checkbox--active" : "" : a ? " p-gui__switch-checkbox--active" : "")();
+    const d = this._createElement({
       parent: l,
-      class: "p-gui__switch-checkbox" + u
+      class: "p-gui__switch-checkbox" + f
     });
-    r && Object.defineProperty(o, n, {
-      set: (c) => {
-        this.propReferences[s] = c, c ? p.classList.add("p-gui__switch-checkbox--active") : p.classList.remove("p-gui__switch-checkbox--active"), typeof t == "function" && t(c);
+    n && Object.defineProperty(r, o, {
+      set: (p) => {
+        this.propReferences[s] = p, p ? d.classList.add("p-gui__switch-checkbox--active") : d.classList.remove("p-gui__switch-checkbox--active"), typeof t == "function" && t(p);
       },
       get: () => this.propReferences[s]
     });
@@ -613,36 +613,58 @@ class f {
   list(e = {}, t) {
     if (typeof e != "object")
       throw Error(`[GUI] list() first parameter must be an object. Received: ${typeof e}.`);
-    let i = typeof e.name == "string" ? e.name : " ", r = Array.isArray(e.values) ? e.values : null, s = (() => {
-      if (!r)
-        return null;
-      if (typeof e.value == "string")
-        return r.indexOf(e.value);
-      if (typeof e.value == "number")
-        return e.value;
-    })();
-    t = typeof t == "function" ? t : null, this.imageContainer = null;
-    let o = this._createElement({
+    let i = typeof e.name == "string" ? e.name : " ", n = !1, s = null, r = e.obj || e.object, o = e.prop || e.property, a = Array.isArray(e.values) ? e.values : null, l;
+    if (t = typeof t == "function" ? t : null, e.value !== void 0 || e.value === void 0 && r === void 0 && o === void 0)
+      (o != null || r != null) && console.warn('[GUI] list() "obj" and "property" parameters are ignored when a "value" parameter is used.'), l = (() => {
+        if (!a)
+          return null;
+        if (typeof e.value == "string")
+          return a.indexOf(e.value);
+        if (typeof e.value == "number")
+          return e.value;
+      })();
+    else if (o != null && r != null) {
+      if (typeof o != "string")
+        throw Error(`[GUI] list() "prop" (or "property") parameter must be an string. Received: ${typeof o}.`);
+      if (typeof r != "object")
+        throw Error(`[GUI] list() "obj" (or "object") parameter must be an object. Received: ${typeof r}.`);
+      l = (() => {
+        if (!a)
+          return null;
+        if (typeof r[o] == "string")
+          return a.indexOf(r[o]);
+        if (typeof r[o] == "number")
+          return r[o];
+      })(), i == " " && (i = o), s = this.propReferences.push(r[o]) - 1, n = !0;
+    } else
+      (o != null && r == null || o == null && r == null) && console.warn('[GUI] list() "obj" and "prop" parameters must be used together.');
+    this.imageContainer = null;
+    let f = this._createElement({
       class: "p-gui__list",
       textContent: i
-    }), n = this._createElement({
-      parent: o,
+    }), d = this._createElement({
+      parent: f,
       el: "select",
       class: "p-gui__list-dropdown",
-      onchange: (a) => {
-        t && t(a.target.value);
+      onchange: (p) => {
+        n ? r[o] = p.target.value : t && t(p.target.value);
       }
     });
-    r && r.forEach((a, l) => {
-      let u = this._createElement({
-        parent: n,
+    a && a.forEach((p, c) => {
+      let g = this._createElement({
+        parent: d,
         el: "option",
         customAttributes: {
-          value: a
+          value: p
         },
-        textContent: a
+        textContent: p
       });
-      s == l && u.setAttribute("selected", "");
+      l == c && g.setAttribute("selected", "");
+    }), n && Object.defineProperty(r, o, {
+      set: (p) => {
+        typeof p == "string" && (l = a.indexOf(p)), typeof p == "number" && (l = p), this.propReferences[s] = l, d.querySelector("[selected]").removeAttribute("selected"), d.querySelectorAll("option")[l].setAttribute("selected", ""), typeof t == "function" && t(l);
+      },
+      get: () => this.propReferences[s]
     });
   }
   options(e, t) {
@@ -654,83 +676,83 @@ class f {
     if (typeof e != "object")
       throw Error(`[GUI] vector2() first parameter must be an object. Received: ${typeof e}.`);
     let i = typeof e.name == "string" && e.name || " ";
-    const r = e.x.min ?? 0, s = e.x.max ?? 1, o = e.y.min ?? 0, n = e.y.max ?? 1, a = e.x.obj || e.x.object, l = e.x.prop || e.x.property, u = this.propReferences.push(a[l]) - 1, p = e.y.obj || e.y.object, c = e.y.prop || e.y.property, g = this.propReferences.push(p[c]) - 1;
+    const n = e.x.min ?? 0, s = e.x.max ?? 1, r = e.y.min ?? 0, o = e.y.max ?? 1, a = e.x.obj || e.x.object, l = e.x.prop || e.x.property, f = this.propReferences.push(a[l]) - 1, d = e.y.obj || e.y.object, p = e.y.prop || e.y.property, c = this.propReferences.push(d[p]) - 1;
     t = typeof t == "function" ? t : null, this.imageContainer = null;
-    const b = this._createElement({
+    const g = this._createElement({
       class: "p-gui__vector2",
       textContent: i
     }), _ = this._createElement({
-      parent: b,
+      parent: g,
       class: "p-gui__vector-value",
-      textContent: a[l] + ", " + p[c]
-    }), d = this._createElement({
-      parent: b,
+      textContent: a[l] + ", " + d[p]
+    }), u = this._createElement({
+      parent: g,
       el: "div",
       class: "p-gui__vector2-area",
       onclick: (h) => {
-        a[l] = parseFloat(this._mapLinear(h.offsetX, 0, d.clientWidth, r, s).toFixed(2)), p[c] = parseFloat(this._mapLinear(h.offsetY, 0, d.clientHeight, n, o).toFixed(2)), t && t(a[l], a[c]);
+        a[l] = parseFloat(this._mapLinear(h.offsetX, 0, u.clientWidth, n, s).toFixed(2)), d[p] = parseFloat(this._mapLinear(h.offsetY, 0, u.clientHeight, o, r).toFixed(2)), t && t(a[l], a[p]);
       }
     });
-    let m = !1;
-    d.addEventListener("pointerdown", (h) => {
-      m = !0;
-    }), d.addEventListener("pointerup", () => {
-      m = !1;
-    }), d.addEventListener("pointermove", (h) => {
-      m && (a[l] = parseFloat(this._mapLinear(h.offsetX, 0, d.clientWidth, r, s).toFixed(2)), p[c] = parseFloat(this._mapLinear(h.offsetY, 0, d.clientHeight, n, o).toFixed(2)), t && t(a[l], a[c]));
+    let y = !1;
+    u.addEventListener("pointerdown", (h) => {
+      y = !0;
+    }), u.addEventListener("pointerup", () => {
+      y = !1;
+    }), u.addEventListener("pointermove", (h) => {
+      y && (a[l] = parseFloat(this._mapLinear(h.offsetX, 0, u.clientWidth, n, s).toFixed(2)), d[p] = parseFloat(this._mapLinear(h.offsetY, 0, u.clientHeight, o, r).toFixed(2)), t && t(a[l], a[p]));
     }), this._createElement({
-      parent: d,
+      parent: u,
       class: "p-gui__vector2-line p-gui__vector2-line-x"
     }), this._createElement({
-      parent: d,
+      parent: u,
       class: "p-gui__vector2-line p-gui__vector2-line-y"
     });
     const x = this._createElement({
-      parent: d,
+      parent: u,
       class: "p-gui__vector2-dot"
     });
-    x.style.left = this._mapLinear(a[l], r, s, 0, d.clientWidth) + "px", x.style.top = this._mapLinear(p[c], o, n, d.clientHeight, 0) + "px", Object.defineProperty(a, l, {
+    x.style.left = this._mapLinear(a[l], n, s, 0, u.clientWidth) + "px", x.style.top = this._mapLinear(d[p], r, o, u.clientHeight, 0) + "px", Object.defineProperty(a, l, {
       set: (h) => {
-        this.propReferences[u] = h, x.style.left = this._mapLinear(h, r, s, 0, d.clientWidth) + "px", _.textContent = String(h) + ", " + p[c];
+        this.propReferences[f] = h, x.style.left = this._mapLinear(h, n, s, 0, u.clientWidth) + "px", _.textContent = String(h) + ", " + d[p];
       },
-      get: () => this.propReferences[u]
-    }), Object.defineProperty(p, c, {
+      get: () => this.propReferences[f]
+    }), Object.defineProperty(d, p, {
       set: (h) => {
-        this.propReferences[g] = h, x.style.top = this._mapLinear(h, o, n, d.clientHeight, 0) + "px", _.textContent = a[l] + ", " + String(h);
+        this.propReferences[c] = h, x.style.top = this._mapLinear(h, r, o, u.clientHeight, 0) + "px", _.textContent = a[l] + ", " + String(h);
       },
-      get: () => this.propReferences[g]
+      get: () => this.propReferences[c]
     });
   }
   color(e = {}, t) {
     if (typeof e != "object")
       throw Error(`[GUI] color() first parameter must be an object. Received: ${typeof e}.`);
-    let i = typeof e.name == "string" && e.name || " ", r;
-    typeof e.value == "string" && (e.value.length != 7 || e.value[0] != "#" ? console.error(`[GUI] color() 'value' parameter must be an hexadecimal string in the format "#ffffff". Received: "${e.value}".`) : r = e.value), r || (r = "#000000");
+    let i = typeof e.name == "string" && e.name || " ", n;
+    typeof e.value == "string" && (e.value.length != 7 || e.value[0] != "#" ? console.error(`[GUI] color() 'value' parameter must be an hexadecimal string in the format "#ffffff". Received: "${e.value}".`) : n = e.value), n || (n = "#000000");
     const s = this._createElement({
       el: "div",
       class: "p-gui__color",
       textContent: i
-    }), o = this._createElement({
+    }), r = this._createElement({
       parent: s,
       el: "input",
       class: "p-gui__color-picker",
       type: "color",
-      value: r
+      value: n
     });
-    typeof t == "function" && o.addEventListener("input", () => {
-      t(o.value);
+    typeof t == "function" && r.addEventListener("input", () => {
+      t(r.value);
     });
   }
   folder(e = {}) {
-    let t = typeof e.closed == "boolean" ? e.closed : !1, i = e.name || "", r = e.color || null, s = e.maxHeight || null;
+    let t = typeof e.closed == "boolean" ? e.closed : !1, i = e.name || "", n = e.color || null, s = e.maxHeight || null;
     this.imageContainer = null;
-    let o = "p-gui__folder";
-    this.folders.length == 0 && (o += " p-gui__folder--first"), t && (o += " p-gui__folder--closed");
-    let n = r ? `background-color: ${r};` : "";
-    n += s ? `max-height: ${s}px;` : "";
+    let r = "p-gui__folder";
+    this.folders.length == 0 && (r += " p-gui__folder--first"), t && (r += " p-gui__folder--closed");
+    let o = n ? `background-color: ${n};` : "";
+    o += s ? `max-height: ${s}px;` : "";
     let a = this._createElement({
-      class: o,
-      inline: n
+      class: r,
+      inline: o
     });
     this._createElement({
       innerHTML: `<span class="p-gui__folder-arrow"></span>${i}`,
@@ -740,21 +762,21 @@ class f {
       },
       parent: a
     });
-    let l = new f({ isFolder: !0, folderOptions: {
+    let l = new b({ isFolder: !0, folderOptions: {
       wrapper: a
     } });
     return this.folders.push(l), l;
   }
   _makeDraggable() {
     var e = this;
-    this.header.addEventListener("pointerdown", t), this.header.addEventListener("pointerup", r);
+    this.header.addEventListener("pointerdown", t), this.header.addEventListener("pointerup", n);
     function t(s) {
       s.preventDefault(), e.position.initX = e.position.x, e.position.initY = e.position.y, e.position.prevX = s.clientX, e.position.prevY = s.clientY, document.addEventListener("pointermove", i);
     }
     function i(s) {
       s.preventDefault(), e.hasBeenDragged || (e.hasBeenDragged = !0, e.wrapper.setAttribute("data-dragged", "true")), e.position.x = e.position.initX + s.clientX - e.position.prevX, e.position.y = e.position.initY + s.clientY - e.position.prevY, e.wrapper.style.transform = "translate3d(" + e.position.x + "px," + e.position.y + "px,0)";
     }
-    function r(s) {
+    function n(s) {
       document.removeEventListener("pointermove", i);
     }
   }
@@ -764,10 +786,10 @@ class f {
   kill() {
     this.wrapper.remove();
   }
-  _mapLinear(e, t, i, r, s) {
-    return r + (e - t) * (s - r) / (i - t);
+  _mapLinear(e, t, i, n, s) {
+    return n + (e - t) * (s - n) / (i - t);
   }
 }
 export {
-  f as default
+  b as default
 };

@@ -558,20 +558,68 @@ export default class GUI {
         }
 
         let name = typeof params.name == 'string' ? params.name : ' ';
+        let isObject = false;
+        let propReferenceIndex = null;
+        let obj = params.obj || params.object; 
+        let prop = params.prop || params.property;
         let values = Array.isArray(params.values) ? params.values : null;
-        let value = (() => {
-            if (!values) {
-                return null;
-            }
-            if (typeof params.value == 'string') {
-                return values.indexOf(params.value);
-            }
-            if (typeof params.value == 'number') {
-                return params.value;
-            }
-        })();
+        let value;
 
         callback = typeof callback == 'function' ? callback : null;
+
+        // callback mode
+        if ( params.value !== undefined || 
+            (params.value === undefined && obj === undefined && prop === undefined)) {
+            if (prop != undefined || obj != undefined) {
+                console.warn(`[GUI] list() "obj" and "property" parameters are ignored when a "value" parameter is used.`);
+            }
+
+            value = (() => {
+                if (!values) {
+                    return null;
+                }
+                if (typeof params.value == 'string') {
+                    return values.indexOf(params.value);
+                }
+                if (typeof params.value == 'number') {
+                    return params.value;
+                }
+            })();
+        }
+
+        // object-binding
+        else if (prop != undefined && obj != undefined) {
+            if (typeof prop != 'string') {
+                throw Error(`[GUI] list() "prop" (or "property") parameter must be an string. Received: ${typeof prop}.`);
+            }
+            if (typeof obj != 'object') {
+                throw Error(`[GUI] list() "obj" (or "object") parameter must be an object. Received: ${typeof obj}.`);
+            }
+
+            value = (() => {
+                if (!values) {
+                    return null;
+                }
+                if (typeof obj[prop] == 'string') {
+                    return values.indexOf(obj[prop]);
+                }
+                if (typeof obj[prop] == 'number') {
+                    return obj[prop];
+                }
+            })();
+
+            if (name == ' ') {
+                name = prop;
+            }
+
+            propReferenceIndex = this.propReferences.push(obj[prop]) - 1;
+            isObject = true;
+        }
+        else {
+            if ((prop != undefined && obj == undefined) || (prop == undefined && obj == undefined)) {
+                console.warn(`[GUI] list() "obj" and "prop" parameters must be used together.`);
+            }
+        }
 
         this.imageContainer = null;
 
@@ -585,7 +633,11 @@ export default class GUI {
             el: 'select',
             class: 'p-gui__list-dropdown',
             onchange: (ev) => {
-                if (callback) {
+                if ( isObject ) {
+                    obj[prop] = ev.target.value;
+                }
+
+                else if (callback) {
                     callback(ev.target.value);
                 }
             }
@@ -605,6 +657,31 @@ export default class GUI {
                 });
                 if (value == index) {
                     option.setAttribute('selected', '');
+                }
+            });
+        }
+
+        if ( isObject ) {
+            Object.defineProperty( obj, prop, {
+                set: val => { 
+                    if (typeof val == 'string') {
+                        value = values.indexOf(val);
+                    }
+                    if (typeof val == 'number') {
+                        value = val;
+                    }
+                    
+                    this.propReferences[propReferenceIndex] = value;
+
+                    select.querySelector('[selected]').removeAttribute('selected')
+                    select.querySelectorAll('option')[value].setAttribute('selected', '');
+                    
+                    if (typeof callback == 'function') {
+                        callback(value);
+                    }
+                },
+                get: () => { 
+                    return this.propReferences[propReferenceIndex];
                 }
             });
         }
