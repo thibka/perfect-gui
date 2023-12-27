@@ -869,7 +869,13 @@ export default class GUI {
         }
 
         let name = typeof params.name == 'string' ? params.name || ' ' : ' ';
+
+        let isObject = false;
+        let propReferenceIndex = null;
+        let obj = params.obj || params.object; 
+        let prop = params.prop || params.property;
         let value;
+
         if (typeof params.value == 'string') {
             if (params.value.length != 7 || params.value[0] != '#') {
                 console.error(`[GUI] color() 'value' parameter must be an hexadecimal string in the format "#ffffff". Received: "${params.value}".`)
@@ -879,6 +885,37 @@ export default class GUI {
             }
         }
         if (!value) value = '#000000';
+
+        // callback mode
+        if ( params.value !== undefined ) {
+            if (prop != undefined || obj != undefined) {
+                console.warn(`[GUI] color() "obj" and "property" parameters are ignored when a "value" parameter is used.`);
+            }
+        }
+
+        // object-binding
+        else if (prop != undefined && obj != undefined) {
+            if (typeof prop != 'string') {
+                throw Error(`[GUI] color() "prop" (or "property") parameter must be an string. Received: ${typeof prop}.`);
+            }
+            if (typeof obj != 'object') {
+                throw Error(`[GUI] color() "obj" (or "object") parameter must be an object. Received: ${typeof obj}.`);
+            }
+
+            if (name == ' ') {
+                name = prop;
+            }
+
+            propReferenceIndex = this.propReferences.push(obj[prop]) - 1;
+            isObject = true;
+        }
+        else {
+            if ((prop != undefined && obj == undefined) || (prop == undefined && obj == undefined)) {
+                console.warn(`[GUI] color() "obj" and "prop" parameters must be used together.`);
+            }
+        }
+
+        this.imageContainer = null;
 
         const container = this._createElement({
             el: 'div',
@@ -896,7 +933,30 @@ export default class GUI {
 
         if (typeof callback == 'function') {
             colorpicker.addEventListener('input', () => {
-                callback(colorpicker.value);
+                if ( isObject ) {
+                    obj[prop] = colorpicker.value;
+                }
+
+                else if (typeof callback == 'function') {
+                    callback(colorpicker.value);
+                }
+            });
+        }
+
+        if ( isObject ) {
+            Object.defineProperty( obj, prop, {
+                set: val => { 
+                    this.propReferences[propReferenceIndex] = val;
+
+                    colorpicker.value = val;
+
+                    if (typeof callback == 'function') {
+                        callback(val);
+                    }
+                },
+                get: () => { 
+                    return this.propReferences[propReferenceIndex];
+                }
             });
         }
     }
