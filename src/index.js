@@ -287,8 +287,43 @@ export default class GUI {
             name = typeof params.name == 'string' ? params.name || ' ' : ' ';
         }
 
+        let isObject = false;
+        let propReferenceIndex = null;
+        let obj = params.obj || params.object; 
+        let prop = params.prop || params.property;
+
         const selected = params.selected === true;
         const selectionBorder = params.selectionBorder !== false;
+
+        // callback mode
+        if ( params.selected !== undefined || 
+            (params.selected === undefined && obj === undefined && prop === undefined)) {
+            if (prop != undefined || obj != undefined) {
+                console.warn(`[GUI] image() "obj" and "property" parameters are ignored when a "selected" parameter is used.`);
+            }
+        }
+
+        // object-binding
+        else if (prop != undefined && obj != undefined) {
+            if (typeof prop != 'string') {
+                throw Error(`[GUI] image() "prop" (or "property") parameter must be an string. Received: ${typeof prop}.`);
+            }
+            if (typeof obj != 'object') {
+                throw Error(`[GUI] image() "obj" (or "object") parameter must be an object. Received: ${typeof obj}.`);
+            }
+
+            if (name == ' ') {
+                name = prop;
+            }
+
+            propReferenceIndex = this.propReferences.push(obj[prop]) - 1;
+            isObject = true;
+        }
+        else {
+            if ((prop != undefined && obj == undefined) || (prop == undefined && obj == undefined)) {
+                console.warn(`[GUI] image() "obj" and "prop" parameters must be used together.`);
+            }
+        }
         
         // width & height options
         let inline_styles = '';
@@ -330,19 +365,46 @@ export default class GUI {
             textContent: name
         });
         
-
-        
-        if (typeof callback == 'function') {
-            image.onclick = () => {
-                let selected = this.imageContainer.querySelectorAll('.p-gui__image--selected');
-                for (let i = 0; i < selected.length; i++) {
-                    selected[i].classList.remove('p-gui__image--selected');
-                }
-                if (selectionBorder) {
-                    image.classList.add('p-gui__image--selected');
-                }
+        image.onclick = () => {
+            let selected = this.imageContainer.querySelectorAll('.p-gui__image--selected');
+            for (let i = 0; i < selected.length; i++) {
+                selected[i].classList.remove('p-gui__image--selected');
+            }
+            if (selectionBorder) {
+                image.classList.add('p-gui__image--selected');
+            }
+            if (isObject) {
+                obj[prop] = true;
+            }
+            else if (typeof callback == 'function') {
                 callback({ path, text: name });
-            };
+            }
+        };
+
+        if ( isObject ) {
+            Object.defineProperty( obj, prop, {
+                set: selected => { 
+                    this.propReferences[propReferenceIndex] = selected;
+                    
+                    if (selected) {
+                        let selected = this.imageContainer.querySelectorAll('.p-gui__image--selected');
+                        for (let i = 0; i < selected.length; i++) {
+                            selected[i].classList.remove('p-gui__image--selected');
+                        }
+                        if (selectionBorder) {
+                            image.classList.add('p-gui__image--selected');
+                        }
+                        if (typeof callback == 'function') {
+                            callback({path, text: name});
+                        }
+                    } else {
+                        image.classList.remove('p-gui__image--selected');
+                    }                  
+                },
+                get: () => { 
+                    return this.propReferences[propReferenceIndex];
+                }
+            });
         }
     }
     
