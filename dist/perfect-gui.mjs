@@ -525,10 +525,10 @@ class b {
       class: "p-gui__image-text",
       textContent: n
     }), l.onclick = () => {
-      let c = this.imageContainer.querySelectorAll(".p-gui__image--selected");
+      let c = l.parentElement.querySelectorAll(".p-gui__image--selected");
       for (let d = 0; d < c.length; d++)
         c[d].classList.remove("p-gui__image--selected");
-      i ? l.classList.add("p-gui__image--selected") : typeof t == "function" && t({ path: o, text: n });
+      i && l.classList.add("p-gui__image--selected"), typeof t == "function" && t({ path: o, text: n });
     }, l;
   }
   slider(e = {}, t) {

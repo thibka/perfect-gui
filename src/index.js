@@ -330,15 +330,16 @@ export default class GUI {
             textContent: name
         });
         
+        
         image.onclick = () => {
-            let selected_items = this.imageContainer.querySelectorAll('.p-gui__image--selected');
+            let selected_items = image.parentElement.querySelectorAll('.p-gui__image--selected');
             for (let i = 0; i < selected_items.length; i++) {
                 selected_items[i].classList.remove('p-gui__image--selected');
             }
             if (selectionBorder) {
                 image.classList.add('p-gui__image--selected');
             }
-            else if (typeof callback == 'function') {
+            if (typeof callback == 'function') {
                 callback({ path, text: name });
             }
         };
