@@ -531,7 +531,7 @@ class _ {
       inline: "background-image: url(" + o + "); " + p,
       parent: this.imageContainer
     });
-    f && d && c.classList.add("p-gui__image--selected"), this._createElement({
+    return f && d && c.classList.add("p-gui__image--selected"), this._createElement({
       parent: c,
       class: "p-gui__image-text",
       textContent: s
@@ -551,7 +551,7 @@ class _ {
           c.classList.remove("p-gui__image--selected");
       },
       get: () => this.propReferences[i]
-    });
+    }), c;
   }
   slider(e = {}, t) {
     if (typeof e != "object")
