@@ -529,7 +529,7 @@ class b {
       for (let d = 0; d < c.length; d++)
         c[d].classList.remove("p-gui__image--selected");
       i && l.classList.add("p-gui__image--selected"), typeof t == "function" && t({ path: o, text: n });
-    }, l;
+    }, l.path = o, l;
   }
   slider(e = {}, t) {
     if (typeof e != "object")
