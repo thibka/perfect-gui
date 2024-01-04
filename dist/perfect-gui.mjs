@@ -276,6 +276,7 @@ function w(m) {
         cursor: pointer;
         border-radius: 3px;
         border: 1px solid var(--color-border-2);
+        outline: none;
     }
     
     .p-gui__list-dropdown {
@@ -367,6 +368,7 @@ function w(m) {
         flex-wrap: wrap;
         border: 1px solid grey;
         padding: 0 3px;
+        border-radius: var(--main-border-radius);
     }
     
     .p-gui__folder:last-of-type {
