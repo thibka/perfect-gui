@@ -365,8 +365,7 @@ function w(m) {
         margin-bottom: 3px;
         display: flex;
         flex-wrap: wrap;
-        border-left: 3px solid grey;
-        border-bottom: 1px solid grey;
+        border: 1px solid grey;
         padding: 0 3px;
     }
     
@@ -529,7 +528,7 @@ class b {
       for (let d = 0; d < c.length; d++)
         c[d].classList.remove("p-gui__image--selected");
       i && l.classList.add("p-gui__image--selected"), typeof t == "function" && t({ path: o, text: n });
-    }, l.path = o, l;
+    }, l;
   }
   slider(e = {}, t) {
     if (typeof e != "object")
