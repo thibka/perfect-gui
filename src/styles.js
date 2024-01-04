@@ -368,8 +368,7 @@ export default function( position_type ) {
         margin-bottom: 3px;
         display: flex;
         flex-wrap: wrap;
-        border-left: 3px solid grey;
-        border-bottom: 1px solid grey;
+        border: 1px solid grey;
         padding: 0 3px;
     }
     
