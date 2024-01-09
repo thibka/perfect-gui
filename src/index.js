@@ -355,8 +355,8 @@ export default class GUI {
         let name = typeof params.name == 'string' ? params.name || ' ' : ' ';
         let isObject = false;
         let propReferenceIndex = null;
-        let obj = params.obj || params.object; 
-        let prop = params.prop || params.property;
+        let obj = params.obj; 
+        let prop = params.prop;
         let value = typeof params.value == 'number' ? params.value : null;
         let min = params.min ?? 0;
         let max = params.max ?? 1;
@@ -365,16 +365,16 @@ export default class GUI {
         // callback mode
         if ( value !== null ) {
             if (prop != undefined || obj != undefined) {
-                console.warn(`[GUI] slider() "obj" and "property" parameters are ignored when a "value" parameter is used.`);
+                console.warn(`[GUI] slider() "obj" and "prop" parameters are ignored when a "value" parameter is used.`);
             }
         }
         // object-binding
         else if (prop != undefined && obj != undefined) {
             if (typeof prop != 'string') {
-                throw Error(`[GUI] slider() "prop" (or "property") parameter must be an string. Received: ${typeof prop}.`);
+                throw Error(`[GUI] slider() "prop" parameter must be an string. Received: ${typeof prop}.`);
             }
             if (typeof obj != 'object') {
-                throw Error(`[GUI] slider() "obj" (or "object") parameter must be an object. Received: ${typeof obj}.`);
+                throw Error(`[GUI] slider() "obj" parameter must be an object. Received: ${typeof obj}.`);
             }
 
             if (name == ' ') {
@@ -457,24 +457,24 @@ export default class GUI {
         let name = typeof params.name == 'string' ? params.name || ' ' : ' ';
         let isObject = false;
         let propReferenceIndex = null;
-        let obj = params.obj || params.object; 
-        let prop = params.prop || params.property;
+        let obj = params.obj; 
+        let prop = params.prop;
         let value = typeof params.value === 'boolean' ? params.value : null;
 
         // callback mode
         if ( value !== null ) {
             if (prop != undefined || obj != undefined) {
-                console.warn(`[GUI] toggle() "obj" and "property" parameters are ignored when a "value" parameter is used.`);
+                console.warn(`[GUI] toggle() "obj" and "prop" parameters are ignored when a "value" parameter is used.`);
             }
         }
 
         // object-binding
         else if (prop != undefined && obj != undefined) {
             if (typeof prop != 'string') {
-                throw Error(`[GUI] toggle() "prop" (or "property") parameter must be an string. Received: ${typeof prop}.`);
+                throw Error(`[GUI] toggle() "prop" parameter must be an string. Received: ${typeof prop}.`);
             }
             if (typeof obj != 'object') {
-                throw Error(`[GUI] toggle() "obj" (or "object") parameter must be an object. Received: ${typeof obj}.`);
+                throw Error(`[GUI] toggle() "obj" parameter must be an object. Received: ${typeof obj}.`);
             }
 
             if (name == ' ') {
@@ -561,8 +561,8 @@ export default class GUI {
         let name = typeof params.name == 'string' ? params.name : ' ';
         let isObject = false;
         let propReferenceIndex = null;
-        let obj = params.obj || params.object; 
-        let prop = params.prop || params.property;
+        let obj = params.obj; 
+        let prop = params.prop;
         let values = Array.isArray(params.values) ? params.values : null;
         let value;
 
@@ -572,7 +572,7 @@ export default class GUI {
         if ( params.value !== undefined || 
             (params.value === undefined && obj === undefined && prop === undefined)) {
             if (prop != undefined || obj != undefined) {
-                console.warn(`[GUI] list() "obj" and "property" parameters are ignored when a "value" parameter is used.`);
+                console.warn(`[GUI] list() "obj" and "prop" parameters are ignored when a "value" parameter is used.`);
             }
 
             value = (() => {
@@ -591,10 +591,10 @@ export default class GUI {
         // object-binding
         else if (prop != undefined && obj != undefined) {
             if (typeof prop != 'string') {
-                throw Error(`[GUI] list() "prop" (or "property") parameter must be an string. Received: ${typeof prop}.`);
+                throw Error(`[GUI] list() "prop" parameter must be an string. Received: ${typeof prop}.`);
             }
             if (typeof obj != 'object') {
-                throw Error(`[GUI] list() "obj" (or "object") parameter must be an object. Received: ${typeof obj}.`);
+                throw Error(`[GUI] list() "obj" parameter must be an object. Received: ${typeof obj}.`);
             }
 
             value = (() => {
@@ -703,12 +703,12 @@ export default class GUI {
         const minY = params.y.min ?? 0;
         const maxY = params.y.max ?? 1;
 
-        const objectX = params.x.obj || params.x.object;
-        const propX = params.x.prop || params.x.property;
+        const objectX = params.x.obj;
+        const propX = params.x.prop;
         const propXReferenceIndex = this.propReferences.push(objectX[propX]) - 1;
         
-        const objectY = params.y.obj || params.y.object;
-        const propY = params.y.prop || params.y.property;
+        const objectY = params.y.obj;
+        const propY = params.y.prop;
         const propYReferenceIndex = this.propReferences.push(objectY[propY]) - 1;
 
         callback = typeof callback == 'function' ? callback : null;
@@ -807,8 +807,8 @@ export default class GUI {
 
         let isObject = false;
         let propReferenceIndex = null;
-        let obj = params.obj || params.object; 
-        let prop = params.prop || params.property;
+        let obj = params.obj; 
+        let prop = params.prop;
         let value;
 
         if (typeof params.value == 'string') {
@@ -824,17 +824,17 @@ export default class GUI {
         // callback mode
         if ( params.value !== undefined ) {
             if (prop != undefined || obj != undefined) {
-                console.warn(`[GUI] color() "obj" and "property" parameters are ignored when a "value" parameter is used.`);
+                console.warn(`[GUI] color() "obj" and "prop" parameters are ignored when a "value" parameter is used.`);
             }
         }
 
         // object-binding
         else if (prop != undefined && obj != undefined) {
             if (typeof prop != 'string') {
-                throw Error(`[GUI] color() "prop" (or "property") parameter must be an string. Received: ${typeof prop}.`);
+                throw Error(`[GUI] color() "prop" parameter must be an string. Received: ${typeof prop}.`);
             }
             if (typeof obj != 'object') {
-                throw Error(`[GUI] color() "obj" (or "object") parameter must be an object. Received: ${typeof obj}.`);
+                throw Error(`[GUI] color() "obj" parameter must be an object. Received: ${typeof obj}.`);
             }
 
             if (name == ' ') {
