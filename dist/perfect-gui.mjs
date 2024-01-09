@@ -1,4 +1,4 @@
-function w(m) {
+function w(y) {
   return (
     /* css */
     `
@@ -10,7 +10,7 @@ function w(m) {
         --color-accent: #1681ca;
         --color-accent-hover: #218fda;
     
-        position: ${m};
+        position: ${y};
         top: 0;
         left: 0;
         transform: translate3d(0,0,0);
@@ -535,14 +535,14 @@ class b {
   slider(e = {}, t) {
     if (typeof e != "object")
       throw Error(`[GUI] slider() first parameter must be an object. Received: ${typeof e}.`);
-    let o = typeof e.name == "string" && e.name || " ", a = !1, n = null, r = e.obj || e.object, i = e.prop || e.property, s = typeof e.value == "number" ? e.value : null, l = e.min ?? 0, c = e.max ?? 1, d = e.step || (c - l) / 100;
+    let o = typeof e.name == "string" && e.name || " ", a = !1, n = null, r = e.obj, i = e.prop, s = typeof e.value == "number" ? e.value : null, l = e.min ?? 0, c = e.max ?? 1, d = e.step || (c - l) / 100;
     if (s !== null)
-      (i != null || r != null) && console.warn('[GUI] slider() "obj" and "property" parameters are ignored when a "value" parameter is used.');
+      (i != null || r != null) && console.warn('[GUI] slider() "obj" and "prop" parameters are ignored when a "value" parameter is used.');
     else if (i != null && r != null) {
       if (typeof i != "string")
-        throw Error(`[GUI] slider() "prop" (or "property") parameter must be an string. Received: ${typeof i}.`);
+        throw Error(`[GUI] slider() "prop" parameter must be an string. Received: ${typeof i}.`);
       if (typeof r != "object")
-        throw Error(`[GUI] slider() "obj" (or "object") parameter must be an object. Received: ${typeof r}.`);
+        throw Error(`[GUI] slider() "obj" parameter must be an object. Received: ${typeof r}.`);
       o == " " && (o = i), n = this.propReferences.push(r[i]) - 1, a = !0;
     } else
       (i != null && r == null || i == null && r == null) && console.warn('[GUI] slider() "obj" and "prop" parameters must be used together.'), s = (c - l) / 2;
@@ -578,14 +578,14 @@ class b {
   toggle(e = {}, t) {
     if (typeof e != "object")
       throw Error(`[GUI] toggle() first parameter must be an object. Received: ${typeof e}.`);
-    let o = typeof e.name == "string" && e.name || " ", a = !1, n = null, r = e.obj || e.object, i = e.prop || e.property, s = typeof e.value == "boolean" ? e.value : null;
+    let o = typeof e.name == "string" && e.name || " ", a = !1, n = null, r = e.obj, i = e.prop, s = typeof e.value == "boolean" ? e.value : null;
     if (s !== null)
-      (i != null || r != null) && console.warn('[GUI] toggle() "obj" and "property" parameters are ignored when a "value" parameter is used.');
+      (i != null || r != null) && console.warn('[GUI] toggle() "obj" and "prop" parameters are ignored when a "value" parameter is used.');
     else if (i != null && r != null) {
       if (typeof i != "string")
-        throw Error(`[GUI] toggle() "prop" (or "property") parameter must be an string. Received: ${typeof i}.`);
+        throw Error(`[GUI] toggle() "prop" parameter must be an string. Received: ${typeof i}.`);
       if (typeof r != "object")
-        throw Error(`[GUI] toggle() "obj" (or "object") parameter must be an object. Received: ${typeof r}.`);
+        throw Error(`[GUI] toggle() "obj" parameter must be an object. Received: ${typeof r}.`);
       o == " " && (o = i), n = this.propReferences.push(r[i]) - 1, a = !0;
     } else
       (i != null && r == null || i == null && r == null) && console.warn('[GUI] toggle() "obj" and "prop" parameters must be used together.');
@@ -614,9 +614,9 @@ class b {
   list(e = {}, t) {
     if (typeof e != "object")
       throw Error(`[GUI] list() first parameter must be an object. Received: ${typeof e}.`);
-    let o = typeof e.name == "string" ? e.name : " ", a = !1, n = null, r = e.obj || e.object, i = e.prop || e.property, s = Array.isArray(e.values) ? e.values : null, l;
+    let o = typeof e.name == "string" ? e.name : " ", a = !1, n = null, r = e.obj, i = e.prop, s = Array.isArray(e.values) ? e.values : null, l;
     if (t = typeof t == "function" ? t : null, e.value !== void 0 || e.value === void 0 && r === void 0 && i === void 0)
-      (i != null || r != null) && console.warn('[GUI] list() "obj" and "property" parameters are ignored when a "value" parameter is used.'), l = (() => {
+      (i != null || r != null) && console.warn('[GUI] list() "obj" and "prop" parameters are ignored when a "value" parameter is used.'), l = (() => {
         if (!s)
           return null;
         if (typeof e.value == "string")
@@ -626,9 +626,9 @@ class b {
       })();
     else if (i != null && r != null) {
       if (typeof i != "string")
-        throw Error(`[GUI] list() "prop" (or "property") parameter must be an string. Received: ${typeof i}.`);
+        throw Error(`[GUI] list() "prop" parameter must be an string. Received: ${typeof i}.`);
       if (typeof r != "object")
-        throw Error(`[GUI] list() "obj" (or "object") parameter must be an object. Received: ${typeof r}.`);
+        throw Error(`[GUI] list() "obj" parameter must be an object. Received: ${typeof r}.`);
       l = (() => {
         if (!s)
           return null;
@@ -677,7 +677,7 @@ class b {
     if (typeof e != "object")
       throw Error(`[GUI] vector2() first parameter must be an object. Received: ${typeof e}.`);
     let o = typeof e.name == "string" && e.name || " ";
-    const a = e.x.min ?? 0, n = e.x.max ?? 1, r = e.y.min ?? 0, i = e.y.max ?? 1, s = e.x.obj || e.x.object, l = e.x.prop || e.x.property, c = this.propReferences.push(s[l]) - 1, d = e.y.obj || e.y.object, p = e.y.prop || e.y.property, u = this.propReferences.push(d[p]) - 1;
+    const a = e.x.min ?? 0, n = e.x.max ?? 1, r = e.y.min ?? 0, i = e.y.max ?? 1, s = e.x.obj, l = e.x.prop, c = this.propReferences.push(s[l]) - 1, d = e.y.obj, p = e.y.prop, u = this.propReferences.push(d[p]) - 1;
     t = typeof t == "function" ? t : null, this.imageContainer = null;
     const g = this._createElement({
       class: "p-gui__vector2",
@@ -694,13 +694,13 @@ class b {
         s[l] = parseFloat(this._mapLinear(f.offsetX, 0, h.clientWidth, a, n).toFixed(2)), d[p] = parseFloat(this._mapLinear(f.offsetY, 0, h.clientHeight, i, r).toFixed(2)), t && t(s[l], s[p]);
       }
     });
-    let y = !1;
+    let m = !1;
     h.addEventListener("pointerdown", (f) => {
-      y = !0;
+      m = !0;
     }), h.addEventListener("pointerup", () => {
-      y = !1;
+      m = !1;
     }), h.addEventListener("pointermove", (f) => {
-      y && (s[l] = parseFloat(this._mapLinear(f.offsetX, 0, h.clientWidth, a, n).toFixed(2)), d[p] = parseFloat(this._mapLinear(f.offsetY, 0, h.clientHeight, i, r).toFixed(2)), t && t(s[l], s[p]));
+      m && (s[l] = parseFloat(this._mapLinear(f.offsetX, 0, h.clientWidth, a, n).toFixed(2)), d[p] = parseFloat(this._mapLinear(f.offsetY, 0, h.clientHeight, i, r).toFixed(2)), t && t(s[l], s[p]));
     }), this._createElement({
       parent: h,
       class: "p-gui__vector2-line p-gui__vector2-line-x"
@@ -727,14 +727,14 @@ class b {
   color(e = {}, t) {
     if (typeof e != "object")
       throw Error(`[GUI] color() first parameter must be an object. Received: ${typeof e}.`);
-    let o = typeof e.name == "string" && e.name || " ", a = !1, n = null, r = e.obj || e.object, i = e.prop || e.property, s;
+    let o = typeof e.name == "string" && e.name || " ", a = !1, n = null, r = e.obj, i = e.prop, s;
     if (typeof e.value == "string" && (e.value.length != 7 || e.value[0] != "#" ? console.error(`[GUI] color() 'value' parameter must be an hexadecimal string in the format "#ffffff". Received: "${e.value}".`) : s = e.value), s || (s = "#000000"), e.value !== void 0)
-      (i != null || r != null) && console.warn('[GUI] color() "obj" and "property" parameters are ignored when a "value" parameter is used.');
+      (i != null || r != null) && console.warn('[GUI] color() "obj" and "prop" parameters are ignored when a "value" parameter is used.');
     else if (i != null && r != null) {
       if (typeof i != "string")
-        throw Error(`[GUI] color() "prop" (or "property") parameter must be an string. Received: ${typeof i}.`);
+        throw Error(`[GUI] color() "prop" parameter must be an string. Received: ${typeof i}.`);
       if (typeof r != "object")
-        throw Error(`[GUI] color() "obj" (or "object") parameter must be an object. Received: ${typeof r}.`);
+        throw Error(`[GUI] color() "obj" parameter must be an object. Received: ${typeof r}.`);
       o == " " && (o = i), n = this.propReferences.push(r[i]) - 1, a = !0;
     } else
       (i != null && r == null || i == null && r == null) && console.warn('[GUI] color() "obj" and "prop" parameters must be used together.');
