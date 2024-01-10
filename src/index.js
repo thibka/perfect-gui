@@ -212,18 +212,6 @@ export default class GUI {
         if (typeof callback != 'function') {
             callback = () => {};
         }
-
-        /* let create_options = {
-            class: 'p-gui__button',
-            textContent: name,
-            onclick: callback
-        };
-
-        if (typeof options.color == 'string') {
-            create_options.inline = 'background-color: ' + options.color;
-        }
-        
-        this._createElement(create_options); */
         
         const el = document.createElement('div');
         el.className = 'p-gui__button';
@@ -553,7 +541,7 @@ export default class GUI {
             })();
         }
 
-        // object-binding
+        // object-binding mode
         else if (prop != undefined && obj != undefined) {
             if (typeof prop != 'string') {
                 throw Error(`[GUI] list() "prop" parameter must be an string. Received: ${typeof prop}.`);
@@ -562,7 +550,7 @@ export default class GUI {
                 throw Error(`[GUI] list() "obj" parameter must be an object. Received: ${typeof obj}.`);
             }
 
-            value = (() => {
+            value = (() => {                
                 if (!values) {
                     return null;
                 }

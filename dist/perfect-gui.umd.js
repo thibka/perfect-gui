@@ -94,7 +94,7 @@
     
     .p-gui__image-container {
         width: 100%;
-        padding: 0 2%;
+        padding: 3px;
         display: flex;
         justify-content: flex-start;
         flex-wrap: wrap;
