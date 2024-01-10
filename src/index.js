@@ -608,21 +608,24 @@ export default class GUI {
 
         if ( isObject ) {
             Object.defineProperty( obj, prop, {
-                set: val => { 
+                set: val => {
+                    let index, value; 
                     if (typeof val == 'string') {
-                        value = values.indexOf(val);
-                    }
-                    if (typeof val == 'number') {
+                        index = values.indexOf(val);
                         value = val;
                     }
+                    if (typeof val == 'number') {
+                        index = val;
+                        value = values[val];
+                    }
                     
-                    this.propReferences[propReferenceIndex] = value;
+                    this.propReferences[propReferenceIndex] = val;
 
                     select.querySelector('[selected]').removeAttribute('selected')
-                    select.querySelectorAll('option')[value].setAttribute('selected', '');
+                    select.querySelectorAll('option')[index].setAttribute('selected', '');
                     
                     if (typeof callback == 'function') {
-                        callback(value);
+                        callback(value, index);
                     }
                 },
                 get: () => { 
