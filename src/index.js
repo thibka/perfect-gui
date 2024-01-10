@@ -172,53 +172,27 @@ export default class GUI {
         this.position = {prevX:this.xOffset, prevY:this.yOffset, x:this.xOffset, y:this.yOffset};
         this.wrapper.style.transform = `translate3d(${this.position.x}px, ${this.position.y}px, 0)`;
     }
-
-    _createElement(element) {
-        element.el = element.el || 'div';
-        var domElement = document.createElement(element.el);
-        if (element.id) domElement.id = element.id;
-        if (element.class) domElement.className = element.class;
-        if (element.inline) domElement.style = element.inline;
-        if (element.href) domElement.href = element.href;
-        if (element.onclick) domElement.onclick = element.onclick;
-        if (element.onchange) domElement.onchange = element.onchange;
-        if (element.textContent) domElement.textContent = element.textContent;
-        if (element.innerHTML) domElement.innerHTML = element.innerHTML;
-        if (element.type) domElement.type = element.type;
-        if (element.value) domElement.value = element.value;
-        if (element.customAttributes) {
-            for (var i in element.customAttributes) {
-                domElement.setAttribute(i, element.customAttributes[i]);
-            }
-        }
-        element.parent = element.parent ? element.parent : this.wrapper;
-        element.parent.append(domElement);
-        return domElement;
-    }
     
     _addStyles(styles) {
         this.stylesheet.innerHTML += styles;
     }
     
     _addWrapper() {
-        this.wrapper = this._createElement({
-            parent: this.container,
-            id: 'p-gui-'+this.instanceId,
-            class: 'p-gui'
-        });        
+        this.wrapper = document.createElement('div');
+        this.wrapper.id = 'p-gui-'+this.instanceId;
+        this.wrapper.className = 'p-gui';
+        this.container.append(this.wrapper);      
     
-        this.header = this._createElement({
-            parent: this.wrapper,
-            class: 'p-gui__header',
-            textContent: this.name,
-            inline: `${ this.backgroundColor ? 'border-color: ' + this.backgroundColor + ';' : ''}`
-        });
+        this.header = document.createElement('div');
+        this.header.className = 'p-gui__header';
+        this.header.textContent = this.name;
+        this.header.style = `${ this.backgroundColor ? 'border-color: ' + this.backgroundColor + ';' : ''}`;
+        this.wrapper.append(this.header);
     
-        this._createElement({
-            parent: this.header,
-            class: 'p-gui__header-close',
-            onclick: this.toggleClose.bind(this)
-        });
+        const close_btn = document.createElement('div');
+        close_btn.className = 'p-gui__header-close';
+        close_btn.addEventListener('click', this.toggleClose.bind(this));
+        this.header.append(close_btn);
     }
 
     button(options, callback) {
@@ -251,12 +225,11 @@ export default class GUI {
         
         this._createElement(create_options); */
         
-        
-        const el = this._createElement({
-            class: 'p-gui__button',
-            textContent: name,
-            onclick: callback
-        });
+        const el = document.createElement('div');
+        el.className = 'p-gui__button';
+        el.textContent = name;
+        el.addEventListener('click', callback);
+        this.wrapper.append(el);
 
         if (typeof options.color == 'string') {
             el.style.setProperty('--color-accent', options.color);
@@ -307,31 +280,28 @@ export default class GUI {
         }
                 
         if (!this.imageContainer) {
-            this.imageContainer = this._createElement({
-                class: 'p-gui__image-container'
-            });
+            this.imageContainer = document.createElement('div');
+            this.imageContainer.className = 'p-gui__image-container';
+            this.wrapper.append(this.imageContainer);
         }
 
-        // Image
-        var image = this._createElement({
-            class: 'p-gui__image',
-            inline: 'background-image: url(' + path + '); ' + inline_styles,
-            parent: this.imageContainer
-        });
+        // Image button
+        const image = document.createElement('div');
+        image.className = 'p-gui__image';
+        image.style = 'background-image: url(' + path + '); ' + inline_styles;
+        this.imageContainer.append(image);
 
         if (selected && selectionBorder) {
             image.classList.add('p-gui__image--selected');
         }
         
         // Text inside image
-        this._createElement({
-            parent: image,
-            class: 'p-gui__image-text',
-            textContent: name
-        });
+        const text = document.createElement('div');
+        text.className = 'p-gui__image-text';
+        text.textContent = name;
+        image.append(text);
         
-        
-        image.onclick = () => {
+        image.addEventListener('click', () => {
             let selected_items = image.parentElement.querySelectorAll('.p-gui__image--selected');
             for (let i = 0; i < selected_items.length; i++) {
                 selected_items[i].classList.remove('p-gui__image--selected');
@@ -342,7 +312,7 @@ export default class GUI {
             if (typeof callback == 'function') {
                 callback({ path, text: name });
             }
-        };
+        });
 
         return image;
     }
@@ -394,29 +364,24 @@ export default class GUI {
 
         this.imageContainer = null;
     
-        var container = this._createElement({
-            class: 'p-gui__slider',
-            textContent: name
-        });
+        const container = document.createElement('div');
+        container.className = 'p-gui__slider';
+        container.textContent = name;
+        this.wrapper.append(container);
     
-        var slider_ctrl = this._createElement({
-            parent: container,
-            el: 'input',
-            class: 'p-gui__slider-ctrl',
-            customAttributes: {
-                type: 'range',
-                min,
-                max,
-                step,
-                value: isObject ? obj[prop] : value
-            }
-        });
-    
-        var slider_value = this._createElement({
-            parent: container,
-            class: 'p-gui__slider-value',
-            textContent: isObject ? String(obj[prop]) : String(value)
-        });
+        const slider_ctrl = document.createElement('input');
+        slider_ctrl.className = 'p-gui__slider-ctrl';
+        slider_ctrl.setAttribute('type', 'range');
+        slider_ctrl.setAttribute('min', min);
+        slider_ctrl.setAttribute('max', max);
+        slider_ctrl.setAttribute('step', step);
+        slider_ctrl.setAttribute('value', isObject ? obj[prop] : value);
+        container.append(slider_ctrl);
+
+        const slider_value = document.createElement('div');
+        slider_value.className = 'p-gui__slider-value';
+        slider_value.textContent = isObject ? String(obj[prop]) : String(value);
+        container.append(slider_value);
     
         slider_ctrl.addEventListener('input', () => {
             slider_value.textContent = slider_ctrl.value;
@@ -492,30 +457,31 @@ export default class GUI {
 
         this.imageContainer = null;
 
-        const container = this._createElement({
-            class: 'p-gui__switch',
-            onclick: (ev) => {
-                const checkbox = ev.target.childNodes[1];
-                
-                let value = true;
-                
-                if (checkbox.classList.contains('p-gui__switch-checkbox--active')) {
-                    value = false;
-                }
-                
-                checkbox.classList.toggle('p-gui__switch-checkbox--active');
+        const container = document.createElement('div');
+        container.textContent = name;
+        container.className = 'p-gui__switch';
+        this.wrapper.append(container);
 
-                if ( isObject ) {
-                    obj[prop] = value;
+        container.addEventListener('click', (ev) => {
+            const checkbox = ev.target.childNodes[1];
+            
+            let value = true;
+            
+            if (checkbox.classList.contains('p-gui__switch-checkbox--active')) {
+                value = false;
+            }
+            
+            checkbox.classList.toggle('p-gui__switch-checkbox--active');
+
+            if ( isObject ) {
+                obj[prop] = value;
+            }
+            
+            else {
+                if (typeof callback == 'function') {
+                    callback(value);
                 }
-                
-                else {
-                    if (typeof callback == 'function') {
-                        callback(value);
-                    }
-                }
-            },
-            textContent: name
+            }
         });
 
         let activeClass = (() => {
@@ -526,10 +492,9 @@ export default class GUI {
             }
         })();
 
-        const checkbox = this._createElement({
-            parent: container,
-            class: 'p-gui__switch-checkbox' + activeClass
-        });
+        const checkbox = document.createElement('div');
+        checkbox.className = 'p-gui__switch-checkbox' + activeClass;
+        container.append(checkbox);
 
         if ( isObject ) {
             Object.defineProperty( obj, prop, {
@@ -620,23 +585,21 @@ export default class GUI {
 
         this.imageContainer = null;
 
-        let container = this._createElement({
-            class: 'p-gui__list',
-            textContent: name
-        });
+        let container = document.createElement('div');
+        container.className = 'p-gui__list';
+        container.textContent = name;
+        this.wrapper.append(container);
 
-        let select = this._createElement({
-            parent: container,
-            el: 'select',
-            class: 'p-gui__list-dropdown',
-            onchange: (ev) => {
-                if ( isObject ) {
-                    obj[prop] = ev.target.value;
-                }
+        let select = document.createElement('select');
+        container.append(select);
+        select.className = 'p-gui__list-dropdown';
+        select.addEventListener('change', (ev) => {
+            if ( isObject ) {
+                obj[prop] = ev.target.value;
+            }
 
-                else if (callback) {
-                    callback(ev.target.value);
-                }
+            else if (callback) {
+                callback(ev.target.value);
             }
         });
 
@@ -644,14 +607,11 @@ export default class GUI {
         {
             values.forEach((item, index) => 
             {
-                let option = this._createElement({
-                    parent: select,
-                    el: 'option',
-                    customAttributes: {
-                        value: item,
-                    },
-                    textContent: item
-                });
+                let option = document.createElement('option');
+                option.setAttribute('value', item);
+                option.textContent = item;
+                select.append(option);
+
                 if (value == index) {
                     option.setAttribute('selected', '');
                 }
@@ -715,30 +675,28 @@ export default class GUI {
 
         this.imageContainer = null;
 
-        const container = this._createElement({
-            class: 'p-gui__vector2',
-            textContent: name
-        });
+        const container = document.createElement('div');
+        container.className = 'p-gui__vector2';
+        container.textContent = name;
+        this.wrapper.append(container);
 
-        const vector_value = this._createElement({
-            parent: container,
-            class: 'p-gui__vector-value',
-            textContent: objectX[propX] + ', ' + objectY[propY]
-        });
+        const vector_value = document.createElement('div');
+        vector_value.className = 'p-gui__vector-value';
+        vector_value.textContent = objectX[propX] + ', ' + objectY[propY];
+        container.append(vector_value);
 
-        const area = this._createElement({
-            parent: container,
-            el: 'div',
-            class: 'p-gui__vector2-area',
-            onclick: (evt) => {
-                objectX[propX] = parseFloat(this._mapLinear(evt.offsetX, 0, area.clientWidth, minX, maxX).toFixed(2));
-                objectY[propY] = parseFloat(this._mapLinear(evt.offsetY, 0, area.clientHeight, maxY, minY).toFixed(2));
+        const area = document.createElement('div');
+        area.className = 'p-gui__vector2-area';
+        container.append(area);
+        area.addEventListener('click', evt => {
+            objectX[propX] = parseFloat(this._mapLinear(evt.offsetX, 0, area.clientWidth, minX, maxX).toFixed(2));
+            objectY[propY] = parseFloat(this._mapLinear(evt.offsetY, 0, area.clientHeight, maxY, minY).toFixed(2));
 
-                if (callback) {
-                    callback(objectX[propX], objectX[propY]);
-                }
-            },
+            if (callback) {
+                callback(objectX[propX], objectX[propY]);
+            }
         });
+        
         let pointer_is_down = false;
         area.addEventListener('pointerdown', (evt) => {
             pointer_is_down = true;
@@ -757,20 +715,17 @@ export default class GUI {
             }
         });
 
-        this._createElement({
-            parent: area,
-            class: 'p-gui__vector2-line p-gui__vector2-line-x'
-        });
-        
-        this._createElement({
-            parent: area,
-            class: 'p-gui__vector2-line p-gui__vector2-line-y'
-        });
+        const line_x = document.createElement('div');
+        line_x.className = 'p-gui__vector2-line p-gui__vector2-line-x';
+        area.append(line_x);
 
-        const dot = this._createElement({
-            parent: area,
-            class: 'p-gui__vector2-dot'
-        });
+        const line_y = document.createElement('div');
+        line_y.className = 'p-gui__vector2-line p-gui__vector2-line-y';
+        area.append(line_y);
+
+        const dot = document.createElement('div');
+        dot.className = 'p-gui__vector2-dot';
+        area.append(dot);
 
         dot.style.left = this._mapLinear(objectX[propX], minX, maxX, 0, area.clientWidth) + 'px';
         dot.style.top = this._mapLinear(objectY[propY], minY, maxY, area.clientHeight, 0) + 'px';
@@ -852,19 +807,16 @@ export default class GUI {
 
         this.imageContainer = null;
 
-        const container = this._createElement({
-            el: 'div',
-            class: 'p-gui__color',
-            textContent: name,
-        });
+        const container = document.createElement('div');
+        container.className = 'p-gui__color';
+        container.textContent = name;
+        this.wrapper.append(container);
 
-        const colorpicker = this._createElement({
-            parent: container,
-            el: 'input',
-            class: 'p-gui__color-picker',
-            type: 'color',
-            value
-        });
+        const colorpicker = document.createElement('input');
+        colorpicker.className = 'p-gui__color-picker';
+        colorpicker.setAttribute('type', 'color');
+        colorpicker.value = value;
+        container.append(colorpicker);
 
         if (typeof callback == 'function') {
             colorpicker.addEventListener('input', () => {
@@ -916,19 +868,18 @@ export default class GUI {
 
         let container_style = color ? `background-color: ${color};` : '';
         container_style += maxHeight ? `max-height: ${maxHeight}px;` : '';
+
+        const container = document.createElement('div');
+        container.className = className;
+        container.style = container_style;
+        this.wrapper.append(container);
         
-        let container = this._createElement({
-            class: className,
-            inline: container_style,
-        });
-        
-        let folderHeader = this._createElement({
-            innerHTML: `<span class="p-gui__folder-arrow"></span>${name}`,
-            class: 'p-gui__folder-header',
-            onclick: function() {
-                this.parentNode.classList.toggle('p-gui__folder--closed');
-            },
-            parent: container
+        const folderHeader = document.createElement('div');
+        folderHeader.innerHTML = `<span class="p-gui__folder-arrow"></span>${name}`;
+        folderHeader.className = 'p-gui__folder-header';
+        container.append(folderHeader);
+        folderHeader.addEventListener('click', () => {
+            container.classList.toggle('p-gui__folder--closed');
         });
 
         let folder = new GUI({isFolder: true, folderOptions: {
