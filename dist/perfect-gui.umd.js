@@ -304,7 +304,7 @@
     
     .p-gui__slider {
         width: 100%;
-        margin-bottom: 8px;
+        margin-bottom: 10px;
         padding: 7px;
         color: white;
         position: relative;
