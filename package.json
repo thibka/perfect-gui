@@ -1,7 +1,7 @@
 {
   "name": "perfect-gui",
-  "version": "4.7.5",
-  "description": "Nice and simple GUI for JavaScript",
+  "version": "4.8.0",
+  "description": "GUI for JavaScript",
   "main": "src/index.js",
   "scripts": {
     "build": "vite build"
