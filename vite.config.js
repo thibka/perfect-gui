@@ -6,6 +6,7 @@ export default defineConfig({
         lib: {
             entry: resolve(__dirname, "src/index.js"),
             name: "Perfect GUI"
-        }
+        },
+        minify: true
     },
 });

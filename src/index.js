@@ -625,8 +625,10 @@ export default class GUI {
                 set: val => {
                     let newIndex, newValue, newObj; 
                     if (objectValues) {
-                        newObj = values.find(item => item.value == val);
-                        newValue = newObj.value;
+                        newObj = values.find(item => {
+                            return item.value == val;
+                        });
+                        newValue = newObj?.value || values[0].value;
                         newIndex = values.indexOf(newObj);
                     } else {
                         if (typeof val == 'string') {
@@ -641,7 +643,10 @@ export default class GUI {
                     
                     this.propReferences[propReferenceIndex] = objectValues ? newValue : val;
 
-                    select.querySelector('[selected]').removeAttribute('selected')
+                    const previousSelection = select.querySelector('[selected]');
+                    if ( previousSelection ) {
+                        previousSelection.removeAttribute('selected')
+                    }
                     select.querySelectorAll('option')[newIndex].setAttribute('selected', '');
                     
                     if (typeof callback == 'function') {
