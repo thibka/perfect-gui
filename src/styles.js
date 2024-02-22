@@ -34,6 +34,7 @@ export default function( position_type ) {
         cursor: auto;
         border-radius: var(--main-border-radius);
         border: 1px solid var(--color-border);
+        line-height: normal;
     }
     
     .p-gui * {

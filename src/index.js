@@ -664,13 +664,6 @@ export default class GUI {
         }
     }
 
-    options(params, callback) {
-        if (typeof params != 'object') {
-            throw Error(`[GUI] options() first parameter must be an object. Received: ${typeof params}.`);
-        }
-        this.list(params, callback);
-    }
-
     vector2( params = {}, callback) {
         if (typeof params != 'object') {
             throw Error(`[GUI] vector2() first parameter must be an object. Received: ${typeof params}.`);
