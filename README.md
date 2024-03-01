@@ -86,7 +86,7 @@ const gui = new GUI({
     // Default is #2e2e2e
 
     onUpdate: () => {
-      // Callback function triggered each time this GUI component is updated.    
+      // Callback function triggered each time this GUI instance is updated.    
     }
 });
 ```
