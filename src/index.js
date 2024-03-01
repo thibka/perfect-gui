@@ -11,6 +11,10 @@ export default class GUI {
             this.position_type = 'fixed';
         }
 
+        if ( typeof options.onUpdate == 'function' ) {
+            this.onUpdate = options.onUpdate;
+        }
+
         this.propReferences = [];
         this.folders = [];
 
@@ -208,15 +212,18 @@ export default class GUI {
         }
 
         this.imageContainer = null;
-
-        if (typeof callback != 'function') {
-            callback = () => {};
-        }
         
         const el = document.createElement('div');
         el.className = 'p-gui__button';
         el.textContent = name;
-        el.addEventListener('click', callback);
+        el.addEventListener('click', () => {
+            if (this.onUpdate) {
+                this.onUpdate();
+            }
+            if (callback) {
+                callback();
+            }
+        });
         this.wrapper.append(el);
 
         if (typeof options.color == 'string') {
@@ -300,6 +307,9 @@ export default class GUI {
             if (typeof callback == 'function') {
                 callback({ path, text: name });
             }
+            if (this.onUpdate) {
+                this.onUpdate();
+            }
         });
 
         return image;
@@ -381,6 +391,10 @@ export default class GUI {
                 if (typeof callback == "function") {
                     callback(parseFloat(slider_ctrl.value));
                 }
+            }
+
+            if (this.onUpdate) {
+                this.onUpdate();
             }
         });
 
@@ -469,6 +483,10 @@ export default class GUI {
                 if (typeof callback == 'function') {
                     callback(value);
                 }
+            }
+
+            if (this.onUpdate) {
+                this.onUpdate();
             }
         });
 
@@ -601,6 +619,10 @@ export default class GUI {
             else if (callback) {
                 callback(ev.target.value);
             }
+
+            if (this.onUpdate) {
+                this.onUpdate();
+            }
         });
 
         if (values) 
@@ -708,6 +730,10 @@ export default class GUI {
             if (callback) {
                 callback(objectX[propX], objectX[propY]);
             }
+
+            if (this.onUpdate) {
+                this.onUpdate();
+            }
         });
         
         let pointer_is_down = false;
@@ -725,6 +751,10 @@ export default class GUI {
                 if (callback) {
                     callback(objectX[propX], objectX[propY]);
                 }
+            }
+
+            if (this.onUpdate) {
+                this.onUpdate();
             }
         });
 
@@ -839,6 +869,10 @@ export default class GUI {
 
                 else if (typeof callback == 'function') {
                     callback(colorpicker.value);
+                }
+
+                if (this.onUpdate) {
+                    this.onUpdate();
                 }
             });
         }

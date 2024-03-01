@@ -84,6 +84,10 @@ const gui = new GUI({
 
     color: '#bada55',
     // Default is #2e2e2e
+
+    onUpdate: () => {
+      // Callback function triggered each time this GUI component is updated.    
+    }
 });
 ```
 
