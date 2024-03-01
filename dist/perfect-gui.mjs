@@ -523,7 +523,7 @@ class x {
     d.className = "p-gui__slider-ctrl", d.setAttribute("type", "range"), d.setAttribute("min", s), d.setAttribute("max", l), d.setAttribute("step", f), d.setAttribute("value", a ? r[i] : n), c.append(d);
     const h = document.createElement("div");
     h.className = "p-gui__slider-value", h.textContent = String(a ? r[i] : n), c.append(h), d.addEventListener("input", () => {
-      h.textContent = d.value, a ? r[i] = d.value : typeof t == "function" && t(parseFloat(d.value));
+      h.textContent = d.value, a ? r[i] = parseFloat(d.value) : typeof t == "function" && t(parseFloat(d.value));
     }), a && Object.defineProperty(r, i, {
       set: (g) => {
         this.propReferences[p] = g, d.value = g, h.textContent = String(g), typeof t == "function" && t(parseFloat(d.value));

@@ -375,7 +375,7 @@ export default class GUI {
             slider_value.textContent = slider_ctrl.value;
 
             if ( isObject ) {
-                obj[prop] = slider_ctrl.value;
+                obj[prop] = parseFloat(slider_ctrl.value);
             }
             else {
                 if (typeof callback == "function") {
