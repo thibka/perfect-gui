@@ -39,15 +39,15 @@ export default class GUI {
 
         this.screenCorner = this._parseScreenCorner(options.position);
 
-        if ( this instanceof GUI ) {
-            if ( typeof GUI[GUI.instanceCounter] != 'number' ) {
-                GUI[GUI.instanceCounter] = 0;
-            }
-            else {
-                GUI[GUI.instanceCounter]++;
-            }
-        }        
-        this.instanceId = GUI[GUI.instanceCounter];
+        if (!window.perfectGUI) {
+            window.perfectGUI = {};
+        } 
+        if ( window.perfectGUI.instanceCounter == undefined ) {
+            window.perfectGUI.instanceCounter = 0;
+        } else {
+            window.perfectGUI.instanceCounter++;
+        }
+        this.instanceId = window.perfectGUI.instanceCounter;
         
         this.wrapperWidth = options.width || 290;
         this.stylesheet = document.createElement('style');
