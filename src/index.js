@@ -119,6 +119,9 @@ export default class GUI {
 
     _folderConstructor(folderOptions) {
         this.wrapper = folderOptions.wrapper;
+        if ( typeof folderOptions.onUpdate == 'function' ) {
+            this.onUpdate = folderOptions.onUpdate;
+        }
     }
 
     _parseScreenCorner(position) {
@@ -931,6 +934,7 @@ export default class GUI {
 
         let folder = new GUI({isFolder: true, folderOptions: {
             wrapper: container,
+            onUpdate: this.onUpdate
         }});
         this.folders.push(folder);
         return folder;
