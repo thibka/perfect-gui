@@ -1,6 +1,6 @@
 /**
  * JS instead of CSS to avoid
- * depending on a css loader
+ * depending on a css loader 
  */
 
 export default function( position_type ) {
@@ -310,9 +310,10 @@ export default function( position_type ) {
     }
     
     .p-gui__slider {
-        width: 100%;
-        margin-bottom: 10px;
-        padding: 7px;
+        box-sizing: border-box;
+        width: calc(100% - 10px);
+        margin: 0 auto 10px auto;
+        padding: 7px 0;
         color: white;
         position: relative;
         min-height: 14px;
@@ -333,6 +334,7 @@ export default function( position_type ) {
         height: 5px;
         width: 100%;
         margin: 0;
+        border-radius: var(--main-border-radius);
     }
     
     /* la zone de déplacement */
