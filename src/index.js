@@ -356,7 +356,7 @@ export default class GUI {
             isObject = true;
         }
         else {
-            if ((prop != undefined && obj == undefined) || (prop == undefined && obj == undefined)) {
+            if ((prop != undefined && obj == undefined) || (prop == undefined && obj != undefined)) {
                 console.warn(`[GUI] slider() "obj" and "prop" parameters must be used together.`);
             }
 

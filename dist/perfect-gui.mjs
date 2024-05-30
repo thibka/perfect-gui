@@ -518,7 +518,7 @@ class v {
         throw Error(`[GUI] slider() "obj" parameter must be an object. Received: ${typeof r}.`);
       o == " " && (o = i), p = this.propReferences.push(r[i]) - 1, a = !0;
     } else
-      (i != null && r == null || i == null && r == null) && console.warn('[GUI] slider() "obj" and "prop" parameters must be used together.'), n = (l - s) / 2;
+      (i != null && r == null || i == null && r != null) && console.warn('[GUI] slider() "obj" and "prop" parameters must be used together.'), n = (l - s) / 2;
     this.imageContainer = null;
     const c = document.createElement("div");
     c.className = "p-gui__slider", c.textContent = o, this.wrapper.append(c);
