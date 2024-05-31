@@ -2,7 +2,6 @@ import styles from './styles';
 
 export default class GUI {
     constructor(options = {}) {
-        // Process options
         if ( options.container ) {
             this.container = typeof options.container == "string" ? document.querySelector(options.container) : options.container;
             this.position_type = 'absolute';
@@ -11,16 +10,16 @@ export default class GUI {
             this.position_type = 'fixed';
         }
 
-        if ( typeof options.onUpdate == 'function' ) {
-            this.onUpdate = options.onUpdate;
-        }
-
         this.propReferences = [];
         this.folders = [];
 
         if ( options.isFolder ) {
             this._folderConstructor(options.folderOptions);
             return;
+        }
+
+        if ( typeof options.onUpdate == 'function' ) {
+            this.onUpdate = options.onUpdate;
         }
 
         this.name = (options != undefined && typeof options.name == "string") ? options.name : ''; 
@@ -119,9 +118,8 @@ export default class GUI {
 
     _folderConstructor(folderOptions) {
         this.wrapper = folderOptions.wrapper;
-        if ( typeof folderOptions.onUpdate == 'function' ) {
-            this.onUpdate = folderOptions.onUpdate;
-        }
+        this.isFolder = true;
+        this.parent = folderOptions.parent;
     }
 
     _parseScreenCorner(position) {
@@ -222,6 +220,8 @@ export default class GUI {
         el.addEventListener('click', () => {
             if (this.onUpdate) {
                 this.onUpdate();
+            } else if (this.isFolder && this.parent.onUpdate) {
+                this.parent.onUpdate();
             }
             if (callback) {
                 callback();
@@ -934,7 +934,7 @@ export default class GUI {
 
         let folder = new GUI({isFolder: true, folderOptions: {
             wrapper: container,
-            onUpdate: this.onUpdate
+            parent: this
         }});
         this.folders.push(folder);
         return folder;

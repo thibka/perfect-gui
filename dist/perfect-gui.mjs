@@ -419,11 +419,11 @@ function A(y) {
 }
 class v {
   constructor(e = {}) {
-    if (e.container ? (this.container = typeof e.container == "string" ? document.querySelector(e.container) : e.container, this.position_type = "absolute") : (this.container = document.body, this.position_type = "fixed"), typeof e.onUpdate == "function" && (this.onUpdate = e.onUpdate), this.propReferences = [], this.folders = [], e.isFolder) {
+    if (e.container ? (this.container = typeof e.container == "string" ? document.querySelector(e.container) : e.container, this.position_type = "absolute") : (this.container = document.body, this.position_type = "fixed"), this.propReferences = [], this.folders = [], e.isFolder) {
       this._folderConstructor(e.folderOptions);
       return;
     }
-    this.name = e != null && typeof e.name == "string" ? e.name : "", this.backgroundColor = e.color || null, this.container == document.body ? this.maxHeight = window.innerHeight : this.maxHeight = Math.min(this.container.clientHeight, window.innerHeight), e.maxHeight && (this.initMaxHeight = e.maxHeight, this.maxHeight = Math.min(this.initMaxHeight, this.maxHeight)), this.screenCorner = this._parseScreenCorner(e.position), window.perfectGUI || (window.perfectGUI = {}), window.perfectGUI.instanceCounter == null ? window.perfectGUI.instanceCounter = 0 : window.perfectGUI.instanceCounter++, this.instanceId = window.perfectGUI.instanceCounter, this.wrapperWidth = e.width || 290, this.stylesheet = document.createElement("style"), this.stylesheet.setAttribute("type", "text/css"), this.stylesheet.setAttribute("id", "lm-gui-stylesheet"), document.head.append(this.stylesheet), this.instanceId == 0 && this._addStyles(`${A(this.position_type)}`), this._styleInstance(), this._addWrapper(), this.wrapper.setAttribute("data-corner-x", this.screenCorner.x), this.wrapper.setAttribute("data-corner-y", this.screenCorner.y), e.autoRepositioning != !1 && window.addEventListener("resize", this._handleResize.bind(this)), this._handleResize(), this.hasBeenDragged = !1, e.draggable == !0 && this._makeDraggable(), this.closed = !1, e.closed && this.toggleClose();
+    typeof e.onUpdate == "function" && (this.onUpdate = e.onUpdate), this.name = e != null && typeof e.name == "string" ? e.name : "", this.backgroundColor = e.color || null, this.container == document.body ? this.maxHeight = window.innerHeight : this.maxHeight = Math.min(this.container.clientHeight, window.innerHeight), e.maxHeight && (this.initMaxHeight = e.maxHeight, this.maxHeight = Math.min(this.initMaxHeight, this.maxHeight)), this.screenCorner = this._parseScreenCorner(e.position), window.perfectGUI || (window.perfectGUI = {}), window.perfectGUI.instanceCounter == null ? window.perfectGUI.instanceCounter = 0 : window.perfectGUI.instanceCounter++, this.instanceId = window.perfectGUI.instanceCounter, this.wrapperWidth = e.width || 290, this.stylesheet = document.createElement("style"), this.stylesheet.setAttribute("type", "text/css"), this.stylesheet.setAttribute("id", "lm-gui-stylesheet"), document.head.append(this.stylesheet), this.instanceId == 0 && this._addStyles(`${A(this.position_type)}`), this._styleInstance(), this._addWrapper(), this.wrapper.setAttribute("data-corner-x", this.screenCorner.x), this.wrapper.setAttribute("data-corner-y", this.screenCorner.y), e.autoRepositioning != !1 && window.addEventListener("resize", this._handleResize.bind(this)), this._handleResize(), this.hasBeenDragged = !1, e.draggable == !0 && this._makeDraggable(), this.closed = !1, e.closed && this.toggleClose();
   }
   _styleInstance() {
     let e = this._getScrollbarWidth(this.container);
@@ -446,7 +446,7 @@ class v {
         }`);
   }
   _folderConstructor(e) {
-    this.wrapper = e.wrapper, typeof e.onUpdate == "function" && (this.onUpdate = e.onUpdate);
+    this.wrapper = e.wrapper, this.isFolder = !0, this.parent = e.parent;
   }
   _parseScreenCorner(e) {
     let t = { x: "right", y: "top" };
@@ -479,7 +479,7 @@ class v {
     typeof e != "string" ? typeof e == "object" && (e != null && e.hasOwnProperty("name")) ? o = e.name == "" ? " " : e.name : o = " " : o = e == "" ? " " : e, this.imageContainer = null;
     const a = document.createElement("div");
     a.className = "p-gui__button", a.textContent = o, a.addEventListener("click", () => {
-      this.onUpdate && this.onUpdate(), t && t();
+      this.onUpdate ? this.onUpdate() : this.isFolder && this.parent.onUpdate && this.parent.onUpdate(), t && t();
     }), this.wrapper.append(a), typeof e.color == "string" && (a.style.setProperty("--color-accent", e.color), a.style.setProperty("--color-accent-hover", e.hoverColor || e.color));
   }
   image(e = {}, t) {
@@ -693,7 +693,7 @@ class v {
     });
     let l = new v({ isFolder: !0, folderOptions: {
       wrapper: n,
-      onUpdate: this.onUpdate
+      parent: this
     } });
     return this.folders.push(l), l;
   }
