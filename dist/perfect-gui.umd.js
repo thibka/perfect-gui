@@ -367,7 +367,7 @@
         display: flex;
         flex-wrap: wrap;
         border: 1px solid grey;
-        padding: 0 3px;
+        padding: 0 3px 3px 3px;
         border-radius: var(--main-border-radius);
     }
     
