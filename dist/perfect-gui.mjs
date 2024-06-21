@@ -419,7 +419,7 @@ function A(y) {
 }
 class v {
   constructor(e = {}) {
-    if (e.container ? (this.container = typeof e.container == "string" ? document.querySelector(e.container) : e.container, this.position_type = "absolute") : (this.container = document.body, this.position_type = "fixed"), this.propReferences = [], this.folders = [], e.isFolder) {
+    if (this.firstParent = this, e.container ? (this.container = typeof e.container == "string" ? document.querySelector(e.container) : e.container, this.position_type = "absolute") : (this.container = document.body, this.position_type = "fixed"), this.propReferences = [], this.folders = [], e.isFolder) {
       this._folderConstructor(e.folderOptions);
       return;
     }
@@ -446,7 +446,7 @@ class v {
         }`);
   }
   _folderConstructor(e) {
-    this.wrapper = e.wrapper, this.isFolder = !0, this.parent = e.parent;
+    this.wrapper = e.wrapper, this.isFolder = !0, this.parent = e.parent, this.firstParent = e.firstParent;
   }
   _parseScreenCorner(e) {
     let t = { x: "right", y: "top" };
@@ -479,7 +479,7 @@ class v {
     typeof e != "string" ? typeof e == "object" && (e != null && e.hasOwnProperty("name")) ? o = e.name == "" ? " " : e.name : o = " " : o = e == "" ? " " : e, this.imageContainer = null;
     const a = document.createElement("div");
     a.className = "p-gui__button", a.textContent = o, a.addEventListener("click", () => {
-      this.onUpdate ? this.onUpdate() : this.isFolder && this.parent.onUpdate && this.parent.onUpdate(), t && t();
+      this.onUpdate ? this.onUpdate() : this.isFolder && this.firstParent.onUpdate && this.firstParent.onUpdate(), t && t();
     }), this.wrapper.append(a), typeof e.color == "string" && (a.style.setProperty("--color-accent", e.color), a.style.setProperty("--color-accent-hover", e.hoverColor || e.color));
   }
   image(e = {}, t) {
@@ -502,7 +502,7 @@ class v {
       let h = s.parentElement.querySelectorAll(".p-gui__image--selected");
       for (let c = 0; c < h.length; c++)
         h[c].classList.remove("p-gui__image--selected");
-      i && s.classList.add("p-gui__image--selected"), typeof t == "function" && t({ path: o, text: p }), this.onUpdate ? this.onUpdate() : this.isFolder && this.parent.onUpdate && this.parent.onUpdate();
+      i && s.classList.add("p-gui__image--selected"), typeof t == "function" && t({ path: o, text: p }), this.onUpdate ? this.onUpdate() : this.isFolder && this.firstParent.onUpdate && this.firstParent.onUpdate();
     }), s;
   }
   slider(e = {}, t) {
@@ -526,7 +526,7 @@ class v {
     d.className = "p-gui__slider-ctrl", d.setAttribute("type", "range"), d.setAttribute("min", s), d.setAttribute("max", l), d.setAttribute("step", h), d.setAttribute("value", a ? r[i] : n), c.append(d);
     const f = document.createElement("div");
     f.className = "p-gui__slider-value", f.textContent = String(a ? r[i] : n), c.append(f), d.addEventListener("input", () => {
-      f.textContent = d.value, a ? r[i] = parseFloat(d.value) : typeof t == "function" && t(parseFloat(d.value)), this.onUpdate ? this.onUpdate() : this.isFolder && this.parent.onUpdate && this.parent.onUpdate();
+      f.textContent = d.value, a ? r[i] = parseFloat(d.value) : typeof t == "function" && t(parseFloat(d.value)), this.onUpdate ? this.onUpdate() : this.isFolder && this.firstParent.onUpdate && this.firstParent.onUpdate();
     }), a && Object.defineProperty(r, i, {
       set: (g) => {
         this.propReferences[p] = g, d.value = g, f.textContent = String(g), typeof t == "function" && t(parseFloat(d.value));
@@ -553,7 +553,7 @@ class v {
     s.textContent = o, s.className = "p-gui__switch", this.wrapper.append(s), s.addEventListener("click", (c) => {
       const d = c.target.childNodes[1];
       let f = !0;
-      d.classList.contains("p-gui__switch-checkbox--active") && (f = !1), d.classList.toggle("p-gui__switch-checkbox--active"), a ? r[i] = f : typeof t == "function" && t(f), this.onUpdate ? this.onUpdate() : this.isFolder && this.parent.onUpdate && this.parent.onUpdate();
+      d.classList.contains("p-gui__switch-checkbox--active") && (f = !1), d.classList.toggle("p-gui__switch-checkbox--active"), a ? r[i] = f : typeof t == "function" && t(f), this.onUpdate ? this.onUpdate() : this.isFolder && this.firstParent.onUpdate && this.firstParent.onUpdate();
     });
     let l = (() => a ? r[i] ? " p-gui__switch-checkbox--active" : "" : n ? " p-gui__switch-checkbox--active" : "")();
     const h = document.createElement("div");
@@ -597,7 +597,7 @@ class v {
     h.className = "p-gui__list", h.textContent = o, this.wrapper.append(h);
     let c = document.createElement("select");
     h.append(c), c.className = "p-gui__list-dropdown", c.addEventListener("change", (d) => {
-      a ? r[i] = d.target.value : t && t(d.target.value), this.onUpdate ? this.onUpdate() : this.isFolder && this.parent.onUpdate && this.parent.onUpdate();
+      a ? r[i] = d.target.value : t && t(d.target.value), this.onUpdate ? this.onUpdate() : this.isFolder && this.firstParent.onUpdate && this.firstParent.onUpdate();
     }), n && n.forEach((d, f) => {
       const g = l ? d.name : d, u = l ? d.value : d;
       let m = document.createElement("option");
@@ -624,7 +624,7 @@ class v {
     g.className = "p-gui__vector-value", g.textContent = n[s] + ", " + h[c], f.append(g);
     const u = document.createElement("div");
     u.className = "p-gui__vector2-area", f.append(u), u.addEventListener("click", (b) => {
-      n[s] = parseFloat(this._mapLinear(b.offsetX, 0, u.clientWidth, a, p).toFixed(2)), h[c] = parseFloat(this._mapLinear(b.offsetY, 0, u.clientHeight, i, r).toFixed(2)), t && t(n[s], n[c]), this.onUpdate ? this.onUpdate() : this.isFolder && this.parent.onUpdate && this.parent.onUpdate();
+      n[s] = parseFloat(this._mapLinear(b.offsetX, 0, u.clientWidth, a, p).toFixed(2)), h[c] = parseFloat(this._mapLinear(b.offsetY, 0, u.clientHeight, i, r).toFixed(2)), t && t(n[s], n[c]), this.onUpdate ? this.onUpdate() : this.isFolder && this.firstParent.onUpdate && this.firstParent.onUpdate();
     });
     let m = !1;
     u.addEventListener("pointerdown", (b) => {
@@ -632,7 +632,7 @@ class v {
     }), u.addEventListener("pointerup", () => {
       m = !1;
     }), u.addEventListener("pointermove", (b) => {
-      m && (n[s] = parseFloat(this._mapLinear(b.offsetX, 0, u.clientWidth, a, p).toFixed(2)), h[c] = parseFloat(this._mapLinear(b.offsetY, 0, u.clientHeight, i, r).toFixed(2)), t && t(n[s], n[c])), this.onUpdate ? this.onUpdate() : this.isFolder && this.parent.onUpdate && this.parent.onUpdate();
+      m && (n[s] = parseFloat(this._mapLinear(b.offsetX, 0, u.clientWidth, a, p).toFixed(2)), h[c] = parseFloat(this._mapLinear(b.offsetY, 0, u.clientHeight, i, r).toFixed(2)), this.onUpdate ? this.onUpdate() : this.isFolder && this.firstParent.onUpdate && this.firstParent.onUpdate(), t && t(n[s], n[c]));
     });
     const _ = document.createElement("div");
     _.className = "p-gui__vector2-line p-gui__vector2-line-x", u.append(_);
@@ -670,7 +670,7 @@ class v {
     s.className = "p-gui__color", s.textContent = o, this.wrapper.append(s);
     const l = document.createElement("input");
     l.className = "p-gui__color-picker", l.setAttribute("type", "color"), l.value = n, s.append(l), typeof t == "function" && l.addEventListener("input", () => {
-      a ? r[i] = l.value : typeof t == "function" && t(l.value), this.onUpdate ? this.onUpdate() : this.isFolder && this.parent.onUpdate && this.parent.onUpdate();
+      a ? r[i] = l.value : typeof t == "function" && t(l.value), this.onUpdate ? this.onUpdate() : this.isFolder && this.firstParent.onUpdate && this.firstParent.onUpdate();
     }), a && Object.defineProperty(r, i, {
       set: (h) => {
         this.propReferences[p] = h, l.value = h, typeof t == "function" && t(h);
@@ -693,7 +693,8 @@ class v {
     });
     let l = new v({ isFolder: !0, folderOptions: {
       wrapper: n,
-      parent: this
+      parent: this,
+      firstParent: this.firstParent
     } });
     return this.folders.push(l), l;
   }

@@ -2,6 +2,8 @@ import styles from './styles';
 
 export default class GUI {
     constructor(options = {}) {
+        this.firstParent = this;
+
         if ( options.container ) {
             this.container = typeof options.container == "string" ? document.querySelector(options.container) : options.container;
             this.position_type = 'absolute';
@@ -120,6 +122,7 @@ export default class GUI {
         this.wrapper = folderOptions.wrapper;
         this.isFolder = true;
         this.parent = folderOptions.parent;
+        this.firstParent = folderOptions.firstParent;
     }
 
     _parseScreenCorner(position) {
@@ -220,8 +223,8 @@ export default class GUI {
         el.addEventListener('click', () => {
             if (this.onUpdate) {
                 this.onUpdate();
-            } else if (this.isFolder && this.parent.onUpdate) {
-                this.parent.onUpdate();
+            } else if (this.isFolder && this.firstParent.onUpdate) {
+                this.firstParent.onUpdate();
             }
             if (callback) {
                 callback();
@@ -312,8 +315,8 @@ export default class GUI {
             }
             if (this.onUpdate) {
                 this.onUpdate();
-            } else if (this.isFolder && this.parent.onUpdate) {
-                this.parent.onUpdate();
+            } else if (this.isFolder && this.firstParent.onUpdate) {
+                this.firstParent.onUpdate();
             }
         });
 
@@ -400,8 +403,8 @@ export default class GUI {
 
             if (this.onUpdate) {
                 this.onUpdate();
-            } else if (this.isFolder && this.parent.onUpdate) {
-                this.parent.onUpdate();
+            } else if (this.isFolder && this.firstParent.onUpdate) {
+                this.firstParent.onUpdate();
             }
         });
 
@@ -494,8 +497,8 @@ export default class GUI {
 
             if (this.onUpdate) {
                 this.onUpdate();
-            } else if (this.isFolder && this.parent.onUpdate) {
-                this.parent.onUpdate();
+            } else if (this.isFolder && this.firstParent.onUpdate) {
+                this.firstParent.onUpdate();
             }
         });
 
@@ -631,8 +634,8 @@ export default class GUI {
 
             if (this.onUpdate) {
                 this.onUpdate();
-            } else if (this.isFolder && this.parent.onUpdate) {
-                this.parent.onUpdate();
+            } else if (this.isFolder && this.firstParent.onUpdate) {
+                this.firstParent.onUpdate();
             }
         });
 
@@ -744,8 +747,8 @@ export default class GUI {
 
             if (this.onUpdate) {
                 this.onUpdate();
-            } else if (this.isFolder && this.parent.onUpdate) {
-                this.parent.onUpdate();
+            } else if (this.isFolder && this.firstParent.onUpdate) {
+                this.firstParent.onUpdate();
             }
         });
         
@@ -761,15 +764,15 @@ export default class GUI {
                 objectX[propX] = parseFloat(this._mapLinear(evt.offsetX, 0, area.clientWidth, minX, maxX).toFixed(2));
                 objectY[propY] = parseFloat(this._mapLinear(evt.offsetY, 0, area.clientHeight, maxY, minY).toFixed(2));
 
+                if (this.onUpdate) {
+                    this.onUpdate();
+                } else if (this.isFolder && this.firstParent.onUpdate) {
+                    this.firstParent.onUpdate();
+                }
+
                 if (callback) {
                     callback(objectX[propX], objectX[propY]);
                 }
-            }
-
-            if (this.onUpdate) {
-                this.onUpdate();
-            } else if (this.isFolder && this.parent.onUpdate) {
-                this.parent.onUpdate();
             }
         });
 
@@ -888,8 +891,8 @@ export default class GUI {
 
                 if (this.onUpdate) {
                     this.onUpdate();
-                } else if (this.isFolder && this.parent.onUpdate) {
-                    this.parent.onUpdate();
+                } else if (this.isFolder && this.firstParent.onUpdate) {
+                    this.firstParent.onUpdate();
                 }
             });
         }
@@ -948,7 +951,8 @@ export default class GUI {
 
         let folder = new GUI({isFolder: true, folderOptions: {
             wrapper: container,
-            parent: this
+            parent: this,
+            firstParent: this.firstParent
         }});
         this.folders.push(folder);
         return folder;
