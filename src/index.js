@@ -312,6 +312,8 @@ export default class GUI {
             }
             if (this.onUpdate) {
                 this.onUpdate();
+            } else if (this.isFolder && this.parent.onUpdate) {
+                this.parent.onUpdate();
             }
         });
 
@@ -398,6 +400,8 @@ export default class GUI {
 
             if (this.onUpdate) {
                 this.onUpdate();
+            } else if (this.isFolder && this.parent.onUpdate) {
+                this.parent.onUpdate();
             }
         });
 
@@ -490,6 +494,8 @@ export default class GUI {
 
             if (this.onUpdate) {
                 this.onUpdate();
+            } else if (this.isFolder && this.parent.onUpdate) {
+                this.parent.onUpdate();
             }
         });
 
@@ -625,6 +631,8 @@ export default class GUI {
 
             if (this.onUpdate) {
                 this.onUpdate();
+            } else if (this.isFolder && this.parent.onUpdate) {
+                this.parent.onUpdate();
             }
         });
 
@@ -736,6 +744,8 @@ export default class GUI {
 
             if (this.onUpdate) {
                 this.onUpdate();
+            } else if (this.isFolder && this.parent.onUpdate) {
+                this.parent.onUpdate();
             }
         });
         
@@ -758,6 +768,8 @@ export default class GUI {
 
             if (this.onUpdate) {
                 this.onUpdate();
+            } else if (this.isFolder && this.parent.onUpdate) {
+                this.parent.onUpdate();
             }
         });
 
@@ -876,6 +888,8 @@ export default class GUI {
 
                 if (this.onUpdate) {
                     this.onUpdate();
+                } else if (this.isFolder && this.parent.onUpdate) {
+                    this.parent.onUpdate();
                 }
             });
         }
