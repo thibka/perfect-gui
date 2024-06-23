@@ -995,6 +995,14 @@ export default class GUI {
 
     toggleClose() {
         this.closed = !this.closed;
+        
+        if (this.closed) {
+            this.previousInnerScroll = this.wrapper.scrollTop;
+            this.wrapper.scrollTo(0,0);
+        } else {
+            this.wrapper.scrollTo(0,this.previousInnerScroll);
+        }
+        
         this.wrapper.classList.toggle('p-gui--collapsed');
     }
 

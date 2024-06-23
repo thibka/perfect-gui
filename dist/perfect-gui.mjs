@@ -712,7 +712,7 @@ class v {
     }
   }
   toggleClose() {
-    this.closed = !this.closed, this.wrapper.classList.toggle("p-gui--collapsed");
+    this.closed = !this.closed, this.closed ? (this.previousInnerScroll = this.wrapper.scrollTop, this.wrapper.scrollTo(0, 0)) : this.wrapper.scrollTo(0, this.previousInnerScroll), this.wrapper.classList.toggle("p-gui--collapsed");
   }
   kill() {
     this.wrapper.remove();
