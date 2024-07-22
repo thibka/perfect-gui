@@ -1,4 +1,5 @@
-import styles from './styles';
+import Slider from './Slider';
+import styles from './styles/styles';
 
 export default class GUI {
     constructor(options = {}) {
@@ -322,8 +323,13 @@ export default class GUI {
 
         return image;
     }
-    
+
     slider (params = {}, callback) {
+        const el = new Slider(params, callback);
+        this.wrapper.append(el);
+    }
+    
+    sliderOld (params = {}, callback) {
         if (typeof params != 'object') {
             throw Error(`[GUI] slider() first parameter must be an object. Received: ${typeof params}.`);
         }
@@ -372,8 +378,12 @@ export default class GUI {
     
         const container = document.createElement('div');
         container.className = 'p-gui__slider';
-        container.textContent = name;
         this.wrapper.append(container);
+
+        const slider_name = document.createElement('div');
+        slider_name.className = 'p-gui__slider-name';
+        slider_name.textContent = name;
+        container.append(slider_name);
     
         const slider_ctrl = document.createElement('input');
         slider_ctrl.className = 'p-gui__slider-ctrl';
@@ -384,13 +394,17 @@ export default class GUI {
         slider_ctrl.setAttribute('value', isObject ? obj[prop] : value);
         container.append(slider_ctrl);
 
-        const slider_value = document.createElement('div');
+        const slider_value = document.createElement('input');
         slider_value.className = 'p-gui__slider-value';
-        slider_value.textContent = isObject ? String(obj[prop]) : String(value);
+        slider_value.value = isObject ? String(obj[prop]) : String(value);
         container.append(slider_value);
+
+        slider_value.addEventListener('change', () => {
+            slider_ctrl.value = parseFloat(slider_value.value);
+        })
     
         slider_ctrl.addEventListener('input', () => {
-            slider_value.textContent = slider_ctrl.value;
+            slider_value.value = slider_ctrl.value;
 
             if ( isObject ) {
                 obj[prop] = parseFloat(slider_ctrl.value);

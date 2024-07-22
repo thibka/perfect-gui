@@ -1,0 +1,56 @@
+export default /* css */ `
+    .p-gui__folder {
+        width: 100%;
+        position: relative;
+        background: #434343;
+        overflow: auto;
+        margin-bottom: 3px;
+        display: flex;
+        flex-wrap: wrap;
+        border: 1px solid grey;
+        padding: 0 3px 3px 3px;
+        border-radius: var(--main-border-radius);
+        box-sizing: border-box;
+    }
+    
+    .p-gui__folder:last-of-type {
+        margin-bottom: 0;
+        border-bottom: none;
+    }
+    
+    .p-gui__folder--first {
+        margin-top: 0;
+    }
+    
+    .p-gui__folder--closed {
+        height: 32px;
+        overflow: hidden;
+    }
+    
+    .p-gui__folder-header {
+        padding: 10px 5px;
+        background-color: rgba(0, 0, 0, .5);
+        color: white;
+        cursor: pointer;
+        width: 100%;
+        margin: 0 -2px 2px -3px;
+    }
+    
+    .p-gui__folder-header:hover {
+        background-color: rgba(0, 0, 0, .75);
+    }
+    
+    .p-gui__folder-arrow {
+        width: 8px;
+        height: 8px;
+        display: inline-block;
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAHlBMVEUAAAD///////////////////////////////////8kfJuVAAAACXRSTlMA9Z1fCdMo1yxEJnA0AAAAK0lEQVQI12PABlRgjKkJUMZMYRhjpgqMAZSEMICSaIzpDWiKhdENhEhgAgATSg5jyWnYewAAAABJRU5ErkJggg==);
+        background-size: contain;
+        margin-right: 5px;
+        transform: rotate(90deg)
+    }
+    
+    .p-gui__folder--closed .p-gui__folder-arrow {
+        transform: rotate(0deg);
+    }
+`;
