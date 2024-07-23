@@ -22,7 +22,7 @@ export default /* css */ `
     }
 
     .p-gui__image:hover {
-        color: var(--color-text-text);
+        color: var(--color-text-light);
     }
 
     .p-gui__image::after {

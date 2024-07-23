@@ -399,7 +399,7 @@ const E = (
     }
 
     .p-gui__image:hover {
-        color: var(--color-text-text);
+        color: var(--color-text-light);
     }
 
     .p-gui__image::after {
@@ -526,6 +526,11 @@ function F(v) {
         border-radius: var(--main-border-radius);
         border: 1px solid var(--color-border);
         line-height: normal;
+        transition: var(--transition) opacity;
+    }
+
+    .p-gui:hover {
+        opacity: 1!important;
     }
     
     .p-gui * {
@@ -640,7 +645,7 @@ class y {
       this._folderConstructor(e.folderOptions);
       return;
     }
-    typeof e.onUpdate == "function" && (this.onUpdate = e.onUpdate), this.name = e != null && typeof e.name == "string" ? e.name : "", this.backgroundColor = e.color || null, this.container == document.body ? this.maxHeight = window.innerHeight : this.maxHeight = Math.min(this.container.clientHeight, window.innerHeight), e.maxHeight && (this.initMaxHeight = e.maxHeight, this.maxHeight = Math.min(this.initMaxHeight, this.maxHeight)), this.screenCorner = this._parseScreenCorner(e.position), window.perfectGUI || (window.perfectGUI = {}), window.perfectGUI.instanceCounter == null ? window.perfectGUI.instanceCounter = 0 : window.perfectGUI.instanceCounter++, this.instanceId = window.perfectGUI.instanceCounter, this.wrapperWidth = e.width || 290, this.stylesheet = document.createElement("style"), this.stylesheet.setAttribute("type", "text/css"), this.stylesheet.setAttribute("id", "lm-gui-stylesheet"), document.head.append(this.stylesheet), this.instanceId == 0 && this._addStyles(`${F(this.position_type)}`), this._styleInstance(), this._addWrapper(), this.wrapper.setAttribute("data-corner-x", this.screenCorner.x), this.wrapper.setAttribute("data-corner-y", this.screenCorner.y), e.autoRepositioning != !1 && window.addEventListener("resize", this._handleResize.bind(this)), this._handleResize(), this.hasBeenDragged = !1, e.draggable == !0 && this._makeDraggable(), this.closed = !1, e.closed && this.toggleClose();
+    typeof e.onUpdate == "function" && (this.onUpdate = e.onUpdate), this.name = e != null && typeof e.name == "string" ? e.name : "", this.backgroundColor = e.color || null, this.opacity = e.opacity || 1, this.container == document.body ? this.maxHeight = window.innerHeight : this.maxHeight = Math.min(this.container.clientHeight, window.innerHeight), e.maxHeight && (this.initMaxHeight = e.maxHeight, this.maxHeight = Math.min(this.initMaxHeight, this.maxHeight)), this.screenCorner = this._parseScreenCorner(e.position), window.perfectGUI || (window.perfectGUI = {}), window.perfectGUI.instanceCounter == null ? window.perfectGUI.instanceCounter = 0 : window.perfectGUI.instanceCounter++, this.instanceId = window.perfectGUI.instanceCounter, this.wrapperWidth = e.width || 290, this.stylesheet = document.createElement("style"), this.stylesheet.setAttribute("type", "text/css"), this.stylesheet.setAttribute("id", "lm-gui-stylesheet"), document.head.append(this.stylesheet), this.instanceId == 0 && this._addStyles(`${F(this.position_type)}`), this._styleInstance(), this._addWrapper(), this.wrapper.setAttribute("data-corner-x", this.screenCorner.x), this.wrapper.setAttribute("data-corner-y", this.screenCorner.y), e.autoRepositioning != !1 && window.addEventListener("resize", this._handleResize.bind(this)), this._handleResize(), this.hasBeenDragged = !1, e.draggable == !0 && this._makeDraggable(), this.closed = !1, e.closed && this.toggleClose();
   }
   _styleInstance() {
     let e = this._getScrollbarWidth(this.container);
@@ -660,6 +665,7 @@ class y {
             transform: translate3d(${this.xOffset}px,${this.yOffset}px,0);
             ${this.screenCorner.y == "top" ? "" : "top: auto; bottom: 0;"}
             ${this.backgroundColor ? "background: " + this.backgroundColor + ";" : ""}
+            opacity: ${this.opacity};
         }`);
   }
   _folderConstructor(e) {

@@ -1,4 +1,4 @@
-import Slider from './Slider';
+import Slider from './components/Slider';
 import styles from './styles/styles';
 
 export default class GUI {
@@ -28,6 +28,7 @@ export default class GUI {
         this.name = (options != undefined && typeof options.name == "string") ? options.name : ''; 
         
         this.backgroundColor = options.color || null; 
+        this.opacity = options.opacity || 1;
 
         if (this.container == document.body) {
             this.maxHeight = window.innerHeight;
@@ -116,6 +117,7 @@ export default class GUI {
             transform: translate3d(${this.xOffset}px,${this.yOffset}px,0);
             ${ this.screenCorner.y == 'top' ? '' : 'top: auto; bottom: 0;' }
             ${ this.backgroundColor ? 'background: ' + this.backgroundColor + ';' : '' }
+            opacity: ${this.opacity};
         }`);
     }
 
