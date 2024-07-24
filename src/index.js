@@ -218,11 +218,16 @@ export default class GUI {
             name = options == '' ? ' ' : options;
         }
 
+        const tooltip = (typeof options.tooltip === 'string') ? options.tooltip : (options.tooltip === true ? name : null);
+
         this.imageContainer = null;
         
         const el = document.createElement('div');
         el.className = 'p-gui__button';
         el.textContent = name;
+        if ( tooltip ) {
+            el.setAttribute('title', tooltip);
+        }
         el.addEventListener('click', () => {
             if (this.onUpdate) {
                 this.onUpdate();
@@ -264,6 +269,8 @@ export default class GUI {
             name = typeof params.name == 'string' ? params.name || ' ' : ' ';
         }
 
+        const tooltip = (typeof params.tooltip === 'string') ? params.tooltip : (params.tooltip === true ? name : null);
+
         const selected = params.selected === true;
         const selectionBorder = params.selectionBorder !== false;
         
@@ -293,6 +300,9 @@ export default class GUI {
         const image = document.createElement('div');
         image.className = 'p-gui__image';
         image.style = 'background-image: url(' + path + '); ' + inline_styles;
+        if ( tooltip ) {
+            image.setAttribute('title', tooltip);
+        }
         this.imageContainer.append(image);
 
         if (selected && selectionBorder) {
@@ -329,117 +339,6 @@ export default class GUI {
     slider (params = {}, callback) {
         const el = new Slider(params, callback);
         this.wrapper.append(el);
-    }
-    
-    sliderOld (params = {}, callback) {
-        if (typeof params != 'object') {
-            throw Error(`[GUI] slider() first parameter must be an object. Received: ${typeof params}.`);
-        }
-
-        let name = typeof params.name == 'string' ? params.name || ' ' : ' ';
-        let isObject = false;
-        let propReferenceIndex = null;
-        let obj = params.obj; 
-        let prop = params.prop;
-        let value = typeof params.value == 'number' ? params.value : null;
-        let min = params.min ?? 0;
-        let max = params.max ?? 1;
-        let step = params.step || (max - min) / 100;
-
-        // callback mode
-        if ( value !== null ) {
-            if (prop != undefined || obj != undefined) {
-                console.warn(`[GUI] slider() "obj" and "prop" parameters are ignored when a "value" parameter is used.`);
-            }
-        }
-        // object-binding
-        else if (prop != undefined && obj != undefined) {
-            if (typeof prop != 'string') {
-                throw Error(`[GUI] slider() "prop" parameter must be an string. Received: ${typeof prop}.`);
-            }
-            if (typeof obj != 'object') {
-                throw Error(`[GUI] slider() "obj" parameter must be an object. Received: ${typeof obj}.`);
-            }
-
-            if (name == ' ') {
-                name = prop;
-            }
-
-            propReferenceIndex = this.propReferences.push(obj[prop]) - 1;
-            isObject = true;
-        }
-        else {
-            if ((prop != undefined && obj == undefined) || (prop == undefined && obj != undefined)) {
-                console.warn(`[GUI] slider() "obj" and "prop" parameters must be used together.`);
-            }
-
-            value = (max - min) / 2;
-        }
-
-        this.imageContainer = null;
-    
-        const container = document.createElement('div');
-        container.className = 'p-gui__slider';
-        this.wrapper.append(container);
-
-        const slider_name = document.createElement('div');
-        slider_name.className = 'p-gui__slider-name';
-        slider_name.textContent = name;
-        container.append(slider_name);
-    
-        const slider_ctrl = document.createElement('input');
-        slider_ctrl.className = 'p-gui__slider-ctrl';
-        slider_ctrl.setAttribute('type', 'range');
-        slider_ctrl.setAttribute('min', min);
-        slider_ctrl.setAttribute('max', max);
-        slider_ctrl.setAttribute('step', step);
-        slider_ctrl.setAttribute('value', isObject ? obj[prop] : value);
-        container.append(slider_ctrl);
-
-        const slider_value = document.createElement('input');
-        slider_value.className = 'p-gui__slider-value';
-        slider_value.value = isObject ? String(obj[prop]) : String(value);
-        container.append(slider_value);
-
-        slider_value.addEventListener('change', () => {
-            slider_ctrl.value = parseFloat(slider_value.value);
-        })
-    
-        slider_ctrl.addEventListener('input', () => {
-            slider_value.value = slider_ctrl.value;
-
-            if ( isObject ) {
-                obj[prop] = parseFloat(slider_ctrl.value);
-            }
-            else {
-                if (typeof callback == "function") {
-                    callback(parseFloat(slider_ctrl.value));
-                }
-            }
-
-            if (this.onUpdate) {
-                this.onUpdate();
-            } else if (this.isFolder && this.firstParent.onUpdate) {
-                this.firstParent.onUpdate();
-            }
-        });
-
-        if ( isObject ) {
-            Object.defineProperty( obj, prop, {
-                set: val => { 
-                    this.propReferences[propReferenceIndex] = val;
-                    slider_ctrl.value = val;
-                    slider_value.textContent = String( val );
-
-                    if (typeof callback == "function") {
-                        callback(parseFloat(slider_ctrl.value));
-                    }            
-                },
-                get: () => { 
-                    return this.propReferences[propReferenceIndex];
-                }
-            });
-        }
     }
 
     toggle(params = {}, callback) {
@@ -483,11 +382,16 @@ export default class GUI {
             }
         }
 
+        const tooltip = (typeof params.tooltip === 'string') ? params.tooltip : (params.tooltip === true ? name : null);
+
         this.imageContainer = null;
 
         const container = document.createElement('div');
         container.textContent = name;
         container.className = 'p-gui__switch';
+        if ( tooltip ) {
+            container.setAttribute('title', tooltip);
+        }
         this.wrapper.append(container);
 
         container.addEventListener('click', (ev) => {
@@ -565,6 +469,7 @@ export default class GUI {
         let values = Array.isArray(params.values) ? params.values : null;
         let value;
         let objectValues = typeof values[0] == 'string' ? false : true;
+        const tooltip = (typeof params.tooltip === 'string') ? params.tooltip : (params.tooltip === true ? name : null);
 
         callback = typeof callback == 'function' ? callback : null;
 
@@ -634,6 +539,9 @@ export default class GUI {
         let container = document.createElement('div');
         container.className = 'p-gui__list';
         container.textContent = name;
+        if (tooltip) {
+            container.setAttribute('title', tooltip);
+        }
         this.wrapper.append(container);
 
         let select = document.createElement('select');
@@ -736,6 +644,8 @@ export default class GUI {
         const propY = params.y.prop;
         const propYReferenceIndex = this.propReferences.push(objectY[propY]) - 1;
 
+        const tooltip = (typeof params.tooltip === 'string') ? params.tooltip : (params.tooltip === true ? name : null);
+
         callback = typeof callback == 'function' ? callback : null;
 
         this.imageContainer = null;
@@ -743,6 +653,9 @@ export default class GUI {
         const container = document.createElement('div');
         container.className = 'p-gui__vector2';
         container.textContent = name;
+        if ( tooltip ) {
+            container.setAttribute('title', tooltip);
+        }
         this.wrapper.append(container);
 
         const vector_value = document.createElement('div');
@@ -842,6 +755,7 @@ export default class GUI {
         let obj = params.obj; 
         let prop = params.prop;
         let value;
+        const tooltip = (typeof params.tooltip === 'string') ? params.tooltip : (params.tooltip === true ? name : null);
 
         if (typeof params.value == 'string') {
             if (params.value.length != 7 || params.value[0] != '#') {
@@ -887,6 +801,9 @@ export default class GUI {
         const container = document.createElement('div');
         container.className = 'p-gui__color';
         container.textContent = name;
+        if ( tooltip ) {
+            container.setAttribute('title', tooltip);
+        }
         this.wrapper.append(container);
 
         const colorpicker = document.createElement('input');
