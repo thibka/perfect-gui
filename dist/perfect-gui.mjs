@@ -705,7 +705,7 @@ class A {
     this.imageContainer = null;
     const s = document.createElement("div");
     s.className = "p-gui__button", s.textContent = i, a && s.setAttribute("title", a), s.addEventListener("click", () => {
-      this.onUpdate ? this.onUpdate() : this.isFolder && this.firstParent.onUpdate && this.firstParent.onUpdate(), t && t();
+      t && t(), this.onUpdate ? this.onUpdate() : this.isFolder && this.firstParent.onUpdate && this.firstParent.onUpdate();
     }), this.wrapper.append(s), typeof e.color == "string" && (s.style.setProperty("--color-accent", e.color), s.style.setProperty("--color-accent-hover", e.hoverColor || e.color));
   }
   image(e = {}, t) {
@@ -835,7 +835,7 @@ class A {
     }), h.addEventListener("pointerup", () => {
       x = !1;
     }), h.addEventListener("pointermove", (b) => {
-      x && (r[p] = parseFloat(this._mapLinear(b.offsetX, 0, h.clientWidth, a, s).toFixed(2)), d[c] = parseFloat(this._mapLinear(b.offsetY, 0, h.clientHeight, n, o).toFixed(2)), this.onUpdate ? this.onUpdate() : this.isFolder && this.firstParent.onUpdate && this.firstParent.onUpdate(), t && t(r[p], r[c]));
+      x && (r[p] = parseFloat(this._mapLinear(b.offsetX, 0, h.clientWidth, a, s).toFixed(2)), d[c] = parseFloat(this._mapLinear(b.offsetY, 0, h.clientHeight, n, o).toFixed(2)), t && t(r[p], r[c]), this.onUpdate ? this.onUpdate() : this.isFolder && this.firstParent.onUpdate && this.firstParent.onUpdate());
     });
     const v = document.createElement("div");
     v.className = "p-gui__vector2-line p-gui__vector2-line-x", h.append(v);
