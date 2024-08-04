@@ -337,7 +337,7 @@ export default class GUI {
     }
 
     slider (params = {}, callback) {
-        const el = new Slider(params, callback);
+        const el = new Slider(this, params, callback);
         this.wrapper.append(el);
     }
 

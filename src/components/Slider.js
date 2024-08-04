@@ -1,5 +1,6 @@
 export default class Slider {
-    constructor(params = {}, callback) {
+    constructor(parent, params = {}, callback) {
+        this.parent = parent;
         this.propReferences = [];
 
         if (typeof params != 'object') {
@@ -212,7 +213,6 @@ export default class Slider {
     }
 
     _triggerCallbacks() {
-
         if ( this.isObject ) {
             this.obj[this.prop] = parseFloat(this.valueInput.value);
         }
@@ -222,10 +222,10 @@ export default class Slider {
             }
         }
 
-        if (this.onUpdate) {
-            this.onUpdate();
-        } else if (this.isFolder && this.firstParent.onUpdate) {
-            this.firstParent.onUpdate();
+        if (this.parent.onUpdate) {
+            this.parent.onUpdate();
+        } else if (this.parent.isFolder && this.parent.firstParent.onUpdate) {
+            this.parent.firstParent.onUpdate();
         }
     }
     
