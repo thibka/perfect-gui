@@ -229,13 +229,14 @@ export default class GUI {
             el.setAttribute('title', tooltip);
         }
         el.addEventListener('click', () => {
+            if (callback) {
+                callback();
+            }
+
             if (this.onUpdate) {
                 this.onUpdate();
             } else if (this.isFolder && this.firstParent.onUpdate) {
                 this.firstParent.onUpdate();
-            }
-            if (callback) {
-                callback();
             }
         });
         this.wrapper.append(el);
@@ -693,14 +694,14 @@ export default class GUI {
                 objectX[propX] = parseFloat(this._mapLinear(evt.offsetX, 0, area.clientWidth, minX, maxX).toFixed(2));
                 objectY[propY] = parseFloat(this._mapLinear(evt.offsetY, 0, area.clientHeight, maxY, minY).toFixed(2));
 
+                if (callback) {
+                    callback(objectX[propX], objectX[propY]);
+                }
+
                 if (this.onUpdate) {
                     this.onUpdate();
                 } else if (this.isFolder && this.firstParent.onUpdate) {
                     this.firstParent.onUpdate();
-                }
-
-                if (callback) {
-                    callback(objectX[propX], objectX[propY]);
                 }
             }
         });
