@@ -4,18 +4,13 @@ export default /* css */ `
         position: relative;
         background: #434343;
         overflow: auto;
-        margin-bottom: 3px;
+        margin-bottom: 2px;
         display: flex;
         flex-wrap: wrap;
         border: 1px solid grey;
-        padding: 0 3px 3px 3px;
+        padding: 0 3px 0 3px;
         border-radius: var(--main-border-radius);
         box-sizing: border-box;
-    }
-    
-    .p-gui__folder:last-of-type {
-        margin-bottom: 0;
-        border-bottom: none;
     }
     
     .p-gui__folder--first {
