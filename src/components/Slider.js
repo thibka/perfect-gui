@@ -16,9 +16,10 @@ export default class Slider {
         this.min = params.min ?? 0;
         this.max = params.max ?? 1;
         this.step = params.step || (this.max - this.min) / 100;
+        this.callback = typeof callback == 'function' ? callback : null;
 
         // callback mode
-        if ( value !== null ) {
+        if ( value !== null ) {            
             if (this.prop != undefined || this.obj != undefined) {
                 console.warn(`[GUI] slider() "obj" and "prop" parameters are ignored when a "value" parameter is used.`);
             }
@@ -110,7 +111,7 @@ export default class Slider {
         });
 
         window.addEventListener('pointermove', (evt) => {
-            if (this.ctrlDiv.pointerDown) {
+            if (this.ctrlDiv.pointerDown) {                
                 this.ctrlDiv.pointerDelta = evt.clientX - this.ctrlDiv.prevPosition;
                 this._updateHandlePositionFromPointer(evt);
             }
@@ -124,8 +125,8 @@ export default class Slider {
 
                     this._updateHandlePositionFromValue();
 
-                    if (typeof callback == "function") {
-                        callback(parseFloat(this.valueInput.value));
+                    if (this.callback) {
+                        this.callback(parseFloat(this.valueInput.value));
                     }            
                 },
                 get: () => { 
@@ -141,8 +142,8 @@ export default class Slider {
         const sliderWidth = this.ctrlDiv.offsetWidth;
         const handleWidth = this.handle.offsetWidth;
         const pointerDelta = evt.clientX - this.ctrlDiv.prevPosition;
-        let handlePosition;
         const currentValue = parseFloat(this.valueInput.value);
+        let handlePosition;
         
         if (firstDown) {
             handlePosition = evt.offsetX;
@@ -212,13 +213,13 @@ export default class Slider {
         this.filling.style.width = this.handle.position + 'px';
     }
 
-    _triggerCallbacks() {
+    _triggerCallbacks() {        
         if ( this.isObject ) {
             this.obj[this.prop] = parseFloat(this.valueInput.value);
         }
         else {
-            if (typeof callback == "function") {
-                callback(parseFloat(this.valueInput.value));
+            if (this.callback) {
+                this.callback(parseFloat(this.valueInput.value));
             }
         }
 
