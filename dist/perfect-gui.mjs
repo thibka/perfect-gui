@@ -26,7 +26,7 @@ class k {
     const l = document.createElement("div");
     return l.className = "p-gui__slider-bar", this.ctrlDiv.append(l), this.handle = document.createElement("div"), this.handle.className = "p-gui__slider-handle", this.ctrlDiv.append(this.handle), this.filling = document.createElement("div"), this.filling.className = "p-gui__slider-filling", l.append(this.filling), this.valueInput = document.createElement("input"), this.valueInput.className = "p-gui__slider-value", this.valueInput.value = this.isObject ? this.obj[this.prop] : n, r.append(this.valueInput), setTimeout(() => {
       const d = this.handle.offsetWidth;
-      this.handle.position = this._mapLinear(this.valueInput.value, this.min, this.max, d / 2, 88 - d / 2), this.handle.style.transform = `translate(-50%, -50%) translateX(${this.handle.position}px)`, this.filling.style.width = `${this.handle.position}px`;
+      this.handle.position = this._mapLinear(this.valueInput.value, this.min, this.max, d / 2, 88 - d / 2), this.handle.position = Math.min(this.handle.position, 88 - d / 2), this.handle.position = Math.max(this.handle.position, d / 2), this.handle.style.transform = `translate(-50%, -50%) translateX(${this.handle.position}px)`, this.filling.style.width = `${this.handle.position}px`;
     }, 0), this.valueInput.addEventListener("change", () => {
       this._updateHandlePositionFromValue(), this._triggerCallbacks();
     }), this.ctrlDiv.addEventListener("pointerdown", (d) => {

@@ -91,6 +91,8 @@ export default class Slider {
         setTimeout(() => {
             const handleWidth = this.handle.offsetWidth;
             this.handle.position = this._mapLinear(this.valueInput.value, this.min, this.max, handleWidth / 2, 88 - handleWidth / 2);
+            this.handle.position = Math.min(this.handle.position, 88 - handleWidth / 2);
+            this.handle.position = Math.max(this.handle.position, handleWidth / 2);
             this.handle.style.transform = `translate(-50%, -50%) translateX(${this.handle.position}px)`;
             this.filling.style.width = `${this.handle.position}px`;
         }, 0); // wait for render
