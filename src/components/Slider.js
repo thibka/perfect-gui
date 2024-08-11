@@ -16,6 +16,7 @@ export default class Slider {
         this.min = params.min ?? 0;
         this.max = params.max ?? 1;
         this.step = params.step || (this.max - this.min) / 100;
+        this.decimals = this.parent._countDecimals(this.step);
         this.callback = typeof callback == 'function' ? callback : null;
 
         // callback mode
@@ -168,8 +169,7 @@ export default class Slider {
         const prevValue = parseFloat((currentValue - this.step).toFixed(9));
         
         if (newValue >= nextValue || newValue <= prevValue) {
-            const decimals = this._countDecimals(this.step);
-            newValue = newValue.toFixed(decimals);
+            newValue = newValue.toFixed(this.decimals);
 
             this.valueInput.value = newValue;
 
@@ -183,24 +183,6 @@ export default class Slider {
             this._triggerCallbacks();
         }
     }
-
-    _countDecimals(num) {
-        // Convert the number to a string
-        const numStr = num.toString();
-        
-        // Find the position of the decimal point
-        const decimalIndex = numStr.indexOf('.');
-        
-        // If there is no decimal point, return 0
-        if (decimalIndex === -1) {
-          return 0;
-        }
-        
-        // Calculate the number of digits after the decimal point
-        const decimalPlaces = numStr.length - decimalIndex - 1;
-        
-        return decimalPlaces;
-      }
 
     _updateHandlePositionFromValue() {
         const sliderWidth = this.ctrlDiv.offsetWidth;

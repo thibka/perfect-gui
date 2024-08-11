@@ -1,11 +1,11 @@
-import _button from "./_button"
-import _slider from "./_slider"
-import _list from "./_list"
-import _switch from "./_switch"
-import _color from "./_color"
-import _vector2 from "./_vector2"
-import _image from "./_image"
-import _folder from "./_folder"
+import _button from "./_button.css.js"
+import _slider from "./_slider.css.js"
+import _list from "./_list.css.js"
+import _switch from "./_switch.css.js"
+import _color from "./_color.css.js"
+import _vector2 from "./_vector2.css.js"
+import _image from "./_image.css.js"
+import _folder from "./_folder.css.js"
 
 /**
  * JS instead of CSS to avoid
