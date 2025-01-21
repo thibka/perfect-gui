@@ -192,6 +192,7 @@ export default class GUI {
         this.wrapper = document.createElement('div');
         this.wrapper.id = 'p-gui-'+this.instanceId;
         this.wrapper.className = 'p-gui';
+        this.wrapper.setAttribute('data-lenis-prevent', '');
         this.container.append(this.wrapper);      
     
         this.header = document.createElement('div');
