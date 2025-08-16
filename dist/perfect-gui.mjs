@@ -78,7 +78,7 @@ const P = (
 .p-gui__button {
     background: var(--color-accent);
     text-align: center;
-    color: white;
+    color: var(--color-bg);
     border: none;
     border: 1px solid transparent;
     box-sizing: border-box;
@@ -87,7 +87,6 @@ const P = (
 
 .p-gui__button:hover {
     background: var(--color-accent-hover);
-    color: var(--color-text-light);
     border-color: rgba(255, 255, 255, 0.2);
 }
 
@@ -428,12 +427,12 @@ const P = (
     .p-gui__folder {
         width: 100%;
         position: relative;
-        background: #434343;
+        background: #333333;
         overflow: auto;
         margin-bottom: 2px;
         display: flex;
         flex-wrap: wrap;
-        border: 1px solid grey;
+        border: 1px solid var(--color-border-2);
         padding: 0 3px 0 3px;
         border-radius: var(--main-border-radius);
         box-sizing: border-box;
@@ -481,14 +480,14 @@ function M(U) {
     /* css */
     `
     .p-gui {
-        --main-border-radius: 5px;
+        --main-border-radius: 3px;
         --color-bg: #121212;
-        --color-border: #484848;
-        --color-border-2: rgba(255,255,255,.1);
+        --color-border: #222222;
+        --color-border-2: transparent;
         --color-text-light: #ffffff;
         --color-text-dark: #bbbbbb;
-        --color-accent: #1681ca;
-        --color-accent-hover: #218fda;
+        --color-accent: #bbbbbb;
+        --color-accent-hover: #dddddd;
         --transition: .1s linear;
     
         position: ${U};
@@ -508,8 +507,6 @@ function M(U) {
         box-sizing: border-box;
         z-index: 99999;
         user-select: none;
-        border-bottom-right-radius: 3px;
-        border-bottom-left-radius: 3px;
         cursor: auto;
         border-radius: var(--main-border-radius);
         border: 1px solid var(--color-border);
@@ -681,7 +678,7 @@ class C {
     this.stylesheet.innerHTML += e;
   }
   _addWrapper() {
-    this.wrapper = document.createElement("div"), this.wrapper.id = "p-gui-" + this.instanceId, this.wrapper.className = "p-gui", this.container.append(this.wrapper), this.header = document.createElement("div"), this.header.className = "p-gui__header", this.header.textContent = this.name, this.header.style = `${this.backgroundColor ? "border-color: " + this.backgroundColor + ";" : ""}`, this.wrapper.append(this.header);
+    this.wrapper = document.createElement("div"), this.wrapper.id = "p-gui-" + this.instanceId, this.wrapper.className = "p-gui", this.wrapper.setAttribute("data-lenis-prevent", ""), this.container.append(this.wrapper), this.header = document.createElement("div"), this.header.className = "p-gui__header", this.header.textContent = this.name, this.header.style = `${this.backgroundColor ? "border-color: " + this.backgroundColor + ";" : ""}`, this.wrapper.append(this.header);
     const e = document.createElement("div");
     e.className = "p-gui__header-close", e.addEventListener("click", this.toggleClose.bind(this)), this.header.append(e);
   }

@@ -15,14 +15,14 @@ import _folder from "./_folder.css.js"
 export default function( position_type ) {
     return /* css */`
     .p-gui {
-        --main-border-radius: 5px;
+        --main-border-radius: 3px;
         --color-bg: #121212;
-        --color-border: #484848;
-        --color-border-2: rgba(255,255,255,.1);
+        --color-border: #222222;
+        --color-border-2: transparent;
         --color-text-light: #ffffff;
         --color-text-dark: #bbbbbb;
-        --color-accent: #1681ca;
-        --color-accent-hover: #218fda;
+        --color-accent: #bbbbbb;
+        --color-accent-hover: #dddddd;
         --transition: .1s linear;
     
         position: ${ position_type };
@@ -42,8 +42,6 @@ export default function( position_type ) {
         box-sizing: border-box;
         z-index: 99999;
         user-select: none;
-        border-bottom-right-radius: 3px;
-        border-bottom-left-radius: 3px;
         cursor: auto;
         border-radius: var(--main-border-radius);
         border: 1px solid var(--color-border);

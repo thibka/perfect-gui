@@ -2,12 +2,12 @@ export default /* css */ `
     .p-gui__folder {
         width: 100%;
         position: relative;
-        background: #434343;
+        background: #333333;
         overflow: auto;
         margin-bottom: 2px;
         display: flex;
         flex-wrap: wrap;
-        border: 1px solid grey;
+        border: 1px solid var(--color-border-2);
         padding: 0 3px 0 3px;
         border-radius: var(--main-border-radius);
         box-sizing: border-box;
