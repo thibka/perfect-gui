@@ -12,7 +12,7 @@ A nice, simple and (probably not) perfect GUI for JavaScript.
 - draggable panels
 - two-dimensional vector visualization
 
-<img src="https://raw.githubusercontent.com/thibka/thibka.github.io/master/perfect-gui/_data/capture.3.gif" width="700"/>  
+<img src="https://raw.githubusercontent.com/thibka/thibka.github.io/master/perfect-gui/_data/demo.jpg" width="700"/>  
 
 ## Install
 
