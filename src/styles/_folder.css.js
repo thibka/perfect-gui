@@ -11,6 +11,7 @@ export default /* css */ `
         padding: 0 3px 0 3px;
         border-radius: var(--main-border-radius);
         box-sizing: border-box;
+        border-left: 1px solid #bbbbbb;
     }
     
     .p-gui__folder--first {
