@@ -137,6 +137,11 @@
     border-radius: 3px;
     border: 1px solid var(--color-border-2);
     outline: none;
+
+    option {
+        background: white;
+        color: black;
+    }
 }
 
 .p-gui__list-dropdown:hover {
@@ -336,7 +341,7 @@
         display: flex;
         flex-wrap: wrap;
         border: 1px solid var(--color-border-2);
-        padding: 0 3px 0 3px;
+        padding: 0 2px 0 3px;
         border-radius: var(--main-border-radius);
         box-sizing: border-box;
         border-left: 1px solid #bbbbbb;

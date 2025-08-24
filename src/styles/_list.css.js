@@ -27,6 +27,11 @@ export default /* css */ `
     border-radius: 3px;
     border: 1px solid var(--color-border-2);
     outline: none;
+
+    option {
+        background: white;
+        color: black;
+    }
 }
 
 .p-gui__list-dropdown:hover {
