@@ -19,12 +19,12 @@ export default /* css */ `
     }
     
     .p-gui__folder--closed {
-        height: 32px;
+        height: 25px;
         overflow: hidden;
     }
     
     .p-gui__folder-header {
-        padding: 10px 5px;
+        padding: 5px 3px;
         background-color: rgba(0, 0, 0, .5);
         color: white;
         cursor: pointer;

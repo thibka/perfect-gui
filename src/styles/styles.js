@@ -122,7 +122,7 @@ export default function( position_type ) {
     .p-gui__vector2,
     .p-gui__color {
         width: 100%;
-        padding: 7px;
+        padding: 5px 3px;
         cursor: pointer;
         position: relative;
         box-sizing: border-box;

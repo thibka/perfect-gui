@@ -8,6 +8,7 @@ export default /* css */ `
     gap: 10px;
     color: var(--color-text-dark);
     transition: color var(--transition);
+    padding: 3px;
 }
 
 .p-gui__slider:hover {

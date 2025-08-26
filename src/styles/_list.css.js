@@ -22,7 +22,7 @@ export default /* css */ `
     top: 0;
     bottom: 0;
     margin: auto;
-    height: 21px;
+    height: calc(100% - 4px);
     cursor: pointer;
     border-radius: 3px;
     border: 1px solid var(--color-border-2);

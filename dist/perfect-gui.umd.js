@@ -27,6 +27,7 @@
     gap: 10px;
     color: var(--color-text-dark);
     transition: color var(--transition);
+    padding: 3px;
 }
 
 .p-gui__slider:hover {
@@ -132,7 +133,7 @@
     top: 0;
     bottom: 0;
     margin: auto;
-    height: 21px;
+    height: calc(100% - 4px);
     cursor: pointer;
     border-radius: 3px;
     border: 1px solid var(--color-border-2);
@@ -198,7 +199,7 @@
     top: 0;
     bottom: 0;
     margin: auto;
-    height: 21px;
+    height: calc(100% - 4px);
     cursor: pointer;
     border-radius: 3px;
     border: 1px solid var(--color-border-2);
@@ -352,12 +353,12 @@
     }
     
     .p-gui__folder--closed {
-        height: 32px;
+        height: 25px;
         overflow: hidden;
     }
     
     .p-gui__folder-header {
-        padding: 10px 5px;
+        padding: 5px 3px;
         background-color: rgba(0, 0, 0, .5);
         color: white;
         cursor: pointer;
@@ -491,7 +492,7 @@
     .p-gui__vector2,
     .p-gui__color {
         width: 100%;
-        padding: 7px;
+        padding: 5px 3px;
         cursor: pointer;
         position: relative;
         box-sizing: border-box;

@@ -106,6 +106,7 @@ const P = (
     gap: 10px;
     color: var(--color-text-dark);
     transition: color var(--transition);
+    padding: 3px;
 }
 
 .p-gui__slider:hover {
@@ -214,7 +215,7 @@ const P = (
     top: 0;
     bottom: 0;
     margin: auto;
-    height: 21px;
+    height: calc(100% - 4px);
     cursor: pointer;
     border-radius: 3px;
     border: 1px solid var(--color-border-2);
@@ -286,7 +287,7 @@ const P = (
     top: 0;
     bottom: 0;
     margin: auto;
-    height: 21px;
+    height: calc(100% - 4px);
     cursor: pointer;
     border-radius: 3px;
     border: 1px solid var(--color-border-2);
@@ -449,12 +450,12 @@ const P = (
     }
     
     .p-gui__folder--closed {
-        height: 32px;
+        height: 25px;
         overflow: hidden;
     }
     
     .p-gui__folder-header {
-        padding: 10px 5px;
+        padding: 5px 3px;
         background-color: rgba(0, 0, 0, .5);
         color: white;
         cursor: pointer;
@@ -593,7 +594,7 @@ function M(U) {
     .p-gui__vector2,
     .p-gui__color {
         width: 100%;
-        padding: 7px;
+        padding: 5px 3px;
         cursor: pointer;
         position: relative;
         box-sizing: border-box;
@@ -792,15 +793,15 @@ class C {
     p.append(h), h.className = "p-gui__list-dropdown", h.addEventListener("change", (u) => {
       a ? o[r] = u.target.value : t && t(u.target.value), this.onUpdate ? this.onUpdate() : this.isFolder && this.firstParent.onUpdate && this.firstParent.onUpdate();
     }), n && n.forEach((u, f) => {
-      const g = l ? u.name : u, m = l ? u.value : u;
-      let x = document.createElement("option");
-      x.setAttribute("value", m), x.textContent = g, h.append(x), (!l && c == f || l && c == m) && x.setAttribute("selected", "");
+      const g = l ? u.name : u, x = l ? u.value : u;
+      let m = document.createElement("option");
+      m.setAttribute("value", x), m.textContent = g, h.append(m), (!l && c == f || l && c == x) && m.setAttribute("selected", "");
     }), a && Object.defineProperty(o, r, {
       set: (u) => {
-        let f, g, m;
-        l ? (m = n.find((v) => v.value == u), g = (m == null ? void 0 : m.value) || n[0].value, f = n.indexOf(m)) : (typeof u == "string" && (f = n.indexOf(u), g = u), typeof u == "number" && (f = u, g = n[u])), this.propReferences[s] = l ? g : u;
-        const x = h.querySelector("[selected]");
-        x && x.removeAttribute("selected"), h.querySelectorAll("option")[f].setAttribute("selected", ""), typeof t == "function" && t(l ? m : g, f);
+        let f, g, x;
+        l ? (x = n.find((v) => v.value == u), g = (x == null ? void 0 : x.value) || n[0].value, f = n.indexOf(x)) : (typeof u == "string" && (f = n.indexOf(u), g = u), typeof u == "number" && (f = u, g = n[u])), this.propReferences[s] = l ? g : u;
+        const m = h.querySelector("[selected]");
+        m && m.removeAttribute("selected"), h.querySelectorAll("option")[f].setAttribute("selected", ""), typeof t == "function" && t(l ? x : g, f);
       },
       get: () => this.propReferences[s]
     });
@@ -837,10 +838,10 @@ class C {
     if (typeof e != "object")
       throw Error(`[GUI] vector2() first parameter must be an object. Received: ${typeof e}.`);
     let i = typeof e.name == "string" && e.name || " ";
-    const a = e.x.min ?? 0, s = e.x.max ?? 1, o = e.y.min ?? 0, r = e.y.max ?? 1, n = e.x.step || (s - a) / 100, c = e.y.step || (r - o) / 100, l = this._countDecimals(n), d = this._countDecimals(c), p = e.x.obj, h = e.x.prop, u = this.propReferences.push(p[h]) - 1, f = e.y.obj, g = e.y.prop, m = this.propReferences.push(f[g]) - 1, x = typeof e.tooltip == "string" ? e.tooltip : e.tooltip === !0 ? i : null;
+    const a = e.x.min ?? 0, s = e.x.max ?? 1, o = e.y.min ?? 0, r = e.y.max ?? 1, n = e.x.step || (s - a) / 100, c = e.y.step || (r - o) / 100, l = this._countDecimals(n), d = this._countDecimals(c), p = e.x.obj, h = e.x.prop, u = this.propReferences.push(p[h]) - 1, f = e.y.obj, g = e.y.prop, x = this.propReferences.push(f[g]) - 1, m = typeof e.tooltip == "string" ? e.tooltip : e.tooltip === !0 ? i : null;
     t = typeof t == "function" ? t : null, this.imageContainer = null;
     const v = document.createElement("div");
-    v.className = "p-gui__vector2", v.textContent = i, x && v.setAttribute("title", x), this.wrapper.append(v);
+    v.className = "p-gui__vector2", v.textContent = i, m && v.setAttribute("title", m), this.wrapper.append(v);
     const y = document.createElement("div");
     y.className = "p-gui__vector-value", y.textContent = p[h] + ", " + f[g], v.append(y);
     const b = document.createElement("div");
@@ -871,9 +872,9 @@ class C {
       get: () => this.propReferences[u]
     }), Object.defineProperty(f, g, {
       set: (_) => {
-        this.propReferences[m] = _, w.style.top = this._mapLinear(_, o, r, b.clientHeight, 0) + "px", y.textContent = p[h] + ", " + String(_);
+        this.propReferences[x] = _, w.style.top = this._mapLinear(_, o, r, b.clientHeight, 0) + "px", y.textContent = p[h] + ", " + String(_);
       },
-      get: () => this.propReferences[m]
+      get: () => this.propReferences[x]
     });
   }
   folder(e = {}) {
