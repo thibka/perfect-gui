@@ -7,7 +7,7 @@ export default class Slider {
             throw Error(`[GUI] slider() first parameter must be an object. Received: ${typeof params}.`);
         }
 
-        let name = typeof params.name == 'string' ? params.name || ' ' : ' ';
+        let label = typeof params.label == 'string' ? params.label || ' ' : ' ';
         this.isObject = false;
         let propReferenceIndex = null;
         this.obj = params.obj; 
@@ -34,8 +34,8 @@ export default class Slider {
                 throw Error(`[GUI] slider() "obj" parameter must be an object. Received: ${typeof this.obj}.`);
             }
 
-            if (name == ' ') {
-                name = this.prop;
+            if (label == ' ') {
+                label = this.prop;
             }
 
             propReferenceIndex = this.propReferences.push(this.obj[this.prop]) - 1;
@@ -48,7 +48,7 @@ export default class Slider {
 
             value = (this.max - this.min) / 2;
         }
-        const tooltip = (typeof params.tooltip === 'string') ? params.tooltip : (params.tooltip === true ? name : null);
+        const tooltip = (typeof params.tooltip === 'string') ? params.tooltip : (params.tooltip === true ? label : null);
 
         this.imageContainer = null;
     
@@ -61,7 +61,7 @@ export default class Slider {
 
         const slider_name = document.createElement('div');
         slider_name.className = 'p-gui__slider-name';
-        slider_name.textContent = name;
+        slider_name.textContent = label;
         container.append(slider_name);
     
         this.ctrlDiv = document.createElement('div');

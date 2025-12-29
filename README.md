@@ -47,7 +47,7 @@ gui.button('Click me', callback);
 ## Options
 ```javascript
 const gui = new GUI({
-    name: 'My GUI',
+    label: 'My GUI',
     // Name of the panel. 
     // Default is null.
 
