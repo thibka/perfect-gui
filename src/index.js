@@ -389,7 +389,7 @@ export default class GUI {
 
         const container = document.createElement('div');
         container.textContent = label;
-        container.className = 'p-gui__switch';
+        container.className = 'p-gui__toggle';
         if ( tooltip ) {
             container.setAttribute('title', tooltip);
         }
@@ -400,11 +400,11 @@ export default class GUI {
             
             let value = true;
             
-            if (checkbox.classList.contains('p-gui__switch-checkbox--active')) {
+            if (checkbox.classList.contains('p-gui__toggle-checkbox--active')) {
                 value = false;
             }
             
-            checkbox.classList.toggle('p-gui__switch-checkbox--active');
+            checkbox.classList.toggle('p-gui__toggle-checkbox--active');
 
             if ( isObject ) {
                 obj[prop] = value;
@@ -425,14 +425,14 @@ export default class GUI {
 
         let activeClass = (() => {
             if (!isObject) {
-                return value ? ' p-gui__switch-checkbox--active' : '';
+                return value ? ' p-gui__toggle-checkbox--active' : '';
             } else {
-                return obj[prop] ? ' p-gui__switch-checkbox--active' : '';
+                return obj[prop] ? ' p-gui__toggle-checkbox--active' : '';
             }
         })();
 
         const checkbox = document.createElement('div');
-        checkbox.className = 'p-gui__switch-checkbox' + activeClass;
+        checkbox.className = 'p-gui__toggle-checkbox' + activeClass;
         container.append(checkbox);
 
         if ( isObject ) {
@@ -441,9 +441,9 @@ export default class GUI {
                     this.propReferences[propReferenceIndex] = val;
 
                     if (val) {
-                        checkbox.classList.add('p-gui__switch-checkbox--active');
+                        checkbox.classList.add('p-gui__toggle-checkbox--active');
                     } else {
-                        checkbox.classList.remove('p-gui__switch-checkbox--active');
+                        checkbox.classList.remove('p-gui__toggle-checkbox--active');
                     }
 
                     if (typeof callback == 'function') {

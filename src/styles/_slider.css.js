@@ -49,7 +49,7 @@ export default /* css */ `
     position: absolute;
     top: -25%;
     left: 0;
-    height: 150%;
+    height: 100%;
     background: var(--color-accent);
     width: 0;
 }
@@ -59,8 +59,8 @@ export default /* css */ `
 }
 
 .p-gui__slider-handle {
-    width: 15px;
-    height: 8px;
+    width: 9px;
+    height: 9px;
     position: absolute;
     top: 50%;
     left: 0;

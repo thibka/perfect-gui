@@ -1,7 +1,7 @@
 import _button from "./_button.css.js"
 import _slider from "./_slider.css.js"
 import _list from "./_list.css.js"
-import _switch from "./_switch.css.js"
+import _toggle from "./_toggle.css.js"
 import _color from "./_color.css.js"
 import _vector2 from "./_vector2.css.js"
 import _image from "./_image.css.js"
@@ -16,7 +16,7 @@ export default function( position_type ) {
     return /* css */`
     .p-gui {
         --main-border-radius: 3px;
-        --color-bg: #121212;
+        --color-bg: #161616;
         --color-border: #222222;
         --color-border-2: transparent;
         --color-text-light: #ffffff;
@@ -117,7 +117,7 @@ export default function( position_type ) {
     
     .p-gui__slider, 
     .p-gui__button, 
-    .p-gui__switch,
+    .p-gui__toggle,
     .p-gui__list,
     .p-gui__vector2,
     .p-gui__color {
@@ -134,7 +134,7 @@ export default function( position_type ) {
     
     .p-gui__slider:hover, 
     .p-gui__button:hover, 
-    .p-gui__switch:hover,
+    .p-gui__toggle:hover,
     .p-gui__list:hover,
     .p-gui__vector2:hover,
     .p-gui__color:hover {
@@ -147,7 +147,7 @@ export default function( position_type ) {
     
     ${ _list }
     
-    ${ _switch }
+    ${ _toggle }
 
     ${ _slider }
     

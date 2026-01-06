@@ -2,7 +2,7 @@ export default /* css */ `
     .p-gui__folder {
         width: 100%;
         position: relative;
-        background: #333333;
+        background: var(--color-bg);
         overflow: auto;
         margin-bottom: 2px;
         display: flex;
