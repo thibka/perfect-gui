@@ -29,6 +29,6 @@ export default /* css */ `
 
 .p-gui__toggle-checkbox--active {
     background-color: #ddd;
-    box-shadow: 0 0 7px #ddd;
+    box-shadow: 0 0 5px #ddd;
 }
 `;

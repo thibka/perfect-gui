@@ -1,3 +1,4 @@
+import Button from './components/Button';
 import Slider from './components/Slider';
 import styles from './styles/styles';
 
@@ -206,45 +207,9 @@ export default class GUI {
         this.header.append(close_btn);
     }
 
-    button(options, callback) {
-        let label = '';
-        if (typeof options != 'string') {
-            if (typeof options == 'object' && options?.hasOwnProperty('label')) {
-                label = options.label == '' ? ' ' : options.label;
-            } else {
-                label = ' ';
-            }
-        } else {
-            label = options == '' ? ' ' : options;
-        }
-
-        const tooltip = (typeof options.tooltip === 'string') ? options.tooltip : (options.tooltip === true ? label : null);
-
-        this.imageContainer = null;
-        
-        const el = document.createElement('div');
-        el.className = 'p-gui__button';
-        el.textContent = label;
-        if ( tooltip ) {
-            el.setAttribute('title', tooltip);
-        }
-        el.addEventListener('click', () => {
-            if (callback) {
-                callback();
-            }
-
-            if (this.onUpdate) {
-                this.onUpdate();
-            } else if (this.isFolder && this.firstParent.onUpdate) {
-                this.firstParent.onUpdate();
-            }
-        });
+    button (params = {}, callback) {
+        const el = new Button(this, params, callback);
         this.wrapper.append(el);
-
-        if (typeof options.color == 'string') {
-            el.style.setProperty('--color-accent', options.color);
-            el.style.setProperty('--color-accent-hover', options.hoverColor || options.color);
-        }
     }
     
     image(params = {}, callback) {
