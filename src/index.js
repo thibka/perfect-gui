@@ -1,6 +1,8 @@
 import Button from './components/Button';
 import Slider from './components/Slider';
 import Image from './components/Image';
+import Toggle from './components/Toggle';
+import List from './components/List';
 import styles from './styles/styles';
 
 export default class GUI {
@@ -208,7 +210,7 @@ export default class GUI {
         this.header.append(close_btn);
     }
 
-    button (params = {}, callback) {
+    button(params = {}, callback) {
         this.imageContainer = null;
         const el = new Button(this, params, callback);
         this.wrapper.append(el);
@@ -224,7 +226,7 @@ export default class GUI {
         this.imageContainer.append(el);
     }
 
-    slider (params = {}, callback) {
+    slider(params = {}, callback) {
         this.imageContainer = null;
         const el = new Slider(this, params, callback);
         this.wrapper.append(el);
@@ -232,286 +234,17 @@ export default class GUI {
     }
 
     toggle(params = {}, callback) {
-        if (typeof params != 'object') {
-            throw Error(`[GUI] toggle() first parameter must be an object. Received: ${typeof params}.`);
-        }
-
-        let label = typeof params.label == 'string' ? params.label || ' ' : ' ';
-        let isObject = false;
-        let propReferenceIndex = null;
-        let obj = params.obj; 
-        let prop = params.prop;
-        let value = typeof params.value === 'boolean' ? params.value : null;
-
-        // callback mode
-        if ( value !== null ) {
-            if (prop != undefined || obj != undefined) {
-                console.warn(`[GUI] toggle() "obj" and "prop" parameters are ignored when a "value" parameter is used.`);
-            }
-        }
-
-        // object-binding
-        else if (prop != undefined && obj != undefined) {
-            if (typeof prop != 'string') {
-                throw Error(`[GUI] toggle() "prop" parameter must be an string. Received: ${typeof prop}.`);
-            }
-            if (typeof obj != 'object') {
-                throw Error(`[GUI] toggle() "obj" parameter must be an object. Received: ${typeof obj}.`);
-            }
-
-            if (label == ' ') {
-                label = prop;
-            }
-
-            propReferenceIndex = this.propReferences.push(obj[prop]) - 1;
-            isObject = true;
-        }
-        else {
-            if ((prop != undefined && obj == undefined) || (prop == undefined && obj == undefined)) {
-                console.warn(`[GUI] toggle() "obj" and "prop" parameters must be used together.`);
-            }
-        }
-
-        const tooltip = (typeof params.tooltip === 'string') ? params.tooltip : (params.tooltip === true ? label : null);
-
         this.imageContainer = null;
-
-        const container = document.createElement('div');
-        container.textContent = label;
-        container.className = 'p-gui__toggle';
-        if ( tooltip ) {
-            container.setAttribute('title', tooltip);
-        }
-        this.wrapper.append(container);
-
-        container.addEventListener('click', (ev) => {
-            const checkbox = ev.target.childNodes[1];
-            
-            let value = true;
-            
-            if (checkbox.classList.contains('p-gui__toggle-checkbox--active')) {
-                value = false;
-            }
-            
-            checkbox.classList.toggle('p-gui__toggle-checkbox--active');
-
-            if ( isObject ) {
-                obj[prop] = value;
-            }
-            
-            else {
-                if (typeof callback == 'function') {
-                    callback(value);
-                }
-            }
-
-            if (this.onUpdate) {
-                this.onUpdate();
-            } else if (this.isFolder && this.firstParent.onUpdate) {
-                this.firstParent.onUpdate();
-            }
-        });
-
-        let activeClass = (() => {
-            if (!isObject) {
-                return value ? ' p-gui__toggle-checkbox--active' : '';
-            } else {
-                return obj[prop] ? ' p-gui__toggle-checkbox--active' : '';
-            }
-        })();
-
-        const checkbox = document.createElement('div');
-        checkbox.className = 'p-gui__toggle-checkbox' + activeClass;
-        container.append(checkbox);
-
-        if ( isObject ) {
-            Object.defineProperty( obj, prop, {
-                set: val => { 
-                    this.propReferences[propReferenceIndex] = val;
-
-                    if (val) {
-                        checkbox.classList.add('p-gui__toggle-checkbox--active');
-                    } else {
-                        checkbox.classList.remove('p-gui__toggle-checkbox--active');
-                    }
-
-                    if (typeof callback == 'function') {
-                        callback(val);
-                    }
-                },
-                get: () => { 
-                    return this.propReferences[propReferenceIndex];
-                }
-            });
-        }
+        const el = new Toggle(this, params, callback);
+        this.wrapper.append(el);
+        return el;
     }
 
     list(params = {}, callback) {  
-        if (typeof params != 'object') {
-            throw Error(`[GUI] list() first parameter must be an object. Received: ${typeof params}.`);
-        }
-
-        let label = typeof params.label == 'string' ? params.label : ' ';
-        let isObject = false;
-        let propReferenceIndex = null;
-        let obj = params.obj; 
-        let prop = params.prop;
-        let values = Array.isArray(params.values) ? params.values : null;
-        let value;
-        let objectValues = typeof values[0] == 'string' ? false : true;
-        const tooltip = (typeof params.tooltip === 'string') ? params.tooltip : (params.tooltip === true ? label : null);
-
-        callback = typeof callback == 'function' ? callback : null;
-
-        // callback mode
-        if ( params.value !== undefined || 
-            (params.value === undefined && obj === undefined && prop === undefined)) {
-            if (prop != undefined || obj != undefined) {
-                console.warn(`[GUI] list() "obj" and "prop" parameters are ignored when a "value" parameter is used.`);
-            }
-
-            value = (() => {
-                if (!values) {
-                    return null;
-                }
-                if (typeof params.value == 'string') {
-                    return values.indexOf(params.value);
-                }
-                if (typeof params.value == 'number') {
-                    return params.value;
-                }
-            })();
-        }
-
-        // object-binding mode
-        else if (prop != undefined && obj != undefined) {
-            if (typeof prop != 'string') {
-                throw Error(`[GUI] list() "prop" parameter must be an string. Received: ${typeof prop}.`);
-            }
-            if (typeof obj != 'object') {
-                throw Error(`[GUI] list() "obj" parameter must be an object. Received: ${typeof obj}.`);
-            }
-
-            value = (() => {                
-                if (!values) {
-                    return null;
-                }
-                if (typeof obj[prop] == 'string') {
-                    if ( !objectValues ) { // values is an array of strings
-                        return values.indexOf(obj[prop]);
-                    }
-                    else { // values is an array of objects
-                        return values.find(item => item.value === obj[prop]).value;
-                    }
-                }
-                if (typeof obj[prop] == 'number') {
-                    if ( !objectValues ) { // values is an array of strings
-                        return obj[prop];
-                    }
-                    else { // values is an array of objects
-                        return values.find(item => item.value === obj[prop]).value;
-                    }
-                }
-            })();
-
-            propReferenceIndex = this.propReferences.push(obj[prop]) - 1;
-            isObject = true;
-        }
-
-        else {
-            if ((prop != undefined && obj == undefined) || (prop == undefined && obj == undefined)) {
-                console.warn(`[GUI] list() "obj" and "prop" parameters must be used together.`);
-            }
-        }
-
         this.imageContainer = null;
-
-        let container = document.createElement('div');
-        container.className = 'p-gui__list';
-        container.textContent = label;
-        if (tooltip) {
-            container.setAttribute('title', tooltip);
-        }
-        this.wrapper.append(container);
-
-        let select = document.createElement('select');
-        container.append(select);
-        select.className = 'p-gui__list-dropdown';
-        select.addEventListener('change', (ev) => {
-            if ( isObject ) {
-                obj[prop] = ev.target.value;
-            }
-
-            else if (callback) {
-                callback(ev.target.value);
-            }
-
-            if (this.onUpdate) {
-                this.onUpdate();
-            } else if (this.isFolder && this.firstParent.onUpdate) {
-                this.firstParent.onUpdate();
-            }
-        });
-
-        if (values) 
-        {
-            values.forEach((item, index) => 
-            {
-                const optionName = objectValues ? item.label : item;
-                const optionValue = objectValues ? item.value : item;
-                let option = document.createElement('option');
-                option.setAttribute('value', optionValue);
-                option.textContent = optionName;
-                select.append(option);
-
-                if (!objectValues && value == index || objectValues && value == optionValue) {
-                    option.setAttribute('selected', '');
-                }
-            });
-        }
-
-        if ( isObject ) {
-            Object.defineProperty( obj, prop, {
-                set: val => {
-                    let newIndex, newValue, newObj; 
-                    if (objectValues) {
-                        newObj = values.find(item => {
-                            return item.value == val;
-                        });
-                        newValue = newObj?.value || values[0].value;
-                        newIndex = values.indexOf(newObj);
-                    } else {
-                        if (typeof val == 'string') {
-                            newIndex = values.indexOf(val);
-                            newValue = val;
-                        }
-                        if (typeof val == 'number') {
-                            newIndex = val;
-                            newValue = values[val];
-                        }
-                    }
-                    
-                    this.propReferences[propReferenceIndex] = objectValues ? newValue : val;
-
-                    const previousSelection = select.querySelector('[selected]');
-                    if ( previousSelection ) {
-                        previousSelection.removeAttribute('selected')
-                    }
-                    select.querySelectorAll('option')[newIndex].setAttribute('selected', '');
-                    
-                    if (typeof callback == 'function') {
-                        if (objectValues) {
-                            callback(newObj, newIndex);
-                        } else {
-                            callback(newValue, newIndex);
-                        }
-                    }
-                },
-                get: () => { 
-                    return this.propReferences[propReferenceIndex];
-                }
-            });
-        }
+        const el = new List(this, params, callback);
+        this.wrapper.append(el);
+        return el;
     }
 
     color(params = {}, callback) {
