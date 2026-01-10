@@ -57,6 +57,8 @@ export default class Slider {
             container.setAttribute('title', tooltip);
         }
 
+        this.parent.wrapper.append(container);
+
         const slider_name = document.createElement('div');
         slider_name.className = 'p-gui__slider-name';
         slider_name.textContent = label;

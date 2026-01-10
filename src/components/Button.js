@@ -38,6 +38,7 @@ export default class Slider {
             el.style.setProperty('--color-accent-hover', params.hoverColor || params.color);
         }
 
+        this.parent.wrapper.append(el);
         return el;
     }
 }

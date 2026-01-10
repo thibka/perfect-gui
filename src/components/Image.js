@@ -52,6 +52,7 @@ export default class Image {
         if ( tooltip ) {
             image.setAttribute('title', tooltip);
         }
+        this.parent.imageContainer.append(image);
 
         if (selected && selectionBorder) {
             image.classList.add('p-gui__image--selected');

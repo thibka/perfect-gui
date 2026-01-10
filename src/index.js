@@ -3,6 +3,8 @@ import Slider from './components/Slider';
 import Image from './components/Image';
 import Toggle from './components/Toggle';
 import List from './components/List';
+import Color from './components/Color';
+import Vector2 from './components/Vector2';
 import styles from './styles/styles';
 
 export default class GUI {
@@ -213,7 +215,7 @@ export default class GUI {
     button(params = {}, callback) {
         this.imageContainer = null;
         const el = new Button(this, params, callback);
-        this.wrapper.append(el);
+        return el;
     }
     
     image(params = {}, callback) {
@@ -223,13 +225,12 @@ export default class GUI {
             this.wrapper.append(this.imageContainer);
         }
         const el = new Image(this, params, callback);
-        this.imageContainer.append(el);
+        return el;
     }
 
     slider(params = {}, callback) {
         this.imageContainer = null;
         const el = new Slider(this, params, callback);
-        this.wrapper.append(el);
         return el;
     }
 
@@ -243,240 +244,19 @@ export default class GUI {
     list(params = {}, callback) {  
         this.imageContainer = null;
         const el = new List(this, params, callback);
-        this.wrapper.append(el);
         return el;
     }
 
     color(params = {}, callback) {
-        if (typeof params != 'object') {
-            throw Error(`[GUI] color() first parameter must be an object. Received: ${typeof params}.`);
-        }
-
-        let label = typeof params.label == 'string' ? params.label || ' ' : ' ';
-
-        let isObject = false;
-        let propReferenceIndex = null;
-        let obj = params.obj; 
-        let prop = params.prop;
-        let value;
-        const tooltip = (typeof params.tooltip === 'string') ? params.tooltip : (params.tooltip === true ? label : null);
-
-        if (typeof params.value == 'string') {
-            if (params.value.length != 7 || params.value[0] != '#') {
-                console.error(`[GUI] color() 'value' parameter must be an hexadecimal string in the format "#ffffff". Received: "${params.value}".`)
-            }
-            else {
-                value = params.value;
-            }
-        }
-        if (!value) value = '#000000';
-
-        // callback mode
-        if ( params.value !== undefined ) {
-            if (prop != undefined || obj != undefined) {
-                console.warn(`[GUI] color() "obj" and "prop" parameters are ignored when a "value" parameter is used.`);
-            }
-        }
-
-        // object-binding
-        else if (prop != undefined && obj != undefined) {
-            if (typeof prop != 'string') {
-                throw Error(`[GUI] color() "prop" parameter must be an string. Received: ${typeof prop}.`);
-            }
-            if (typeof obj != 'object') {
-                throw Error(`[GUI] color() "obj" parameter must be an object. Received: ${typeof obj}.`);
-            }
-
-            if (label == ' ') {
-                label = prop;
-            }
-
-            propReferenceIndex = this.propReferences.push(obj[prop]) - 1;
-            isObject = true;
-        }
-        else {
-            if ((prop != undefined && obj == undefined) || (prop == undefined && obj == undefined)) {
-                console.warn(`[GUI] color() "obj" and "prop" parameters must be used together.`);
-            }
-        }
-
         this.imageContainer = null;
-
-        const container = document.createElement('div');
-        container.className = 'p-gui__color';
-        container.textContent = label;
-        if ( tooltip ) {
-            container.setAttribute('title', tooltip);
-        }
-        this.wrapper.append(container);
-
-        const colorpicker = document.createElement('input');
-        colorpicker.className = 'p-gui__color-picker';
-        colorpicker.setAttribute('type', 'color');
-        colorpicker.value = value;
-        container.append(colorpicker);
-
-        if (typeof callback == 'function') {
-            colorpicker.addEventListener('input', () => {
-                if ( isObject ) {
-                    obj[prop] = colorpicker.value;
-                }
-
-                else if (typeof callback == 'function') {
-                    callback(colorpicker.value);
-                }
-
-                if (this.onUpdate) {
-                    this.onUpdate();
-                } else if (this.isFolder && this.firstParent.onUpdate) {
-                    this.firstParent.onUpdate();
-                }
-            });
-        }
-
-        if ( isObject ) {
-            Object.defineProperty( obj, prop, {
-                set: val => { 
-                    this.propReferences[propReferenceIndex] = val;
-
-                    colorpicker.value = val;
-
-                    if (typeof callback == 'function') {
-                        callback(val);
-                    }
-                },
-                get: () => { 
-                    return this.propReferences[propReferenceIndex];
-                }
-            });
-        }
+        const el = new Color(this, params, callback);
+        return el;
     }
 
-    vector2( params = {}, callback) {
-        if (typeof params != 'object') {
-            throw Error(`[GUI] vector2() first parameter must be an object. Received: ${typeof params}.`);
-        }
-    
-        let label = typeof params.label == 'string' ? params.label || ' ' : ' ';
-    
-        const minX = params.x.min ?? 0;
-        const maxX = params.x.max ?? 1;
-        const minY = params.y.min ?? 0;
-        const maxY = params.y.max ?? 1;
-        const stepX = params.x.step || (maxX - minX) / 100;
-        const stepY = params.y.step || (maxY - minY) / 100;
-        const decimalsX = this._countDecimals(stepX);
-        const decimalsY = this._countDecimals(stepY);
-    
-        const objectX = params.x.obj;
-        const propX = params.x.prop;
-        const propXReferenceIndex = this.propReferences.push(objectX[propX]) - 1;
-        
-        const objectY = params.y.obj;
-        const propY = params.y.prop;
-        const propYReferenceIndex = this.propReferences.push(objectY[propY]) - 1;
-    
-        const tooltip = (typeof params.tooltip === 'string') ? params.tooltip : (params.tooltip === true ? label : null);
-    
-        callback = typeof callback == 'function' ? callback : null;
-    
+    vector2(params = {}, callback) {
         this.imageContainer = null;
-    
-        const container = document.createElement('div');
-        container.className = 'p-gui__vector2';
-        container.textContent = label;
-        if ( tooltip ) {
-            container.setAttribute('title', tooltip);
-        }
-        this.wrapper.append(container);
-    
-        const vector_value = document.createElement('div');
-        vector_value.className = 'p-gui__vector-value';
-        vector_value.textContent = objectX[propX] + ', ' + objectY[propY];
-        container.append(vector_value);
-    
-        const area = document.createElement('div');
-        area.className = 'p-gui__vector2-area';
-        container.append(area);
-        area.addEventListener('click', evt => {
-            const newX = parseFloat(this._mapLinear(evt.offsetX, 0, area.clientWidth, minX, maxX));
-            const newY = parseFloat(this._mapLinear(evt.offsetY, 0, area.clientHeight, maxY, minY));
-            objectX[propX] = newX.toFixed(decimalsX);
-            objectY[propY] = newY.toFixed(decimalsY);
-    
-            if (callback) {
-                callback(objectX[propX], objectX[propY]);
-            }
-    
-            if (this.onUpdate) {
-                this.onUpdate();
-            } else if (this.isFolder && this.firstParent.onUpdate) {
-                this.firstParent.onUpdate();
-            }
-        });
-        
-        let pointer_is_down = false;
-        area.addEventListener('pointerdown', (evt) => {
-            pointer_is_down = true;
-        });
-        area.addEventListener('pointerup', () => {
-            pointer_is_down = false;
-        });
-        area.addEventListener('pointermove', (evt) => {
-            if (pointer_is_down) {
-                const newX = parseFloat(this._mapLinear(evt.offsetX, 0, area.clientWidth, minX, maxX));
-                const newY = parseFloat(this._mapLinear(evt.offsetY, 0, area.clientHeight, maxY, minY));
-                objectX[propX] = newX.toFixed(decimalsX);
-                objectY[propY] = newY.toFixed(decimalsY);
-    
-                if (callback) {
-                    callback(objectX[propX], objectX[propY]);
-                }
-    
-                if (this.onUpdate) {
-                    this.onUpdate();
-                } else if (this.isFolder && this.firstParent.onUpdate) {
-                    this.firstParent.onUpdate();
-                }
-            }
-        });
-    
-        const line_x = document.createElement('div');
-        line_x.className = 'p-gui__vector2-line p-gui__vector2-line-x';
-        area.append(line_x);
-    
-        const line_y = document.createElement('div');
-        line_y.className = 'p-gui__vector2-line p-gui__vector2-line-y';
-        area.append(line_y);
-    
-        const dot = document.createElement('div');
-        dot.className = 'p-gui__vector2-dot';
-        area.append(dot);
-    
-        dot.style.left = this._mapLinear(objectX[propX], minX, maxX, 0, area.clientWidth) + 'px';
-        dot.style.top = this._mapLinear(objectY[propY], minY, maxY, area.clientHeight, 0) + 'px';
-    
-        Object.defineProperty( objectX, propX, {
-            set: val => { 
-                this.propReferences[propXReferenceIndex] = val;
-                dot.style.left = this._mapLinear(val, minX, maxX, 0, area.clientWidth) + 'px';
-                vector_value.textContent = String( val ) + ', ' + objectY[propY];
-            },
-            get: () => { 
-                return this.propReferences[propXReferenceIndex];
-            }
-        });
-    
-        Object.defineProperty( objectY, propY, {
-            set: val => { 
-                this.propReferences[propYReferenceIndex] = val;
-                dot.style.top = this._mapLinear(val, minY, maxY, area.clientHeight, 0) + 'px';
-                vector_value.textContent = objectX[propX] + ', ' + String( val );
-            },
-            get: () => { 
-                return this.propReferences[propYReferenceIndex];
-            }
-        });
+        const el = new Vector2(this, params, callback);
+        return el;
     }
 
     folder(options = {}) {

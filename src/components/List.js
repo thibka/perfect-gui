@@ -85,6 +85,7 @@ export default class List {
         if (tooltip) {
             container.setAttribute('title', tooltip);
         }
+        this.parent.wrapper.append(container);
 
         let select = document.createElement('select');
         container.append(select);
