@@ -49,8 +49,6 @@ export default class Slider {
             value = (this.max - this.min) / 2;
         }
         const tooltip = (typeof params.tooltip === 'string') ? params.tooltip : (params.tooltip === true ? label : null);
-
-        this.parent.imageContainer = null;
     
         const container = document.createElement('div');
         container.className = 'p-gui__slider';

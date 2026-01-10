@@ -1,5 +1,6 @@
 import Button from './components/Button';
 import Slider from './components/Slider';
+import Image from './components/Image';
 import styles from './styles/styles';
 
 export default class GUI {
@@ -208,103 +209,26 @@ export default class GUI {
     }
 
     button (params = {}, callback) {
+        this.imageContainer = null;
         const el = new Button(this, params, callback);
         this.wrapper.append(el);
     }
     
     image(params = {}, callback) {
-        if (typeof params != 'object') {
-            throw Error(`[GUI] image() first parameter must be an object. Received: ${typeof params}.`);
-        }
-        
-        let path;
-        if (typeof params.path == 'string') {
-            path = params.path;
-        } else {
-            if (typeof params.path == undefined) {
-                throw Error(`[GUI] image() path must be provided.`);
-            } else {
-                throw Error(`[GUI] image() path must be a string.`);
-            }
-        }
-        let filename = path.replace(/^.*[\\\/]/, '');
-        let label;
-        if (params.label == undefined) {
-            label = filename;
-        } else {
-            label = typeof params.label == 'string' ? params.label || ' ' : ' ';
-        }
-
-        const tooltip = (typeof params.tooltip === 'string') ? params.tooltip : (params.tooltip === true ? label : null);
-
-        const selected = params.selected === true;
-        const selectionBorder = params.selectionBorder !== false;
-        
-        // width & height options
-        let inline_styles = '';
-        if (params.width) {
-            if (typeof params.width == 'number') {
-                params.width += 'px';
-            }
-            inline_styles += `flex: 0 0 calc(${params.width} - 5px); `;
-        }
-        
-        if (params.height) {
-            if (typeof params.height == 'number') {
-                params.height += 'px';
-            }
-            inline_styles += `height: ${params.height}; `;
-        }
-                
         if (!this.imageContainer) {
             this.imageContainer = document.createElement('div');
             this.imageContainer.className = 'p-gui__image-container';
             this.wrapper.append(this.imageContainer);
         }
-
-        // Image button
-        const image = document.createElement('div');
-        image.className = 'p-gui__image';
-        image.style = 'background-image: url(' + path + '); ' + inline_styles;
-        if ( tooltip ) {
-            image.setAttribute('title', tooltip);
-        }
-        this.imageContainer.append(image);
-
-        if (selected && selectionBorder) {
-            image.classList.add('p-gui__image--selected');
-        }
-        
-        // Text inside image
-        const text = document.createElement('div');
-        text.className = 'p-gui__image-text';
-        text.textContent = label;
-        image.append(text);
-        
-        image.addEventListener('click', () => {
-            let selected_items = image.parentElement.querySelectorAll('.p-gui__image--selected');
-            for (let i = 0; i < selected_items.length; i++) {
-                selected_items[i].classList.remove('p-gui__image--selected');
-            }
-            if (selectionBorder) {
-                image.classList.add('p-gui__image--selected');
-            }
-            if (typeof callback == 'function') {
-                callback({ path, text: label });
-            }
-            if (this.onUpdate) {
-                this.onUpdate();
-            } else if (this.isFolder && this.firstParent.onUpdate) {
-                this.firstParent.onUpdate();
-            }
-        });
-
-        return image;
+        const el = new Image(this, params, callback);
+        this.imageContainer.append(el);
     }
 
     slider (params = {}, callback) {
+        this.imageContainer = null;
         const el = new Slider(this, params, callback);
         this.wrapper.append(el);
+        return el;
     }
 
     toggle(params = {}, callback) {

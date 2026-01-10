@@ -14,8 +14,6 @@ export default class Slider {
         }
 
         const tooltip = (typeof params.tooltip === 'string') ? params.tooltip : (params.tooltip === true ? label : null);
-
-        this.parent.imageContainer = null;
         
         const el = document.createElement('div');
         el.className = 'p-gui__button';
