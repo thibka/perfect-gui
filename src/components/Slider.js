@@ -10,7 +10,7 @@ export default class Slider {
         let label = typeof params.label == 'string' ? params.label || ' ' : ' ';
         this.isObject = false;
         let propReferenceIndex = null;
-        this.obj = params.obj; 
+        this.obj = params.obj;
         this.prop = params.prop;
         let value = typeof params.value == 'number' ? params.value : null;
         this.min = params.min ?? 0;
@@ -20,7 +20,7 @@ export default class Slider {
         this.callback = typeof callback == 'function' ? callback : null;
 
         // callback mode
-        if ( value !== null ) {            
+        if (value !== null) {
             if (this.prop != undefined || this.obj != undefined) {
                 console.warn(`[GUI] slider() "obj" and "prop" parameters are ignored when a "value" parameter is used.`);
             }
@@ -49,7 +49,7 @@ export default class Slider {
             value = (this.max - this.min) / 2;
         }
         const tooltip = (typeof params.tooltip === 'string') ? params.tooltip : (params.tooltip === true ? label : null);
-    
+
         const container = document.createElement('div');
         container.className = 'p-gui__slider';
 
@@ -63,7 +63,7 @@ export default class Slider {
         slider_name.className = 'p-gui__slider-name';
         slider_name.textContent = label;
         container.append(slider_name);
-    
+
         this.ctrlDiv = document.createElement('div');
         this.ctrlDiv.className = 'p-gui__slider-ctrl';
         this.ctrlDiv.setAttribute('type', 'range');
@@ -102,7 +102,7 @@ export default class Slider {
             this._updateHandlePositionFromValue();
             this._triggerCallbacks();
         })
-    
+
         this.ctrlDiv.addEventListener('pointerdown', (evt) => {
             this.ctrlDiv.pointerDown = true;
             this.ctrlDiv.prevPosition = evt.clientX;
@@ -114,15 +114,15 @@ export default class Slider {
         });
 
         window.addEventListener('pointermove', (evt) => {
-            if (this.ctrlDiv.pointerDown) {                
+            if (this.ctrlDiv.pointerDown) {
                 this.ctrlDiv.pointerDelta = evt.clientX - this.ctrlDiv.prevPosition;
                 this._updateHandlePositionFromPointer(evt);
             }
         });
 
-        if ( this.isObject ) {
-            Object.defineProperty( this.obj, this.prop, {
-                set: val => { 
+        if (this.isObject) {
+            Object.defineProperty(this.obj, this.prop, {
+                set: val => {
                     this.propReferences[propReferenceIndex] = val;
                     this.valueInput.value = val;
 
@@ -130,9 +130,9 @@ export default class Slider {
 
                     if (this.callback) {
                         this.callback(parseFloat(this.valueInput.value));
-                    }            
+                    }
                 },
-                get: () => { 
+                get: () => {
                     return this.propReferences[propReferenceIndex];
                 }
             });
@@ -147,7 +147,7 @@ export default class Slider {
         const pointerDelta = evt.clientX - this.ctrlDiv.prevPosition;
         const currentValue = parseFloat(this.valueInput.value);
         let handlePosition;
-        
+
         if (firstDown) {
             handlePosition = evt.offsetX;
         } else {
@@ -155,19 +155,19 @@ export default class Slider {
         }
 
         handlePosition = Math.max(handleWidth / 2, Math.min(handlePosition, sliderWidth - handleWidth / 2));
-        
+
         let newValue = this.min + (this.max - this.min) * (handlePosition - handleWidth / 2) / (sliderWidth - handleWidth);
-        if ( newValue > currentValue ) {
+        if (newValue > currentValue) {
             newValue = this._quantizeFloor(newValue, this.step);
         } else {
             newValue = this._quantizeCeil(newValue, this.step);
         }
-        
+
         // toFixed(9) avoids weird javascript infinite decimals
         newValue = parseFloat(newValue.toFixed(9));
         const nextValue = parseFloat((currentValue + this.step).toFixed(9));
         const prevValue = parseFloat((currentValue - this.step).toFixed(9));
-        
+
         if (newValue >= nextValue || newValue <= prevValue) {
             newValue = newValue.toFixed(this.decimals);
 
@@ -179,7 +179,7 @@ export default class Slider {
             this.handle.position = handlePosition;
 
             this.filling.style.width = this.handle.position + 'px';
-        
+
             this._triggerCallbacks();
         }
     }
@@ -188,17 +188,17 @@ export default class Slider {
         const sliderWidth = this.ctrlDiv.offsetWidth;
         const handleWidth = this.handle.offsetWidth;
         let handlePosition = this._mapLinear(this.valueInput.value, this.min, this.max, handleWidth / 2, sliderWidth - handleWidth / 2);
-        
+
         handlePosition = Math.max(handleWidth / 2, Math.min(handlePosition, sliderWidth - handleWidth / 2));
-        
+
         this.handle.style.transform = `translate(-50%, -50%) translateX(${handlePosition}px)`;
         this.handle.position = handlePosition;
 
         this.filling.style.width = this.handle.position + 'px';
     }
 
-    _triggerCallbacks() {        
-        if ( this.isObject ) {
+    _triggerCallbacks() {
+        if (this.isObject) {
             this.obj[this.prop] = parseFloat(this.valueInput.value);
         }
         else {
@@ -213,9 +213,9 @@ export default class Slider {
             this.parent.firstParent.onUpdate();
         }
     }
-    
-    _mapLinear( x, a1, a2, b1, b2 ) {
-        return b1 + ( x - a1 ) * ( b2 - b1 ) / ( a2 - a1 );
+
+    _mapLinear(x, a1, a2, b1, b2) {
+        return b1 + (x - a1) * (b2 - b1) / (a2 - a1);
     }
 
     _quantize(x, step) {
