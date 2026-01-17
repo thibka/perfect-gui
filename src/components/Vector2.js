@@ -62,31 +62,46 @@ export default class Vector2 {
             }
         });
         
-        let pointer_is_down = false;
-        area.addEventListener('pointerdown', (evt) => {
-            pointer_is_down = true;
-        });
-        area.addEventListener('pointerup', () => {
-            pointer_is_down = false;
-        });
-        area.addEventListener('pointermove', (evt) => {
-            if (pointer_is_down) {
-                const newX = parseFloat(this.parent._mapLinear(evt.offsetX, 0, area.clientWidth, minX, maxX));
-                const newY = parseFloat(this.parent._mapLinear(evt.offsetY, 0, area.clientHeight, maxY, minY));
-                objectX[propX] = newX.toFixed(decimalsX);
-                objectY[propY] = newY.toFixed(decimalsY);
-    
-                if (callback) {
-                    callback(objectX[propX], objectX[propY]);
-                }
-    
-                if (this.parent.onUpdate) {
-                    this.parent.onUpdate();
-                } else if (this.parent.isFolder && this.parent.firstParent.onUpdate) {
-                    this.parent.firstParent.onUpdate();
-                }
+        const handlePointerMove = (evt) => {
+            const rect = area.getBoundingClientRect();
+            const offsetX = evt.clientX - rect.left;
+            const offsetY = evt.clientY - rect.top;
+            
+            // Calculate new values and clamp them within min/max bounds
+            const mappedX = this.parent._mapLinear(offsetX, 0, area.clientWidth, minX, maxX);
+            const mappedY = this.parent._mapLinear(offsetY, 0, area.clientHeight, maxY, minY);
+            
+            const clampedX = Math.max(minX, Math.min(maxX, mappedX));
+            const clampedY = Math.max(minY, Math.min(maxY, mappedY));
+            
+            objectX[propX] = parseFloat(clampedX.toFixed(decimalsX));
+            objectY[propY] = parseFloat(clampedY.toFixed(decimalsY));
+
+            if (callback) {
+                callback(objectX[propX], objectY[propY]);
             }
+
+            if (this.parent.onUpdate) {
+                this.parent.onUpdate();
+            } else if (this.parent.isFolder && this.parent.firstParent.onUpdate) {
+                this.parent.firstParent.onUpdate();
+            }
+        };
+
+        area.addEventListener('pointerdown', (evt) => {
+            // Call handlePointerMove immediately to update position on click
+            handlePointerMove(evt);
+            
+            // Attach pointermove to document to capture movements everywhere
+            document.addEventListener('pointermove', handlePointerMove);
+
+            // Clean up on pointerup
+            document.addEventListener('pointerup', () => {
+                document.removeEventListener('pointermove', handlePointerMove);
+            }, {once: true});
         });
+        
+        
     
         const line_x = document.createElement('div');
         line_x.className = 'p-gui__vector2-line p-gui__vector2-line-x';
