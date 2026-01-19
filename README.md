@@ -28,7 +28,7 @@ npm i perfect-gui
 <script type="importmap">
   {
     "imports": {
-      "perfect-gui": "https://unpkg.com/perfect-gui@latest/dist/perfect-gui.mjs",
+      "perfect-gui": "https://unpkg.com/perfect-gui@latest/dist/perfect-gui.js",
     }
   }
 </script>
