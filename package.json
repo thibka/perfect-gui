@@ -1,6 +1,7 @@
 {
   "name": "perfect-gui",
-  "version": "4.12.2",
+  "type": "module",
+  "version": "4.12.3",
   "description": "GUI for JavaScript",
   "main": "src/index.js",
   "scripts": {

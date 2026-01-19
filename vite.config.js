@@ -5,7 +5,8 @@ export default defineConfig({
     build: {
         lib: {
             entry: resolve(__dirname, "src/index.js"),
-            name: "Perfect GUI"
+            name: "Perfect GUI",
+            formats: ["es"]
         },
         minify: true
     },
