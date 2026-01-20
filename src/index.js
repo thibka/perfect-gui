@@ -1,11 +1,11 @@
-import Button from './components/Button';
-import Slider from './components/Slider';
-import Image from './components/Image';
-import Toggle from './components/Toggle';
-import List from './components/List';
-import Color from './components/Color';
-import Vector2 from './components/Vector2';
-import styles from './styles/styles';
+import Button from './components/Button.js';
+import Slider from './components/Slider.js';
+import Image from './components/Image.js';
+import Toggle from './components/Toggle.js';
+import List from './components/List.js';
+import Color from './components/Color.js';
+import Vector2 from './components/Vector2.js';
+import styles from './styles/styles.js';
 
 export default class GUI {
     constructor(options = {}) {

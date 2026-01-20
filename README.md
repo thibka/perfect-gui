@@ -1,18 +1,8 @@
 # Perfect GUI
 A nice, simple and (probably not) perfect GUI for JavaScript.
 
-## API
-[Documentation](https://thibka.github.io/perfect-gui/public/)
-
-
-## Features
-- image buttons 
-- multiple panels
-- easy positioning
-- draggable panels
-- two-dimensional vector visualization
-
-<img src="https://raw.githubusercontent.com/thibka/thibka.github.io/master/perfect-gui/_data/demo.jpg" width="700"/>  
+## Documentation and examples
+Go to the [documentation page](https://thibka.github.io/perfect-gui/) to see all the features and examples.
 
 ## Install
 
