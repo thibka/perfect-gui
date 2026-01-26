@@ -115,13 +115,25 @@ export default class Vector2 {
         dot.className = 'p-gui__vector2-dot';
         area.append(dot);
         
-        dot.style.left = this.parent._mapLinear(objectX[propX], minX, maxX, 0, area.clientWidth) + 'px';
-        dot.style.top = this.parent._mapLinear(objectY[propY], minY, maxY, area.clientHeight, 0) + 'px';
+        // Function to update dot position based on current values
+        const updateDotPosition = () => {
+            dot.style.left = this.parent._mapLinear(objectX[propX], minX, maxX, 0, area.clientWidth) + 'px';
+            dot.style.top = this.parent._mapLinear(objectY[propY], minY, maxY, area.clientHeight, 0) + 'px';
+        };
+        
+        // Initial position
+        updateDotPosition();
+        
+        // Observe area resize (e.g., when scrollbars appear/disappear)
+        const resizeObserver = new ResizeObserver(() => {
+            updateDotPosition();
+        });
+        resizeObserver.observe(area);
     
         Object.defineProperty( objectX, propX, {
             set: val => { 
                 this.parent.propReferences[propXReferenceIndex] = val;
-                dot.style.left = this.parent._mapLinear(val, minX, maxX, 0, area.clientWidth) + 'px';
+                updateDotPosition();
                 vector_value.textContent = String( val ) + ', ' + objectY[propY];
             },
             get: () => { 
@@ -132,7 +144,7 @@ export default class Vector2 {
         Object.defineProperty( objectY, propY, {
             set: val => { 
                 this.parent.propReferences[propYReferenceIndex] = val;
-                dot.style.top = this.parent._mapLinear(val, minY, maxY, area.clientHeight, 0) + 'px';
+                updateDotPosition();
                 vector_value.textContent = objectX[propX] + ', ' + String( val );
             },
             get: () => { 
