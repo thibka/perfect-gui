@@ -10,7 +10,7 @@ import _folder from './_folder.css?inline';
 export default function (position_type) {
     return `
     .p-gui {
-        --main-border-radius: 3px;
+        --main-border-radius: 6px;
         --color-bg: #161616;
         --color-border: #222222;
         --color-border-2: transparent;
@@ -24,15 +24,11 @@ export default function (position_type) {
         top: 0;
         left: 0;
         transform: translate3d(0,0,0);
-        padding-top: 21px;
-        padding-inline: 3px;
         background: var(--color-bg);
-        display: block;
-        justify-content: center;
-        flex-wrap: wrap;
+        display: flex;
+        flex-direction: column;
         font-family: "Arial Rounded MT Bold", Arial, sans-serif;
         width: 290px;
-        overflow: auto;
         box-shadow: 0 0 2px black;
         box-sizing: border-box;
         z-index: 99999;
@@ -44,6 +40,33 @@ export default function (position_type) {
         transition: var(--transition) opacity;
     }
 
+    .p-gui__content {
+        display: grid;
+        grid-template-rows: 1fr;
+        transition: 250ms grid-template-rows ease;
+        overflow: hidden;
+    }
+
+    .p-gui__inner {
+        padding-top: 1px;
+        padding-inline: 3px;
+        overflow: hidden;
+        min-height: 0;
+    }
+
+    .p-gui:not(.p-gui--collapsed) .p-gui__inner {
+        animation: p-gui-reveal-scroll 0s 250ms forwards;
+    }
+
+    @keyframes p-gui-reveal-scroll {
+        from { overflow: hidden; }
+        to { overflow: auto; }
+    }
+
+    .p-gui--collapsed .p-gui__content {
+        grid-template-rows: 0fr;
+    }
+    
     .p-gui:hover {
         opacity: 1!important;
     }
@@ -71,14 +94,8 @@ export default function (position_type) {
         border: 1px solid #2f2f2f;
     }
     
-    .p-gui--collapsed {
-        height: 0;
-        padding: 21px 10px 0 10px;
-        overflow: hidden;
-    }
-    
     .p-gui__header {
-        position: absolute;
+        position: relative;
         top: 0;
         left: 0;
         width: 100%;

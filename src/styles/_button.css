@@ -2,7 +2,6 @@
     background: var(--color-accent);
     text-align: center;
     color: var(--color-bg);
-    border: none;
     border: 1px solid transparent;
     box-sizing: border-box;
     transition:

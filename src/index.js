@@ -148,10 +148,11 @@ export default class GUI {
     }
 
     _folderConstructor(folderOptions) {
-        this.wrapper = folderOptions.wrapper;
+        this.domElement = folderOptions.wrapper;
         this.isFolder = true;
         this.parent = folderOptions.parent;
         this.firstParent = folderOptions.firstParent;
+        this.wrapper = folderOptions.inner;
     }
 
     _parseScreenCorner(position) {
@@ -198,8 +199,8 @@ export default class GUI {
             this.screenCorner.x == 'left'
                 ? 0
                 : this.container.clientWidth -
-                  this.wrapperWidth -
-                  scrollbar_width;
+                this.wrapperWidth -
+                scrollbar_width;
         if (this.instanceId > 0) {
             let existingDomInstances = this.container.querySelectorAll(
                 `.p-gui:not(#${this.wrapper.id}):not([data-dragged])`,
@@ -233,7 +234,7 @@ export default class GUI {
             x: this.xOffset,
             y: this.yOffset,
         };
-        this.wrapper.style.transform = `translate3d(${this.position.x}px, ${this.position.y}px, 0)`;
+        this.domElement.style.transform = `translate3d(${this.position.x}px, ${this.position.y}px, 0)`;
     }
 
     _addStyles(styles) {
@@ -241,22 +242,30 @@ export default class GUI {
     }
 
     _addWrapper() {
-        this.wrapper = document.createElement('div');
-        this.wrapper.id = 'p-gui-' + this.instanceId;
-        this.wrapper.className = 'p-gui';
-        this.wrapper.setAttribute('data-lenis-prevent', '');
-        this.container.append(this.wrapper);
+        this.domElement = document.createElement('div');
+        this.domElement.id = 'p-gui-' + this.instanceId;
+        this.domElement.className = 'p-gui';
+        this.domElement.setAttribute('data-lenis-prevent', '');
+        this.container.append(this.domElement);
 
         this.header = document.createElement('div');
         this.header.className = 'p-gui__header';
         this.header.textContent = this.label;
         this.header.style = `${this.backgroundColor ? 'border-color: ' + this.backgroundColor + ';' : ''}`;
-        this.wrapper.append(this.header);
+        this.domElement.append(this.header);
 
         const close_btn = document.createElement('div');
         close_btn.className = 'p-gui__header-close';
         close_btn.addEventListener('click', this.toggleClose.bind(this));
         this.header.append(close_btn);
+
+        const content = document.createElement('div');
+        content.className = 'p-gui__content';
+        this.domElement.append(content);
+
+        this.wrapper = document.createElement('div');
+        this.wrapper.className = 'p-gui__inner';
+        content.append(this.wrapper);
     }
 
     button(params = {}, callback) {
@@ -337,6 +346,15 @@ export default class GUI {
         folderHeader.innerHTML = `<span class="p-gui__folder-arrow"></span>${label}`;
         folderHeader.className = 'p-gui__folder-header';
         container.append(folderHeader);
+
+        const folderContent = document.createElement('div');
+        folderContent.className = 'p-gui__folder-content';
+        container.append(folderContent);
+
+        const folderInner = document.createElement('div');
+        folderInner.className = 'p-gui__folder-inner';
+        folderContent.append(folderInner);
+
         folderHeader.addEventListener('click', () => {
             container.classList.toggle('p-gui__folder--closed');
         });
@@ -345,6 +363,7 @@ export default class GUI {
             isFolder: true,
             folderOptions: {
                 wrapper: container,
+                inner: folderInner,
                 parent: this,
                 firstParent: this.firstParent,
             },
@@ -374,7 +393,7 @@ export default class GUI {
             ev.preventDefault();
             if (!that.hasBeenDragged) {
                 that.hasBeenDragged = true;
-                that.wrapper.setAttribute('data-dragged', 'true');
+                that.domElement.setAttribute('data-dragged', 'true');
             }
 
             that.position.x =
@@ -382,7 +401,7 @@ export default class GUI {
             that.position.y =
                 that.position.initY + ev.clientY - that.position.prevY;
 
-            that.wrapper.style.transform =
+            that.domElement.style.transform =
                 'translate3d(' +
                 that.position.x +
                 'px,' +
@@ -405,11 +424,11 @@ export default class GUI {
             this.wrapper.scrollTo(0, this.previousInnerScroll);
         }
 
-        this.wrapper.classList.toggle('p-gui--collapsed');
+        this.domElement.classList.toggle('p-gui--collapsed');
     }
 
     kill() {
-        this.wrapper.remove();
+        this.domElement.remove();
     }
 
     _mapLinear(x, a1, a2, b1, b2) {
