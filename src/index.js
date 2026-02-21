@@ -11,8 +11,11 @@ export default class GUI {
     constructor(options = {}) {
         this.firstParent = this;
 
-        if ( options.container ) {
-            this.container = typeof options.container == "string" ? document.querySelector(options.container) : options.container;
+        if (options.container) {
+            this.container =
+                typeof options.container == 'string'
+                    ? document.querySelector(options.container)
+                    : options.container;
             this.position_type = 'absolute';
         } else {
             this.container = document.body;
@@ -22,25 +25,31 @@ export default class GUI {
         this.propReferences = [];
         this.folders = [];
 
-        if ( options.isFolder ) {
+        if (options.isFolder) {
             this._folderConstructor(options.folderOptions);
             return;
         }
 
-        if ( typeof options.onUpdate == 'function' ) {
+        if (typeof options.onUpdate == 'function') {
             this.onUpdate = options.onUpdate;
         }
 
-        this.label = (options != undefined && typeof options.label == "string") ? options.label : ''; 
-        this.backgroundColor = options.color || null; 
+        this.label =
+            options != undefined && typeof options.label == 'string'
+                ? options.label
+                : '';
+        this.backgroundColor = options.color || null;
         this.opacity = options.opacity || 1;
 
         if (this.container == document.body) {
             this.maxHeight = window.innerHeight;
         } else {
-            this.maxHeight = Math.min(this.container.clientHeight, window.innerHeight)
+            this.maxHeight = Math.min(
+                this.container.clientHeight,
+                window.innerHeight,
+            );
         }
-        if ( options.maxHeight ) {
+        if (options.maxHeight) {
             this.initMaxHeight = options.maxHeight;
             this.maxHeight = Math.min(this.initMaxHeight, this.maxHeight);
         }
@@ -49,28 +58,28 @@ export default class GUI {
 
         if (!window.perfectGUI) {
             window.perfectGUI = {};
-        } 
-        if ( window.perfectGUI.instanceCounter == undefined ) {
+        }
+        if (window.perfectGUI.instanceCounter == undefined) {
             window.perfectGUI.instanceCounter = 0;
         } else {
             window.perfectGUI.instanceCounter++;
         }
         this.instanceId = window.perfectGUI.instanceCounter;
-        
+
         this.wrapperWidth = options.width || 290;
         this.stylesheet = document.createElement('style');
         this.stylesheet.setAttribute('type', 'text/css');
         this.stylesheet.setAttribute('id', 'lm-gui-stylesheet');
         document.head.append(this.stylesheet);
-        
+
         // Common styles
         if (this.instanceId == 0) {
             this._addStyles(`${styles(this.position_type)}`);
-        }        
+        }
 
         // Instance specific styles
-        this._styleInstance();        
-                
+        this._styleInstance();
+
         this._addWrapper();
         this.wrapper.setAttribute('data-corner-x', this.screenCorner.x);
         this.wrapper.setAttribute('data-corner-y', this.screenCorner.y);
@@ -79,30 +88,42 @@ export default class GUI {
             window.addEventListener('resize', this._handleResize.bind(this));
         }
         this._handleResize();
-    
+
         this.hasBeenDragged = false;
         if (options.draggable == true) this._makeDraggable();
 
         this.closed = false;
         if (options.closed) this.toggleClose();
     }
-    
+
     _styleInstance() {
         let scrollbar_width = this._getScrollbarWidth(this.container);
         if (this.screenCorner.x == 'left') {
             this.xOffset = 0;
         } else {
-            this.xOffset = this.container.clientWidth - this.wrapperWidth - scrollbar_width;
+            this.xOffset =
+                this.container.clientWidth -
+                this.wrapperWidth -
+                scrollbar_width;
         }
 
         if (this.instanceId > 0) {
-            let existingDomInstances = this.container.querySelectorAll('.p-gui');
+            let existingDomInstances =
+                this.container.querySelectorAll('.p-gui');
             for (let i = 0; i < existingDomInstances.length; i++) {
-                if (this.screenCorner.y == existingDomInstances[i].dataset.cornerY) {
-                    if (this.screenCorner.x == 'left' && existingDomInstances[i].dataset.cornerX == 'left') {
+                if (
+                    this.screenCorner.y ==
+                    existingDomInstances[i].dataset.cornerY
+                ) {
+                    if (
+                        this.screenCorner.x == 'left' &&
+                        existingDomInstances[i].dataset.cornerX == 'left'
+                    ) {
                         this.xOffset += existingDomInstances[i].offsetWidth;
-                    } 
-                    else if (this.screenCorner.x == 'right' && existingDomInstances[i].dataset.cornerX == 'right') {
+                    } else if (
+                        this.screenCorner.x == 'right' &&
+                        existingDomInstances[i].dataset.cornerX == 'right'
+                    ) {
                         this.xOffset -= existingDomInstances[i].offsetWidth;
                     }
                 }
@@ -110,18 +131,18 @@ export default class GUI {
         }
         this.yOffset = 0;
         this.position = {
-            prevX: this.xOffset, 
-            prevY: this.yOffset, 
-            x: this.xOffset, 
-            y: this.yOffset
+            prevX: this.xOffset,
+            prevY: this.yOffset,
+            x: this.xOffset,
+            y: this.yOffset,
         };
 
         this._addStyles(`#p-gui-${this.instanceId} {
             width: ${this.wrapperWidth}px;
             max-height: ${this.maxHeight}px;
             transform: translate3d(${this.xOffset}px,${this.yOffset}px,0);
-            ${ this.screenCorner.y == 'top' ? '' : 'top: auto; bottom: 0;' }
-            ${ this.backgroundColor ? 'background: ' + this.backgroundColor + ';' : '' }
+            ${this.screenCorner.y == 'top' ? '' : 'top: auto; bottom: 0;'}
+            ${this.backgroundColor ? 'background: ' + this.backgroundColor + ';' : ''}
             opacity: ${this.opacity};
         }`);
     }
@@ -134,10 +155,11 @@ export default class GUI {
     }
 
     _parseScreenCorner(position) {
-        let parsedPosition = {x: 'right', y: 'top'};
+        let parsedPosition = { x: 'right', y: 'top' };
 
         if (position == undefined) return parsedPosition;
-        else if (typeof position != 'string') console.error('[perfect-gui] Position must be a string.');
+        else if (typeof position != 'string')
+            console.error('[perfect-gui] Position must be a string.');
 
         if (position.includes('left')) parsedPosition.x = 'left';
         if (position.includes('bottom')) parsedPosition.y = 'bottom';
@@ -157,7 +179,10 @@ export default class GUI {
         if (this.container == document.body) {
             this.maxHeight = window.innerHeight;
         } else {
-            this.maxHeight = Math.min(this.container.clientHeight, window.innerHeight)
+            this.maxHeight = Math.min(
+                this.container.clientHeight,
+                window.innerHeight,
+            );
         }
         if (this.initMaxHeight) {
             this.maxHeight = Math.min(this.initMaxHeight, this.maxHeight);
@@ -169,43 +194,65 @@ export default class GUI {
         }
 
         let scrollbar_width = this._getScrollbarWidth(this.container);
-        this.xOffset = this.screenCorner.x == 'left' ? 0 : this.container.clientWidth - this.wrapperWidth - scrollbar_width;
+        this.xOffset =
+            this.screenCorner.x == 'left'
+                ? 0
+                : this.container.clientWidth -
+                  this.wrapperWidth -
+                  scrollbar_width;
         if (this.instanceId > 0) {
-            let existingDomInstances = this.container.querySelectorAll(`.p-gui:not(#${this.wrapper.id}):not([data-dragged])`);
+            let existingDomInstances = this.container.querySelectorAll(
+                `.p-gui:not(#${this.wrapper.id}):not([data-dragged])`,
+            );
             for (let i = 0; i < existingDomInstances.length; i++) {
-                let instanceId = parseInt(existingDomInstances[i].id.replace('p-gui-', ''));
+                let instanceId = parseInt(
+                    existingDomInstances[i].id.replace('p-gui-', ''),
+                );
                 if (instanceId > this.instanceId) break;
-                if (this.screenCorner.y == existingDomInstances[i].dataset.cornerY) {
-                    if (this.screenCorner.x == 'left' && existingDomInstances[i].dataset.cornerX == 'left') {
+                if (
+                    this.screenCorner.y ==
+                    existingDomInstances[i].dataset.cornerY
+                ) {
+                    if (
+                        this.screenCorner.x == 'left' &&
+                        existingDomInstances[i].dataset.cornerX == 'left'
+                    ) {
                         this.xOffset += existingDomInstances[i].offsetWidth;
-                    } 
-                    else if (this.screenCorner.x == 'right' && existingDomInstances[i].dataset.cornerX == 'right') {
+                    } else if (
+                        this.screenCorner.x == 'right' &&
+                        existingDomInstances[i].dataset.cornerX == 'right'
+                    ) {
                         this.xOffset -= existingDomInstances[i].offsetWidth;
                     }
                 }
             }
         }
-        this.position = {prevX:this.xOffset, prevY:this.yOffset, x:this.xOffset, y:this.yOffset};
+        this.position = {
+            prevX: this.xOffset,
+            prevY: this.yOffset,
+            x: this.xOffset,
+            y: this.yOffset,
+        };
         this.wrapper.style.transform = `translate3d(${this.position.x}px, ${this.position.y}px, 0)`;
     }
-    
+
     _addStyles(styles) {
         this.stylesheet.innerHTML += styles;
     }
-    
+
     _addWrapper() {
         this.wrapper = document.createElement('div');
-        this.wrapper.id = 'p-gui-'+this.instanceId;
+        this.wrapper.id = 'p-gui-' + this.instanceId;
         this.wrapper.className = 'p-gui';
         this.wrapper.setAttribute('data-lenis-prevent', '');
-        this.container.append(this.wrapper);      
-    
+        this.container.append(this.wrapper);
+
         this.header = document.createElement('div');
         this.header.className = 'p-gui__header';
         this.header.textContent = this.label;
-        this.header.style = `${ this.backgroundColor ? 'border-color: ' + this.backgroundColor + ';' : ''}`;
+        this.header.style = `${this.backgroundColor ? 'border-color: ' + this.backgroundColor + ';' : ''}`;
         this.wrapper.append(this.header);
-    
+
         const close_btn = document.createElement('div');
         close_btn.className = 'p-gui__header-close';
         close_btn.addEventListener('click', this.toggleClose.bind(this));
@@ -217,7 +264,7 @@ export default class GUI {
         const el = new Button(this, params, callback);
         return el;
     }
-    
+
     image(params = {}, callback) {
         if (!this.imageContainer) {
             this.imageContainer = document.createElement('div');
@@ -241,7 +288,7 @@ export default class GUI {
         return el;
     }
 
-    list(params = {}, callback) {  
+    list(params = {}, callback) {
         this.imageContainer = null;
         const el = new List(this, params, callback);
         return el;
@@ -260,7 +307,8 @@ export default class GUI {
     }
 
     folder(options = {}) {
-        let closed = typeof options.closed == 'boolean' ? options.closed : false;
+        let closed =
+            typeof options.closed == 'boolean' ? options.closed : false;
         let label = options.label || '';
         let color = options.color || null;
         let maxHeight = options.maxHeight || null;
@@ -268,7 +316,7 @@ export default class GUI {
         this.imageContainer = null;
 
         let className = 'p-gui__folder';
-        
+
         if (this.folders.length == 0) {
             className += ' p-gui__folder--first';
         }
@@ -284,7 +332,7 @@ export default class GUI {
         container.className = className;
         container.style = container_style;
         this.wrapper.append(container);
-        
+
         const folderHeader = document.createElement('div');
         folderHeader.innerHTML = `<span class="p-gui__folder-arrow"></span>${label}`;
         folderHeader.className = 'p-gui__folder-header';
@@ -293,43 +341,53 @@ export default class GUI {
             container.classList.toggle('p-gui__folder--closed');
         });
 
-        let folder = new GUI({isFolder: true, folderOptions: {
-            wrapper: container,
-            parent: this,
-            firstParent: this.firstParent
-        }});
+        let folder = new GUI({
+            isFolder: true,
+            folderOptions: {
+                wrapper: container,
+                parent: this,
+                firstParent: this.firstParent,
+            },
+        });
         this.folders.push(folder);
         return folder;
     }
-    
+
     _makeDraggable() {
         var that = this;
         this.header.addEventListener('pointerdown', dragMouseDown);
         this.header.addEventListener('pointerup', dragMouseUp);
-    
-        function dragMouseDown(ev) {             
+
+        function dragMouseDown(ev) {
             ev.preventDefault();
-            
+
             that.position.initX = that.position.x;
-            that.position.initY = that.position.y;  
+            that.position.initY = that.position.y;
 
             that.position.prevX = ev.clientX;
-            that.position.prevY = ev.clientY;  
+            that.position.prevY = ev.clientY;
 
             document.addEventListener('pointermove', dragElement);
         }
-    
+
         function dragElement(ev) {
             ev.preventDefault();
             if (!that.hasBeenDragged) {
                 that.hasBeenDragged = true;
-                that.wrapper.setAttribute('data-dragged', 'true')
+                that.wrapper.setAttribute('data-dragged', 'true');
             }
-    
-            that.position.x = that.position.initX + ev.clientX - that.position.prevX;
-            that.position.y = that.position.initY + ev.clientY - that.position.prevY;
-    
-            that.wrapper.style.transform = "translate3d("+that.position.x + "px,"+that.position.y + "px,0)";
+
+            that.position.x =
+                that.position.initX + ev.clientX - that.position.prevX;
+            that.position.y =
+                that.position.initY + ev.clientY - that.position.prevY;
+
+            that.wrapper.style.transform =
+                'translate3d(' +
+                that.position.x +
+                'px,' +
+                that.position.y +
+                'px,0)';
         }
 
         function dragMouseUp(ev) {
@@ -339,14 +397,14 @@ export default class GUI {
 
     toggleClose() {
         this.closed = !this.closed;
-        
+
         if (this.closed) {
             this.previousInnerScroll = this.wrapper.scrollTop;
-            this.wrapper.scrollTo(0,0);
+            this.wrapper.scrollTo(0, 0);
         } else {
-            this.wrapper.scrollTo(0,this.previousInnerScroll);
+            this.wrapper.scrollTo(0, this.previousInnerScroll);
         }
-        
+
         this.wrapper.classList.toggle('p-gui--collapsed');
     }
 
@@ -354,25 +412,25 @@ export default class GUI {
         this.wrapper.remove();
     }
 
-    _mapLinear( x, a1, a2, b1, b2 ) {
-        return b1 + ( x - a1 ) * ( b2 - b1 ) / ( a2 - a1 );
+    _mapLinear(x, a1, a2, b1, b2) {
+        return b1 + ((x - a1) * (b2 - b1)) / (a2 - a1);
     }
 
     _countDecimals(num) {
         // Convert the number to a string
         const numStr = num.toString();
-        
+
         // Find the position of the decimal point
         const decimalIndex = numStr.indexOf('.');
-        
+
         // If there is no decimal point, return 0
         if (decimalIndex === -1) {
-          return 0;
+            return 0;
         }
-        
+
         // Calculate the number of digits after the decimal point
         const decimalPlaces = numStr.length - decimalIndex - 1;
-        
+
         return decimalPlaces;
     }
 

@@ -1,4 +1,3 @@
-export default /* css */ `
 .p-gui__color {
     cursor: default;
     color: var(--color-text-dark);
@@ -33,4 +32,3 @@ export default /* css */ `
 .p-gui__color-picker::-webkit-color-swatch {
     border: none;
 }
-`;

@@ -1,15 +1,15 @@
-let M = class {
+let H = class {
   constructor(t, e = {}, i) {
     this.parent = t;
     let s = "";
-    typeof e != "string" ? typeof e == "object" && (e != null && e.hasOwnProperty("label")) ? s = e.label == "" ? " " : e.label : s = " " : s = e == "" ? " " : e;
+    typeof e != "string" ? typeof e == "object" && e?.hasOwnProperty("label") ? s = e.label == "" ? " " : e.label : s = " " : s = e == "" ? " " : e;
     const l = typeof e.tooltip == "string" ? e.tooltip : e.tooltip === !0 ? s : null, a = document.createElement("div");
     return a.className = "p-gui__button", a.textContent = s, l && a.setAttribute("title", l), a.addEventListener("click", () => {
       i && i(), this.parent.onUpdate ? this.parent.onUpdate() : this.parent.isFolder && this.parent.firstParent.onUpdate && this.parent.firstParent.onUpdate();
     }), typeof e.color == "string" && (a.style.setProperty("--color-accent", e.color), a.style.setProperty("--color-accent-hover", e.hoverColor || e.color)), this.parent.wrapper.append(a), a;
   }
 };
-class H {
+class N {
   constructor(t, e = {}, i) {
     if (this.parent = t, this.propReferences = [], typeof e != "object")
       throw Error(`[GUI] slider() first parameter must be an object. Received: ${typeof e}.`);
@@ -81,7 +81,7 @@ class H {
     return e * Math.floor(t / e);
   }
 }
-class N {
+class S {
   constructor(t, e = {}, i) {
     if (this.parent = t, typeof e != "object")
       throw Error(`[GUI] image() first parameter must be an object. Received: ${typeof e}.`);
@@ -127,7 +127,7 @@ class X {
       let f = !0;
       h.classList.contains("p-gui__toggle-checkbox--active") && (f = !1), h.classList.toggle("p-gui__toggle-checkbox--active"), l ? o[r] = f : typeof i == "function" && i(f), this.parent.onUpdate ? this.parent.onUpdate() : this.parent.isFolder && this.parent.firstParent.onUpdate && this.parent.firstParent.onUpdate();
     });
-    let g = (() => l ? o[r] ? " p-gui__toggle-checkbox--active" : "" : p ? " p-gui__toggle-checkbox--active" : "")();
+    let g = l ? o[r] ? " p-gui__toggle-checkbox--active" : "" : p ? " p-gui__toggle-checkbox--active" : "";
     const d = document.createElement("div");
     return d.className = "p-gui__toggle-checkbox" + g, n.append(d), l && Object.defineProperty(o, r, {
       set: (c) => {
@@ -137,7 +137,7 @@ class X {
     }), n;
   }
 }
-class S {
+class W {
   constructor(t, e = {}, i) {
     if (this.parent = t, typeof e != "object")
       throw Error(`[GUI] list() first parameter must be an object. Received: ${typeof e}.`);
@@ -179,7 +179,7 @@ class S {
     }), l && Object.defineProperty(o, r, {
       set: (h) => {
         let f, b, v;
-        n ? (v = p.find((w) => w.value == h), b = (v == null ? void 0 : v.value) || p[0].value, f = p.indexOf(v)) : (typeof h == "string" && (f = p.indexOf(h), b = h), typeof h == "number" && (f = h, b = p[h])), this.parent.propReferences[a] = n ? b : h;
+        n ? (v = p.find((w) => w.value == h), b = v?.value || p[0].value, f = p.indexOf(v)) : (typeof h == "string" && (f = p.indexOf(h), b = h), typeof h == "number" && (f = h, b = p[h])), this.parent.propReferences[a] = n ? b : h;
         const m = c.querySelector("[selected]");
         m && m.removeAttribute("selected"), c.querySelectorAll("option")[f].setAttribute("selected", ""), typeof i == "function" && i(n ? v : b, f);
       },
@@ -187,7 +187,7 @@ class S {
     }), d;
   }
 }
-class W {
+class G {
   constructor(t, e = {}, i) {
     if (this.parent = t, typeof e != "object")
       throw Error(`[GUI] color() first parameter must be an object. Received: ${typeof e}.`);
@@ -216,7 +216,7 @@ class W {
     }), n;
   }
 }
-class G {
+class Y {
   constructor(t, e = {}, i) {
     if (this.parent = t, typeof e != "object")
       throw Error(`[GUI] vector2() first parameter must be an object. Received: ${typeof e}.`);
@@ -229,16 +229,16 @@ class G {
     A.className = "p-gui__vector-value", A.textContent = d[c] + ", " + f[b], w.append(A);
     const _ = document.createElement("div");
     _.className = "p-gui__vector2-area", w.append(_), _.addEventListener("click", (x) => {
-      const U = parseFloat(this.parent._mapLinear(x.offsetX, 0, _.clientWidth, l, a)), I = parseFloat(this.parent._mapLinear(x.offsetY, 0, _.clientHeight, r, o));
-      d[c] = U.toFixed(n), f[b] = I.toFixed(g), i && i(d[c], d[b]), this.parent.onUpdate ? this.parent.onUpdate() : this.parent.isFolder && this.parent.firstParent.onUpdate && this.parent.firstParent.onUpdate();
+      const j = parseFloat(this.parent._mapLinear(x.offsetX, 0, _.clientWidth, l, a)), I = parseFloat(this.parent._mapLinear(x.offsetY, 0, _.clientHeight, r, o));
+      d[c] = j.toFixed(n), f[b] = I.toFixed(g), i && i(d[c], d[b]), this.parent.onUpdate ? this.parent.onUpdate() : this.parent.isFolder && this.parent.firstParent.onUpdate && this.parent.firstParent.onUpdate();
     });
-    const j = (x) => {
-      const U = _.getBoundingClientRect(), I = x.clientX - U.left, O = x.clientY - U.top, $ = this.parent._mapLinear(I, 0, _.clientWidth, l, a), D = this.parent._mapLinear(O, 0, _.clientHeight, r, o), F = Math.max(l, Math.min(a, $)), L = Math.max(o, Math.min(r, D));
-      d[c] = parseFloat(F.toFixed(n)), f[b] = parseFloat(L.toFixed(g)), i && i(d[c], f[b]), this.parent.onUpdate ? this.parent.onUpdate() : this.parent.isFolder && this.parent.firstParent.onUpdate && this.parent.firstParent.onUpdate();
+    const U = (x) => {
+      const j = _.getBoundingClientRect(), I = x.clientX - j.left, $ = x.clientY - j.top, D = this.parent._mapLinear(I, 0, _.clientWidth, l, a), L = this.parent._mapLinear($, 0, _.clientHeight, r, o), F = Math.max(l, Math.min(a, D)), M = Math.max(o, Math.min(r, L));
+      d[c] = parseFloat(F.toFixed(n)), f[b] = parseFloat(M.toFixed(g)), i && i(d[c], f[b]), this.parent.onUpdate ? this.parent.onUpdate() : this.parent.isFolder && this.parent.firstParent.onUpdate && this.parent.firstParent.onUpdate();
     };
     _.addEventListener("pointerdown", (x) => {
-      j(x), document.addEventListener("pointermove", j), document.addEventListener("pointerup", () => {
-        document.removeEventListener("pointermove", j);
+      U(x), document.addEventListener("pointermove", U), document.addEventListener("pointerup", () => {
+        document.removeEventListener("pointermove", U);
       }, { once: !0 });
     });
     const R = document.createElement("div");
@@ -265,419 +265,9 @@ class G {
     }), w;
   }
 }
-const Y = (
-  /* css */
-  `
-.p-gui__button {
-    background: var(--color-accent);
-    text-align: center;
-    color: var(--color-bg);
-    border: none;
-    border: 1px solid transparent;
-    box-sizing: border-box;
-    transition: var(--transition) background, var(--transition) border-color;
-}
-
-.p-gui__button:hover {
-    background: var(--color-accent-hover);
-    border-color: rgba(255, 255, 255, 0.2);
-}
-
-.p-gui__folder .p-gui__button {
-    margin-inline: 0;
-}
-`
-), z = (
-  /* css */
-  `
-.p-gui__slider {
-    position: relative;
-    min-height: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    color: var(--color-text-dark);
-    transition: color var(--transition);
-    padding: 3px;
-}
-
-.p-gui__slider:hover {
-    color: var(--color-text-light);
-}
-
-.p-gui__slider-name {
-    width: 50%;
-    text-overflow: ellipsis;
-    overflow: hidden;
-}
-
-.p-gui__slider-ctrl {
-    -webkit-appearance: none;
-    padding: 0;
-    font: inherit;
-    outline: none;
-    box-sizing: border-box;
-    cursor: pointer;
-    position: relative;
-    right: 0;
-    height: 14px;
-    margin: 0 0 0 auto;
-    width: 37%;
-}
-
-.p-gui__slider-bar {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    height: 2px;
-    background: rgba(255, 255, 255, .2);
-    width: 100%;
-    transform: translateY(-50%);
-}
-
-.p-gui__slider-filling {
-    position: absolute;
-    top: -25%;
-    left: 0;
-    height: 100%;
-    background: var(--color-accent);
-    width: 0;
-}
-
-.p-gui__slider:hover .p-gui__slider-filling {
-    background: var(--color-accent-hover);
-}
-
-.p-gui__slider-handle {
-    width: 9px;
-    height: 9px;
-    position: absolute;
-    top: 50%;
-    left: 0;
-    border-radius: 2px;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-    background: var(--color-text-dark);
-    box-shadow: 0 0 2px rgba(0, 0, 0, .5);
-}
-
-.p-gui__slider:hover .p-gui__slider-handle {
-    background: var(--color-text-light);
-}
-
-.p-gui__slider-value {
-    display: inline-block;
-    right: 7px;
-    width: 13%;
-    border: none;
-    color: white;
-    border-radius: 2px;
-    background: rgba(255, 255, 255, 0.1);
-    padding: 2px 4px;
-    color: inherit;
-}
-
-.p-gui__slider-value:focus {
-    outline: none;
-}
-`
-), B = (
-  /* css */
-  `
-.p-gui__list {
-    cursor: default;
-    color: var(--color-text-dark);
-    transition: var(--transition) color;
-}
-
-.p-gui__list:hover {
-    color: var(--color-text-light);
-}
-
-.p-gui__list-dropdown {
-    background: rgba(255, 255, 255,.05);
-    color: white;
-    padding: 0 12px 0 5px;
-    top: 0px;
-}
-
-.p-gui__list-dropdown {
-    position: absolute;
-    right: 5px;
-    top: 0;
-    bottom: 0;
-    margin: auto;
-    height: calc(100% - 4px);
-    cursor: pointer;
-    border-radius: 3px;
-    border: 1px solid var(--color-border-2);
-    outline: none;
-
-    option {
-        background: white;
-        color: black;
-    }
-}
-
-.p-gui__list-dropdown:hover {
-    background: rgba(255, 255, 255, .1);
-}
-`
-), V = (
-  /* css */
-  `
-.p-gui__toggle {
-    color: var(--color-text-dark);
-    transition: var(--transition) background, var(--transition) color;
-}
-
-.p-gui__toggle:hover {
-    background: rgba(255, 255, 255, .1);
-    color: var(--color-text-light);
-}
-
-.p-gui__folder .p-gui__toggle {
-    margin-inline: 0;
-}
-
-.p-gui__toggle-checkbox {
-    width: 10px;
-    height: 10px;
-    background-color: rgba(255, 255, 255, 0.1);
-    position: absolute;
-    top: 0;
-    right: 10px;
-    bottom: 0;
-    margin: auto;
-    border-radius: 2px;
-    pointer-events: none;
-    transition: .5s all ease;
-}
-
-.p-gui__toggle-checkbox--active {
-    background-color: #ddd;
-    box-shadow: 0 0 5px #ddd;
-}
-`
-), T = (
-  /* css */
-  `
-.p-gui__color {
-    cursor: default;
-    color: var(--color-text-dark);
-    transition: var(--transition) color;
-}
-
-.p-gui__color:hover {
-    color: var(--color-text-light);
-}
-
-.p-gui__color-picker {
-    position: absolute;
-    right: 5px;
-    top: 0;
-    bottom: 0;
-    margin: auto;
-    height: calc(100% - 4px);
-    cursor: pointer;
-    border-radius: 3px;
-    border: 1px solid var(--color-border-2);
-    outline: none;
-    -webkit-appearance: none;
-    padding: 0;
-    background-color: transparent;
-    border: 1px solid #222222;
-    overflow: hidden;
-}
-
-.p-gui__color-picker::-webkit-color-swatch-wrapper {
-    padding: 0;
-}
-.p-gui__color-picker::-webkit-color-swatch {
-    border: none;
-}
-`
-), Q = (
-  /* css */
-  `
-    .p-gui__vector2 {
-        background: transparent;
-        aspect-ratio: 1;
-        padding-bottom: 0;
-        color: var(--color-text-dark);
-    }
-    
-    .p-gui__vector2:hover {
-        color: var(--color-text-light);
-    }
-    
-    .p-gui__vector2-area {
-        position: relative;
-        background: rgba(0, 0, 0, .3);
-        margin-top: 8px;
-        width: 100%;
-        height: calc(100% - 28px);
-        touch-action: none;
-    }
-    
-    .p-gui__vector2-line {
-        position: absolute;
-        background: white;
-        opacity: .3;
-        pointer-events: none;
-    }
-    
-    .p-gui__vector2-line-x {
-        width: 100%;
-        height: 1px;
-        left: 0;
-        top: 50%;
-        transform: translateY(-50%);
-    }
-    
-    .p-gui__vector2-line-y {
-        width: 1px;
-        height: 100%;
-        top: 0;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-    
-    .p-gui__vector2-dot {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: #d5d5d5;
-        border: 2px solid #ff9999;
-        transform: translate(-50%, -50%);
-        pointer-events: none;
-    }
-    
-    .p-gui__vector-value {
-        display: inline-block;
-        right: 7px;
-        position: absolute;
-    }
-`
-), q = (
-  /* css */
-  `
-    .p-gui__image-container {
-        width: 100%;
-        padding: 3px;
-        display: flex;
-        justify-content: flex-start;
-        flex-wrap: wrap;
-        box-sizing: border-box;
-    }
-    
-    .p-gui__image {
-        background-size: cover;
-        cursor: pointer;
-        position: relative;
-        margin: 1px 2.5px 19px 2.5px;
-        border-radius: var(--main-border-radius);
-        flex: 0 0 calc(33.333% - 5px);
-        height: 90px;
-        background-position: center;
-        color: var(--color-text-dark);
-        transition: var(--transition) color;
-    }
-
-    .p-gui__image:hover {
-        color: var(--color-text-light);
-    }
-
-    .p-gui__image::after {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        content: '';
-        border: 1px solid transparent;
-        box-sizing: border-box;
-        border-radius: var(--main-border-radius);
-        transition: var(--transition) border-color;
-    }
-    .p-gui__image--selected::after {
-        border-color: #06FF89;
-    }
-    
-    .p-gui__image-text {
-        position: absolute;
-        bottom: -15px;
-        text-shadow: 0 -1px 0 #111;
-        white-space: nowrap;
-        width: 100%;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        
-    }
-`
-), J = (
-  /* css */
-  `
-    .p-gui__folder {
-        width: 100%;
-        position: relative;
-        background: var(--color-bg);
-        overflow: auto;
-        margin-bottom: 2px;
-        display: flex;
-        flex-wrap: wrap;
-        border: 1px solid var(--color-border-2);
-        padding: 0 2px 0 3px;
-        border-radius: var(--main-border-radius);
-        box-sizing: border-box;
-        border-left: 1px solid #bbbbbb;
-    }
-    
-    .p-gui__folder--first {
-        margin-top: 0;
-    }
-    
-    .p-gui__folder--closed {
-        height: 25px;
-        overflow: hidden;
-    }
-    
-    .p-gui__folder-header {
-        padding: 5px 3px;
-        background-color: rgba(0, 0, 0, .5);
-        color: white;
-        cursor: pointer;
-        width: 100%;
-        margin: 0 -2px 2px -3px;
-    }
-    
-    .p-gui__folder-header:hover {
-        background-color: rgba(0, 0, 0, .75);
-    }
-    
-    .p-gui__folder-arrow {
-        width: 8px;
-        height: 8px;
-        display: inline-block;
-        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAHlBMVEUAAAD///////////////////////////////////8kfJuVAAAACXRSTlMA9Z1fCdMo1yxEJnA0AAAAK0lEQVQI12PABlRgjKkJUMZMYRhjpgqMAZSEMICSaIzpDWiKhdENhEhgAgATSg5jyWnYewAAAABJRU5ErkJggg==);
-        background-size: contain;
-        margin-right: 5px;
-        transform: rotate(90deg)
-    }
-    
-    .p-gui__folder--closed .p-gui__folder-arrow {
-        transform: rotate(0deg);
-    }
-`
-);
+const O = ".p-gui__button{background:var(--color-accent);text-align:center;color:var(--color-bg);border:none;border:1px solid transparent;box-sizing:border-box;transition:var(--transition) background,var(--transition) border-color}.p-gui__button:hover{background:var(--color-accent-hover);border-color:#fff3}.p-gui__folder .p-gui__button{margin-inline:0}", z = ".p-gui__slider{position:relative;min-height:14px;display:flex;align-items:center;justify-content:space-between;gap:10px;color:var(--color-text-dark);transition:color var(--transition);padding:3px}.p-gui__slider:hover{color:var(--color-text-light)}.p-gui__slider-name{width:50%;text-overflow:ellipsis;overflow:hidden}.p-gui__slider-ctrl{-webkit-appearance:none;padding:0;font:inherit;outline:none;box-sizing:border-box;cursor:pointer;position:relative;right:0;height:14px;margin:0 0 0 auto;width:37%}.p-gui__slider-bar{position:absolute;top:50%;left:0;height:2px;background:#fff3;width:100%;transform:translateY(-50%)}.p-gui__slider-filling{position:absolute;top:-25%;left:0;height:100%;background:var(--color-accent);width:0}.p-gui__slider:hover .p-gui__slider-filling{background:var(--color-accent-hover)}.p-gui__slider-handle{width:9px;height:9px;position:absolute;top:50%;left:0;border-radius:2px;transform:translate(-50%,-50%);pointer-events:none;background:var(--color-text-dark);box-shadow:0 0 2px #00000080}.p-gui__slider:hover .p-gui__slider-handle{background:var(--color-text-light)}.p-gui__slider-value{display:inline-block;right:7px;width:13%;border:none;color:#fff;border-radius:2px;background:#ffffff1a;padding:2px 4px;color:inherit}.p-gui__slider-value:focus{outline:none}", B = ".p-gui__list{cursor:default;color:var(--color-text-dark);transition:var(--transition) color}.p-gui__list:hover{color:var(--color-text-light)}.p-gui__list-dropdown{background:#ffffff0d;color:#fff;padding:0 12px 0 5px;top:0}.p-gui__list-dropdown{position:absolute;right:5px;top:0;bottom:0;margin:auto;height:calc(100% - 4px);cursor:pointer;border-radius:3px;border:1px solid var(--color-border-2);outline:none}.p-gui__list-dropdown option{background:#fff;color:#000}.p-gui__list-dropdown:hover{background:#ffffff1a}", V = ".p-gui__toggle{color:var(--color-text-dark);transition:var(--transition) background,var(--transition) color}.p-gui__toggle:hover{background:#ffffff1a;color:var(--color-text-light)}.p-gui__folder .p-gui__toggle{margin-inline:0}.p-gui__toggle-checkbox{width:10px;height:10px;background-color:#ffffff1a;position:absolute;top:0;right:10px;bottom:0;margin:auto;border-radius:2px;pointer-events:none;transition:.5s all ease}.p-gui__toggle-checkbox--active{background-color:#ddd;box-shadow:0 0 5px #ddd}", T = ".p-gui__color{cursor:default;color:var(--color-text-dark);transition:var(--transition) color}.p-gui__color:hover{color:var(--color-text-light)}.p-gui__color-picker{position:absolute;right:5px;top:0;bottom:0;margin:auto;height:calc(100% - 4px);cursor:pointer;border-radius:3px;border:1px solid var(--color-border-2);outline:none;-webkit-appearance:none;padding:0;background-color:transparent;border:1px solid #222222;overflow:hidden}.p-gui__color-picker::-webkit-color-swatch-wrapper{padding:0}.p-gui__color-picker::-webkit-color-swatch{border:none}", Q = ".p-gui__vector2{background:transparent;aspect-ratio:1;padding-bottom:0;color:var(--color-text-dark)}.p-gui__vector2:hover{color:var(--color-text-light)}.p-gui__vector2-area{position:relative;background:#0000004d;margin-top:8px;width:100%;height:calc(100% - 28px);touch-action:none}.p-gui__vector2-line{position:absolute;background:#fff;opacity:.3;pointer-events:none}.p-gui__vector2-line-x{width:100%;height:1px;left:0;top:50%;transform:translateY(-50%)}.p-gui__vector2-line-y{width:1px;height:100%;top:0;left:50%;transform:translate(-50%)}.p-gui__vector2-dot{position:absolute;top:0;left:0;width:8px;height:8px;border-radius:50%;background:#d5d5d5;border:2px solid #ff9999;transform:translate(-50%,-50%);pointer-events:none}.p-gui__vector-value{display:inline-block;right:7px;position:absolute}", q = '.p-gui__image-container{width:100%;padding:3px;display:flex;justify-content:flex-start;flex-wrap:wrap;box-sizing:border-box}.p-gui__image{background-size:cover;cursor:pointer;position:relative;margin:1px 2.5px 19px;border-radius:var(--main-border-radius);flex:0 0 calc(33.333% - 5px);height:90px;background-position:center;color:var(--color-text-dark);transition:var(--transition) color}.p-gui__image:hover{color:var(--color-text-light)}.p-gui__image:after{position:absolute;top:0;left:0;width:100%;height:100%;content:"";border:1px solid transparent;box-sizing:border-box;border-radius:var(--main-border-radius);transition:var(--transition) border-color}.p-gui__image--selected:after{border-color:#06ff89}.p-gui__image-text{position:absolute;bottom:-15px;text-shadow:0 -1px 0 #111;white-space:nowrap;width:100%;overflow:hidden;text-overflow:ellipsis}', J = ".p-gui__folder{width:100%;position:relative;background:var(--color-bg);overflow:auto;margin-bottom:2px;display:flex;flex-wrap:wrap;border:1px solid var(--color-border-2);padding:0 2px 0 3px;border-radius:var(--main-border-radius);box-sizing:border-box;border-left:1px solid #bbbbbb}.p-gui__folder--first{margin-top:0}.p-gui__folder--closed{height:25px;overflow:hidden}.p-gui__folder-header{padding:5px 3px;background-color:#00000080;color:#fff;cursor:pointer;width:100%;margin:0 -2px 2px -3px}.p-gui__folder-header:hover{background-color:#000000bf}.p-gui__folder-arrow{width:8px;height:8px;display:inline-block;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAHlBMVEUAAAD///////////////////////////////////8kfJuVAAAACXRSTlMA9Z1fCdMo1yxEJnA0AAAAK0lEQVQI12PABlRgjKkJUMZMYRhjpgqMAZSEMICSaIzpDWiKhdENhEhgAgATSg5jyWnYewAAAABJRU5ErkJggg==);background-size:contain;margin-right:5px;transform:rotate(90deg)}.p-gui__folder--closed .p-gui__folder-arrow{transform:rotate(0)}";
 function Z(y) {
-  return (
-    /* css */
-    `
+  return console.log(O), `
     .p-gui {
         --main-border-radius: 3px;
         --color-bg: #161616;
@@ -805,7 +395,7 @@ function Z(y) {
         border-color: rgba(255,255,255,.2);
     }   
     
-    ${Y}
+    ${O}
     
     ${q}
     
@@ -820,16 +410,18 @@ function Z(y) {
     ${Q}
     
     ${J}
-`
-  );
+`;
 }
 class C {
   constructor(t = {}) {
-    if (this.firstParent = this, t.container ? (this.container = typeof t.container == "string" ? document.querySelector(t.container) : t.container, this.position_type = "absolute") : (this.container = document.body, this.position_type = "fixed"), this.propReferences = [], this.folders = [], t.isFolder) {
+    if (console.log("test"), this.firstParent = this, t.container ? (this.container = typeof t.container == "string" ? document.querySelector(t.container) : t.container, this.position_type = "absolute") : (this.container = document.body, this.position_type = "fixed"), this.propReferences = [], this.folders = [], t.isFolder) {
       this._folderConstructor(t.folderOptions);
       return;
     }
-    typeof t.onUpdate == "function" && (this.onUpdate = t.onUpdate), this.label = t != null && typeof t.label == "string" ? t.label : "", this.backgroundColor = t.color || null, this.opacity = t.opacity || 1, this.container == document.body ? this.maxHeight = window.innerHeight : this.maxHeight = Math.min(this.container.clientHeight, window.innerHeight), t.maxHeight && (this.initMaxHeight = t.maxHeight, this.maxHeight = Math.min(this.initMaxHeight, this.maxHeight)), this.screenCorner = this._parseScreenCorner(t.position), window.perfectGUI || (window.perfectGUI = {}), window.perfectGUI.instanceCounter == null ? window.perfectGUI.instanceCounter = 0 : window.perfectGUI.instanceCounter++, this.instanceId = window.perfectGUI.instanceCounter, this.wrapperWidth = t.width || 290, this.stylesheet = document.createElement("style"), this.stylesheet.setAttribute("type", "text/css"), this.stylesheet.setAttribute("id", "lm-gui-stylesheet"), document.head.append(this.stylesheet), this.instanceId == 0 && this._addStyles(`${Z(this.position_type)}`), this._styleInstance(), this._addWrapper(), this.wrapper.setAttribute("data-corner-x", this.screenCorner.x), this.wrapper.setAttribute("data-corner-y", this.screenCorner.y), t.autoRepositioning != !1 && window.addEventListener("resize", this._handleResize.bind(this)), this._handleResize(), this.hasBeenDragged = !1, t.draggable == !0 && this._makeDraggable(), this.closed = !1, t.closed && this.toggleClose();
+    typeof t.onUpdate == "function" && (this.onUpdate = t.onUpdate), this.label = t != null && typeof t.label == "string" ? t.label : "", this.backgroundColor = t.color || null, this.opacity = t.opacity || 1, this.container == document.body ? this.maxHeight = window.innerHeight : this.maxHeight = Math.min(
+      this.container.clientHeight,
+      window.innerHeight
+    ), t.maxHeight && (this.initMaxHeight = t.maxHeight, this.maxHeight = Math.min(this.initMaxHeight, this.maxHeight)), this.screenCorner = this._parseScreenCorner(t.position), window.perfectGUI || (window.perfectGUI = {}), window.perfectGUI.instanceCounter == null ? window.perfectGUI.instanceCounter = 0 : window.perfectGUI.instanceCounter++, this.instanceId = window.perfectGUI.instanceCounter, this.wrapperWidth = t.width || 290, this.stylesheet = document.createElement("style"), this.stylesheet.setAttribute("type", "text/css"), this.stylesheet.setAttribute("id", "lm-gui-stylesheet"), document.head.append(this.stylesheet), this.instanceId == 0 && this._addStyles(`${Z(this.position_type)}`), this._styleInstance(), this._addWrapper(), this.wrapper.setAttribute("data-corner-x", this.screenCorner.x), this.wrapper.setAttribute("data-corner-y", this.screenCorner.y), t.autoRepositioning != !1 && window.addEventListener("resize", this._handleResize.bind(this)), this._handleResize(), this.hasBeenDragged = !1, t.draggable == !0 && this._makeDraggable(), this.closed = !1, t.closed && this.toggleClose();
   }
   _styleInstance() {
     let t = this._getScrollbarWidth(this.container);
@@ -863,15 +455,27 @@ class C {
     return t === document.body ? window.innerWidth - document.documentElement.clientWidth : t.offsetWidth - t.clientWidth;
   }
   _handleResize() {
-    if (this.container == document.body ? this.maxHeight = window.innerHeight : this.maxHeight = Math.min(this.container.clientHeight, window.innerHeight), this.initMaxHeight && (this.maxHeight = Math.min(this.initMaxHeight, this.maxHeight)), this.wrapper.style.maxHeight = this.maxHeight + "px", this.hasBeenDragged)
+    if (this.container == document.body ? this.maxHeight = window.innerHeight : this.maxHeight = Math.min(
+      this.container.clientHeight,
+      window.innerHeight
+    ), this.initMaxHeight && (this.maxHeight = Math.min(this.initMaxHeight, this.maxHeight)), this.wrapper.style.maxHeight = this.maxHeight + "px", this.hasBeenDragged)
       return;
     let t = this._getScrollbarWidth(this.container);
     if (this.xOffset = this.screenCorner.x == "left" ? 0 : this.container.clientWidth - this.wrapperWidth - t, this.instanceId > 0) {
-      let e = this.container.querySelectorAll(`.p-gui:not(#${this.wrapper.id}):not([data-dragged])`);
-      for (let i = 0; i < e.length && !(parseInt(e[i].id.replace("p-gui-", "")) > this.instanceId); i++)
+      let e = this.container.querySelectorAll(
+        `.p-gui:not(#${this.wrapper.id}):not([data-dragged])`
+      );
+      for (let i = 0; i < e.length && !(parseInt(
+        e[i].id.replace("p-gui-", "")
+      ) > this.instanceId); i++)
         this.screenCorner.y == e[i].dataset.cornerY && (this.screenCorner.x == "left" && e[i].dataset.cornerX == "left" ? this.xOffset += e[i].offsetWidth : this.screenCorner.x == "right" && e[i].dataset.cornerX == "right" && (this.xOffset -= e[i].offsetWidth));
     }
-    this.position = { prevX: this.xOffset, prevY: this.yOffset, x: this.xOffset, y: this.yOffset }, this.wrapper.style.transform = `translate3d(${this.position.x}px, ${this.position.y}px, 0)`;
+    this.position = {
+      prevX: this.xOffset,
+      prevY: this.yOffset,
+      x: this.xOffset,
+      y: this.yOffset
+    }, this.wrapper.style.transform = `translate3d(${this.position.x}px, ${this.position.y}px, 0)`;
   }
   _addStyles(t) {
     this.stylesheet.innerHTML += t;
@@ -882,13 +486,13 @@ class C {
     t.className = "p-gui__header-close", t.addEventListener("click", this.toggleClose.bind(this)), this.header.append(t);
   }
   button(t = {}, e) {
-    return this.imageContainer = null, new M(this, t, e);
+    return this.imageContainer = null, new H(this, t, e);
   }
   image(t = {}, e) {
-    return this.imageContainer || (this.imageContainer = document.createElement("div"), this.imageContainer.className = "p-gui__image-container", this.wrapper.append(this.imageContainer)), new N(this, t, e);
+    return this.imageContainer || (this.imageContainer = document.createElement("div"), this.imageContainer.className = "p-gui__image-container", this.wrapper.append(this.imageContainer)), new S(this, t, e);
   }
   slider(t = {}, e) {
-    return this.imageContainer = null, new H(this, t, e);
+    return this.imageContainer = null, new N(this, t, e);
   }
   toggle(t = {}, e) {
     this.imageContainer = null;
@@ -896,13 +500,13 @@ class C {
     return this.wrapper.append(i), i;
   }
   list(t = {}, e) {
-    return this.imageContainer = null, new S(this, t, e);
-  }
-  color(t = {}, e) {
     return this.imageContainer = null, new W(this, t, e);
   }
-  vector2(t = {}, e) {
+  color(t = {}, e) {
     return this.imageContainer = null, new G(this, t, e);
+  }
+  vector2(t = {}, e) {
+    return this.imageContainer = null, new Y(this, t, e);
   }
   folder(t = {}) {
     let e = typeof t.closed == "boolean" ? t.closed : !1, i = t.label || "", s = t.color || null, l = t.maxHeight || null;
@@ -917,11 +521,14 @@ class C {
     p.innerHTML = `<span class="p-gui__folder-arrow"></span>${i}`, p.className = "p-gui__folder-header", r.append(p), p.addEventListener("click", () => {
       r.classList.toggle("p-gui__folder--closed");
     });
-    let u = new C({ isFolder: !0, folderOptions: {
-      wrapper: r,
-      parent: this,
-      firstParent: this.firstParent
-    } });
+    let u = new C({
+      isFolder: !0,
+      folderOptions: {
+        wrapper: r,
+        parent: this,
+        firstParent: this.firstParent
+      }
+    });
     return this.folders.push(u), u;
   }
   _makeDraggable() {

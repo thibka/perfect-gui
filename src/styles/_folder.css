@@ -1,4 +1,3 @@
-export default /* css */ `
     .p-gui__folder {
         width: 100%;
         position: relative;
@@ -49,4 +48,3 @@ export default /* css */ `
     .p-gui__folder--closed .p-gui__folder-arrow {
         transform: rotate(0deg);
     }
-`;

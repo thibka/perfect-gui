@@ -1,19 +1,14 @@
-import _button from "./_button.css.js"
-import _slider from "./_slider.css.js"
-import _list from "./_list.css.js"
-import _toggle from "./_toggle.css.js"
-import _color from "./_color.css.js"
-import _vector2 from "./_vector2.css.js"
-import _image from "./_image.css.js"
-import _folder from "./_folder.css.js"
+import _button from './_button.css?inline';
+import _slider from './_slider.css?inline';
+import _list from './_list.css?inline';
+import _toggle from './_toggle.css?inline';
+import _color from './_color.css?inline';
+import _vector2 from './_vector2.css?inline';
+import _image from './_image.css?inline';
+import _folder from './_folder.css?inline';
 
-/**
- * JS instead of CSS to avoid
- * depending on a css loader 
- */
-
-export default function( position_type ) {
-    return /* css */`
+export default function (position_type) {
+    return `
     .p-gui {
         --main-border-radius: 3px;
         --color-bg: #161616;
@@ -25,7 +20,7 @@ export default function( position_type ) {
         --color-accent-hover: #dddddd;
         --transition: .1s linear;
     
-        position: ${ position_type };
+        position: ${position_type};
         top: 0;
         left: 0;
         transform: translate3d(0,0,0);
@@ -141,19 +136,20 @@ export default function( position_type ) {
         border-color: rgba(255,255,255,.2);
     }   
     
-    ${ _button }
+    ${_button}
     
-    ${ _image }
+    ${_image}
     
-    ${ _list }
+    ${_list}
     
-    ${ _toggle }
+    ${_toggle}
 
-    ${ _slider }
+    ${_slider}
     
-    ${ _color }
+    ${_color}
     
-    ${ _vector2 }
+    ${_vector2}
     
-    ${ _folder }
-`};
+    ${_folder}
+`;
+}

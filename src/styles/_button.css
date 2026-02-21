@@ -1,4 +1,3 @@
-export default /* css */ `
 .p-gui__button {
     background: var(--color-accent);
     text-align: center;
@@ -6,7 +5,9 @@ export default /* css */ `
     border: none;
     border: 1px solid transparent;
     box-sizing: border-box;
-    transition: var(--transition) background, var(--transition) border-color;
+    transition:
+        var(--transition) background,
+        var(--transition) border-color;
 }
 
 .p-gui__button:hover {
@@ -17,4 +18,3 @@ export default /* css */ `
 .p-gui__folder .p-gui__button {
     margin-inline: 0;
 }
-`;

@@ -1,4 +1,3 @@
-export default /* css */ `
     .p-gui__vector2 {
         background: transparent;
         aspect-ratio: 1;
@@ -60,4 +59,3 @@ export default /* css */ `
         right: 7px;
         position: absolute;
     }
-`;
