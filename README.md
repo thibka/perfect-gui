@@ -1,94 +1,113 @@
-# Perfect GUI
-A nice, simple and (probably not) perfect GUI for JavaScript.
+<div align="center">
+  <h1>Perfect GUI</h1>
+  <p>A nice, simple and (probably not so) perfect GUI for JavaScript.</p>
+  
+  <p>
+    <a href="https://thibka.github.io/perfect-gui/"><b>Documentation & Live Examples</b></a>
+  </p>
+</div>
 
-## Documentation and examples
-Go to the [documentation page](https://thibka.github.io/perfect-gui/) to see all the features and examples.
+## Features
 
-## Install
+- **Simplicity first**: Extremely easy to setup and use, inspired by timeless classics like `dat.gui` and `lil.gui`.
+- **Modern UI**: Clean, customizable, and polished design right out of the box.
+- **Rich Inputs**: Support for sliders, buttons, color pickers, vectors, images, lists, and toggles.
+- **Folders**: Easily group and organize your controls in collapsible sections.
+- **Draggable & Auto-positioned**: Snap it to screen edges or let the user drag it anywhere.
+- **Data Binding**: Automatically sync your controls with object properties.
+- **Zero Dependencies**: Lightweight and built with vanilla JavaScript.
 
-### With NPM
+## Installation
+
+**With NPM:**
 
 ```bash
 npm i perfect-gui
 ```
 
-### Import from a CDN
+**From a CDN (ES Modules):**
 
-```javascript
+For a quick setup without build tools, use an import map:
+
+```html
 <script type="importmap">
-  {
-    "imports": {
-      "perfect-gui": "https://unpkg.com/perfect-gui@latest/dist/perfect-gui.js",
+    {
+        "imports": {
+            "perfect-gui": "https://unpkg.com/perfect-gui@latest/dist/perfect-gui.js"
+        }
     }
-  }
+</script>
+
+<script type="module">
+    import GUI from 'perfect-gui';
+
+    const gui = new GUI();
+    gui.button('Click me!', () => alert('Hello world!'));
 </script>
 ```
 
-## Hello world
+## Quick Start
+
+Creating a control panel is as simple as instantiating the GUI and adding some components:
 
 ```javascript
 import GUI from 'perfect-gui';
 
-const gui = new GUI();
-
-gui.button('Click me', callback);
-```
-
-## Options
-```javascript
+// 1. Create a new GUI instance
 const gui = new GUI({
-    label: 'My GUI',
-    // Name of the panel. 
-    // Default is null.
+    label: 'My Settings',
+    position: 'top right',
+});
 
-    container: '#container',
-    // Element containing the GUI
-    // Default is document.body
-    
-    width: 250,
-    // Width of the panel (in pixels). 
-    // Default is 290.
+// 2. Add a simple button
+gui.button('Click me', () => {
+    console.log('Button clicked!');
+});
 
-    maxHeight: 500,
-    // Maximum height beyond which scrolling is necessary. 
-    // Default is the smallest value between the height of the window and the height of the container.
-    
-    closed: false, 
-    // Defines whether the panel should be closed by default. 
-    // Default is false.
+// 3. Add a slider connected to an object value natively
+const params = { opacity: 0.5 };
+gui.slider({ obj: params, prop: 'opacity', min: 0, max: 1 }, (val) => {
+    document.body.style.opacity = val;
+});
 
-    position: 'bottom right',
-    // Defines where to place the panel on screen.
-    // Accepted values are 'top', 'bottom', 'left' and 'right' in no particular order ('bottom right' = 'right bottom').
-    // If multiple instances have the same position, they will be stacked horizontally.
-    // Default is 'top right'.
-
-    draggable: false,
-    // Defines if the panel can be manually moved across the screen.
-    // Default is false.
-
-    autoRepositioning: true,
-    // If set to true, the panel position will be reset when the screen is resized.
-    // If a panel has been dragged, it won't be be affected.
-    // Default is true.
-
-    color: '#bada55',
-    // Default is #2e2e2e
-
-    onUpdate: () => {
-      // Callback function triggered each time this GUI instance is updated.    
-    }
+// 4. Group controls in a folder
+const folder = gui.folder({ label: 'Advanced' });
+folder.color({ label: 'Color', value: '#bada55' }, (color) => {
+    document.body.style.backgroundColor = color;
 });
 ```
 
-## [Methods](https://thibka.github.io/perfect-gui/public/)
+## Configuration Options
 
-* [button](https://thibka.github.io/perfect-gui/public/#button)
-* [slider](https://thibka.github.io/perfect-gui/public/#slider)
-* [toggle](https://thibka.github.io/perfect-gui/public/#toggle)
-* [list](https://thibka.github.io/perfect-gui/public/#list)
-* [image](https://thibka.github.io/perfect-gui/public/#image)
-* [color](https://thibka.github.io/perfect-gui/public/#color)
-* [vector2](https://thibka.github.io/perfect-gui/public/#vector2)
-* [folder](https://thibka.github.io/perfect-gui/public/#folder)
-* [toggleClose](https://thibka.github.io/perfect-gui/public)
+You can customize the GUI by passing an options object to the constructor:
+
+```javascript
+const gui = new GUI({
+    label: 'My GUI', // Name of the panel (default: null)
+    container: '#container', // Element containing the GUI (default: document.body)
+    width: 250, // Width of the panel in pixels (default: 290)
+    maxHeight: 500, // Max height beyond which scrolling is necessary
+    closed: false, // Start closed? (default: false)
+    position: 'bottom right', // Position ('top', 'bottom', 'left', 'right')
+    draggable: false, // Can it be manually moved? (default: false)
+    autoRepositioning: true, // Reset position on window resize? (default: true)
+    color: '#bada55', // Accent color
+    onUpdate: () => {
+        // Callback function triggered each time any GUI instance is updated
+    },
+});
+```
+
+## API / Available Components
+
+See the [Documentation](https://thibka.github.io/perfect-gui/) for a comprehensive list of properties and usage.
+
+- [`button()`](https://thibka.github.io/perfect-gui/public/#button)
+- [`slider()`](https://thibka.github.io/perfect-gui/public/#slider)
+- [`toggle()`](https://thibka.github.io/perfect-gui/public/#toggle)
+- [`list()`](https://thibka.github.io/perfect-gui/public/#list)
+- [`image()`](https://thibka.github.io/perfect-gui/public/#image)
+- [`color()`](https://thibka.github.io/perfect-gui/public/#color)
+- [`vector2()`](https://thibka.github.io/perfect-gui/public/#vector2)
+- [`folder()`](https://thibka.github.io/perfect-gui/public/#folder)
+- [`toggleClose()`](https://thibka.github.io/perfect-gui/public)

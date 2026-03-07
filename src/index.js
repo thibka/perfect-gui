@@ -199,11 +199,11 @@ export default class GUI {
             this.screenCorner.x == 'left'
                 ? 0
                 : this.container.clientWidth -
-                this.wrapperWidth -
-                scrollbar_width;
+                  this.wrapperWidth -
+                  scrollbar_width;
         if (this.instanceId > 0) {
             let existingDomInstances = this.container.querySelectorAll(
-                `.p-gui:not(#${this.wrapper.id}):not([data-dragged])`,
+                `.p-gui:not(#${this.domElement.id}):not([data-dragged])`,
             );
             for (let i = 0; i < existingDomInstances.length; i++) {
                 let instanceId = parseInt(
