@@ -297,6 +297,7 @@ function Z(y) {
         border: 1px solid var(--color-border);
         line-height: normal;
         transition: var(--transition) opacity;
+        overflow: hidden;
     }
 
     .p-gui__content {

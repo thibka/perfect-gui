@@ -38,6 +38,7 @@ export default function (position_type) {
         border: 1px solid var(--color-border);
         line-height: normal;
         transition: var(--transition) opacity;
+        overflow: hidden;
     }
 
     .p-gui__content {
