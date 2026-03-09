@@ -1,44 +1,57 @@
-export default class Slider {
-    constructor(parent, params = {}, callback) {
+export default class Button {
+    constructor(parent, params = {}) {
         this.parent = parent;
+        this.callback = null;
 
-        let label = '';
-        if (typeof params != 'string') {
-            if (typeof params == 'object' && params?.hasOwnProperty('label')) {
-                label = params.label == '' ? ' ' : params.label;
-            } else {
-                label = ' ';
-            }
-        } else {
-            label = params == '' ? ' ' : params;
+        if (typeof params !== 'object') {
+            throw Error(
+                `[GUI] button() first parameter must be an object. Received: ${typeof params}.`,
+            );
         }
 
-        const tooltip = (typeof params.tooltip === 'string') ? params.tooltip : (params.tooltip === true ? label : null);
-        
+        let label = params.label || ' ';
+
+        const tooltip =
+            typeof params.tooltip === 'string'
+                ? params.tooltip
+                : params.tooltip === true
+                  ? label
+                  : null;
+
         const el = document.createElement('div');
         el.className = 'p-gui__button';
         el.textContent = label;
-        if ( tooltip ) {
+        if (tooltip) {
             el.setAttribute('title', tooltip);
         }
         el.addEventListener('click', () => {
-            if (callback) {
-                callback();
+            if (this.callback) {
+                this.callback();
             }
 
             if (this.parent.onUpdate) {
                 this.parent.onUpdate();
-            } else if (this.parent.isFolder && this.parent.firstParent.onUpdate) {
+            } else if (
+                this.parent.isFolder &&
+                this.parent.firstParent.onUpdate
+            ) {
                 this.parent.firstParent.onUpdate();
             }
         });
 
         if (typeof params.color == 'string') {
             el.style.setProperty('--color-accent', params.color);
-            el.style.setProperty('--color-accent-hover', params.hoverColor || params.color);
+            el.style.setProperty(
+                '--color-accent-hover',
+                params.hoverColor || params.color,
+            );
         }
 
         this.parent.wrapper.append(el);
-        return el;
+    }
+
+    onClick(callback) {
+        this.callback = callback;
+        return this;
     }
 }

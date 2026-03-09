@@ -81,8 +81,8 @@ export default class GUI {
         this._styleInstance();
 
         this._addWrapper();
-        this.wrapper.setAttribute('data-corner-x', this.screenCorner.x);
-        this.wrapper.setAttribute('data-corner-y', this.screenCorner.y);
+        this.domElement.setAttribute('data-corner-x', this.screenCorner.x);
+        this.domElement.setAttribute('data-corner-y', this.screenCorner.y);
 
         if (options.autoRepositioning != false) {
             window.addEventListener('resize', this._handleResize.bind(this));
@@ -268,50 +268,49 @@ export default class GUI {
         content.append(this.wrapper);
     }
 
-    button(params = {}, callback) {
+    button(params = {}) {
         this.imageContainer = null;
-        const el = new Button(this, params, callback);
+        const el = new Button(this, params);
         return el;
     }
 
-    image(params = {}, callback) {
+    image(params = {}) {
         if (!this.imageContainer) {
             this.imageContainer = document.createElement('div');
             this.imageContainer.className = 'p-gui__image-container';
             this.wrapper.append(this.imageContainer);
         }
-        const el = new Image(this, params, callback);
+        const el = new Image(this, params);
         return el;
     }
 
-    slider(params = {}, callback) {
+    slider(arg1, arg2, arg3) {
         this.imageContainer = null;
-        const el = new Slider(this, params, callback);
+        const el = new Slider(this, arg1, arg2, arg3);
         return el;
     }
 
-    toggle(params = {}, callback) {
+    toggle(arg1, arg2, arg3) {
         this.imageContainer = null;
-        const el = new Toggle(this, params, callback);
-        this.wrapper.append(el);
+        const el = new Toggle(this, arg1, arg2, arg3);
         return el;
     }
 
-    list(params = {}, callback) {
+    list(arg1, arg2, arg3) {
         this.imageContainer = null;
-        const el = new List(this, params, callback);
+        const el = new List(this, arg1, arg2, arg3);
         return el;
     }
 
-    color(params = {}, callback) {
+    color(arg1, arg2, arg3) {
         this.imageContainer = null;
-        const el = new Color(this, params, callback);
+        const el = new Color(this, arg1, arg2, arg3);
         return el;
     }
 
-    vector2(params = {}, callback) {
+    vector2(arg1, arg2, arg3, arg4) {
         this.imageContainer = null;
-        const el = new Vector2(this, params, callback);
+        const el = new Vector2(this, arg1, arg2, arg3, arg4);
         return el;
     }
 

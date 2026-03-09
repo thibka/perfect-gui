@@ -1,54 +1,52 @@
 export default class Slider {
-    constructor(parent, params = {}, callback) {
+    constructor(parent, arg1, arg2, arg3) {
         this.parent = parent;
         this.propReferences = [];
 
-        if (typeof params != 'object') {
-            throw Error(`[GUI] slider() first parameter must be an object. Received: ${typeof params}.`);
+        let params = {};
+        let value = null;
+
+        if (arg1 && typeof arg1 === 'object' && typeof arg2 === 'string') {
+            this.obj = arg1;
+            this.prop = arg2;
+            this.isObject = true;
+            params = arg3 || {};
+            this.callback = null;
+        } else if (arg1 && typeof arg1 === 'object') {
+            this.isObject = false;
+            params = arg1;
+            value = typeof params.value == 'number' ? params.value : null;
+        } else {
+            throw Error(`[GUI] slider() invalid parameters.`);
         }
 
         let label = typeof params.label == 'string' ? params.label || ' ' : ' ';
-        this.isObject = false;
-        let propReferenceIndex = null;
-        this.obj = params.obj;
-        this.prop = params.prop;
-        let value = typeof params.value == 'number' ? params.value : null;
+
+        if (this.isObject && label == ' ') {
+            label = this.prop;
+        }
+
         this.min = params.min ?? 0;
         this.max = params.max ?? 1;
         this.step = params.step || (this.max - this.min) / 100;
         this.decimals = this.parent._countDecimals(this.step);
-        this.callback = typeof callback == 'function' ? callback : null;
 
-        // callback mode
-        if (value !== null) {
-            if (this.prop != undefined || this.obj != undefined) {
-                console.warn(`[GUI] slider() "obj" and "prop" parameters are ignored when a "value" parameter is used.`);
+        let propReferenceIndex = null;
+
+        if (this.isObject) {
+            propReferenceIndex =
+                this.propReferences.push(this.obj[this.prop]) - 1;
+        } else {
+            if (value === null) {
+                value = (this.max - this.min) / 2;
             }
         }
-        // object-binding
-        else if (this.prop != undefined && this.obj != undefined) {
-            if (typeof this.prop != 'string') {
-                throw Error(`[GUI] slider() "prop" parameter must be an string. Received: ${typeof this.prop}.`);
-            }
-            if (typeof this.obj != 'object') {
-                throw Error(`[GUI] slider() "obj" parameter must be an object. Received: ${typeof this.obj}.`);
-            }
-
-            if (label == ' ') {
-                label = this.prop;
-            }
-
-            propReferenceIndex = this.propReferences.push(this.obj[this.prop]) - 1;
-            this.isObject = true;
-        }
-        else {
-            if ((this.prop != undefined && this.obj == undefined) || (this.prop == undefined && this.obj != undefined)) {
-                console.warn(`[GUI] slider() "obj" and "prop" parameters must be used together.`);
-            }
-
-            value = (this.max - this.min) / 2;
-        }
-        const tooltip = (typeof params.tooltip === 'string') ? params.tooltip : (params.tooltip === true ? label : null);
+        const tooltip =
+            typeof params.tooltip === 'string'
+                ? params.tooltip
+                : params.tooltip === true
+                  ? label
+                  : null;
 
         const container = document.createElement('div');
         container.className = 'p-gui__slider';
@@ -91,9 +89,21 @@ export default class Slider {
         // init position
         setTimeout(() => {
             const handleWidth = this.handle.offsetWidth;
-            this.handle.position = this._mapLinear(this.valueInput.value, this.min, this.max, handleWidth / 2, 88 - handleWidth / 2);
-            this.handle.position = Math.min(this.handle.position, 88 - handleWidth / 2);
-            this.handle.position = Math.max(this.handle.position, handleWidth / 2);
+            this.handle.position = this._mapLinear(
+                this.valueInput.value,
+                this.min,
+                this.max,
+                handleWidth / 2,
+                88 - handleWidth / 2,
+            );
+            this.handle.position = Math.min(
+                this.handle.position,
+                88 - handleWidth / 2,
+            );
+            this.handle.position = Math.max(
+                this.handle.position,
+                handleWidth / 2,
+            );
             this.handle.style.transform = `translate(-50%, -50%) translateX(${this.handle.position}px)`;
             this.filling.style.width = `${this.handle.position}px`;
         }, 0); // wait for render
@@ -101,7 +111,7 @@ export default class Slider {
         this.valueInput.addEventListener('change', () => {
             this._updateHandlePositionFromValue();
             this._triggerCallbacks();
-        })
+        });
 
         this.ctrlDiv.addEventListener('pointerdown', (evt) => {
             this.ctrlDiv.pointerDown = true;
@@ -115,14 +125,15 @@ export default class Slider {
 
         window.addEventListener('pointermove', (evt) => {
             if (this.ctrlDiv.pointerDown) {
-                this.ctrlDiv.pointerDelta = evt.clientX - this.ctrlDiv.prevPosition;
+                this.ctrlDiv.pointerDelta =
+                    evt.clientX - this.ctrlDiv.prevPosition;
                 this._updateHandlePositionFromPointer(evt);
             }
         });
 
         if (this.isObject) {
             Object.defineProperty(this.obj, this.prop, {
-                set: val => {
+                set: (val) => {
                     this.propReferences[propReferenceIndex] = val;
                     this.valueInput.value = val;
 
@@ -134,11 +145,9 @@ export default class Slider {
                 },
                 get: () => {
                     return this.propReferences[propReferenceIndex];
-                }
+                },
             });
         }
-
-        return container;
     }
 
     _updateHandlePositionFromPointer(evt, firstDown = false) {
@@ -154,9 +163,15 @@ export default class Slider {
             handlePosition = this.handle.position + pointerDelta;
         }
 
-        handlePosition = Math.max(handleWidth / 2, Math.min(handlePosition, sliderWidth - handleWidth / 2));
+        handlePosition = Math.max(
+            handleWidth / 2,
+            Math.min(handlePosition, sliderWidth - handleWidth / 2),
+        );
 
-        let newValue = this.min + (this.max - this.min) * (handlePosition - handleWidth / 2) / (sliderWidth - handleWidth);
+        let newValue =
+            this.min +
+            ((this.max - this.min) * (handlePosition - handleWidth / 2)) /
+                (sliderWidth - handleWidth);
         if (newValue > currentValue) {
             newValue = this._quantizeFloor(newValue, this.step);
         } else {
@@ -187,9 +202,18 @@ export default class Slider {
     _updateHandlePositionFromValue() {
         const sliderWidth = this.ctrlDiv.offsetWidth;
         const handleWidth = this.handle.offsetWidth;
-        let handlePosition = this._mapLinear(this.valueInput.value, this.min, this.max, handleWidth / 2, sliderWidth - handleWidth / 2);
+        let handlePosition = this._mapLinear(
+            this.valueInput.value,
+            this.min,
+            this.max,
+            handleWidth / 2,
+            sliderWidth - handleWidth / 2,
+        );
 
-        handlePosition = Math.max(handleWidth / 2, Math.min(handlePosition, sliderWidth - handleWidth / 2));
+        handlePosition = Math.max(
+            handleWidth / 2,
+            Math.min(handlePosition, sliderWidth - handleWidth / 2),
+        );
 
         this.handle.style.transform = `translate(-50%, -50%) translateX(${handlePosition}px)`;
         this.handle.position = handlePosition;
@@ -200,8 +224,7 @@ export default class Slider {
     _triggerCallbacks() {
         if (this.isObject) {
             this.obj[this.prop] = parseFloat(this.valueInput.value);
-        }
-        else {
+        } else {
             if (this.callback) {
                 this.callback(parseFloat(this.valueInput.value));
             }
@@ -215,7 +238,7 @@ export default class Slider {
     }
 
     _mapLinear(x, a1, a2, b1, b2) {
-        return b1 + (x - a1) * (b2 - b1) / (a2 - a1);
+        return b1 + ((x - a1) * (b2 - b1)) / (a2 - a1);
     }
 
     _quantize(x, step) {
@@ -228,5 +251,10 @@ export default class Slider {
 
     _quantizeFloor(x, step) {
         return step * Math.floor(x / step);
+    }
+
+    onChange(callback) {
+        this.callback = callback;
+        return this;
     }
 }

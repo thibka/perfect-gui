@@ -60,13 +60,13 @@ const gui = new GUI({
 });
 
 // 2. Add a simple button
-gui.button('Click me', () => {
+gui.button({ label: 'Click me' }).onClick(() => {
     console.log('Button clicked!');
 });
 
 // 3. Add a slider connected to an object value natively
 const params = { opacity: 0.5 };
-gui.slider({ obj: params, prop: 'opacity', min: 0, max: 1 }, (val) => {
+gui.slider(params, 'opacity', { min: 0, max: 1 }).onChange((val) => {
     document.body.style.opacity = val;
 });
 

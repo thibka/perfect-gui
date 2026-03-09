@@ -1,80 +1,77 @@
 export default class Toggle {
-    constructor(parent, params = {}, callback) {
+    constructor(parent, arg1, arg2, arg3) {
         this.parent = parent;
+        this.callback = null;
 
-        if (typeof params != 'object') {
-            throw Error(`[GUI] toggle() first parameter must be an object. Received: ${typeof params}.`);
+        let params = {};
+        let value = null;
+        let isObject = false;
+        let obj, prop;
+
+        if (arg1 && typeof arg1 === 'object' && typeof arg2 === 'string') {
+            obj = arg1;
+            prop = arg2;
+            isObject = true;
+            params = arg3 || {};
+        } else if (arg1 && typeof arg1 === 'object') {
+            isObject = false;
+            params = arg1;
+            value = typeof params.value === 'boolean' ? params.value : null;
+        } else {
+            throw Error(`[GUI] toggle() invalid parameters.`);
         }
 
         let label = typeof params.label == 'string' ? params.label || ' ' : ' ';
-        let isObject = false;
         let propReferenceIndex = null;
-        let obj = params.obj; 
-        let prop = params.prop;
-        let value = typeof params.value === 'boolean' ? params.value : null;
 
-        // callback mode
-        if ( value !== null ) {
-            if (prop != undefined || obj != undefined) {
-                console.warn(`[GUI] toggle() "obj" and "prop" parameters are ignored when a "value" parameter is used.`);
-            }
+        if (isObject && label == ' ') {
+            label = prop;
         }
 
-        // object-binding
-        else if (prop != undefined && obj != undefined) {
-            if (typeof prop != 'string') {
-                throw Error(`[GUI] toggle() "prop" parameter must be an string. Received: ${typeof prop}.`);
-            }
-            if (typeof obj != 'object') {
-                throw Error(`[GUI] toggle() "obj" parameter must be an object. Received: ${typeof obj}.`);
-            }
-
-            if (label == ' ') {
-                label = prop;
-            }
-
+        if (isObject) {
             propReferenceIndex = this.parent.propReferences.push(obj[prop]) - 1;
-            isObject = true;
-        }
-        else {
-            if ((prop != undefined && obj == undefined) || (prop == undefined && obj == undefined)) {
-                console.warn(`[GUI] toggle() "obj" and "prop" parameters must be used together.`);
-            }
         }
 
-        const tooltip = (typeof params.tooltip === 'string') ? params.tooltip : (params.tooltip === true ? label : null);
+        const tooltip =
+            typeof params.tooltip === 'string'
+                ? params.tooltip
+                : params.tooltip === true
+                  ? label
+                  : null;
 
         const container = document.createElement('div');
         container.textContent = label;
         container.className = 'p-gui__toggle';
-        if ( tooltip ) {
+        if (tooltip) {
             container.setAttribute('title', tooltip);
         }
+        this.parent.wrapper.append(container);
 
         container.addEventListener('click', (ev) => {
             const checkbox = ev.target.childNodes[1];
-            
+
             let value = true;
-            
+
             if (checkbox.classList.contains('p-gui__toggle-checkbox--active')) {
                 value = false;
             }
-            
+
             checkbox.classList.toggle('p-gui__toggle-checkbox--active');
 
-            if ( isObject ) {
+            if (isObject) {
                 obj[prop] = value;
-            }
-            
-            else {
-                if (typeof callback == 'function') {
-                    callback(value);
+            } else {
+                if (typeof this.callback == 'function') {
+                    this.callback(value);
                 }
             }
 
             if (this.parent.onUpdate) {
                 this.parent.onUpdate();
-            } else if (this.parent.isFolder && this.parent.firstParent.onUpdate) {
+            } else if (
+                this.parent.isFolder &&
+                this.parent.firstParent.onUpdate
+            ) {
                 this.parent.firstParent.onUpdate();
             }
         });
@@ -91,27 +88,34 @@ export default class Toggle {
         checkbox.className = 'p-gui__toggle-checkbox' + activeClass;
         container.append(checkbox);
 
-        if ( isObject ) {
-            Object.defineProperty( obj, prop, {
-                set: val => { 
+        if (isObject) {
+            Object.defineProperty(obj, prop, {
+                set: (val) => {
                     this.parent.propReferences[propReferenceIndex] = val;
 
                     if (val) {
-                        checkbox.classList.add('p-gui__toggle-checkbox--active');
+                        checkbox.classList.add(
+                            'p-gui__toggle-checkbox--active',
+                        );
                     } else {
-                        checkbox.classList.remove('p-gui__toggle-checkbox--active');
+                        checkbox.classList.remove(
+                            'p-gui__toggle-checkbox--active',
+                        );
                     }
 
-                    if (typeof callback == 'function') {
-                        callback(val);
+                    if (typeof this.callback == 'function') {
+                        this.callback(val);
                     }
                 },
-                get: () => { 
+                get: () => {
                     return this.parent.propReferences[propReferenceIndex];
-                }
+                },
             });
         }
+    }
 
-        return container;
+    onChange(callback) {
+        this.callback = callback;
+        return this;
     }
 }

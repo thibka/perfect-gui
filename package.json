@@ -1,7 +1,7 @@
 {
   "name": "perfect-gui",
   "type": "module",
-  "version": "4.12.10",
+  "version": "5.0.0",
   "description": "GUI for JavaScript",
   "main": "dist/perfect-gui.js",
   "module": "dist/perfect-gui.js",

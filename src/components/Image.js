@@ -1,11 +1,14 @@
 export default class Image {
-    constructor(parent, params = {}, callback) {
+    constructor(parent, params = {}) {
         this.parent = parent;
+        this.callback = null;
 
         if (typeof params != 'object') {
-            throw Error(`[GUI] image() first parameter must be an object. Received: ${typeof params}.`);
+            throw Error(
+                `[GUI] image() first parameter must be an object. Received: ${typeof params}.`,
+            );
         }
-        
+
         let path;
         if (typeof params.path == 'string') {
             path = params.path;
@@ -24,11 +27,16 @@ export default class Image {
             label = typeof params.label == 'string' ? params.label || ' ' : ' ';
         }
 
-        const tooltip = (typeof params.tooltip === 'string') ? params.tooltip : (params.tooltip === true ? label : null);
+        const tooltip =
+            typeof params.tooltip === 'string'
+                ? params.tooltip
+                : params.tooltip === true
+                  ? label
+                  : null;
 
         const selected = params.selected === true;
         const selectionBorder = params.selectionBorder !== false;
-        
+
         // width & height options
         let inline_styles = '';
         if (params.width) {
@@ -37,19 +45,19 @@ export default class Image {
             }
             inline_styles += `flex: 0 0 calc(${params.width} - 5px); `;
         }
-        
+
         if (params.height) {
             if (typeof params.height == 'number') {
                 params.height += 'px';
             }
             inline_styles += `height: ${params.height}; `;
-        }   
+        }
 
         // Image button
         const image = document.createElement('div');
         image.className = 'p-gui__image';
         image.style = 'background-image: url(' + path + '); ' + inline_styles;
-        if ( tooltip ) {
+        if (tooltip) {
             image.setAttribute('title', tooltip);
         }
         this.parent.imageContainer.append(image);
@@ -57,31 +65,39 @@ export default class Image {
         if (selected && selectionBorder) {
             image.classList.add('p-gui__image--selected');
         }
-        
+
         // Text inside image
         const text = document.createElement('div');
         text.className = 'p-gui__image-text';
         text.textContent = label;
         image.append(text);
-        
+
         image.addEventListener('click', () => {
-            let selected_items = image.parentElement.querySelectorAll('.p-gui__image--selected');
+            let selected_items = image.parentElement.querySelectorAll(
+                '.p-gui__image--selected',
+            );
             for (let i = 0; i < selected_items.length; i++) {
                 selected_items[i].classList.remove('p-gui__image--selected');
             }
             if (selectionBorder) {
                 image.classList.add('p-gui__image--selected');
             }
-            if (typeof callback == 'function') {
-                callback({ path, text: label });
+            if (typeof this.callback == 'function') {
+                this.callback({ path, text: label });
             }
             if (this.parent.onUpdate) {
                 this.parent.onUpdate();
-            } else if (this.parent.isFolder && this.parent.firstParent.onUpdate) {
+            } else if (
+                this.parent.isFolder &&
+                this.parent.firstParent.onUpdate
+            ) {
                 this.parent.firstParent.onUpdate();
             }
         });
+    }
 
-        return image;   
+    onClick(callback) {
+        this.callback = callback;
+        return this;
     }
 }

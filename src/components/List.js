@@ -1,30 +1,38 @@
 export default class List {
-    constructor(parent, params = {}, callback) {
+    constructor(parent, arg1, arg2, arg3) {
         this.parent = parent;
+        this.callback = null;
 
-        if (typeof params != 'object') {
-            throw Error(`[GUI] list() first parameter must be an object. Received: ${typeof params}.`);
+        let params = {};
+        let value = null;
+        let isObject = false;
+        let obj, prop;
+
+        if (arg1 && typeof arg1 === 'object' && typeof arg2 === 'string') {
+            obj = arg1;
+            prop = arg2;
+            isObject = true;
+            params = arg3 || {};
+        } else if (arg1 && typeof arg1 === 'object') {
+            isObject = false;
+            params = arg1;
+        } else {
+            throw Error(`[GUI] list() invalid parameters.`);
         }
 
         let label = typeof params.label == 'string' ? params.label : ' ';
-        let isObject = false;
         let propReferenceIndex = null;
-        let obj = params.obj; 
-        let prop = params.prop;
         let values = Array.isArray(params.values) ? params.values : null;
-        let value;
-        let objectValues = typeof values[0] == 'string' ? false : true;
-        const tooltip = (typeof params.tooltip === 'string') ? params.tooltip : (params.tooltip === true ? label : null);
+        let objectValues =
+            values && values.length > 0 && typeof values[0] === 'object';
+        const tooltip =
+            typeof params.tooltip === 'string'
+                ? params.tooltip
+                : params.tooltip === true
+                  ? label
+                  : null;
 
-        callback = typeof callback == 'function' ? callback : null;
-
-        // callback mode
-        if ( params.value !== undefined || 
-            (params.value === undefined && obj === undefined && prop === undefined)) {
-            if (prop != undefined || obj != undefined) {
-                console.warn(`[GUI] list() "obj" and "prop" parameters are ignored when a "value" parameter is used.`);
-            }
-
+        if (!isObject) {
             value = (() => {
                 if (!values) {
                     return null;
@@ -36,47 +44,34 @@ export default class List {
                     return params.value;
                 }
             })();
-        }
-
-        // object-binding mode
-        else if (prop != undefined && obj != undefined) {
-            if (typeof prop != 'string') {
-                throw Error(`[GUI] list() "prop" parameter must be an string. Received: ${typeof prop}.`);
-            }
-            if (typeof obj != 'object') {
-                throw Error(`[GUI] list() "obj" parameter must be an object. Received: ${typeof obj}.`);
-            }
-
-            value = (() => {                
+        } else {
+            value = (() => {
                 if (!values) {
                     return null;
                 }
                 if (typeof obj[prop] == 'string') {
-                    if ( !objectValues ) { // values is an array of strings
+                    if (!objectValues) {
+                        // values is an array of strings
                         return values.indexOf(obj[prop]);
-                    }
-                    else { // values is an array of objects
-                        return values.find(item => item.value === obj[prop]).value;
+                    } else {
+                        // values is an array of objects
+                        return values.find((item) => item.value === obj[prop])
+                            .value;
                     }
                 }
                 if (typeof obj[prop] == 'number') {
-                    if ( !objectValues ) { // values is an array of strings
+                    if (!objectValues) {
+                        // values is an array of strings
                         return obj[prop];
-                    }
-                    else { // values is an array of objects
-                        return values.find(item => item.value === obj[prop]).value;
+                    } else {
+                        // values is an array of objects
+                        return values.find((item) => item.value === obj[prop])
+                            .value;
                     }
                 }
             })();
 
             propReferenceIndex = this.parent.propReferences.push(obj[prop]) - 1;
-            isObject = true;
-        }
-
-        else {
-            if ((prop != undefined && obj == undefined) || (prop == undefined && obj == undefined)) {
-                console.warn(`[GUI] list() "obj" and "prop" parameters must be used together.`);
-            }
         }
 
         let container = document.createElement('div');
@@ -91,25 +86,24 @@ export default class List {
         container.append(select);
         select.className = 'p-gui__list-dropdown';
         select.addEventListener('change', (ev) => {
-            if ( isObject ) {
+            if (isObject) {
                 obj[prop] = ev.target.value;
-            }
-
-            else if (callback) {
-                callback(ev.target.value);
+            } else if (this.callback) {
+                this.callback(ev.target.value);
             }
 
             if (this.parent.onUpdate) {
                 this.parent.onUpdate();
-            } else if (this.parent.isFolder && this.parent.firstParent.onUpdate) {
+            } else if (
+                this.parent.isFolder &&
+                this.parent.firstParent.onUpdate
+            ) {
                 this.parent.firstParent.onUpdate();
             }
         });
 
-        if (values) 
-        {
-            values.forEach((item, index) => 
-            {
+        if (values) {
+            values.forEach((item, index) => {
                 const optionName = objectValues ? item.label : item;
                 const optionValue = objectValues ? item.value : item;
                 let option = document.createElement('option');
@@ -117,18 +111,21 @@ export default class List {
                 option.textContent = optionName;
                 select.append(option);
 
-                if (!objectValues && value == index || objectValues && value == optionValue) {
+                if (
+                    (!objectValues && value == index) ||
+                    (objectValues && value == optionValue)
+                ) {
                     option.setAttribute('selected', '');
                 }
             });
         }
 
-        if ( isObject ) {
-            Object.defineProperty( obj, prop, {
-                set: val => {
-                    let newIndex, newValue, newObj; 
+        if (isObject) {
+            Object.defineProperty(obj, prop, {
+                set: (val) => {
+                    let newIndex, newValue, newObj;
                     if (objectValues) {
-                        newObj = values.find(item => {
+                        newObj = values.find((item) => {
                             return item.value == val;
                         });
                         newValue = newObj?.value || values[0].value;
@@ -143,29 +140,36 @@ export default class List {
                             newValue = values[val];
                         }
                     }
-                    
-                    this.parent.propReferences[propReferenceIndex] = objectValues ? newValue : val;
 
-                    const previousSelection = select.querySelector('[selected]');
-                    if ( previousSelection ) {
-                        previousSelection.removeAttribute('selected')
+                    this.parent.propReferences[propReferenceIndex] =
+                        objectValues ? newValue : val;
+
+                    const previousSelection =
+                        select.querySelector('[selected]');
+                    if (previousSelection) {
+                        previousSelection.removeAttribute('selected');
                     }
-                    select.querySelectorAll('option')[newIndex].setAttribute('selected', '');
-                    
-                    if (typeof callback == 'function') {
+                    select
+                        .querySelectorAll('option')
+                        [newIndex].setAttribute('selected', '');
+
+                    if (typeof this.callback == 'function') {
                         if (objectValues) {
-                            callback(newObj, newIndex);
+                            this.callback(newObj, newIndex);
                         } else {
-                            callback(newValue, newIndex);
+                            this.callback(newValue, newIndex);
                         }
                     }
                 },
-                get: () => { 
+                get: () => {
                     return this.parent.propReferences[propReferenceIndex];
-                }
+                },
             });
         }
+    }
 
-        return container;
+    onChange(callback) {
+        this.callback = callback;
+        return this;
     }
 }
