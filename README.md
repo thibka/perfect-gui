@@ -42,7 +42,7 @@ For a quick setup without build tools, use an import map:
     import GUI from 'perfect-gui';
 
     const gui = new GUI();
-    gui.button('Click me!', () => alert('Hello world!'));
+    gui.button({ label: 'Click me' }).onClick(() => alert('Hello world!'));
 </script>
 ```
 
