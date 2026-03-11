@@ -46,6 +46,9 @@ export default class Toggle {
             container.setAttribute('title', tooltip);
         }
         this.parent.wrapper.append(container);
+        
+        // Expose the DOM element
+        this.element = container;
 
         container.addEventListener('click', (ev) => {
             const checkbox = ev.target.childNodes[1];

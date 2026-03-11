@@ -61,6 +61,9 @@ export default class Image {
             image.setAttribute('title', tooltip);
         }
         this.parent.imageContainer.append(image);
+        
+        // Expose the DOM element
+        this.element = image;
 
         if (selected && selectionBorder) {
             image.classList.add('p-gui__image--selected');

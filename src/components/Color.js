@@ -55,6 +55,9 @@ export default class Color {
             container.setAttribute('title', tooltip);
         }
         this.parent.wrapper.append(container);
+        
+        // Expose the DOM element
+        this.element = container;
 
         const colorpicker = document.createElement('input');
         colorpicker.className = 'p-gui__color-picker';

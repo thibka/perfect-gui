@@ -81,6 +81,9 @@ export default class List {
             container.setAttribute('title', tooltip);
         }
         this.parent.wrapper.append(container);
+        
+        // Expose the DOM element
+        this.element = container;
 
         let select = document.createElement('select');
         container.append(select);

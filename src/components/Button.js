@@ -48,6 +48,9 @@ export default class Button {
         }
 
         this.parent.wrapper.append(el);
+        
+        // Expose the DOM element
+        this.element = el;
     }
 
     onClick(callback) {

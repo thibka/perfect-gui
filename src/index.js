@@ -270,8 +270,8 @@ export default class GUI {
 
     button(params = {}) {
         this.imageContainer = null;
-        const el = new Button(this, params);
-        return el;
+        const instance = new Button(this, params);
+        return instance;
     }
 
     image(params = {}) {
@@ -280,38 +280,38 @@ export default class GUI {
             this.imageContainer.className = 'p-gui__image-container';
             this.wrapper.append(this.imageContainer);
         }
-        const el = new Image(this, params);
-        return el;
+        const instance = new Image(this, params);
+        return instance;
     }
 
     slider(arg1, arg2, arg3) {
         this.imageContainer = null;
-        const el = new Slider(this, arg1, arg2, arg3);
-        return el;
+        const instance = new Slider(this, arg1, arg2, arg3);
+        return instance;
     }
 
     toggle(arg1, arg2, arg3) {
         this.imageContainer = null;
-        const el = new Toggle(this, arg1, arg2, arg3);
-        return el;
+        const instance = new Toggle(this, arg1, arg2, arg3);
+        return instance;
     }
 
     list(arg1, arg2, arg3) {
         this.imageContainer = null;
-        const el = new List(this, arg1, arg2, arg3);
-        return el;
+        const instance = new List(this, arg1, arg2, arg3);
+        return instance;
     }
 
     color(arg1, arg2, arg3) {
         this.imageContainer = null;
-        const el = new Color(this, arg1, arg2, arg3);
-        return el;
+        const instance = new Color(this, arg1, arg2, arg3);
+        return instance;
     }
 
     vector2(arg1, arg2, arg3, arg4) {
         this.imageContainer = null;
-        const el = new Vector2(this, arg1, arg2, arg3, arg4);
-        return el;
+        const instance = new Vector2(this, arg1, arg2, arg3, arg4);
+        return instance;
     }
 
     folder(options = {}) {

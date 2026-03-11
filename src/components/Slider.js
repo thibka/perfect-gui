@@ -56,6 +56,9 @@ export default class Slider {
         }
 
         this.parent.wrapper.append(container);
+        
+        // Expose the DOM element
+        this.element = container;
 
         const slider_name = document.createElement('div');
         slider_name.className = 'p-gui__slider-name';
