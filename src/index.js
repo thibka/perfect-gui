@@ -334,7 +334,7 @@ export default class GUI {
         }
 
         let container_style = color ? `background-color: ${color};` : '';
-        container_style += maxHeight ? `max-height: ${maxHeight}px;` : '';
+        container_style += maxHeight ? `max-height: ${maxHeight}px; overflow-y: auto;` : '';
 
         const container = document.createElement('div');
         container.className = className;

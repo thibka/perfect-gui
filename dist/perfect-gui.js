@@ -632,7 +632,7 @@ class O {
     let l = "p-gui__folder";
     this.folders.length == 0 && (l += " p-gui__folder--first"), e && (l += " p-gui__folder--closed");
     let s = c ? `background-color: ${c};` : "";
-    s += i ? `max-height: ${i}px;` : "";
+    s += i ? `max-height: ${i}px; overflow-y: auto;` : "";
     const o = document.createElement("div");
     o.className = l, o.style = s, this.wrapper.append(o);
     const n = document.createElement("div");
