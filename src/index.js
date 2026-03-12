@@ -24,6 +24,7 @@ export default class GUI {
 
         this.propReferences = [];
         this.folders = [];
+        this.tabsArray = [];
 
         if (options.isFolder) {
             this._folderConstructor(options.folderOptions);
@@ -369,6 +370,123 @@ export default class GUI {
         });
         this.folders.push(folder);
         return folder;
+    }
+
+    tabs(options = {}) {
+        const tabs = Array.isArray(options.tabs) ? options.tabs : [];
+        const activeTab = options.active || 0;
+        const color = options.color || null;
+        const maxHeight = options.maxHeight || null;
+
+        this.imageContainer = null;
+
+        let className = 'p-gui__tabs';
+        if (this.tabsArray.length == 0) {
+            className += ' p-gui__tabs--first';
+        }
+
+        let container_style = color ? `background-color: ${color};` : '';
+        container_style += maxHeight ? `max-height: ${maxHeight}px; overflow-y: auto;` : '';
+
+        const container = document.createElement('div');
+        container.className = className;
+        container.style = container_style;
+        this.wrapper.append(container);
+
+        // Create tabs header
+        const tabsHeader = document.createElement('div');
+        tabsHeader.className = 'p-gui__tabs-header';
+        container.append(tabsHeader);
+
+        // Create tabs content
+        const tabsContent = document.createElement('div');
+        tabsContent.className = 'p-gui__tabs-content';
+        container.append(tabsContent);
+
+        // Store tab instances for later access
+        const tabInstances = [];
+
+        tabs.forEach((tabConfig, index) => {
+            const tabLabel = typeof tabConfig === 'string' ? tabConfig : tabConfig.label || `Tab ${index + 1}`;
+            
+            // Create tab button
+            const tabButton = document.createElement('button');
+            tabButton.className = 'p-gui__tab-button';
+            if (index === activeTab) {
+                tabButton.className += ' p-gui__tab-button--active';
+            }
+            tabButton.textContent = tabLabel;
+            tabsHeader.append(tabButton);
+
+            // Create tab pane
+            const tabPane = document.createElement('div');
+            tabPane.className = 'p-gui__tab-pane';
+            if (index === activeTab) {
+                tabPane.className += ' p-gui__tab-pane--active';
+            }
+            tabsContent.append(tabPane);
+
+            // Create GUI instance for this tab
+            const tabGUI = new GUI({
+                isFolder: true,
+                folderOptions: {
+                    wrapper: container,
+                    inner: tabPane,
+                    parent: this,
+                    firstParent: this.firstParent,
+                },
+            });
+
+            tabInstances.push({
+                gui: tabGUI,
+                button: tabButton,
+                pane: tabPane
+            });
+
+            // Add click handler
+            tabButton.addEventListener('click', () => {
+                // Remove active class from all tabs
+                tabInstances.forEach((tab) => {
+                    tab.button.classList.remove('p-gui__tab-button--active');
+                    tab.pane.classList.remove('p-gui__tab-pane--active');
+                });
+
+                // Add active class to clicked tab
+                tabButton.classList.add('p-gui__tab-button--active');
+                tabPane.classList.add('p-gui__tab-pane--active');
+            });
+        });
+
+        // Create main tabs instance to return
+        const tabsInstance = new GUI({
+            isFolder: true,
+            folderOptions: {
+                wrapper: container,
+                inner: tabInstances[activeTab]?.pane || document.createElement('div'),
+                parent: this,
+                firstParent: this.firstParent,
+            },
+        });
+
+        // Add methods to access individual tabs
+        tabsInstance.getTab = (index) => tabInstances[index]?.gui || null;
+        tabsInstance.getTabElement = (index) => tabInstances[index]?.button || null;
+        tabsInstance.setActiveTab = (index) => {
+            if (index >= 0 && index < tabInstances.length) {
+                tabInstances[index].button.click();
+            }
+        };
+        tabsInstance.getActiveTab = () => {
+            return tabInstances.findIndex(tab => 
+                tab.button.classList.contains('p-gui__tab-button--active')
+            );
+        };
+
+        // Expose the main container element
+        tabsInstance.element = container;
+
+        this.tabsArray.push(tabsInstance);
+        return tabsInstance;
     }
 
     _makeDraggable() {

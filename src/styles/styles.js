@@ -6,6 +6,7 @@ import _color from './_color.css?inline';
 import _vector2 from './_vector2.css?inline';
 import _image from './_image.css?inline';
 import _folder from './_folder.css?inline';
+import _tabs from './_tabs.css?inline';
 
 export default function (position_type) {
     return `
@@ -133,7 +134,8 @@ export default function (position_type) {
     .p-gui__toggle,
     .p-gui__list,
     .p-gui__vector2,
-    .p-gui__color {
+    .p-gui__color,
+    .p-gui__tabs {
         width: 100%;
         padding: 5px 3px;
         cursor: pointer;
@@ -150,7 +152,8 @@ export default function (position_type) {
     .p-gui__toggle:hover,
     .p-gui__list:hover,
     .p-gui__vector2:hover,
-    .p-gui__color:hover {
+    .p-gui__color:hover,
+    .p-gui__tabs:hover {
         border-color: rgba(255,255,255,.2);
     }   
     
@@ -169,5 +172,7 @@ export default function (position_type) {
     ${_vector2}
     
     ${_folder}
+    
+    ${_tabs}
 `;
 }
