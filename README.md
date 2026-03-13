@@ -13,6 +13,7 @@
 - **Modern UI**: Clean, customizable, and polished design right out of the box.
 - **Rich Inputs**: Support for sliders, buttons, color pickers, vectors, images, lists, and toggles.
 - **Folders**: Easily group and organize your controls in collapsible sections.
+- **Tabs**: Create tabbed interfaces to organize content in separate panels.
 - **Draggable & Auto-positioned**: Snap it to screen edges or let the user drag it anywhere.
 - **Data Binding**: Automatically sync your controls with object properties.
 - **Zero Dependencies**: Lightweight and built with vanilla JavaScript.
@@ -110,4 +111,5 @@ See the [Documentation](https://thibka.github.io/perfect-gui/) for a comprehensi
 - [`color()`](https://thibka.github.io/perfect-gui/public/#color)
 - [`vector2()`](https://thibka.github.io/perfect-gui/public/#vector2)
 - [`folder()`](https://thibka.github.io/perfect-gui/public/#folder)
+- [`tabs()`](https://thibka.github.io/perfect-gui/public/#tabs)
 - [`toggleClose()`](https://thibka.github.io/perfect-gui/public)
