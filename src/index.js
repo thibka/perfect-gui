@@ -81,6 +81,7 @@ export default class GUI {
         // Instance specific styles
         this._styleInstance();
 
+        this.closed = !!options.closed;
         this._addWrapper();
         this.domElement.setAttribute('data-corner-x', this.screenCorner.x);
         this.domElement.setAttribute('data-corner-y', this.screenCorner.y);
@@ -92,9 +93,6 @@ export default class GUI {
 
         this.hasBeenDragged = false;
         if (options.draggable == true) this._makeDraggable();
-
-        this.closed = false;
-        if (options.closed) this.toggleClose();
     }
 
     _styleInstance() {
@@ -245,7 +243,7 @@ export default class GUI {
     _addWrapper() {
         this.domElement = document.createElement('div');
         this.domElement.id = 'p-gui-' + this.instanceId;
-        this.domElement.className = 'p-gui';
+        this.domElement.className = 'p-gui' + (this.closed ? ' p-gui--collapsed' : '');
         this.domElement.setAttribute('data-lenis-prevent', '');
         this.container.append(this.domElement);
 
