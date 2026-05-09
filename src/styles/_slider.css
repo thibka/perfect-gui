@@ -8,6 +8,7 @@
     color: var(--color-text-dark);
     transition: color var(--transition);
     padding: 3px;
+    touch-action: none;
 }
 
 .p-gui__slider:hover {
@@ -32,6 +33,7 @@
     height: 14px;
     margin: 0 0 0 auto;
     width: 37%;
+    touch-action: none;
 }
 
 .p-gui__slider-bar {
@@ -51,6 +53,7 @@
     height: 100%;
     background: var(--color-accent);
     width: 0;
+    pointer-events: none;
 }
 
 .p-gui__slider:hover .p-gui__slider-filling {

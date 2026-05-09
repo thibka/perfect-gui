@@ -91,17 +91,18 @@ export default class Slider {
 
         // init position
         setTimeout(() => {
+            const sliderWidth = this.ctrlDiv.offsetWidth;
             const handleWidth = this.handle.offsetWidth;
             this.handle.position = this._mapLinear(
                 this.valueInput.value,
                 this.min,
                 this.max,
                 handleWidth / 2,
-                88 - handleWidth / 2,
+                sliderWidth - handleWidth / 2,
             );
             this.handle.position = Math.min(
                 this.handle.position,
-                88 - handleWidth / 2,
+                sliderWidth - handleWidth / 2,
             );
             this.handle.position = Math.max(
                 this.handle.position,
@@ -123,6 +124,10 @@ export default class Slider {
         });
 
         window.addEventListener('pointerup', (evt) => {
+            this.ctrlDiv.pointerDown = false;
+        });
+
+        window.addEventListener('pointercancel', (evt) => {
             this.ctrlDiv.pointerDown = false;
         });
 
@@ -154,14 +159,15 @@ export default class Slider {
     }
 
     _updateHandlePositionFromPointer(evt, firstDown = false) {
-        const sliderWidth = this.ctrlDiv.offsetWidth;
+        const rect = this.ctrlDiv.getBoundingClientRect();
+        const sliderWidth = rect.width;
         const handleWidth = this.handle.offsetWidth;
         const pointerDelta = evt.clientX - this.ctrlDiv.prevPosition;
         const currentValue = parseFloat(this.valueInput.value);
         let handlePosition;
 
         if (firstDown) {
-            handlePosition = evt.offsetX;
+            handlePosition = evt.clientX - rect.left;
         } else {
             handlePosition = this.handle.position + pointerDelta;
         }
