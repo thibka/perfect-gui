@@ -1,4 +1,4 @@
-class W {
+class S {
   constructor(t, e = {}) {
     if (this.parent = t, this.callback = null, typeof e != "object")
       throw Error(
@@ -20,63 +20,65 @@ class W {
 class Y {
   constructor(t, e, r, d) {
     this.parent = t, this.propReferences = [];
-    let i = {}, p = null;
+    let i = {}, l = null;
     if (e && typeof e == "object" && typeof r == "string")
       this.obj = e, this.prop = r, this.isObject = !0, i = d || {}, this.callback = null;
     else if (e && typeof e == "object")
-      this.isObject = !1, i = e, p = typeof i.value == "number" ? i.value : null;
+      this.isObject = !1, i = e, l = typeof i.value == "number" ? i.value : null;
     else
       throw Error("[GUI] slider() invalid parameters.");
-    let l = typeof i.label == "string" && i.label || " ";
-    this.isObject && l == " " && (l = this.prop), this.min = i.min ?? 0, this.max = i.max ?? 1, this.step = i.step || (this.max - this.min) / 100, this.decimals = this.parent._countDecimals(this.step);
-    let o = null;
-    this.isObject ? o = this.propReferences.push(this.obj[this.prop]) - 1 : p === null && (p = (this.max - this.min) / 2);
-    const s = typeof i.tooltip == "string" ? i.tooltip : i.tooltip === !0 ? l : null, a = document.createElement("div");
-    a.className = "p-gui__slider", s && a.setAttribute("title", s), this.parent.wrapper.append(a), this.element = a;
+    let c = typeof i.label == "string" && i.label || " ";
+    this.isObject && c == " " && (c = this.prop), this.min = i.min ?? 0, this.max = i.max ?? 1, this.step = i.step || (this.max - this.min) / 100, this.decimals = this.parent._countDecimals(this.step);
+    let n = null;
+    this.isObject ? n = this.propReferences.push(this.obj[this.prop]) - 1 : l === null && (l = (this.max - this.min) / 2);
+    const o = typeof i.tooltip == "string" ? i.tooltip : i.tooltip === !0 ? c : null, a = document.createElement("div");
+    a.className = "p-gui__slider", o && a.setAttribute("title", o), this.parent.wrapper.append(a), this.element = a;
     const h = document.createElement("div");
-    h.className = "p-gui__slider-name", h.textContent = l, a.append(h), this.ctrlDiv = document.createElement("div"), this.ctrlDiv.className = "p-gui__slider-ctrl", this.ctrlDiv.setAttribute("type", "range"), this.ctrlDiv.setAttribute("min", this.min), this.ctrlDiv.setAttribute("max", this.max), a.append(this.ctrlDiv);
-    const c = document.createElement("div");
-    c.className = "p-gui__slider-bar", this.ctrlDiv.append(c), this.handle = document.createElement("div"), this.handle.className = "p-gui__slider-handle", this.ctrlDiv.append(this.handle), this.filling = document.createElement("div"), this.filling.className = "p-gui__slider-filling", c.append(this.filling), this.valueInput = document.createElement("input"), this.valueInput.className = "p-gui__slider-value", this.valueInput.value = this.isObject ? this.obj[this.prop] : p, a.append(this.valueInput), setTimeout(() => {
-      const n = this.handle.offsetWidth;
+    h.className = "p-gui__slider-name", h.textContent = c, a.append(h), this.ctrlDiv = document.createElement("div"), this.ctrlDiv.className = "p-gui__slider-ctrl", this.ctrlDiv.setAttribute("type", "range"), this.ctrlDiv.setAttribute("min", this.min), this.ctrlDiv.setAttribute("max", this.max), a.append(this.ctrlDiv);
+    const p = document.createElement("div");
+    p.className = "p-gui__slider-bar", this.ctrlDiv.append(p), this.handle = document.createElement("div"), this.handle.className = "p-gui__slider-handle", this.ctrlDiv.append(this.handle), this.filling = document.createElement("div"), this.filling.className = "p-gui__slider-filling", p.append(this.filling), this.valueInput = document.createElement("input"), this.valueInput.className = "p-gui__slider-value", this.valueInput.value = this.isObject ? this.obj[this.prop] : l, a.append(this.valueInput), setTimeout(() => {
+      const s = this.ctrlDiv.offsetWidth, f = this.handle.offsetWidth;
       this.handle.position = this._mapLinear(
         this.valueInput.value,
         this.min,
         this.max,
-        n / 2,
-        88 - n / 2
+        f / 2,
+        s - f / 2
       ), this.handle.position = Math.min(
         this.handle.position,
-        88 - n / 2
+        s - f / 2
       ), this.handle.position = Math.max(
         this.handle.position,
-        n / 2
+        f / 2
       ), this.handle.style.transform = `translate(-50%, -50%) translateX(${this.handle.position}px)`, this.filling.style.width = `${this.handle.position}px`;
     }, 0), this.valueInput.addEventListener("change", () => {
       this._updateHandlePositionFromValue(), this._triggerCallbacks();
-    }), this.ctrlDiv.addEventListener("pointerdown", (n) => {
-      this.ctrlDiv.pointerDown = !0, this.ctrlDiv.prevPosition = n.clientX, this._updateHandlePositionFromPointer(n, !0);
-    }), window.addEventListener("pointerup", (n) => {
+    }), this.ctrlDiv.addEventListener("pointerdown", (s) => {
+      this.ctrlDiv.pointerDown = !0, this.ctrlDiv.prevPosition = s.clientX, this._updateHandlePositionFromPointer(s, !0);
+    }), window.addEventListener("pointerup", (s) => {
       this.ctrlDiv.pointerDown = !1;
-    }), window.addEventListener("pointermove", (n) => {
-      this.ctrlDiv.pointerDown && (this.ctrlDiv.pointerDelta = n.clientX - this.ctrlDiv.prevPosition, this._updateHandlePositionFromPointer(n));
+    }), window.addEventListener("pointercancel", (s) => {
+      this.ctrlDiv.pointerDown = !1;
+    }), window.addEventListener("pointermove", (s) => {
+      this.ctrlDiv.pointerDown && (this.ctrlDiv.pointerDelta = s.clientX - this.ctrlDiv.prevPosition, this._updateHandlePositionFromPointer(s));
     }), this.isObject && Object.defineProperty(this.obj, this.prop, {
-      set: (n) => {
-        this.propReferences[o] = n, this.valueInput.value = n, this._updateHandlePositionFromValue(), this.callback && this.callback(parseFloat(this.valueInput.value));
+      set: (s) => {
+        this.propReferences[n] = s, this.valueInput.value = s, this._updateHandlePositionFromValue(), this.callback && this.callback(parseFloat(this.valueInput.value));
       },
-      get: () => this.propReferences[o]
+      get: () => this.propReferences[n]
     });
   }
   _updateHandlePositionFromPointer(t, e = !1) {
-    const r = this.ctrlDiv.offsetWidth, d = this.handle.offsetWidth, i = t.clientX - this.ctrlDiv.prevPosition, p = parseFloat(this.valueInput.value);
-    let l;
-    e ? l = t.offsetX : l = this.handle.position + i, l = Math.max(
-      d / 2,
-      Math.min(l, r - d / 2)
+    const r = this.ctrlDiv.getBoundingClientRect(), d = r.width, i = this.handle.offsetWidth, l = t.clientX - this.ctrlDiv.prevPosition, c = parseFloat(this.valueInput.value);
+    let n;
+    e ? n = t.clientX - r.left : n = this.handle.position + l, n = Math.max(
+      i / 2,
+      Math.min(n, d - i / 2)
     );
-    let o = this.min + (this.max - this.min) * (l - d / 2) / (r - d);
-    o > p ? o = this._quantizeFloor(o, this.step) : o = this._quantizeCeil(o, this.step), o = parseFloat(o.toFixed(9));
-    const s = parseFloat((p + this.step).toFixed(9)), a = parseFloat((p - this.step).toFixed(9));
-    (o >= s || o <= a) && (o = o.toFixed(this.decimals), this.valueInput.value = o, this.ctrlDiv.prevPosition = t.clientX, this.handle.style.transform = `translate(-50%, -50%) translateX(${l}px)`, this.handle.position = l, this.filling.style.width = this.handle.position + "px", this._triggerCallbacks());
+    let o = this.min + (this.max - this.min) * (n - i / 2) / (d - i);
+    o > c ? o = this._quantizeFloor(o, this.step) : o = this._quantizeCeil(o, this.step), o = parseFloat(o.toFixed(9));
+    const a = parseFloat((c + this.step).toFixed(9)), h = parseFloat((c - this.step).toFixed(9));
+    (o >= a || o <= h) && (o = o.toFixed(this.decimals), this.valueInput.value = o, this.ctrlDiv.prevPosition = t.clientX, this.handle.style.transform = `translate(-50%, -50%) translateX(${n}px)`, this.handle.position = n, this.filling.style.width = this.handle.position + "px", this._triggerCallbacks());
   }
   _updateHandlePositionFromValue() {
     const t = this.ctrlDiv.offsetWidth, e = this.handle.offsetWidth;
@@ -124,19 +126,19 @@ class z {
       throw typeof e.path == null ? Error("[GUI] image() path must be provided.") : Error("[GUI] image() path must be a string.");
     let d = r.replace(/^.*[\\\/]/, ""), i;
     e.label == null ? i = d : i = typeof e.label == "string" && e.label || " ";
-    const p = typeof e.tooltip == "string" ? e.tooltip : e.tooltip === !0 ? i : null, l = e.selected === !0, o = e.selectionBorder !== !1;
-    let s = "";
-    e.width && (typeof e.width == "number" && (e.width += "px"), s += `flex: 0 0 calc(${e.width} - 5px); `), e.height && (typeof e.height == "number" && (e.height += "px"), s += `height: ${e.height}; `);
+    const l = typeof e.tooltip == "string" ? e.tooltip : e.tooltip === !0 ? i : null, c = e.selected === !0, n = e.selectionBorder !== !1;
+    let o = "";
+    e.width && (typeof e.width == "number" && (e.width += "px"), o += `flex: 0 0 calc(${e.width} - 5px); `), e.height && (typeof e.height == "number" && (e.height += "px"), o += `height: ${e.height}; `);
     const a = document.createElement("div");
-    a.className = "p-gui__image", a.style = "background-image: url(" + r + "); " + s, p && a.setAttribute("title", p), this.parent.imageContainer.append(a), this.element = a, l && o && a.classList.add("p-gui__image--selected");
+    a.className = "p-gui__image", a.style = "background-image: url(" + r + "); " + o, l && a.setAttribute("title", l), this.parent.imageContainer.append(a), this.element = a, c && n && a.classList.add("p-gui__image--selected");
     const h = document.createElement("div");
     h.className = "p-gui__image-text", h.textContent = i, a.append(h), a.addEventListener("click", () => {
-      let c = a.parentElement.querySelectorAll(
+      let p = a.parentElement.querySelectorAll(
         ".p-gui__image--selected"
       );
-      for (let n = 0; n < c.length; n++)
-        c[n].classList.remove("p-gui__image--selected");
-      o && a.classList.add("p-gui__image--selected"), typeof this.callback == "function" && this.callback({ path: r, text: i }), this.parent.onUpdate ? this.parent.onUpdate() : this.parent.isFolder && this.parent.firstParent.onUpdate && this.parent.firstParent.onUpdate();
+      for (let s = 0; s < p.length; s++)
+        p[s].classList.remove("p-gui__image--selected");
+      n && a.classList.add("p-gui__image--selected"), typeof this.callback == "function" && this.callback({ path: r, text: i }), this.parent.onUpdate ? this.parent.onUpdate() : this.parent.isFolder && this.parent.firstParent.onUpdate && this.parent.firstParent.onUpdate();
     });
   }
   onClick(t) {
@@ -146,30 +148,30 @@ class z {
 class B {
   constructor(t, e, r, d) {
     this.parent = t, this.callback = null;
-    let i = {}, p = null, l = !1, o, s;
+    let i = {}, l = null, c = !1, n, o;
     if (e && typeof e == "object" && typeof r == "string")
-      o = e, s = r, l = !0, i = d || {};
+      n = e, o = r, c = !0, i = d || {};
     else if (e && typeof e == "object")
-      l = !1, i = e, p = typeof i.value == "boolean" ? i.value : null;
+      c = !1, i = e, l = typeof i.value == "boolean" ? i.value : null;
     else
       throw Error("[GUI] toggle() invalid parameters.");
     let a = typeof i.label == "string" && i.label || " ", h = null;
-    l && a == " " && (a = s), l && (h = this.parent.propReferences.push(o[s]) - 1);
-    const c = typeof i.tooltip == "string" ? i.tooltip : i.tooltip === !0 ? a : null, n = document.createElement("div");
-    n.textContent = a, n.className = "p-gui__toggle", c && n.setAttribute("title", c), this.parent.wrapper.append(n), this.element = n, n.addEventListener("click", (f) => {
-      const u = f.target.childNodes[1];
+    c && a == " " && (a = o), c && (h = this.parent.propReferences.push(n[o]) - 1);
+    const p = typeof i.tooltip == "string" ? i.tooltip : i.tooltip === !0 ? a : null, s = document.createElement("div");
+    s.textContent = a, s.className = "p-gui__toggle", p && s.setAttribute("title", p), this.parent.wrapper.append(s), this.element = s, s.addEventListener("click", (g) => {
+      const u = g.target.childNodes[1];
       let m = !0;
-      u.classList.contains("p-gui__toggle-checkbox--active") && (m = !1), u.classList.toggle("p-gui__toggle-checkbox--active"), l ? o[s] = m : typeof this.callback == "function" && this.callback(m), this.parent.onUpdate ? this.parent.onUpdate() : this.parent.isFolder && this.parent.firstParent.onUpdate && this.parent.firstParent.onUpdate();
+      u.classList.contains("p-gui__toggle-checkbox--active") && (m = !1), u.classList.toggle("p-gui__toggle-checkbox--active"), c ? n[o] = m : typeof this.callback == "function" && this.callback(m), this.parent.onUpdate ? this.parent.onUpdate() : this.parent.isFolder && this.parent.firstParent.onUpdate && this.parent.firstParent.onUpdate();
     });
-    let g = l ? o[s] ? " p-gui__toggle-checkbox--active" : "" : p ? " p-gui__toggle-checkbox--active" : "";
+    let f = c ? n[o] ? " p-gui__toggle-checkbox--active" : "" : l ? " p-gui__toggle-checkbox--active" : "";
     const b = document.createElement("div");
-    b.className = "p-gui__toggle-checkbox" + g, n.append(b), l && Object.defineProperty(o, s, {
-      set: (f) => {
-        this.parent.propReferences[h] = f, f ? b.classList.add(
+    b.className = "p-gui__toggle-checkbox" + f, s.append(b), c && Object.defineProperty(n, o, {
+      set: (g) => {
+        this.parent.propReferences[h] = g, g ? b.classList.add(
           "p-gui__toggle-checkbox--active"
         ) : b.classList.remove(
           "p-gui__toggle-checkbox--active"
-        ), typeof this.callback == "function" && this.callback(f);
+        ), typeof this.callback == "function" && this.callback(g);
       },
       get: () => this.parent.propReferences[h]
     });
@@ -181,45 +183,45 @@ class B {
 class T {
   constructor(t, e, r, d) {
     this.parent = t, this.callback = null;
-    let i = {}, p = null, l = !1, o, s;
+    let i = {}, l = null, c = !1, n, o;
     if (e && typeof e == "object" && typeof r == "string")
-      o = e, s = r, l = !0, i = d || {};
+      n = e, o = r, c = !0, i = d || {};
     else if (e && typeof e == "object")
-      l = !1, i = e;
+      c = !1, i = e;
     else
       throw Error("[GUI] list() invalid parameters.");
-    let a = typeof i.label == "string" ? i.label : " ", h = null, c = Array.isArray(i.values) ? i.values : null, n = c && c.length > 0 && typeof c[0] == "object";
-    const g = typeof i.tooltip == "string" ? i.tooltip : i.tooltip === !0 ? a : null;
-    l ? (p = (() => {
-      if (!c)
+    let a = typeof i.label == "string" ? i.label : " ", h = null, p = Array.isArray(i.values) ? i.values : null, s = p && p.length > 0 && typeof p[0] == "object";
+    const f = typeof i.tooltip == "string" ? i.tooltip : i.tooltip === !0 ? a : null;
+    c ? (l = (() => {
+      if (!p)
         return null;
-      if (typeof o[s] == "string")
-        return n ? c.find((u) => u.value === o[s]).value : c.indexOf(o[s]);
-      if (typeof o[s] == "number")
-        return n ? c.find((u) => u.value === o[s]).value : o[s];
-    })(), h = this.parent.propReferences.push(o[s]) - 1) : p = (() => {
-      if (!c)
+      if (typeof n[o] == "string")
+        return s ? p.find((u) => u.value === n[o]).value : p.indexOf(n[o]);
+      if (typeof n[o] == "number")
+        return s ? p.find((u) => u.value === n[o]).value : n[o];
+    })(), h = this.parent.propReferences.push(n[o]) - 1) : l = (() => {
+      if (!p)
         return null;
       if (typeof i.value == "string")
-        return c.indexOf(i.value);
+        return p.indexOf(i.value);
       if (typeof i.value == "number")
         return i.value;
     })();
     let b = document.createElement("div");
-    b.className = "p-gui__list", b.textContent = a, g && b.setAttribute("title", g), this.parent.wrapper.append(b), this.element = b;
-    let f = document.createElement("select");
-    b.append(f), f.className = "p-gui__list-dropdown", f.addEventListener("change", (u) => {
-      l ? o[s] = u.target.value : this.callback && this.callback(u.target.value), this.parent.onUpdate ? this.parent.onUpdate() : this.parent.isFolder && this.parent.firstParent.onUpdate && this.parent.firstParent.onUpdate();
-    }), c && c.forEach((u, m) => {
-      const x = n ? u.label : u, w = n ? u.value : u;
+    b.className = "p-gui__list", b.textContent = a, f && b.setAttribute("title", f), this.parent.wrapper.append(b), this.element = b;
+    let g = document.createElement("select");
+    b.append(g), g.className = "p-gui__list-dropdown", g.addEventListener("change", (u) => {
+      c ? n[o] = u.target.value : this.callback && this.callback(u.target.value), this.parent.onUpdate ? this.parent.onUpdate() : this.parent.isFolder && this.parent.firstParent.onUpdate && this.parent.firstParent.onUpdate();
+    }), p && p.forEach((u, m) => {
+      const x = s ? u.label : u, w = s ? u.value : u;
       let y = document.createElement("option");
-      y.setAttribute("value", w), y.textContent = x, f.append(y), (!n && p == m || n && p == w) && y.setAttribute("selected", "");
-    }), l && Object.defineProperty(o, s, {
+      y.setAttribute("value", w), y.textContent = x, g.append(y), (!s && l == m || s && l == w) && y.setAttribute("selected", "");
+    }), c && Object.defineProperty(n, o, {
       set: (u) => {
         let m, x, w;
-        n ? (w = c.find((U) => U.value == u), x = w?.value || c[0].value, m = c.indexOf(w)) : (typeof u == "string" && (m = c.indexOf(u), x = u), typeof u == "number" && (m = u, x = c[u])), this.parent.propReferences[h] = n ? x : u;
-        const y = f.querySelector("[selected]");
-        y && y.removeAttribute("selected"), f.querySelectorAll("option")[m].setAttribute("selected", ""), typeof this.callback == "function" && (n ? this.callback(w, m) : this.callback(x, m));
+        s ? (w = p.find((U) => U.value == u), x = w?.value || p[0].value, m = p.indexOf(w)) : (typeof u == "string" && (m = p.indexOf(u), x = u), typeof u == "number" && (m = u, x = p[u])), this.parent.propReferences[h] = s ? x : u;
+        const y = g.querySelector("[selected]");
+        y && y.removeAttribute("selected"), g.querySelectorAll("option")[m].setAttribute("selected", ""), typeof this.callback == "function" && (s ? this.callback(w, m) : this.callback(x, m));
       },
       get: () => this.parent.propReferences[h]
     });
@@ -231,26 +233,26 @@ class T {
 class V {
   constructor(t, e, r, d) {
     this.parent = t, this.callback = null;
-    let i = {}, p = null, l = !1, o, s;
+    let i = {}, l = null, c = !1, n, o;
     if (e && typeof e == "object" && typeof r == "string")
-      o = e, s = r, l = !0, i = d || {};
+      n = e, o = r, c = !0, i = d || {};
     else if (e && typeof e == "object")
-      l = !1, i = e;
+      c = !1, i = e;
     else
       throw Error("[GUI] color() invalid parameters.");
     let a = typeof i.label == "string" && i.label || " ", h = null;
-    const c = typeof i.tooltip == "string" ? i.tooltip : i.tooltip === !0 ? a : null;
-    l ? (a == " " && (a = s), h = this.parent.propReferences.push(o[s]) - 1, p = o[s] || "#000000") : (typeof i.value == "string" && (i.value.length != 7 || i.value[0] != "#" ? console.error(
+    const p = typeof i.tooltip == "string" ? i.tooltip : i.tooltip === !0 ? a : null;
+    c ? (a == " " && (a = o), h = this.parent.propReferences.push(n[o]) - 1, l = n[o] || "#000000") : (typeof i.value == "string" && (i.value.length != 7 || i.value[0] != "#" ? console.error(
       `[GUI] color() 'value' parameter must be an hexadecimal string in the format "#ffffff". Received: "${i.value}".`
-    ) : p = i.value), p || (p = "#000000"));
-    const n = document.createElement("div");
-    n.className = "p-gui__color", n.textContent = a, c && n.setAttribute("title", c), this.parent.wrapper.append(n), this.element = n;
-    const g = document.createElement("input");
-    g.className = "p-gui__color-picker", g.setAttribute("type", "color"), g.value = p, n.append(g), g.addEventListener("input", () => {
-      l ? o[s] = g.value : typeof this.callback == "function" && this.callback(g.value), this.parent.onUpdate ? this.parent.onUpdate() : this.parent.isFolder && this.parent.firstParent.onUpdate && this.parent.firstParent.onUpdate();
-    }), l && Object.defineProperty(o, s, {
+    ) : l = i.value), l || (l = "#000000"));
+    const s = document.createElement("div");
+    s.className = "p-gui__color", s.textContent = a, p && s.setAttribute("title", p), this.parent.wrapper.append(s), this.element = s;
+    const f = document.createElement("input");
+    f.className = "p-gui__color-picker", f.setAttribute("type", "color"), f.value = l, s.append(f), f.addEventListener("input", () => {
+      c ? n[o] = f.value : typeof this.callback == "function" && this.callback(f.value), this.parent.onUpdate ? this.parent.onUpdate() : this.parent.isFolder && this.parent.firstParent.onUpdate && this.parent.firstParent.onUpdate();
+    }), c && Object.defineProperty(n, o, {
       set: (b) => {
-        this.parent.propReferences[h] = b, g.value = b, typeof this.callback == "function" && this.callback(b);
+        this.parent.propReferences[h] = b, f.value = b, typeof this.callback == "function" && this.callback(b);
       },
       get: () => this.parent.propReferences[h]
     });
@@ -262,21 +264,21 @@ class V {
 class G {
   constructor(t, e, r, d, i) {
     this.parent = t, this.callback = null;
-    let p = {}, l, o, s, a;
+    let l = {}, c, n, o, a;
     if (e && typeof e == "object" && typeof r == "string" && typeof d == "string")
-      l = e, o = e, s = r, a = d, p = i || {};
+      c = e, n = e, o = r, a = d, l = i || {};
     else if (e && typeof e == "object" && e.x && e.x.obj)
-      p = e, l = p.x.obj, s = p.x.prop, o = p.y.obj, a = p.y.prop;
+      l = e, c = l.x.obj, o = l.x.prop, n = l.y.obj, a = l.y.prop;
     else
       throw Error(
         "[GUI] vector2() invalid parameters. Use: gui.vector2(obj, 'propX', 'propY', params)"
       );
-    let h = typeof p.label == "string" && p.label || " ";
-    h === " " && (h = s + " / " + a);
-    const c = p.x || {}, n = p.y || {}, g = c.min ?? p.min ?? 0, b = c.max ?? p.max ?? 1, f = n.min ?? p.min ?? 0, u = n.max ?? p.max ?? 1, m = c.step || p.step || (b - g) / 100, x = n.step || p.step || (u - f) / 100, w = this.parent._countDecimals(m), y = this.parent._countDecimals(x), U = this.parent.propReferences.push(l[s]) - 1, L = this.parent.propReferences.push(o[a]) - 1, N = typeof p.tooltip == "string" ? p.tooltip : p.tooltip === !0 ? h : null, A = document.createElement("div");
-    A.className = "p-gui__vector2", A.textContent = h, N && A.setAttribute("title", N), this.parent.wrapper.append(A);
+    let h = typeof l.label == "string" && l.label || " ";
+    h === " " && (h = o + " / " + a);
+    const p = l.x || {}, s = l.y || {}, f = p.min ?? l.min ?? 0, b = p.max ?? l.max ?? 1, g = s.min ?? l.min ?? 0, u = s.max ?? l.max ?? 1, m = p.step || l.step || (b - f) / 100, x = s.step || l.step || (u - g) / 100, w = this.parent._countDecimals(m), y = this.parent._countDecimals(x), U = this.parent.propReferences.push(c[o]) - 1, L = this.parent.propReferences.push(n[a]) - 1, D = typeof l.tooltip == "string" ? l.tooltip : l.tooltip === !0 ? h : null, A = document.createElement("div");
+    A.className = "p-gui__vector2", A.textContent = h, D && A.setAttribute("title", D), this.parent.wrapper.append(A);
     const E = document.createElement("div");
-    E.className = "p-gui__vector-value", E.textContent = l[s] + ", " + o[a], A.append(E);
+    E.className = "p-gui__vector-value", E.textContent = c[o] + ", " + n[a], A.append(E);
     const _ = document.createElement("div");
     _.className = "p-gui__vector2-area", A.append(_), _.addEventListener("click", (v) => {
       const j = parseFloat(
@@ -284,7 +286,7 @@ class G {
           v.offsetX,
           0,
           _.clientWidth,
-          g,
+          f,
           b
         )
       ), R = parseFloat(
@@ -293,26 +295,26 @@ class G {
           0,
           _.clientHeight,
           u,
-          f
+          g
         )
       );
-      l[s] = j.toFixed(w), o[a] = R.toFixed(y), this.callback && this.callback(l[s], l[a]), this.parent.onUpdate ? this.parent.onUpdate() : this.parent.isFolder && this.parent.firstParent.onUpdate && this.parent.firstParent.onUpdate();
+      c[o] = j.toFixed(w), n[a] = R.toFixed(y), this.callback && this.callback(c[o], c[a]), this.parent.onUpdate ? this.parent.onUpdate() : this.parent.isFolder && this.parent.firstParent.onUpdate && this.parent.firstParent.onUpdate();
     });
     const O = (v) => {
       const j = _.getBoundingClientRect(), R = v.clientX - j.left, H = v.clientY - j.top, M = this.parent._mapLinear(
         R,
         0,
         _.clientWidth,
-        g,
+        f,
         b
       ), X = this.parent._mapLinear(
         H,
         0,
         _.clientHeight,
         u,
-        f
-      ), $ = Math.max(g, Math.min(b, M)), S = Math.max(f, Math.min(u, X));
-      l[s] = parseFloat($.toFixed(w)), o[a] = parseFloat(S.toFixed(y)), this.callback && this.callback(l[s], o[a]), this.parent.onUpdate ? this.parent.onUpdate() : this.parent.isFolder && this.parent.firstParent.onUpdate && this.parent.firstParent.onUpdate();
+        g
+      ), $ = Math.max(f, Math.min(b, M)), W = Math.max(g, Math.min(u, X));
+      c[o] = parseFloat($.toFixed(w)), n[a] = parseFloat(W.toFixed(y)), this.callback && this.callback(c[o], n[a]), this.parent.onUpdate ? this.parent.onUpdate() : this.parent.isFolder && this.parent.firstParent.onUpdate && this.parent.firstParent.onUpdate();
     };
     _.addEventListener("pointerdown", (v) => {
       O(v), document.addEventListener("pointermove", O), document.addEventListener(
@@ -326,22 +328,22 @@ class G {
         { once: !0 }
       );
     });
-    const D = document.createElement("div");
-    D.className = "p-gui__vector2-line p-gui__vector2-line-x", _.append(D);
+    const N = document.createElement("div");
+    N.className = "p-gui__vector2-line p-gui__vector2-line-x", _.append(N);
     const F = document.createElement("div");
     F.className = "p-gui__vector2-line p-gui__vector2-line-y", _.append(F);
     const I = document.createElement("div");
     I.className = "p-gui__vector2-dot", _.append(I);
     const P = () => {
       I.style.left = this.parent._mapLinear(
-        l[s],
-        g,
+        c[o],
+        f,
         b,
         0,
         _.clientWidth
       ) + "px", I.style.top = this.parent._mapLinear(
-        o[a],
-        f,
+        n[a],
+        g,
         u,
         _.clientHeight,
         0
@@ -349,14 +351,14 @@ class G {
     };
     P(), new ResizeObserver(() => {
       P();
-    }).observe(_), Object.defineProperty(l, s, {
+    }).observe(_), Object.defineProperty(c, o, {
       set: (v) => {
-        this.parent.propReferences[U] = v, P(), E.textContent = String(v) + ", " + o[a];
+        this.parent.propReferences[U] = v, P(), E.textContent = String(v) + ", " + n[a];
       },
       get: () => this.parent.propReferences[U]
-    }), Object.defineProperty(o, a, {
+    }), Object.defineProperty(n, a, {
       set: (v) => {
-        this.parent.propReferences[L] = v, P(), E.textContent = l[s] + ", " + String(v);
+        this.parent.propReferences[L] = v, P(), E.textContent = c[o] + ", " + String(v);
       },
       get: () => this.parent.propReferences[L]
     });
@@ -365,7 +367,7 @@ class G {
     return this.callback = t, this;
   }
 }
-const Q = ".p-gui__button{background:var(--color-accent);text-align:center;color:var(--color-bg);border:1px solid transparent;box-sizing:border-box;transition:var(--transition) background,var(--transition) border-color}.p-gui__button:hover{background:var(--color-accent-hover);border-color:#fff3}.p-gui__folder .p-gui__button{margin-inline:0}", q = ".p-gui__slider{position:relative;min-height:14px;display:flex;align-items:center;justify-content:space-between;gap:10px;color:var(--color-text-dark);transition:color var(--transition);padding:3px}.p-gui__slider:hover{color:var(--color-text-light)}.p-gui__slider-name{width:50%;text-overflow:ellipsis;overflow:hidden}.p-gui__slider-ctrl{-webkit-appearance:none;padding:0;font:inherit;outline:none;box-sizing:border-box;cursor:pointer;position:relative;right:0;height:14px;margin:0 0 0 auto;width:37%}.p-gui__slider-bar{position:absolute;top:50%;left:0;height:2px;background:#fff3;width:100%;transform:translateY(-50%)}.p-gui__slider-filling{position:absolute;top:-25%;left:0;height:100%;background:var(--color-accent);width:0}.p-gui__slider:hover .p-gui__slider-filling{background:var(--color-accent-hover)}.p-gui__slider-handle{width:9px;height:9px;position:absolute;top:50%;left:0;border-radius:2px;transform:translate(-50%,-50%);pointer-events:none;background:var(--color-text-dark);box-shadow:0 0 2px #00000080}.p-gui__slider:hover .p-gui__slider-handle{background:var(--color-text-light)}.p-gui__slider-value{display:inline-block;right:7px;width:13%;border:none;color:#fff;border-radius:2px;background:#ffffff1a;padding:2px 4px;color:inherit}.p-gui__slider-value:focus{outline:none}", J = ".p-gui__list{cursor:default;color:var(--color-text-dark);transition:var(--transition) color}.p-gui__list:hover{color:var(--color-text-light)}.p-gui__list-dropdown{background:#ffffff0d;color:#fff;padding:0 12px 0 5px;top:0}.p-gui__list-dropdown{position:absolute;right:5px;top:0;bottom:0;margin:auto;height:calc(100% - 4px);cursor:pointer;border-radius:3px;border:1px solid var(--color-border-2);outline:none}.p-gui__list-dropdown option{background:#fff;color:#000}.p-gui__list-dropdown:hover{background:#ffffff1a}", Z = ".p-gui__toggle{color:var(--color-text-dark);transition:var(--transition) background,var(--transition) color}.p-gui__toggle:hover{background:#ffffff1a;color:var(--color-text-light)}.p-gui__folder .p-gui__toggle{margin-inline:0}.p-gui__toggle-checkbox{width:10px;height:10px;background-color:#ffffff1a;position:absolute;top:0;right:10px;bottom:0;margin:auto;border-radius:2px;pointer-events:none;transition:.5s all ease}.p-gui__toggle-checkbox--active{background-color:#ddd;box-shadow:0 0 5px #ddd}", K = ".p-gui__color{cursor:default;color:var(--color-text-dark);transition:var(--transition) color}.p-gui__color:hover{color:var(--color-text-light)}.p-gui__color-picker{position:absolute;right:5px;top:0;bottom:0;margin:auto;height:calc(100% - 4px);cursor:pointer;border-radius:3px;border:1px solid var(--color-border-2);outline:none;-webkit-appearance:none;padding:0;background-color:transparent;border:1px solid #222222;overflow:hidden}.p-gui__color-picker::-webkit-color-swatch-wrapper{padding:0}.p-gui__color-picker::-webkit-color-swatch{border:none}", ee = ".p-gui__vector2{background:transparent;aspect-ratio:1;padding-bottom:0;color:var(--color-text-dark)}.p-gui__vector2:hover{color:var(--color-text-light)}.p-gui__vector2-area{position:relative;background:#0000004d;margin-top:8px;width:100%;height:calc(100% - 28px);touch-action:none}.p-gui__vector2-line{position:absolute;background:#fff;opacity:.3;pointer-events:none}.p-gui__vector2-line-x{width:100%;height:1px;left:0;top:50%;transform:translateY(-50%)}.p-gui__vector2-line-y{width:1px;height:100%;top:0;left:50%;transform:translate(-50%)}.p-gui__vector2-dot{position:absolute;top:0;left:0;width:8px;height:8px;border-radius:50%;background:#d5d5d5;border:2px solid #ff9999;transform:translate(-50%,-50%);pointer-events:none}.p-gui__vector-value{display:inline-block;right:7px;position:absolute}", te = '.p-gui__image-container{width:100%;padding:3px;display:flex;justify-content:flex-start;flex-wrap:wrap;box-sizing:border-box}.p-gui__image{background-size:cover;cursor:pointer;position:relative;margin:1px 2.5px 19px;border-radius:var(--main-border-radius);flex:0 0 calc(33.333% - 5px);height:90px;background-position:center;color:var(--color-text-dark);transition:var(--transition) color}.p-gui__image:hover{color:var(--color-text-light)}.p-gui__image:after{position:absolute;top:0;left:0;width:100%;height:100%;content:"";border:1px solid transparent;box-sizing:border-box;border-radius:var(--main-border-radius);transition:var(--transition) border-color}.p-gui__image--selected:after{border-color:#06ff89}.p-gui__image-text{position:absolute;bottom:-15px;text-shadow:0 -1px 0 #111;white-space:nowrap;width:100%;overflow:hidden;text-overflow:ellipsis}', ie = ".p-gui__folder{width:100%;position:relative;background:var(--color-bg);margin-bottom:2px;display:flex;flex-wrap:wrap;border:1px solid var(--color-border-2);border-radius:var(--main-border-radius);box-sizing:border-box;border-left:1px solid #bbbbbb}.p-gui__folder--first{margin-top:0}.p-gui__folder-content{display:grid;grid-template-rows:1fr;transition:.25s grid-template-rows ease;width:100%}.p-gui__folder-inner{overflow:hidden;padding-left:3px;padding-right:2px}.p-gui__folder--closed .p-gui__folder-content{grid-template-rows:0fr}.p-gui__folder-header{padding:5px 3px;background-color:#00000080;color:#fff;cursor:pointer;width:100%;box-sizing:border-box;border-top-right-radius:var(--main-border-radius);border-bottom-right-radius:var(--main-border-radius)}.p-gui__folder-header:hover{background-color:#000000bf}.p-gui__folder-arrow{width:8px;height:8px;display:inline-block;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAHlBMVEUAAAD///////////////////////////////////8kfJuVAAAACXRSTlMA9Z1fCdMo1yxEJnA0AAAAK0lEQVQI12PABlRgjKkJUMZMYRhjpgqMAZSEMICSaIzpDWiKhdENhEhgAgATSg5jyWnYewAAAABJRU5ErkJggg==);background-size:contain;margin-right:5px;transform:rotate(90deg)}.p-gui__folder--closed .p-gui__folder-arrow{transform:rotate(0)}", re = ".p-gui__tabs{width:100%;position:relative;background:var(--color-bg);margin-bottom:2px;border:1px solid var(--color-border-2);border-radius:var(--main-border-radius);box-sizing:border-box;border-left:1px solid #bbbbbb;padding-block:0}.p-gui__tabs--first{margin-top:0}.p-gui__tabs-header{display:flex;background-color:#00000080;border-top-left-radius:var(--main-border-radius);border-top-right-radius:var(--main-border-radius)}.p-gui__tab-button{padding:7px 10px;background:transparent;color:#bbb;cursor:pointer;border:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;font-family:inherit}.p-gui__tab-button:last-child{border-right:none}.p-gui__tab-button:hover{color:#fff}.p-gui__tab-button--active{background-color:var(--color-bg);color:#fff;border-bottom:1px solid transparent}.p-gui__tabs-content{position:relative;width:100%}.p-gui__tab-pane{display:none;width:100%;padding-top:4px;box-sizing:border-box}.p-gui__tab-pane--active{display:block}";
+const Q = ".p-gui__button{background:var(--color-accent);text-align:center;color:var(--color-bg);border:1px solid transparent;box-sizing:border-box;transition:var(--transition) background,var(--transition) border-color}.p-gui__button:hover{background:var(--color-accent-hover);border-color:#fff3}.p-gui__folder .p-gui__button{margin-inline:0}", q = ".p-gui__slider{position:relative;min-height:14px;display:flex;align-items:center;justify-content:space-between;gap:10px;color:var(--color-text-dark);transition:color var(--transition);padding:3px;touch-action:none}.p-gui__slider:hover{color:var(--color-text-light)}.p-gui__slider-name{width:50%;text-overflow:ellipsis;overflow:hidden}.p-gui__slider-ctrl{-webkit-appearance:none;padding:0;font:inherit;outline:none;box-sizing:border-box;cursor:pointer;position:relative;right:0;height:14px;margin:0 0 0 auto;width:37%;touch-action:none}.p-gui__slider-bar{position:absolute;top:50%;left:0;height:2px;background:#fff3;width:100%;transform:translateY(-50%)}.p-gui__slider-filling{position:absolute;top:-25%;left:0;height:100%;background:var(--color-accent);width:0;pointer-events:none}.p-gui__slider:hover .p-gui__slider-filling{background:var(--color-accent-hover)}.p-gui__slider-handle{width:9px;height:9px;position:absolute;top:50%;left:0;border-radius:2px;transform:translate(-50%,-50%);pointer-events:none;background:var(--color-text-dark);box-shadow:0 0 2px #00000080}.p-gui__slider:hover .p-gui__slider-handle{background:var(--color-text-light)}.p-gui__slider-value{display:inline-block;right:7px;width:13%;border:none;color:#fff;border-radius:2px;background:#ffffff1a;padding:2px 4px;color:inherit}.p-gui__slider-value:focus{outline:none}", J = ".p-gui__list{cursor:default;color:var(--color-text-dark);transition:var(--transition) color}.p-gui__list:hover{color:var(--color-text-light)}.p-gui__list-dropdown{background:#ffffff0d;color:#fff;padding:0 12px 0 5px;top:0}.p-gui__list-dropdown{position:absolute;right:5px;top:0;bottom:0;margin:auto;height:calc(100% - 4px);cursor:pointer;border-radius:3px;border:1px solid var(--color-border-2);outline:none}.p-gui__list-dropdown option{background:#fff;color:#000}.p-gui__list-dropdown:hover{background:#ffffff1a}", Z = ".p-gui__toggle{color:var(--color-text-dark);transition:var(--transition) background,var(--transition) color}.p-gui__toggle:hover{background:#ffffff1a;color:var(--color-text-light)}.p-gui__folder .p-gui__toggle{margin-inline:0}.p-gui__toggle-checkbox{width:10px;height:10px;background-color:#ffffff1a;position:absolute;top:0;right:10px;bottom:0;margin:auto;border-radius:2px;pointer-events:none;transition:.5s all ease}.p-gui__toggle-checkbox--active{background-color:#ddd;box-shadow:0 0 5px #ddd}", K = ".p-gui__color{cursor:default;color:var(--color-text-dark);transition:var(--transition) color}.p-gui__color:hover{color:var(--color-text-light)}.p-gui__color-picker{position:absolute;right:5px;top:0;bottom:0;margin:auto;height:calc(100% - 4px);cursor:pointer;border-radius:3px;border:1px solid var(--color-border-2);outline:none;-webkit-appearance:none;padding:0;background-color:transparent;border:1px solid #222222;overflow:hidden}.p-gui__color-picker::-webkit-color-swatch-wrapper{padding:0}.p-gui__color-picker::-webkit-color-swatch{border:none}", ee = ".p-gui__vector2{background:transparent;aspect-ratio:1;padding-bottom:0;color:var(--color-text-dark)}.p-gui__vector2:hover{color:var(--color-text-light)}.p-gui__vector2-area{position:relative;background:#0000004d;margin-top:8px;width:100%;height:calc(100% - 28px);touch-action:none}.p-gui__vector2-line{position:absolute;background:#fff;opacity:.3;pointer-events:none}.p-gui__vector2-line-x{width:100%;height:1px;left:0;top:50%;transform:translateY(-50%)}.p-gui__vector2-line-y{width:1px;height:100%;top:0;left:50%;transform:translate(-50%)}.p-gui__vector2-dot{position:absolute;top:0;left:0;width:8px;height:8px;border-radius:50%;background:#d5d5d5;border:2px solid #ff9999;transform:translate(-50%,-50%);pointer-events:none}.p-gui__vector-value{display:inline-block;right:7px;position:absolute}", te = '.p-gui__image-container{width:100%;padding:3px;display:flex;justify-content:flex-start;flex-wrap:wrap;box-sizing:border-box}.p-gui__image{background-size:cover;cursor:pointer;position:relative;margin:1px 2.5px 19px;border-radius:var(--main-border-radius);flex:0 0 calc(33.333% - 5px);height:90px;background-position:center;color:var(--color-text-dark);transition:var(--transition) color}.p-gui__image:hover{color:var(--color-text-light)}.p-gui__image:after{position:absolute;top:0;left:0;width:100%;height:100%;content:"";border:1px solid transparent;box-sizing:border-box;border-radius:var(--main-border-radius);transition:var(--transition) border-color}.p-gui__image--selected:after{border-color:#06ff89}.p-gui__image-text{position:absolute;bottom:-15px;text-shadow:0 -1px 0 #111;white-space:nowrap;width:100%;overflow:hidden;text-overflow:ellipsis}', ie = ".p-gui__folder{width:100%;position:relative;background:var(--color-bg);margin-bottom:2px;display:flex;flex-wrap:wrap;border:1px solid var(--color-border-2);border-radius:var(--main-border-radius);box-sizing:border-box;border-left:1px solid #bbbbbb}.p-gui__folder--first{margin-top:0}.p-gui__folder-content{display:grid;grid-template-rows:1fr;transition:.25s grid-template-rows ease;width:100%}.p-gui__folder-inner{overflow:hidden;padding-left:3px;padding-right:2px}.p-gui__folder--closed .p-gui__folder-content{grid-template-rows:0fr}.p-gui__folder-header{padding:5px 3px;background-color:#00000080;color:#fff;cursor:pointer;width:100%;box-sizing:border-box;border-top-right-radius:var(--main-border-radius);border-bottom-right-radius:var(--main-border-radius)}.p-gui__folder-header:hover{background-color:#000000bf}.p-gui__folder-arrow{width:8px;height:8px;display:inline-block;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAHlBMVEUAAAD///////////////////////////////////8kfJuVAAAACXRSTlMA9Z1fCdMo1yxEJnA0AAAAK0lEQVQI12PABlRgjKkJUMZMYRhjpgqMAZSEMICSaIzpDWiKhdENhEhgAgATSg5jyWnYewAAAABJRU5ErkJggg==);background-size:contain;margin-right:5px;transform:rotate(90deg)}.p-gui__folder--closed .p-gui__folder-arrow{transform:rotate(0)}", re = ".p-gui__tabs{width:100%;position:relative;background:var(--color-bg);margin-bottom:2px;border:1px solid var(--color-border-2);border-radius:var(--main-border-radius);box-sizing:border-box;border-left:1px solid #bbbbbb;padding-block:0}.p-gui__tabs--first{margin-top:0}.p-gui__tabs-header{display:flex;background-color:#00000080;border-top-left-radius:var(--main-border-radius);border-top-right-radius:var(--main-border-radius)}.p-gui__tab-button{padding:7px 10px;background:transparent;color:#bbb;cursor:pointer;border:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;font-family:inherit}.p-gui__tab-button:last-child{border-right:none}.p-gui__tab-button:hover{color:#fff}.p-gui__tab-button--active{background-color:var(--color-bg);color:#fff;border-bottom:1px solid transparent}.p-gui__tabs-content{position:relative;width:100%}.p-gui__tab-pane{display:none;width:100%;padding-top:4px;box-sizing:border-box}.p-gui__tab-pane--active{display:block}";
 function oe(k) {
   return `
     .p-gui {
@@ -610,7 +612,7 @@ class C {
     e.className = "p-gui__content", this.domElement.append(e), this.wrapper = document.createElement("div"), this.wrapper.className = "p-gui__inner", e.append(this.wrapper);
   }
   button(t = {}) {
-    return this.imageContainer = null, new W(this, t);
+    return this.imageContainer = null, new S(this, t);
   }
   image(t = {}) {
     return this.imageContainer || (this.imageContainer = document.createElement("div"), this.imageContainer.className = "p-gui__image-container", this.wrapper.append(this.imageContainer)), new z(this, t);
@@ -633,54 +635,54 @@ class C {
   folder(t = {}) {
     let e = typeof t.closed == "boolean" ? t.closed : !1, r = t.label || "", d = t.color || null, i = t.maxHeight || null;
     this.imageContainer = null;
-    let p = "p-gui__folder";
-    this.folders.length == 0 && (p += " p-gui__folder--first"), e && (p += " p-gui__folder--closed");
-    let l = d ? `background-color: ${d};` : "";
-    l += i ? `max-height: ${i}px; overflow-y: auto;` : "";
+    let l = "p-gui__folder";
+    this.folders.length == 0 && (l += " p-gui__folder--first"), e && (l += " p-gui__folder--closed");
+    let c = d ? `background-color: ${d};` : "";
+    c += i ? `max-height: ${i}px; overflow-y: auto;` : "";
+    const n = document.createElement("div");
+    n.className = l, n.style = c, this.wrapper.append(n);
     const o = document.createElement("div");
-    o.className = p, o.style = l, this.wrapper.append(o);
-    const s = document.createElement("div");
-    s.innerHTML = `<span class="p-gui__folder-arrow"></span>${r}`, s.className = "p-gui__folder-header", o.append(s);
+    o.innerHTML = `<span class="p-gui__folder-arrow"></span>${r}`, o.className = "p-gui__folder-header", n.append(o);
     const a = document.createElement("div");
-    a.className = "p-gui__folder-content", o.append(a);
+    a.className = "p-gui__folder-content", n.append(a);
     const h = document.createElement("div");
-    h.className = "p-gui__folder-inner", a.append(h), s.addEventListener("click", () => {
-      o.classList.toggle("p-gui__folder--closed");
+    h.className = "p-gui__folder-inner", a.append(h), o.addEventListener("click", () => {
+      n.classList.toggle("p-gui__folder--closed");
     });
-    let c = new C({
+    let p = new C({
       isFolder: !0,
       folderOptions: {
-        wrapper: o,
+        wrapper: n,
         inner: h,
         parent: this,
         firstParent: this.firstParent
       }
     });
-    return this.folders.push(c), c;
+    return this.folders.push(p), p;
   }
   tabs(t = {}) {
     const e = Array.isArray(t.tabs) ? t.tabs : [], r = t.active || 0, d = t.color || null, i = t.maxHeight || null;
     this.imageContainer = null;
-    let p = "p-gui__tabs";
-    this.tabsArray.length == 0 && (p += " p-gui__tabs--first");
-    let l = d ? `background-color: ${d};` : "";
-    l += i ? `max-height: ${i}px; overflow-y: auto;` : "";
+    let l = "p-gui__tabs";
+    this.tabsArray.length == 0 && (l += " p-gui__tabs--first");
+    let c = d ? `background-color: ${d};` : "";
+    c += i ? `max-height: ${i}px; overflow-y: auto;` : "";
+    const n = document.createElement("div");
+    n.className = l, n.style = c, this.wrapper.append(n);
     const o = document.createElement("div");
-    o.className = p, o.style = l, this.wrapper.append(o);
-    const s = document.createElement("div");
-    s.className = "p-gui__tabs-header", o.append(s);
+    o.className = "p-gui__tabs-header", n.append(o);
     const a = document.createElement("div");
-    a.className = "p-gui__tabs-content", o.append(a);
+    a.className = "p-gui__tabs-content", n.append(a);
     const h = [];
-    e.forEach((n, g) => {
-      const b = typeof n == "string" ? n : n.label || `Tab ${g + 1}`, f = document.createElement("button");
-      f.className = "p-gui__tab-button", g === r && (f.className += " p-gui__tab-button--active"), f.textContent = b, s.append(f);
+    e.forEach((s, f) => {
+      const b = typeof s == "string" ? s : s.label || `Tab ${f + 1}`, g = document.createElement("button");
+      g.className = "p-gui__tab-button", f === r && (g.className += " p-gui__tab-button--active"), g.textContent = b, o.append(g);
       const u = document.createElement("div");
-      u.className = "p-gui__tab-pane", g === r && (u.className += " p-gui__tab-pane--active"), a.append(u);
+      u.className = "p-gui__tab-pane", f === r && (u.className += " p-gui__tab-pane--active"), a.append(u);
       const m = new C({
         isFolder: !0,
         folderOptions: {
-          wrapper: o,
+          wrapper: n,
           inner: u,
           parent: this,
           firstParent: this.firstParent
@@ -688,28 +690,28 @@ class C {
       });
       h.push({
         gui: m,
-        button: f,
+        button: g,
         pane: u
-      }), f.addEventListener("click", () => {
+      }), g.addEventListener("click", () => {
         h.forEach((x) => {
           x.button.classList.remove("p-gui__tab-button--active"), x.pane.classList.remove("p-gui__tab-pane--active");
-        }), f.classList.add("p-gui__tab-button--active"), u.classList.add("p-gui__tab-pane--active");
+        }), g.classList.add("p-gui__tab-button--active"), u.classList.add("p-gui__tab-pane--active");
       });
     });
-    const c = new C({
+    const p = new C({
       isFolder: !0,
       folderOptions: {
-        wrapper: o,
+        wrapper: n,
         inner: h[r]?.pane || document.createElement("div"),
         parent: this,
         firstParent: this.firstParent
       }
     });
-    return c.getTab = (n) => h[n]?.gui || null, c.getTabElement = (n) => h[n]?.button || null, c.setActiveTab = (n) => {
-      n >= 0 && n < h.length && h[n].button.click();
-    }, c.getActiveTab = () => h.findIndex(
-      (n) => n.button.classList.contains("p-gui__tab-button--active")
-    ), c.element = o, this.tabsArray.push(c), c;
+    return p.getTab = (s) => h[s]?.gui || null, p.getTabElement = (s) => h[s]?.button || null, p.setActiveTab = (s) => {
+      s >= 0 && s < h.length && h[s].button.click();
+    }, p.getActiveTab = () => h.findIndex(
+      (s) => s.button.classList.contains("p-gui__tab-button--active")
+    ), p.element = n, this.tabsArray.push(p), p;
   }
   _makeDraggable() {
     var t = this;
