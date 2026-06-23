@@ -1,61 +1,158 @@
-import Button from './components/Button.js';
-import Slider from './components/Slider.js';
-import Image from './components/Image.js';
-import Toggle from './components/Toggle.js';
-import List from './components/List.js';
+import Button from './components/Button';
+import Slider from './components/Slider';
+import Image from './components/Image';
+import Toggle from './components/Toggle';
+import List from './components/List';
 import Color from './components/Color.js';
-import Vector2 from './components/Vector2.js';
+import Vector2 from './components/Vector2';
 import styles from './styles/styles.js';
 
+import type { Options as SliderOptions } from './components/Slider';
+import type { Options as ButtonOptions } from './components/Button';
+import type { Options as ImageOptions } from './components/Image';
+import type { Options as ToggleOptions } from './components/Toggle';
+import type { Options as ListOptions, Values as ListValues } from './components/List';
+import type { Options as ColorOptions } from './components/Color';
+import type { Options as Vector2Options } from './components/Vector2';
+
+declare global {
+    interface Window {
+        perfectGUI?: {
+            instanceCounter?: number;
+        };
+    }
+}
+
+type FolderOptions = {
+    container: HTMLElement;
+    wrapper: HTMLElement;
+    parent: GUI;
+    firstParent: GUI;
+    closed: boolean;
+    label: string;
+    color: string;
+    maxHeight: number;
+}
+
+type Options = {
+    label?: string;
+    container?: HTMLElement | string;
+    isFolder?: boolean;
+    folderOptions?: FolderOptions;
+    onUpdate?: () => void;
+    color?: string;
+    opacity?: number;
+    position?: string;
+    maxHeight?: number;
+    width?: number;
+    closed?: boolean;
+    draggable?: boolean;
+    autoRepositioning?: boolean;
+}
+
+type ScreenCorner = {
+    x: 'left' | 'right';
+    y: 'top' | 'bottom';
+};
+
 export default class GUI {
-    constructor(options = {}) {
+    public firstParent: GUI;
+    private container: HTMLElement = document.body;
+    public wrapper!: HTMLElement;
+    public folders: GUI[];
+    private tabsArray: any[];
+    private label: string = '';
+    private backgroundColor: string | null = null;
+    private opacity: number = 1;
+    private maxHeight: number = window.innerHeight;
+    private initMaxHeight: number | null = null;
+    private screenCorner!: ScreenCorner;
+    private instanceId: number = 0;
+    private wrapperWidth: number = 290;
+    private stylesheet: HTMLStyleElement | null = null;
+    private closed: boolean = false;
+    public domElement: HTMLElement | null = null;
+    private hasBeenDragged: boolean = false;
+    private xOffset: number = 0;
+    private yOffset: number = 0;
+    private position = {
+        initX: 0,
+        initY: 0,
+        prevX: 0,
+        prevY: 0,
+        x: 0,
+        y: 0,
+    };
+    // folder properties
+    public isFolder: boolean = false;
+    public parent: GUI | null = null;
+    public imageContainer: HTMLElement | null = null;
+    public header!: HTMLElement;
+    public previousInnerScroll: number = 0;
+    
+    // tab-related properties added dynamically
+    public getTab?: (index: number) => GUI | null;
+    public getTabElement?: (index: number) => HTMLElement | null;
+    public setActiveTab?: (index: number) => void;
+    public getActiveTab?: () => number;
+    public element?: HTMLElement;
+    
+    public propReferences: any[];
+    public onUpdate: (() => void) | null = null;
+
+    constructor(options: Options = {}, isFolder = false) {
         this.firstParent = this;
-
-        if (options.container) {
-            this.container =
-                typeof options.container == 'string'
-                    ? document.querySelector(options.container)
-                    : options.container;
-            this.position_type = 'absolute';
-        } else {
-            this.container = document.body;
-            this.position_type = 'fixed';
-        }
-
-        this.propReferences = [];
         this.folders = [];
         this.tabsArray = [];
+        this.propReferences = [];
 
         if (options.isFolder) {
             this._folderConstructor(options.folderOptions);
             return;
         }
 
-        if (typeof options.onUpdate == 'function') {
-            this.onUpdate = options.onUpdate;
+        if (isFolder) {
+            return;
         }
 
-        this.label =
-            options != undefined && typeof options.label == 'string'
-                ? options.label
-                : '';
+        let positionType: 'absolute' | 'fixed' = 'fixed';
+
+        if (options.container) {
+            const container =
+                typeof options.container == 'string'
+                    ? document.querySelector(options.container)
+                    : options.container;
+            if (container instanceof HTMLElement) {
+                this.container = container;
+                positionType = 'absolute';
+            }
+        }
+        
+        this.screenCorner = this._parseScreenCorner(options.position);
+
+        if (options.width) {
+            this.wrapperWidth = options.width;
+        }
+        
+        if (typeof options.onUpdate === 'function') {
+            this.onUpdate = options.onUpdate;
+        }
+        
+        this.label = typeof options.label == 'string' ? options.label : '';
         this.backgroundColor = options.color || null;
         this.opacity = options.opacity || 1;
-
-        if (this.container == document.body) {
-            this.maxHeight = window.innerHeight;
-        } else {
+        
+        if (this.container && this.container !== document.body) {
             this.maxHeight = Math.min(
                 this.container.clientHeight,
                 window.innerHeight,
             );
         }
+
         if (options.maxHeight) {
             this.initMaxHeight = options.maxHeight;
             this.maxHeight = Math.min(this.initMaxHeight, this.maxHeight);
         }
-
-        this.screenCorner = this._parseScreenCorner(options.position);
 
         if (!window.perfectGUI) {
             window.perfectGUI = {};
@@ -67,7 +164,6 @@ export default class GUI {
         }
         this.instanceId = window.perfectGUI.instanceCounter;
 
-        this.wrapperWidth = options.width || 290;
         this.stylesheet = document.createElement('style');
         this.stylesheet.setAttribute('type', 'text/css');
         this.stylesheet.setAttribute('id', 'lm-gui-stylesheet');
@@ -75,14 +171,17 @@ export default class GUI {
 
         // Common styles
         if (this.instanceId == 0) {
-            this._addStyles(`${styles(this.position_type)}`);
+            this._addStyles(`${styles(positionType)}`);
         }
 
         // Instance specific styles
         this._styleInstance();
 
         this.closed = !!options.closed;
-        this._addWrapper();
+
+        const [domElement, wrapper] = this._addWrapper();
+        this.domElement = domElement;
+        this.wrapper = wrapper;
         this.domElement.setAttribute('data-corner-x', this.screenCorner.x);
         this.domElement.setAttribute('data-corner-y', this.screenCorner.y);
 
@@ -91,8 +190,9 @@ export default class GUI {
         }
         this._handleResize();
 
-        this.hasBeenDragged = false;
-        if (options.draggable == true) this._makeDraggable();
+        if (options.draggable == true) {
+            this._makeDraggable();
+        }
     }
 
     _styleInstance() {
@@ -108,7 +208,8 @@ export default class GUI {
 
         if (this.instanceId > 0) {
             let existingDomInstances =
-                this.container.querySelectorAll('.p-gui');
+                this.container.querySelectorAll<HTMLElement>('.p-gui');
+            
             for (let i = 0; i < existingDomInstances.length; i++) {
                 if (
                     this.screenCorner.y ==
@@ -130,6 +231,8 @@ export default class GUI {
         }
         this.yOffset = 0;
         this.position = {
+            initX: this.xOffset,
+            initY: this.yOffset,
             prevX: this.xOffset,
             prevY: this.yOffset,
             x: this.xOffset,
@@ -146,18 +249,24 @@ export default class GUI {
         }`);
     }
 
-    _folderConstructor(folderOptions) {
-        this.domElement = folderOptions.wrapper;
+    _folderConstructor(folderOptions: FolderOptions | undefined) {
+        if (!folderOptions) {
+            throw Error('[perfect-gui] folderOptions is undefined');
+        }
+        
+        this.domElement = folderOptions.container;
         this.isFolder = true;
         this.parent = folderOptions.parent;
         this.firstParent = folderOptions.firstParent;
-        this.wrapper = folderOptions.inner;
+        this.wrapper = folderOptions.wrapper;
     }
 
-    _parseScreenCorner(position) {
-        let parsedPosition = { x: 'right', y: 'top' };
+    _parseScreenCorner(position: string | undefined): ScreenCorner {
+        let parsedPosition: ScreenCorner = { x: 'right', y: 'top' };
 
-        if (position == undefined) return parsedPosition;
+        if (position == undefined) {
+            return parsedPosition;
+        }
         else if (typeof position != 'string')
             console.error('[perfect-gui] Position must be a string.');
 
@@ -167,7 +276,7 @@ export default class GUI {
         return parsedPosition;
     }
 
-    _getScrollbarWidth(element) {
+    _getScrollbarWidth(element: HTMLElement) {
         if (element === document.body) {
             return window.innerWidth - document.documentElement.clientWidth;
         } else {
@@ -176,6 +285,9 @@ export default class GUI {
     }
 
     _handleResize() {
+        if (!this.domElement) {
+            return;
+        }
         if (this.container == document.body) {
             this.maxHeight = window.innerHeight;
         } else {
@@ -201,7 +313,7 @@ export default class GUI {
                   this.wrapperWidth -
                   scrollbar_width;
         if (this.instanceId > 0) {
-            let existingDomInstances = this.container.querySelectorAll(
+            let existingDomInstances = this.container.querySelectorAll<HTMLElement>(
                 `.p-gui:not(#${this.domElement.id}):not([data-dragged])`,
             );
             for (let i = 0; i < existingDomInstances.length; i++) {
@@ -228,6 +340,8 @@ export default class GUI {
             }
         }
         this.position = {
+            initX: this.xOffset,
+            initY: this.yOffset,
             prevX: this.xOffset,
             prevY: this.yOffset,
             x: this.xOffset,
@@ -236,22 +350,25 @@ export default class GUI {
         this.domElement.style.transform = `translate3d(${this.position.x}px, ${this.position.y}px, 0)`;
     }
 
-    _addStyles(styles) {
-        this.stylesheet.innerHTML += styles;
+    _addStyles(styles: string) {
+        if (this.stylesheet) {
+            this.stylesheet.innerHTML += styles;
+        }
     }
 
-    _addWrapper() {
-        this.domElement = document.createElement('div');
-        this.domElement.id = 'p-gui-' + this.instanceId;
-        this.domElement.className = 'p-gui' + (this.closed ? ' p-gui--collapsed' : '');
-        this.domElement.setAttribute('data-lenis-prevent', '');
-        this.container.append(this.domElement);
+    _addWrapper(): [HTMLDivElement, HTMLDivElement] {
+        const domElement = document.createElement('div');
+        domElement.id = 'p-gui-' + this.instanceId;
+        domElement.className =
+            'p-gui' + (this.closed ? ' p-gui--collapsed' : '');
+        domElement.setAttribute('data-lenis-prevent', '');
+        this.container.append(domElement);
 
         this.header = document.createElement('div');
         this.header.className = 'p-gui__header';
         this.header.textContent = this.label;
         this.header.style = `${this.backgroundColor ? 'border-color: ' + this.backgroundColor + ';' : ''}`;
-        this.domElement.append(this.header);
+        domElement.append(this.header);
 
         const close_btn = document.createElement('div');
         close_btn.className = 'p-gui__header-close';
@@ -260,60 +377,61 @@ export default class GUI {
 
         const content = document.createElement('div');
         content.className = 'p-gui__content';
-        this.domElement.append(content);
+        domElement.append(content);
 
-        this.wrapper = document.createElement('div');
-        this.wrapper.className = 'p-gui__inner';
-        content.append(this.wrapper);
+        const wrapper = document.createElement('div');
+        wrapper.className = 'p-gui__inner';
+        content.append(wrapper);
+
+        return [domElement, wrapper];
     }
 
-    button(params = {}) {
+    button(options: ButtonOptions = {}) {
         this.imageContainer = null;
-        const instance = new Button(this, params);
+        const instance = new Button(this, options);
         return instance;
     }
 
-    image(params = {}) {
+    image(path: string, options: ImageOptions = {}) {
         if (!this.imageContainer) {
             this.imageContainer = document.createElement('div');
             this.imageContainer.className = 'p-gui__image-container';
             this.wrapper.append(this.imageContainer);
         }
-        const instance = new Image(this, params);
-        return instance;
+        return new Image(this, path, options);
     }
 
-    slider(arg1, arg2, arg3) {
+    slider(obj: any, prop: string, options: SliderOptions) {
         this.imageContainer = null;
-        const instance = new Slider(this, arg1, arg2, arg3);
+        const instance = new Slider(this, obj, prop, options);
         return instance;
     }
 
-    toggle(arg1, arg2, arg3) {
+    toggle(obj: any, prop: string, options: ToggleOptions) {
         this.imageContainer = null;
-        const instance = new Toggle(this, arg1, arg2, arg3);
+        const instance = new Toggle(this, obj, prop, options);
         return instance;
     }
 
-    list(arg1, arg2, arg3) {
+    list(obj: any, prop: string, values: ListValues, options: ListOptions) {
         this.imageContainer = null;
-        const instance = new List(this, arg1, arg2, arg3);
+        const instance = new List(this, obj, prop, values, options);
         return instance;
     }
 
-    color(arg1, arg2, arg3) {
+    color(obj: any, prop: string, options: ColorOptions) {
         this.imageContainer = null;
-        const instance = new Color(this, arg1, arg2, arg3);
+        const instance = new Color(this, obj, prop, options);
         return instance;
     }
 
-    vector2(arg1, arg2, arg3, arg4) {
+    vector2(obj: any, propX: string, propY: string, options: Vector2Options) {
         this.imageContainer = null;
-        const instance = new Vector2(this, arg1, arg2, arg3, arg4);
+        const instance = new Vector2(this, obj, propX, propY, options);
         return instance;
     }
 
-    folder(options = {}) {
+    folder(options: FolderOptions) {
         let closed =
             typeof options.closed == 'boolean' ? options.closed : false;
         let label = options.label || '';
@@ -333,7 +451,9 @@ export default class GUI {
         }
 
         let container_style = color ? `background-color: ${color};` : '';
-        container_style += maxHeight ? `max-height: ${maxHeight}px; overflow-y: auto;` : '';
+        container_style += maxHeight
+            ? `max-height: ${maxHeight}px; overflow-y: auto;`
+            : '';
 
         const container = document.createElement('div');
         container.className = className;
@@ -357,20 +477,17 @@ export default class GUI {
             container.classList.toggle('p-gui__folder--closed');
         });
 
-        let folder = new GUI({
-            isFolder: true,
-            folderOptions: {
-                wrapper: container,
-                inner: folderInner,
-                parent: this,
-                firstParent: this.firstParent,
-            },
+        let folder = new Folder({
+            container,
+            wrapper: folderInner,
+            parent: this,
+            firstParent: this.firstParent,
         });
         this.folders.push(folder);
         return folder;
     }
 
-    tabs(options = {}) {
+    tabs(options: { tabs?: string[]; active?: number; color?: string; maxHeight?: number} = {}) {
         const tabs = Array.isArray(options.tabs) ? options.tabs : [];
         const activeTab = options.active || 0;
         const color = options.color || null;
@@ -384,7 +501,9 @@ export default class GUI {
         }
 
         let container_style = color ? `background-color: ${color};` : '';
-        container_style += maxHeight ? `max-height: ${maxHeight}px; overflow-y: auto;` : '';
+        container_style += maxHeight
+            ? `max-height: ${maxHeight}px; overflow-y: auto;`
+            : '';
 
         const container = document.createElement('div');
         container.className = className;
@@ -402,11 +521,14 @@ export default class GUI {
         container.append(tabsContent);
 
         // Store tab instances for later access
-        const tabInstances = [];
+        const tabInstances: { gui: GUI; button: HTMLButtonElement; pane: HTMLElement }[] = [];
 
         tabs.forEach((tabConfig, index) => {
-            const tabLabel = typeof tabConfig === 'string' ? tabConfig : tabConfig.label || `Tab ${index + 1}`;
-            
+            const tabLabel =
+                typeof tabConfig === 'string'
+                    ? tabConfig
+                    : tabConfig.label || `Tab ${index + 1}`;
+
             // Create tab button
             const tabButton = document.createElement('button');
             tabButton.className = 'p-gui__tab-button';
@@ -425,20 +547,17 @@ export default class GUI {
             tabsContent.append(tabPane);
 
             // Create GUI instance for this tab
-            const tabGUI = new GUI({
-                isFolder: true,
-                folderOptions: {
-                    wrapper: container,
-                    inner: tabPane,
-                    parent: this,
-                    firstParent: this.firstParent,
-                },
+            const tabGUI = new Folder({
+                container,
+                wrapper: tabPane,
+                parent: this,
+                firstParent: this.firstParent,
             });
 
             tabInstances.push({
                 gui: tabGUI,
                 button: tabButton,
-                pane: tabPane
+                pane: tabPane,
             });
 
             // Add click handler
@@ -456,27 +575,27 @@ export default class GUI {
         });
 
         // Create main tabs instance to return
-        const tabsInstance = new GUI({
-            isFolder: true,
-            folderOptions: {
-                wrapper: container,
-                inner: tabInstances[activeTab]?.pane || document.createElement('div'),
-                parent: this,
-                firstParent: this.firstParent,
-            },
+        const tabsInstance = new Folder({
+            container,
+            wrapper:
+                tabInstances[activeTab]?.pane ||
+                document.createElement('div'),
+            parent: this,
+            firstParent: this.firstParent,
         });
 
         // Add methods to access individual tabs
         tabsInstance.getTab = (index) => tabInstances[index]?.gui || null;
-        tabsInstance.getTabElement = (index) => tabInstances[index]?.button || null;
+        tabsInstance.getTabElement = (index) =>
+            tabInstances[index]?.button || null;
         tabsInstance.setActiveTab = (index) => {
             if (index >= 0 && index < tabInstances.length) {
                 tabInstances[index].button.click();
             }
         };
         tabsInstance.getActiveTab = () => {
-            return tabInstances.findIndex(tab => 
-                tab.button.classList.contains('p-gui__tab-button--active')
+            return tabInstances.findIndex((tab) =>
+                tab.button.classList.contains('p-gui__tab-button--active'),
             );
         };
 
@@ -487,49 +606,52 @@ export default class GUI {
         return tabsInstance;
     }
 
+    private _onPointerDown = (evt: PointerEvent) => {
+        evt.preventDefault();
+
+        this.position.initX = this.position.x;
+        this.position.initY = this.position.y;
+
+        this.position.prevX = evt.clientX;
+        this.position.prevY = evt.clientY;
+
+        this.container.addEventListener('pointermove', this._onPointerMove);
+        document.addEventListener('pointerup', this._onPointerUp);
+    };
+
+    private _onPointerMove = (evt: PointerEvent) => {
+        evt.preventDefault();
+
+        if (!this.hasBeenDragged) {
+            this.hasBeenDragged = true;
+            this.domElement?.setAttribute('data-dragged', 'true');
+        }
+
+        this.position.x = this.position.initX + evt.clientX - this.position.prevX;
+        this.position.y = this.position.initY + evt.clientY - this.position.prevY;
+
+        if (this.domElement) {
+            this.domElement.style.transform = `translate3d(${this.position.x}px, ${this.position.y}px, 0)`;
+        }
+    };
+
+    private _onPointerUp = () => {
+        this.container.removeEventListener('pointermove', this._onPointerMove);
+        document.removeEventListener('pointerup', this._onPointerUp);
+    };
+
     _makeDraggable() {
-        var that = this;
-        this.header.addEventListener('pointerdown', dragMouseDown);
-        this.header.addEventListener('pointerup', dragMouseUp);
-
-        function dragMouseDown(ev) {
-            ev.preventDefault();
-
-            that.position.initX = that.position.x;
-            that.position.initY = that.position.y;
-
-            that.position.prevX = ev.clientX;
-            that.position.prevY = ev.clientY;
-
-            document.addEventListener('pointermove', dragElement);
+        if (!this.domElement || !this.header) {
+            return;
         }
 
-        function dragElement(ev) {
-            ev.preventDefault();
-            if (!that.hasBeenDragged) {
-                that.hasBeenDragged = true;
-                that.domElement.setAttribute('data-dragged', 'true');
-            }
-
-            that.position.x =
-                that.position.initX + ev.clientX - that.position.prevX;
-            that.position.y =
-                that.position.initY + ev.clientY - that.position.prevY;
-
-            that.domElement.style.transform =
-                'translate3d(' +
-                that.position.x +
-                'px,' +
-                that.position.y +
-                'px,0)';
-        }
-
-        function dragMouseUp(ev) {
-            document.removeEventListener('pointermove', dragElement);
-        }
+        this.header.addEventListener('pointerdown', this._onPointerDown);
     }
 
     toggleClose() {
+        if (!this.domElement) {
+            return;
+        }
         this.closed = !this.closed;
 
         if (this.closed) {
@@ -543,14 +665,16 @@ export default class GUI {
     }
 
     kill() {
-        this.domElement.remove();
+        if (this.domElement) {
+            this.domElement.remove();
+        }
     }
 
-    _mapLinear(x, a1, a2, b1, b2) {
+    _mapLinear(x: number, a1: number, a2: number, b1: number, b2: number): number {
         return b1 + ((x - a1) * (b2 - b1)) / (a2 - a1);
     }
 
-    _countDecimals(num) {
+    _countDecimals(num: number) {
         // Convert the number to a string
         const numStr = num.toString();
 
@@ -572,5 +696,26 @@ export default class GUI {
         for (let i in plugin) {
             GUI.prototype[i] = plugin[i];
         }
+    }
+}
+
+type FolderParams = {
+    container: HTMLElement,
+    wrapper: HTMLElement,
+    parent: GUI,
+    firstParent: GUI,
+}
+
+export class Folder extends GUI {
+    public parent: GUI;
+    public firstParent: GUI;
+
+    constructor(folderOptions: FolderParams) {
+        super({}, true);
+        this.isFolder = true;
+        this.domElement = folderOptions.container;
+        this.wrapper = folderOptions.wrapper;
+        this.parent = folderOptions.parent;
+        this.firstParent = folderOptions.firstParent;
     }
 }

@@ -1,50 +1,62 @@
+import type GUI from '../index';
+
+export type Options = {
+    label?: string;
+    min?: number;
+    max?: number;
+    step?: number;
+    tooltip?: string;
+}
+
 export default class Slider {
-    constructor(parent, arg1, arg2, arg3) {
+    private parent: GUI;
+    private propReferences: string[];
+    private min: number;
+    private max: number;
+    private step: number;
+    private decimals: number;
+    private obj: any;
+    private prop: string;
+    private callback: ((value: number) => void) | null = null;
+    
+    private ctrlDiv: HTMLDivElement & { 
+        pointerDown?: boolean; 
+        prevPosition?: number; 
+        pointerDelta?: number 
+    };
+    private handle: HTMLElement & { position?: number };
+    private filling: HTMLElement;
+    private valueInput: HTMLInputElement;
+
+    public element: HTMLElement;
+    
+    constructor(parent: GUI, obj: any, prop: string, options: Options = {}) {
         this.parent = parent;
         this.propReferences = [];
 
-        let params = {};
-        let value = null;
-
-        if (arg1 && typeof arg1 === 'object' && typeof arg2 === 'string') {
-            this.obj = arg1;
-            this.prop = arg2;
-            this.isObject = true;
-            params = arg3 || {};
-            this.callback = null;
-        } else if (arg1 && typeof arg1 === 'object') {
-            this.isObject = false;
-            params = arg1;
-            value = typeof params.value == 'number' ? params.value : null;
+        if (obj && typeof obj === 'object' && typeof prop === 'string') {
+            this.obj = obj;
+            this.prop = prop;
         } else {
             throw Error(`[GUI] slider() invalid parameters.`);
         }
 
-        let label = typeof params.label == 'string' ? params.label || ' ' : ' ';
+        let label = typeof options.label == 'string' ? options.label || ' ' : ' ';
 
-        if (this.isObject && label == ' ') {
+        if (label == ' ') {
             label = this.prop;
         }
 
-        this.min = params.min ?? 0;
-        this.max = params.max ?? 1;
-        this.step = params.step || (this.max - this.min) / 100;
+        this.min = options.min ?? 0;
+        this.max = options.max ?? 1;
+        this.step = options.step || (this.max - this.min) / 100;
         this.decimals = this.parent._countDecimals(this.step);
 
-        let propReferenceIndex = null;
-
-        if (this.isObject) {
-            propReferenceIndex =
-                this.propReferences.push(this.obj[this.prop]) - 1;
-        } else {
-            if (value === null) {
-                value = (this.max - this.min) / 2;
-            }
-        }
+        const propReferenceIndex = this.propReferences.push(this.obj[this.prop]) - 1;
         const tooltip =
-            typeof params.tooltip === 'string'
-                ? params.tooltip
-                : params.tooltip === true
+            typeof options.tooltip === 'string'
+                ? options.tooltip
+                : options.tooltip === true
                   ? label
                   : null;
 
@@ -66,10 +78,11 @@ export default class Slider {
         container.append(slider_name);
 
         this.ctrlDiv = document.createElement('div');
+        this.ctrlDiv.prevPosition = 0;
         this.ctrlDiv.className = 'p-gui__slider-ctrl';
         this.ctrlDiv.setAttribute('type', 'range');
-        this.ctrlDiv.setAttribute('min', this.min);
-        this.ctrlDiv.setAttribute('max', this.max);
+        this.ctrlDiv.setAttribute('min', String(this.min));
+        this.ctrlDiv.setAttribute('max', String(this.max));
         container.append(this.ctrlDiv);
 
         const slider_bar = document.createElement('div');
@@ -86,15 +99,15 @@ export default class Slider {
 
         this.valueInput = document.createElement('input');
         this.valueInput.className = 'p-gui__slider-value';
-        this.valueInput.value = this.isObject ? this.obj[this.prop] : value;
+        this.valueInput.value = this.obj[this.prop];
         container.append(this.valueInput);
 
         // init position
         setTimeout(() => {
             const sliderWidth = this.ctrlDiv.offsetWidth;
             const handleWidth = this.handle.offsetWidth;
-            this.handle.position = this._mapLinear(
-                this.valueInput.value,
+            this.handle.position = this.parent._mapLinear(
+                parseFloat(this.valueInput.value),
                 this.min,
                 this.max,
                 handleWidth / 2,
@@ -134,42 +147,40 @@ export default class Slider {
         window.addEventListener('pointermove', (evt) => {
             if (this.ctrlDiv.pointerDown) {
                 this.ctrlDiv.pointerDelta =
-                    evt.clientX - this.ctrlDiv.prevPosition;
+                    evt.clientX - (this.ctrlDiv.prevPosition ?? 0);
                 this._updateHandlePositionFromPointer(evt);
             }
         });
 
-        if (this.isObject) {
-            Object.defineProperty(this.obj, this.prop, {
-                set: (val) => {
-                    this.propReferences[propReferenceIndex] = val;
-                    this.valueInput.value = val;
+        Object.defineProperty(this.obj, this.prop, {
+            set: (val) => {
+                this.propReferences[propReferenceIndex] = val;
+                this.valueInput.value = val;
 
-                    this._updateHandlePositionFromValue();
+                this._updateHandlePositionFromValue();
 
-                    if (this.callback) {
-                        this.callback(parseFloat(this.valueInput.value));
-                    }
-                },
-                get: () => {
-                    return this.propReferences[propReferenceIndex];
-                },
-            });
-        }
+                if (this.callback) {
+                    this.callback(parseFloat(this.valueInput.value));
+                }
+            },
+            get: () => {
+                return this.propReferences[propReferenceIndex];
+            },
+        });
     }
 
-    _updateHandlePositionFromPointer(evt, firstDown = false) {
+    _updateHandlePositionFromPointer(evt: PointerEvent, firstDown = false) {
         const rect = this.ctrlDiv.getBoundingClientRect();
         const sliderWidth = rect.width;
         const handleWidth = this.handle.offsetWidth;
-        const pointerDelta = evt.clientX - this.ctrlDiv.prevPosition;
+        const pointerDelta = evt.clientX - (this.ctrlDiv.prevPosition ?? 0);
         const currentValue = parseFloat(this.valueInput.value);
         let handlePosition;
 
         if (firstDown) {
             handlePosition = evt.clientX - rect.left;
         } else {
-            handlePosition = this.handle.position + pointerDelta;
+            handlePosition = (this.handle.position ?? 0) + pointerDelta;
         }
 
         handlePosition = Math.max(
@@ -193,9 +204,9 @@ export default class Slider {
         const prevValue = parseFloat((currentValue - this.step).toFixed(9));
 
         if (newValue >= nextValue || newValue <= prevValue) {
-            newValue = newValue.toFixed(this.decimals);
+            newValue = parseFloat(newValue.toFixed(this.decimals));
 
-            this.valueInput.value = newValue;
+            this.valueInput.value = String(newValue);
 
             this.ctrlDiv.prevPosition = evt.clientX;
 
@@ -211,8 +222,8 @@ export default class Slider {
     _updateHandlePositionFromValue() {
         const sliderWidth = this.ctrlDiv.offsetWidth;
         const handleWidth = this.handle.offsetWidth;
-        let handlePosition = this._mapLinear(
-            this.valueInput.value,
+        let handlePosition = this.parent._mapLinear(
+            parseFloat(this.valueInput.value),
             this.min,
             this.max,
             handleWidth / 2,
@@ -231,13 +242,7 @@ export default class Slider {
     }
 
     _triggerCallbacks() {
-        if (this.isObject) {
-            this.obj[this.prop] = parseFloat(this.valueInput.value);
-        } else {
-            if (this.callback) {
-                this.callback(parseFloat(this.valueInput.value));
-            }
-        }
+        this.obj[this.prop] = parseFloat(this.valueInput.value);
 
         if (this.parent.onUpdate) {
             this.parent.onUpdate();
@@ -246,23 +251,19 @@ export default class Slider {
         }
     }
 
-    _mapLinear(x, a1, a2, b1, b2) {
-        return b1 + ((x - a1) * (b2 - b1)) / (a2 - a1);
-    }
-
-    _quantize(x, step) {
+    _quantize(x: number, step: number): number {
         return step * Math.round(x / step);
     }
 
-    _quantizeCeil(x, step) {
+    _quantizeCeil(x: number, step: number): number {
         return step * Math.ceil(x / step);
     }
 
-    _quantizeFloor(x, step) {
+    _quantizeFloor(x: number, step: number): number {
         return step * Math.floor(x / step);
     }
 
-    onChange(callback) {
+    onChange(callback: (value: number) => void) {
         this.callback = callback;
         return this;
     }

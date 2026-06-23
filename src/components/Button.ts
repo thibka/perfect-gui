@@ -1,20 +1,34 @@
-export default class Button {
-    constructor(parent, params = {}) {
-        this.parent = parent;
-        this.callback = null;
+import type GUI from '../index.js';
 
-        if (typeof params !== 'object') {
+export type Options = {
+    label?: string;
+    tooltip?: string | boolean;
+    color?: string;
+    hoverColor?: string;
+}
+
+type Callback = () => void;
+
+export default class Button {
+    public parent: GUI;
+    public callback: null | Callback = null;
+    public element: HTMLDivElement;
+
+    constructor(parent: GUI, options: Options = {}) {
+        this.parent = parent;
+
+        if (typeof options !== 'object') {
             throw Error(
-                `[GUI] button() first parameter must be an object. Received: ${typeof params}.`,
+                `[GUI] button() first parameter must be an object. Received: ${typeof options}.`,
             );
         }
 
-        let label = params.label || ' ';
+        let label = options.label || ' ';
 
         const tooltip =
-            typeof params.tooltip === 'string'
-                ? params.tooltip
-                : params.tooltip === true
+            typeof options.tooltip === 'string'
+                ? options.tooltip
+                : options.tooltip === true
                   ? label
                   : null;
 
@@ -39,11 +53,11 @@ export default class Button {
             }
         });
 
-        if (typeof params.color == 'string') {
-            el.style.setProperty('--color-accent', params.color);
+        if (typeof options.color == 'string') {
+            el.style.setProperty('--color-accent', options.color);
             el.style.setProperty(
                 '--color-accent-hover',
-                params.hoverColor || params.color,
+                options.hoverColor || options.color,
             );
         }
 
@@ -53,7 +67,7 @@ export default class Button {
         this.element = el;
     }
 
-    onClick(callback) {
+    onClick(callback: Callback) {
         this.callback = callback;
         return this;
     }

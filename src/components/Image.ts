@@ -1,23 +1,36 @@
-export default class Image {
-    constructor(parent, params = {}) {
-        this.parent = parent;
-        this.callback = null;
+import type GUI from '../index.js';
 
-        if (typeof params != 'object') {
-            throw Error(
-                `[GUI] image() first parameter must be an object. Received: ${typeof params}.`,
-            );
+export type Options = {
+    label?: string;
+    tooltip?: string | boolean;
+    selected?: boolean;
+    selectionBorder?: boolean;
+    width?: number | string;
+    height?: number | string;
+}
+
+type Callback = ({path, text}: {path: string, text: string}) => void;
+
+export default class Image {
+    public parent: GUI;
+
+    private callback: null | Callback = null;
+
+    private element: HTMLElement;
+
+    constructor(parent: GUI, path: string, params: Options = {}) {
+        this.parent = parent;
+
+        if (path === undefined) {
+            throw Error(`[GUI] image() path must be provided.`);
+        } else if (typeof path !== 'string') {
+            throw Error(`[GUI] image() path must be a string.`);
         }
 
-        let path;
-        if (typeof params.path == 'string') {
-            path = params.path;
-        } else {
-            if (typeof params.path == undefined) {
-                throw Error(`[GUI] image() path must be provided.`);
-            } else {
-                throw Error(`[GUI] image() path must be a string.`);
-            }
+        if (typeof params !== 'object') {
+            throw Error(
+                `[GUI] image() second parameter must be an object. Received: ${typeof params}.`,
+            );
         }
         let filename = path.replace(/^.*[\\\/]/, '');
         let label;
@@ -40,17 +53,19 @@ export default class Image {
         // width & height options
         let inline_styles = '';
         if (params.width) {
-            if (typeof params.width == 'number') {
-                params.width += 'px';
+            let width = params.width;
+            if (typeof width === 'number') {
+                width = `${width}px`;
             }
-            inline_styles += `flex: 0 0 calc(${params.width} - 5px); `;
+            inline_styles += `flex: 0 0 calc(${width} - 5px); `;
         }
 
         if (params.height) {
-            if (typeof params.height == 'number') {
-                params.height += 'px';
+            let height = params.height;
+            if (typeof height == 'number') {
+                height = `${height}px`;
             }
-            inline_styles += `height: ${params.height}; `;
+            inline_styles += `height: ${height}; `;
         }
 
         // Image button
@@ -60,7 +75,7 @@ export default class Image {
         if (tooltip) {
             image.setAttribute('title', tooltip);
         }
-        this.parent.imageContainer.append(image);
+        this.parent.imageContainer!.append(image);
         
         // Expose the DOM element
         this.element = image;
@@ -76,9 +91,9 @@ export default class Image {
         image.append(text);
 
         image.addEventListener('click', () => {
-            let selected_items = image.parentElement.querySelectorAll(
+            let selected_items = image.parentElement?.querySelectorAll(
                 '.p-gui__image--selected',
-            );
+            ) || [];
             for (let i = 0; i < selected_items.length; i++) {
                 selected_items[i].classList.remove('p-gui__image--selected');
             }
@@ -99,7 +114,7 @@ export default class Image {
         });
     }
 
-    onClick(callback) {
+    onClick(callback: Callback) {
         this.callback = callback;
         return this;
     }

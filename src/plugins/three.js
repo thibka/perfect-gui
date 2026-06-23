@@ -13,10 +13,7 @@ export function threeMaterial(params = {}) {
         folder.slider({ obj: material, prop: 'metalness' });
         folder.threeColor({ label: 'color', obj: material.color });
         folder.slider({ obj: material, prop: 'envMapIntensity' });
-        folder.toggle(
-            { obj: material, prop: 'transparent' },
-            () => (material.needsUpdate = true),
-        );
+        folder.toggle(material, 'transparent').onChange(() => (material.needsUpdate = true));
         folder.slider({ obj: material, prop: 'opacity' });
 
         if (material.isMeshPhysicalMaterial) {
@@ -30,10 +27,7 @@ export function threeMaterial(params = {}) {
         const folder = this.folder({ label: params.label, closed });
 
         folder.threeColor({ label: 'color', obj: material.color });
-        folder.toggle(
-            { obj: material, prop: 'transparent' },
-            () => (material.needsUpdate = true),
-        );
+        folder.toggle(material, 'transparent').onChange(() => (material.needsUpdate = true));
         folder.slider({ obj: material, prop: 'opacity' });
 
         return folder;

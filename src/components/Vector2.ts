@@ -1,48 +1,59 @@
+import type GUI from '../index';
+
+type AxisOption = {
+    min?: number;
+    max?: number;
+    step?: number;
+}
+
+export type Options = {
+    label?: string;
+    tooltip?: string;
+    min?: number;
+    max?: number;
+    step?: number;
+    x?: AxisOption; // X axis options
+    y?: AxisOption; // Y axis options
+}
+
+type Callback = ((x: number, y: number) => void);
+
 export default class Vector2 {
-    constructor(parent, arg1, arg2, arg3, arg4) {
-        this.parent = parent;
+    private callback: Callback | null;
+
+    constructor(private parent: GUI, obj: any, propX: string, propY: string, options: Options = {}) {
         this.callback = null;
 
-        let params = {};
-        let objectX, objectY, propX, propY;
+        let objectX, objectY;
 
         if (
-            arg1 &&
-            typeof arg1 === 'object' &&
-            typeof arg2 === 'string' &&
-            typeof arg3 === 'string'
+            obj &&
+            typeof obj === 'object' &&
+            typeof propX === 'string' &&
+            typeof propY === 'string'
         ) {
-            objectX = arg1;
-            objectY = arg1;
-            propX = arg2;
-            propY = arg3;
-            params = arg4 || {};
-        } else if (arg1 && typeof arg1 === 'object' && arg1.x && arg1.x.obj) {
-            // Backwards compatibility for the old verbose { x: { obj, prop }, y: { obj, prop } } structure
-            // incase it's heavily used, since Vector2 doesn't have a 'simple' mode.
-            params = arg1;
-            objectX = params.x.obj;
-            propX = params.x.prop;
-            objectY = params.y.obj;
-            propY = params.y.prop;
+            objectX = obj;
+            objectY = obj;
+            propX = propX;
+            propY = propY;
         } else {
             throw Error(
-                `[GUI] vector2() invalid parameters. Use: gui.vector2(obj, 'propX', 'propY', params)`,
+                `[GUI] vector2() invalid parameters. Use: gui.vector2(obj, 'propX', 'propY', options)`,
             );
         }
 
-        let label = typeof params.label == 'string' ? params.label || ' ' : ' ';
+        let label = typeof options.label == 'string' ? options.label || ' ' : ' ';
         if (label === ' ') label = propX + ' / ' + propY;
 
-        const safeParamsX = params.x || {};
-        const safeParamsY = params.y || {};
+        const safeParamsX = options.x || {};
+        const safeParamsY = options.y || {};
 
-        const minX = safeParamsX.min ?? params.min ?? 0;
-        const maxX = safeParamsX.max ?? params.max ?? 1;
-        const minY = safeParamsY.min ?? params.min ?? 0;
-        const maxY = safeParamsY.max ?? params.max ?? 1;
-        const stepX = safeParamsX.step || params.step || (maxX - minX) / 100;
-        const stepY = safeParamsY.step || params.step || (maxY - minY) / 100;
+        const minX = safeParamsX.min ?? options.min ?? 0;
+        const maxX = safeParamsX.max ?? options.max ?? 1;
+        const minY = safeParamsY.min ?? options.min ?? 0;
+        const maxY = safeParamsY.max ?? options.max ?? 1;
+        const stepX = safeParamsX.step || options.step || (maxX - minX) / 100;
+        const stepY = safeParamsY.step || options.step || (maxY - minY) / 100;
         const decimalsX = this.parent._countDecimals(stepX);
         const decimalsY = this.parent._countDecimals(stepY);
 
@@ -52,9 +63,9 @@ export default class Vector2 {
             this.parent.propReferences.push(objectY[propY]) - 1;
 
         const tooltip =
-            typeof params.tooltip === 'string'
-                ? params.tooltip
-                : params.tooltip === true
+            typeof options.tooltip === 'string'
+                ? options.tooltip
+                : options.tooltip === true
                   ? label
                   : null;
 
@@ -110,7 +121,7 @@ export default class Vector2 {
             }
         });
 
-        const handlePointerMove = (evt) => {
+        const handlePointerMove = (evt: PointerEvent) => {
             const rect = area.getBoundingClientRect();
             const offsetX = evt.clientX - rect.left;
             const offsetY = evt.clientY - rect.top;
@@ -235,7 +246,7 @@ export default class Vector2 {
         });
     }
 
-    onChange(callback) {
+    onChange(callback: Callback) {
         this.callback = callback;
         return this;
     }
