@@ -86,29 +86,29 @@ export default class Vector2 {
         area.className = 'p-gui__vector2-area';
         container.append(area);
         area.addEventListener('click', (evt) => {
-            const newX = parseFloat(
-                this.parent._mapLinear(
-                    evt.offsetX,
-                    0,
-                    area.clientWidth,
-                    minX,
-                    maxX,
-                ),
+            const mappedX = this.parent._mapLinear(
+                evt.offsetX,
+                0,
+                area.clientWidth,
+                minX,
+                maxX,
             );
-            const newY = parseFloat(
-                this.parent._mapLinear(
-                    evt.offsetY,
-                    0,
-                    area.clientHeight,
-                    maxY,
-                    minY,
-                ),
+            const mappedY = this.parent._mapLinear(
+                evt.offsetY,
+                0,
+                area.clientHeight,
+                maxY,
+                minY,
             );
-            objectX[propX] = newX.toFixed(decimalsX);
-            objectY[propY] = newY.toFixed(decimalsY);
+
+            const clampedX = Math.max(minX, Math.min(maxX, mappedX));
+            const clampedY = Math.max(minY, Math.min(maxY, mappedY));
+
+            objectX[propX] = parseFloat(clampedX.toFixed(decimalsX));
+            objectY[propY] = parseFloat(clampedY.toFixed(decimalsY));
 
             if (this.callback) {
-                this.callback(objectX[propX], objectX[propY]);
+                this.callback(objectX[propX], objectY[propY]);
             }
 
             if (this.parent.onUpdate) {

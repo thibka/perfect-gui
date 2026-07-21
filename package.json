@@ -1,7 +1,7 @@
 {
   "name": "perfect-gui",
   "type": "module",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "description": "GUI for JavaScript",
   "main": "dist/perfect-gui.js",
   "module": "dist/perfect-gui.js",
@@ -9,7 +9,7 @@
     ".": "./dist/perfect-gui.js"
   },
   "scripts": {
-    "build": "vite build"
+    "build": "tsc --noEmit && vite build"
   },
   "repository": {
     "type": "git",

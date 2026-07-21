@@ -5,7 +5,7 @@ import Toggle from './components/Toggle';
 import List from './components/List';
 import Color from './components/Color.js';
 import Vector2 from './components/Vector2';
-import styles from './styles/styles.js';
+import styles from './styles/styles';
 
 import type { Options as SliderOptions } from './components/Slider';
 import type { Options as ButtonOptions } from './components/Button';
@@ -32,6 +32,13 @@ type FolderOptions = {
     label: string;
     color: string;
     maxHeight: number;
+}
+
+type FolderCreateOptions = { 
+    label?: string; 
+    color?: string; 
+    closed?: boolean; 
+    maxHeight?: number 
 }
 
 type Options = {
@@ -431,7 +438,7 @@ export default class GUI {
         return instance;
     }
 
-    folder(options: FolderOptions) {
+    folder(options: FolderCreateOptions) {
         let closed =
             typeof options.closed == 'boolean' ? options.closed : false;
         let label = options.label || '';
@@ -523,12 +530,7 @@ export default class GUI {
         // Store tab instances for later access
         const tabInstances: { gui: GUI; button: HTMLButtonElement; pane: HTMLElement }[] = [];
 
-        tabs.forEach((tabConfig, index) => {
-            const tabLabel =
-                typeof tabConfig === 'string'
-                    ? tabConfig
-                    : tabConfig.label || `Tab ${index + 1}`;
-
+        tabs.forEach((tabLabel, index) => {
             // Create tab button
             const tabButton = document.createElement('button');
             tabButton.className = 'p-gui__tab-button';
@@ -690,12 +692,6 @@ export default class GUI {
         const decimalPlaces = numStr.length - decimalIndex - 1;
 
         return decimalPlaces;
-    }
-
-    static registerPlugin(plugin) {
-        for (let i in plugin) {
-            GUI.prototype[i] = plugin[i];
-        }
     }
 }
 

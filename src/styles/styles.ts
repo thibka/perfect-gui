@@ -8,7 +8,9 @@ import _image from './_image.css?inline';
 import _folder from './_folder.css?inline';
 import _tabs from './_tabs.css?inline';
 
-export default function (position_type) {
+type PositionType = 'absolute' | 'fixed';
+
+export default function (positionType: PositionType) {
     return `
     .p-gui {
         --main-border-radius: 6px;
@@ -21,7 +23,7 @@ export default function (position_type) {
         --color-accent-hover: #dddddd;
         --transition: .1s linear;
     
-        position: ${position_type};
+        position: ${positionType};
         top: 0;
         left: 0;
         transform: translate3d(0,0,0);
