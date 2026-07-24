@@ -16,7 +16,7 @@ export default class Image {
 
     private callback: null | Callback = null;
 
-    private element: HTMLElement;
+    public element: HTMLElement;
 
     constructor(parent: GUI, path: string, params: Options = {}) {
         this.parent = parent;

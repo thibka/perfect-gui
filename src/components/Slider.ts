@@ -6,7 +6,7 @@ export type Options = {
     max?: number;
     step?: number;
     tooltip?: string;
-}
+};
 
 export default class Slider {
     private parent: GUI;
@@ -136,11 +136,11 @@ export default class Slider {
             this._updateHandlePositionFromPointer(evt, true);
         });
 
-        window.addEventListener('pointerup', (evt) => {
+        window.addEventListener('pointerup', () => {
             this.ctrlDiv.pointerDown = false;
         });
 
-        window.addEventListener('pointercancel', (evt) => {
+        window.addEventListener('pointercancel', () => {
             this.ctrlDiv.pointerDown = false;
         });
 

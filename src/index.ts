@@ -408,31 +408,31 @@ export default class GUI {
         return new Image(this, path, options);
     }
 
-    slider(obj: any, prop: string, options: SliderOptions) {
+    slider(obj: any, prop: string, options: SliderOptions = {}) {
         this.imageContainer = null;
         const instance = new Slider(this, obj, prop, options);
         return instance;
     }
 
-    toggle(obj: any, prop: string, options: ToggleOptions) {
+    toggle(obj: any, prop: string, options: ToggleOptions = {}) {
         this.imageContainer = null;
         const instance = new Toggle(this, obj, prop, options);
         return instance;
     }
 
-    list(obj: any, prop: string, values: ListValues, options: ListOptions) {
+    list(obj: any, prop: string, values: ListValues, options: ListOptions = {}) {
         this.imageContainer = null;
         const instance = new List(this, obj, prop, values, options);
         return instance;
     }
 
-    color(obj: any, prop: string, options: ColorOptions) {
+    color(obj: any, prop: string, options: ColorOptions = {}) {
         this.imageContainer = null;
         const instance = new Color(this, obj, prop, options);
         return instance;
     }
 
-    vector2(obj: any, propX: string, propY: string, options: Vector2Options) {
+    vector2(obj: any, propX: string, propY: string, options: Vector2Options = {}) {
         this.imageContainer = null;
         const instance = new Vector2(this, obj, propX, propY, options);
         return instance;

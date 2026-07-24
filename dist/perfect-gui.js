@@ -28,9 +28,9 @@ var e = class {
 			this._updateHandlePositionFromValue(), this._triggerCallbacks();
 		}), this.ctrlDiv.addEventListener("pointerdown", (e) => {
 			this.ctrlDiv.pointerDown = !0, this.ctrlDiv.prevPosition = e.clientX, this._updateHandlePositionFromPointer(e, !0);
-		}), window.addEventListener("pointerup", (e) => {
+		}), window.addEventListener("pointerup", () => {
 			this.ctrlDiv.pointerDown = !1;
-		}), window.addEventListener("pointercancel", (e) => {
+		}), window.addEventListener("pointercancel", () => {
 			this.ctrlDiv.pointerDown = !1;
 		}), window.addEventListener("pointermove", (e) => {
 			this.ctrlDiv.pointerDown && (this.ctrlDiv.pointerDelta = e.clientX - (this.ctrlDiv.prevPosition ?? 0), this._updateHandlePositionFromPointer(e));
@@ -505,19 +505,19 @@ var _ = class {
 	image(e, t = {}) {
 		return this.imageContainer || (this.imageContainer = document.createElement("div"), this.imageContainer.className = "p-gui__image-container", this.wrapper.append(this.imageContainer)), new n(this, e, t);
 	}
-	slider(e, n, r) {
+	slider(e, n, r = {}) {
 		return this.imageContainer = null, new t(this, e, n, r);
 	}
-	toggle(e, t, n) {
+	toggle(e, t, n = {}) {
 		return this.imageContainer = null, new r(this, e, t, n);
 	}
-	list(e, t, n, r) {
+	list(e, t, n, r = {}) {
 		return this.imageContainer = null, new i(this, e, t, n, r);
 	}
-	color(e, t, n) {
+	color(e, t, n = {}) {
 		return this.imageContainer = null, new a(this, e, t, n);
 	}
-	vector2(e, t, n, r) {
+	vector2(e, t, n, r = {}) {
 		return this.imageContainer = null, new o(this, e, t, n, r);
 	}
 	folder(e) {
