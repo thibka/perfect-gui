@@ -3,7 +3,7 @@
   <p>A nice, simple and (probably not so) perfect GUI for JavaScript.</p>
   
   <p>
-    <a href="https://thibka.github.io/perfect-gui/"><b>Documentation & Live Examples</b></a>
+    <a href="https://thibka.github.io/perfect-gui/dist/"><b>Documentation & Live Examples</b></a>
   </p>
 </div>
 
@@ -32,18 +32,23 @@ For a quick setup without build tools, use an import map:
 
 ```html
 <script type="importmap">
-    {
-        "imports": {
-            "perfect-gui": "https://unpkg.com/perfect-gui@latest/dist/perfect-gui.js"
-        }
+{
+    "imports": {
+        "perfect-gui": "https://unpkg.com/perfect-gui@latest/dist/perfect-gui.js"
     }
+}
 </script>
 
 <script type="module">
-    import GUI from 'perfect-gui';
+import GUI from 'perfect-gui';
 
-    const gui = new GUI();
-    gui.button({ label: 'Click me' }).onClick(() => alert('Hello world!'));
+const gui = new GUI();
+
+gui.button({ 
+    label: 'Click me' 
+}).onClick(() => {
+    alert('Hello world!')
+});
 </script>
 ```
 
@@ -55,26 +60,19 @@ Creating a control panel is as simple as instantiating the GUI and adding some c
 import GUI from 'perfect-gui';
 
 // 1. Create a new GUI instance
-const gui = new GUI({
-    label: 'My Settings',
-    position: 'top right',
-});
+const gui = new GUI();
 
 // 2. Add a simple button
-gui.button({ label: 'Click me' }).onClick(() => {
+gui.button({ 
+    label: 'Click me' 
+}).onClick(() => {
     console.log('Button clicked!');
 });
 
 // 3. Add a slider connected to an object value natively
-const params = { opacity: 0.5 };
-gui.slider(params, 'opacity', { min: 0, max: 1 }).onChange((val) => {
+const settings = { opacity: 0.5 };
+gui.slider(settings, 'opacity').onChange(val => {
     document.body.style.opacity = val;
-});
-
-// 4. Group controls in a folder
-const folder = gui.folder({ label: 'Advanced' });
-folder.color({ label: 'Color', value: '#bada55' }, (color) => {
-    document.body.style.backgroundColor = color;
 });
 ```
 
@@ -101,15 +99,16 @@ const gui = new GUI({
 
 ## API / Available Components
 
-See the [Documentation](https://thibka.github.io/perfect-gui/) for a comprehensive list of properties and usage.
+See the [Documentation](https://thibka.github.io/perfect-gui/dist/) for a comprehensive list of properties and usage.
 
-- [`button()`](https://thibka.github.io/perfect-gui/public/#button)
-- [`slider()`](https://thibka.github.io/perfect-gui/public/#slider)
-- [`toggle()`](https://thibka.github.io/perfect-gui/public/#toggle)
-- [`list()`](https://thibka.github.io/perfect-gui/public/#list)
-- [`image()`](https://thibka.github.io/perfect-gui/public/#image)
-- [`color()`](https://thibka.github.io/perfect-gui/public/#color)
-- [`vector2()`](https://thibka.github.io/perfect-gui/public/#vector2)
-- [`folder()`](https://thibka.github.io/perfect-gui/public/#folder)
-- [`tabs()`](https://thibka.github.io/perfect-gui/public/#tabs)
-- [`toggleClose()`](https://thibka.github.io/perfect-gui/public)
+- [`button()`](https://thibka.github.io/perfect-gui/dist/#method-button)
+- [`slider()`](https://thibka.github.io/perfect-gui/dist/#method-slider)
+- [`toggle()`](https://thibka.github.io/perfect-gui/dist/#method-toggle)
+- [`list()`](https://thibka.github.io/perfect-gui/dist/#method-list)
+- [`image()`](https://thibka.github.io/perfect-gui/dist/#method-image)
+- [`color()`](https://thibka.github.io/perfect-gui/dist/#method-color)
+- [`vector2()`](https://thibka.github.io/perfect-gui/dist/#method-vector2)
+- [`folder()`](https://thibka.github.io/perfect-gui/dist/#method-folder)
+- [`tabs()`](https://thibka.github.io/perfect-gui/dist/#method-tabs)
+- [`toggleClose()`](https://thibka.github.io/perfect-gui/dist/#method-toggleclose)
+- [`kill()`](https://thibka.github.io/perfect-gui/dist/#method-kill)
