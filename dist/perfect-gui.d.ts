@@ -6,10 +6,10 @@ declare type AxisOption = {
 
 export declare class Button {
     parent: GUI;
-    callback: null | Callback_5;
+    callback: null | Callback;
     element: HTMLDivElement;
     constructor(parent: GUI, options?: ButtonOptions);
-    onClick(callback: Callback_5): this;
+    onClick(callback: Callback): this;
 }
 
 export declare type ButtonOptions = {
@@ -19,25 +19,25 @@ export declare type ButtonOptions = {
     hoverColor?: string;
 };
 
-declare type Callback = ({ path, text }: {
+declare type Callback = () => void;
+
+declare type Callback_2 = ({ path, text }: {
     path: string;
     text: string;
 }) => void;
 
-declare type Callback_2 = ((value: string | number | ValueObjectItem, index: number) => void) | null;
+declare type Callback_3 = ((value: string | number | ValueObjectItem, index: number) => void) | null;
 
-declare type Callback_3 = (value: string) => void;
+declare type Callback_4 = (value: string) => void;
 
-declare type Callback_4 = ((x: number, y: number) => void);
-
-declare type Callback_5 = () => void;
+declare type Callback_5 = ((x: number, y: number) => void);
 
 export declare class Color {
     private parent;
     private callback;
     element: HTMLDivElement;
     constructor(parent: GUI, obj: any, prop: string, params?: ColorOptions);
-    onChange(callback: Callback_3): this;
+    onChange(callback: Callback_4): this;
 }
 
 export declare type ColorOptions = {
@@ -147,7 +147,7 @@ declare class Image_2 {
     private callback;
     element: HTMLElement;
     constructor(parent: GUI, path: string, params?: ImageOptions);
-    onClick(callback: Callback): this;
+    onClick(callback: Callback_2): this;
 }
 export { Image_2 as Image }
 
@@ -165,7 +165,7 @@ export declare class List {
     private callback;
     element: HTMLElement;
     constructor(parent: GUI, obj: any, prop: string, valuesArg: ListValues, options?: ListOptions);
-    onChange(callback: Callback_2): this;
+    onChange(callback: Callback_3): this;
 }
 
 export declare type ListOptions = {
@@ -251,7 +251,7 @@ export declare class Vector2 {
     private parent;
     private callback;
     constructor(parent: GUI, obj: any, propX: string, propY: string, options?: Vector2Options);
-    onChange(callback: Callback_4): this;
+    onChange(callback: Callback_5): this;
 }
 
 export declare type Vector2Options = {

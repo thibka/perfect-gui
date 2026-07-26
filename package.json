@@ -1,14 +1,14 @@
 {
   "name": "perfect-gui",
   "type": "module",
-  "version": "6.1.0",
+  "version": "6.1.1",
   "description": "GUI for JavaScript",
   "main": "dist/perfect-gui.js",
   "module": "dist/perfect-gui.js",
-  "types": "dist/index.d.ts",
+  "types": "dist/perfect-gui.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
+      "types": "./dist/perfect-gui.d.ts",
       "default": "./dist/perfect-gui.js"
     }
   },
