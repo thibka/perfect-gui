@@ -1,19 +1,31 @@
-import Button from './components/Button';
-import Slider from './components/Slider';
-import Image from './components/Image';
-import Toggle from './components/Toggle';
-import List from './components/List';
+import Button from './components/Button.js';
+import Slider from './components/Slider.js';
+import Image from './components/Image.js';
+import Toggle from './components/Toggle.js';
+import List from './components/List.js';
 import Color from './components/Color.js';
-import Vector2 from './components/Vector2';
-import styles from './styles/styles';
+import Vector2 from './components/Vector2.js';
+import styles from './styles/styles.js';
 
-import type { Options as SliderOptions } from './components/Slider';
-import type { Options as ButtonOptions } from './components/Button';
-import type { Options as ImageOptions } from './components/Image';
-import type { Options as ToggleOptions } from './components/Toggle';
-import type { Options as ListOptions, Values as ListValues } from './components/List';
-import type { Options as ColorOptions } from './components/Color';
-import type { Options as Vector2Options } from './components/Vector2';
+import type { Options as SliderOptions } from './components/Slider.js';
+import type { Options as ButtonOptions } from './components/Button.js';
+import type { Options as ImageOptions } from './components/Image.js';
+import type { Options as ToggleOptions } from './components/Toggle.js';
+import type { Options as ListOptions, Values as ListValues } from './components/List.js';
+import type { Options as ColorOptions } from './components/Color.js';
+import type { Options as Vector2Options } from './components/Vector2.js';
+
+export type {
+    SliderOptions,
+    ButtonOptions,
+    ImageOptions,
+    ToggleOptions,
+    ListOptions,
+    ListValues,
+    ColorOptions,
+    Vector2Options,
+};
+export { Button, Slider, Image, Toggle, List, Color, Vector2 };
 
 declare global {
     interface Window {

@@ -1,4 +1,4 @@
-import type GUI from '../index';
+import type GUI from '../index.js';
 
 type AxisOption = {
     min?: number;
