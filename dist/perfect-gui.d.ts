@@ -1,3 +1,49 @@
+export declare class Angle {
+    private parent;
+    private propReferences;
+    private obj;
+    private prop;
+    private unit;
+    private minDeg;
+    private maxDeg;
+    private stepDeg;
+    private decimals;
+    private wraps;
+    private callback;
+    private dial;
+    private needle;
+    private valueInput;
+    element: HTMLElement;
+    constructor(parent: GUI, obj: any, prop: string, options?: AngleOptions);
+    private _onPointerMove;
+    private _onPointerUp;
+    _updateFromPointer(evt: PointerEvent): void;
+    /**
+     * Brings an arbitrary angle into the [min, max] range, quantized on step.
+     * Outside of a full turn, the closest bound wins.
+     */
+    _resolveDeg(deg: number): number;
+    /** Current value in degrees, falling back to min when the prop isn't a number. */
+    _readDeg(): number;
+    _display(deg: number): void;
+    _triggerCallbacks(): void;
+    _toDeg(value: number): number;
+    _fromDeg(deg: number): number;
+    _mod(x: number, m: number): number;
+    onChange(callback: (value: number) => void): this;
+}
+
+export declare type AngleOptions = {
+    label?: string;
+    tooltip?: string | boolean;
+    unit?: AngleUnit;
+    min?: number;
+    max?: number;
+    step?: number;
+};
+
+export declare type AngleUnit = 'deg' | 'rad';
+
 declare type AxisOption = {
     min?: number;
     max?: number;
@@ -124,6 +170,7 @@ declare class GUI {
     list(obj: any, prop: string, values: ListValues, options?: ListOptions): List;
     color(obj: any, prop: string, options?: ColorOptions): Color;
     vector2(obj: any, propX: string, propY: string, options?: Vector2Options): Vector2;
+    angle(obj: any, prop: string, options?: AngleOptions): Angle;
     folder(options: FolderCreateOptions): Folder;
     tabs(options?: {
         tabs?: string[];

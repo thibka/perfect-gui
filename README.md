@@ -108,6 +108,7 @@ See the [Documentation](https://thibka.github.io/perfect-gui/dist/) for a compre
 - [`image()`](https://thibka.github.io/perfect-gui/dist/#method-image)
 - [`color()`](https://thibka.github.io/perfect-gui/dist/#method-color)
 - [`vector2()`](https://thibka.github.io/perfect-gui/dist/#method-vector2)
+- [`angle()`](https://thibka.github.io/perfect-gui/dist/#method-angle)
 - [`folder()`](https://thibka.github.io/perfect-gui/dist/#method-folder)
 - [`tabs()`](https://thibka.github.io/perfect-gui/dist/#method-tabs)
 - [`toggleClose()`](https://thibka.github.io/perfect-gui/dist/#method-toggleclose)

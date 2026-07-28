@@ -1,0 +1,97 @@
+.p-gui__angle {
+    position: relative;
+    min-height: 34px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-text-dark);
+    transition: color var(--transition);
+    padding: 3px;
+    touch-action: none;
+}
+
+.p-gui__angle:hover {
+    color: var(--color-text-light);
+}
+
+.p-gui__angle-name {
+    width: 50%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.p-gui__angle-dial {
+    position: relative;
+    width: 28px;
+    height: 28px;
+    flex: none;
+    margin-left: auto;
+    border-radius: 50%;
+    box-sizing: border-box;
+    background: rgba(0, 0, 0, .3);
+    border: 1px solid var(--color-accent);
+    cursor: pointer;
+    touch-action: none;
+}
+
+.p-gui__angle-dial::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .3);
+    transform: translate(-50%, -50%);
+}
+
+.p-gui__angle-needle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 50%;
+    height: 1px;
+    transform-origin: 0 50%;
+    background: var(--color-accent);
+    pointer-events: none;
+}
+
+.p-gui__angle:hover .p-gui__angle-needle {
+    background: var(--color-accent-hover);
+}
+
+.p-gui__angle-handle {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--color-text-dark);
+    box-shadow: 0 0 2px rgba(0, 0, 0, .5);
+    transform: translate(50%, -50%);
+}
+
+.p-gui__angle:hover .p-gui__angle-handle {
+    background: var(--color-text-light);
+}
+
+.p-gui__angle-value {
+    width: 34px;
+    border: none;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2px 4px;
+    color: inherit;
+    text-align: right;
+}
+
+.p-gui__angle-value:focus {
+    outline: none;
+}
+
+.p-gui__angle-unit {
+    width: 18px;
+    opacity: .6;
+}

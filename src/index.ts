@@ -5,6 +5,7 @@ import Toggle from './components/Toggle.js';
 import List from './components/List.js';
 import Color from './components/Color.js';
 import Vector2 from './components/Vector2.js';
+import Angle from './components/Angle.js';
 import styles from './styles/styles.js';
 
 import type { Options as SliderOptions } from './components/Slider.js';
@@ -14,6 +15,7 @@ import type { Options as ToggleOptions } from './components/Toggle.js';
 import type { Options as ListOptions, Values as ListValues } from './components/List.js';
 import type { Options as ColorOptions } from './components/Color.js';
 import type { Options as Vector2Options } from './components/Vector2.js';
+import type { Options as AngleOptions, Unit as AngleUnit } from './components/Angle.js';
 
 export type {
     SliderOptions,
@@ -24,8 +26,10 @@ export type {
     ListValues,
     ColorOptions,
     Vector2Options,
+    AngleOptions,
+    AngleUnit,
 };
-export { Button, Slider, Image, Toggle, List, Color, Vector2 };
+export { Button, Slider, Image, Toggle, List, Color, Vector2, Angle };
 
 declare global {
     interface Window {
@@ -447,6 +451,12 @@ export default class GUI {
     vector2(obj: any, propX: string, propY: string, options: Vector2Options = {}) {
         this.imageContainer = null;
         const instance = new Vector2(this, obj, propX, propY, options);
+        return instance;
+    }
+
+    angle(obj: any, prop: string, options: AngleOptions = {}) {
+        this.imageContainer = null;
+        const instance = new Angle(this, obj, prop, options);
         return instance;
     }
 
