@@ -21,10 +21,9 @@ var e = class {
 		let c = document.createElement("div");
 		c.className = "p-gui__slider-name", c.textContent = i, s.append(c), this.ctrlDiv = document.createElement("div"), this.ctrlDiv.prevPosition = 0, this.ctrlDiv.className = "p-gui__slider-ctrl", this.ctrlDiv.setAttribute("type", "range"), this.ctrlDiv.setAttribute("min", String(this.min)), this.ctrlDiv.setAttribute("max", String(this.max)), s.append(this.ctrlDiv);
 		let l = document.createElement("div");
-		l.className = "p-gui__slider-bar", this.ctrlDiv.append(l), this.handle = document.createElement("div"), this.handle.className = "p-gui__slider-handle", this.ctrlDiv.append(this.handle), this.filling = document.createElement("div"), this.filling.className = "p-gui__slider-filling", l.append(this.filling), this.valueInput = document.createElement("input"), this.valueInput.className = "p-gui__slider-value", this.valueInput.value = this.obj[this.prop], s.append(this.valueInput), setTimeout(() => {
-			let e = this.ctrlDiv.offsetWidth, t = this.handle.offsetWidth;
-			this.handle.position = this.parent._mapLinear(parseFloat(this.valueInput.value), this.min, this.max, t / 2, e - t / 2), this.handle.position = Math.min(this.handle.position, e - t / 2), this.handle.position = Math.max(this.handle.position, t / 2), this.handle.style.transform = `translate(-50%, -50%) translateX(${this.handle.position}px)`, this.filling.style.width = `${this.handle.position}px`;
-		}, 0), this.valueInput.addEventListener("change", () => {
+		l.className = "p-gui__slider-bar", this.ctrlDiv.append(l), this.handle = document.createElement("div"), this.handle.className = "p-gui__slider-handle", this.ctrlDiv.append(this.handle), this.filling = document.createElement("div"), this.filling.className = "p-gui__slider-filling", l.append(this.filling), this.valueInput = document.createElement("input"), this.valueInput.className = "p-gui__slider-value", this.valueInput.value = this.obj[this.prop], s.append(this.valueInput), this._updateHandlePositionFromValue(), new ResizeObserver(() => {
+			this._updateHandlePositionFromValue();
+		}).observe(this.ctrlDiv), this.valueInput.addEventListener("change", () => {
 			this._updateHandlePositionFromValue(), this._triggerCallbacks();
 		}), this.ctrlDiv.addEventListener("pointerdown", (e) => {
 			this.ctrlDiv.pointerDown = !0, this.ctrlDiv.prevPosition = e.clientX, this._updateHandlePositionFromPointer(e, !0);

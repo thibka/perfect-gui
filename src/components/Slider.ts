@@ -103,27 +103,14 @@ export default class Slider {
         container.append(this.valueInput);
 
         // init position
-        setTimeout(() => {
-            const sliderWidth = this.ctrlDiv.offsetWidth;
-            const handleWidth = this.handle.offsetWidth;
-            this.handle.position = this.parent._mapLinear(
-                parseFloat(this.valueInput.value),
-                this.min,
-                this.max,
-                handleWidth / 2,
-                sliderWidth - handleWidth / 2,
-            );
-            this.handle.position = Math.min(
-                this.handle.position,
-                sliderWidth - handleWidth / 2,
-            );
-            this.handle.position = Math.max(
-                this.handle.position,
-                handleWidth / 2,
-            );
-            this.handle.style.transform = `translate(-50%, -50%) translateX(${this.handle.position}px)`;
-            this.filling.style.width = `${this.handle.position}px`;
-        }, 0); // wait for render
+        this._updateHandlePositionFromValue();
+
+        // Recompute position once the control has a real size, e.g. when it
+        // is created inside a tab/folder that is not visible yet.
+        const resizeObserver = new ResizeObserver(() => {
+            this._updateHandlePositionFromValue();
+        });
+        resizeObserver.observe(this.ctrlDiv);
 
         this.valueInput.addEventListener('change', () => {
             this._updateHandlePositionFromValue();
