@@ -188,7 +188,7 @@ var e = class {
 		let s = typeof i.label == "string" && i.label || "\xA0";
 		s === "\xA0" && (s = n + " / " + r);
 		let c = i.x || {}, l = i.y || {}, u = c.min ?? i.min ?? 0, d = c.max ?? i.max ?? 1, f = l.min ?? i.min ?? 0, p = l.max ?? i.max ?? 1, m = c.step || i.step || (d - u) / 100, h = l.step || i.step || (p - f) / 100, g = this.parent._countDecimals(m), _ = this.parent._countDecimals(h), v = this.parent.propReferences.push(a[n]) - 1, y = this.parent.propReferences.push(o[r]) - 1, b = typeof i.tooltip == "string" ? i.tooltip : i.tooltip === !0 ? s : null, x = document.createElement("div");
-		x.className = "p-gui__vector2", x.textContent = s, b && x.setAttribute("title", b), this.parent.wrapper.append(x);
+		x.className = "p-gui__vector2", x.textContent = s, b && x.setAttribute("title", b), this.parent.wrapper.append(x), this.element = x;
 		let S = document.createElement("div");
 		S.className = "p-gui__vector-value", S.textContent = a[n] + ", " + o[r], x.append(S);
 		let C = document.createElement("div");

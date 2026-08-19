@@ -297,6 +297,7 @@ declare type ValueObjectItem = {
 export declare class Vector2 {
     private parent;
     private callback;
+    element: HTMLDivElement;
     constructor(parent: GUI, obj: any, propX: string, propY: string, options?: Vector2Options);
     onChange(callback: Callback_5): this;
 }

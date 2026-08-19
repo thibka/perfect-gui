@@ -21,6 +21,8 @@ type Callback = ((x: number, y: number) => void);
 export default class Vector2 {
     private callback: Callback | null;
 
+    public element: HTMLDivElement;
+
     constructor(private parent: GUI, obj: any, propX: string, propY: string, options: Options = {}) {
         this.callback = null;
 
@@ -76,6 +78,9 @@ export default class Vector2 {
             container.setAttribute('title', tooltip);
         }
         this.parent.wrapper.append(container);
+
+        // Expose the DOM element
+        this.element = container;
 
         const vector_value = document.createElement('div');
         vector_value.className = 'p-gui__vector-value';
