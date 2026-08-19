@@ -122,6 +122,8 @@ export default class GUI {
     
     public propReferences: any[];
     public onUpdate: (() => void) | null = null;
+    private autoRepositioning: boolean = false;
+    private _boundHandleResize = this._handleResize.bind(this);
 
     constructor(options: Options = {}, isFolder = false) {
         this.firstParent = this;
@@ -208,8 +210,9 @@ export default class GUI {
         this.domElement.setAttribute('data-corner-x', this.screenCorner.x);
         this.domElement.setAttribute('data-corner-y', this.screenCorner.y);
 
-        if (options.autoRepositioning != false) {
-            window.addEventListener('resize', this._handleResize.bind(this));
+        this.autoRepositioning = options.autoRepositioning != false;
+        if (this.autoRepositioning) {
+            window.addEventListener('resize', this._boundHandleResize);
         }
         this._handleResize();
 
@@ -689,8 +692,12 @@ export default class GUI {
     }
 
     kill() {
+        if (this.autoRepositioning) {
+            window.removeEventListener('resize', this._boundHandleResize);
+        }
         if (this.domElement) {
             this.domElement.remove();
+            this.domElement = null;
         }
     }
 

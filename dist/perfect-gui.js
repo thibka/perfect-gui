@@ -482,7 +482,7 @@ var x = class {
 			prevY: 0,
 			x: 0,
 			y: 0
-		}, this.isFolder = !1, this.parent = null, this.imageContainer = null, this.previousInnerScroll = 0, this.onUpdate = null, this._onPointerDown = (e) => {
+		}, this.isFolder = !1, this.parent = null, this.imageContainer = null, this.previousInnerScroll = 0, this.onUpdate = null, this.autoRepositioning = !1, this._boundHandleResize = this._handleResize.bind(this), this._onPointerDown = (e) => {
 			e.preventDefault(), this.position.initX = this.position.x, this.position.initY = this.position.y, this.position.prevX = e.clientX, this.position.prevY = e.clientY, this.container.addEventListener("pointermove", this._onPointerMove), document.addEventListener("pointerup", this._onPointerUp);
 		}, this._onPointerMove = (e) => {
 			e.preventDefault(), this.hasBeenDragged || (this.hasBeenDragged = !0, this.domElement?.setAttribute("data-dragged", "true")), this.position.x = this.position.initX + e.clientX - this.position.prevX, this.position.y = this.position.initY + e.clientY - this.position.prevY, this.domElement && (this.domElement.style.transform = `translate3d(${this.position.x}px, ${this.position.y}px, 0)`);
@@ -500,7 +500,7 @@ var x = class {
 		}
 		this.screenCorner = this._parseScreenCorner(e.position), e.width && (this.wrapperWidth = e.width), typeof e.onUpdate == "function" && (this.onUpdate = e.onUpdate), this.label = typeof e.label == "string" ? e.label : "", this.backgroundColor = e.color || null, this.opacity = e.opacity || 1, this.container && this.container !== document.body && (this.maxHeight = Math.min(this.container.clientHeight, window.innerHeight)), e.maxHeight && (this.initMaxHeight = e.maxHeight, this.maxHeight = Math.min(this.initMaxHeight, this.maxHeight)), window.perfectGUI || (window.perfectGUI = {}), window.perfectGUI.instanceCounter == null ? window.perfectGUI.instanceCounter = 0 : window.perfectGUI.instanceCounter++, this.instanceId = window.perfectGUI.instanceCounter, this.stylesheet = document.createElement("style"), this.stylesheet.setAttribute("type", "text/css"), this.stylesheet.setAttribute("id", "lm-gui-stylesheet"), document.head.append(this.stylesheet), this.instanceId == 0 && this._addStyles(`${b(n)}`), this._styleInstance(), this.closed = !!e.closed;
 		let [r, i] = this._addWrapper();
-		this.domElement = r, this.wrapper = i, this.domElement.setAttribute("data-corner-x", this.screenCorner.x), this.domElement.setAttribute("data-corner-y", this.screenCorner.y), e.autoRepositioning != 0 && window.addEventListener("resize", this._handleResize.bind(this)), this._handleResize(), e.draggable == 1 && this._makeDraggable();
+		this.domElement = r, this.wrapper = i, this.domElement.setAttribute("data-corner-x", this.screenCorner.x), this.domElement.setAttribute("data-corner-y", this.screenCorner.y), this.autoRepositioning = e.autoRepositioning != 0, this.autoRepositioning && window.addEventListener("resize", this._boundHandleResize), this._handleResize(), e.draggable == 1 && this._makeDraggable();
 	}
 	_styleInstance() {
 		let e = this._getScrollbarWidth(this.container);
@@ -668,7 +668,7 @@ var x = class {
 		this.domElement && (this.closed = !this.closed, this.closed ? (this.previousInnerScroll = this.wrapper.scrollTop, this.wrapper.scrollTo(0, 0)) : this.wrapper.scrollTo(0, this.previousInnerScroll), this.domElement.classList.toggle("p-gui--collapsed"));
 	}
 	kill() {
-		this.domElement && this.domElement.remove();
+		this.autoRepositioning && window.removeEventListener("resize", this._boundHandleResize), this.domElement &&= (this.domElement.remove(), null);
 	}
 	_mapLinear(e, t, n, r, i) {
 		return r + (e - t) * (i - r) / (n - t);

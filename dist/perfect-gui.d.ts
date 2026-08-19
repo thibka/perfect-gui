@@ -155,6 +155,8 @@ declare class GUI {
     element?: HTMLElement;
     propReferences: any[];
     onUpdate: (() => void) | null;
+    private autoRepositioning;
+    private _boundHandleResize;
     constructor(options?: Options, isFolder?: boolean);
     _styleInstance(): void;
     _folderConstructor(folderOptions: FolderOptions | undefined): void;
