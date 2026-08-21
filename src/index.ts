@@ -39,6 +39,11 @@ declare global {
     }
 }
 
+let domIdCounter = 0;
+function nextDomId(): number {
+    return ++domIdCounter;
+}
+
 type FolderOptions = {
     container: HTMLElement;
     wrapper: HTMLElement;
@@ -111,6 +116,7 @@ export default class GUI {
     public parent: GUI | null = null;
     public imageContainer: HTMLElement | null = null;
     public header!: HTMLElement;
+    private closeBtn!: HTMLElement;
     public previousInnerScroll: number = 0;
     
     // tab-related properties added dynamically
@@ -396,14 +402,27 @@ export default class GUI {
         this.header.style = `${this.backgroundColor ? 'border-color: ' + this.backgroundColor + ';' : ''}`;
         domElement.append(this.header);
 
-        const close_btn = document.createElement('div');
-        close_btn.className = 'p-gui__header-close';
-        close_btn.addEventListener('click', this.toggleClose.bind(this));
-        this.header.append(close_btn);
-
         const content = document.createElement('div');
         content.className = 'p-gui__content';
+        content.id = 'p-gui-content-' + this.instanceId;
         domElement.append(content);
+
+        const close_btn = document.createElement('div');
+        close_btn.className = 'p-gui__header-close';
+        close_btn.setAttribute('role', 'button');
+        close_btn.setAttribute('tabindex', '0');
+        close_btn.setAttribute('aria-label', 'Toggle panel');
+        close_btn.setAttribute('aria-expanded', String(!this.closed));
+        close_btn.setAttribute('aria-controls', content.id);
+        close_btn.addEventListener('click', this.toggleClose.bind(this));
+        close_btn.addEventListener('keydown', (evt) => {
+            if (evt.key === 'Enter' || evt.key === ' ') {
+                evt.preventDefault();
+                this.toggleClose();
+            }
+        });
+        this.header.append(close_btn);
+        this.closeBtn = close_btn;
 
         const wrapper = document.createElement('div');
         wrapper.className = 'p-gui__inner';
@@ -499,14 +518,31 @@ export default class GUI {
 
         const folderContent = document.createElement('div');
         folderContent.className = 'p-gui__folder-content';
+        folderContent.id = 'p-gui-folder-content-' + nextDomId();
         container.append(folderContent);
 
         const folderInner = document.createElement('div');
         folderInner.className = 'p-gui__folder-inner';
         folderContent.append(folderInner);
 
-        folderHeader.addEventListener('click', () => {
-            container.classList.toggle('p-gui__folder--closed');
+        folderHeader.setAttribute('role', 'button');
+        folderHeader.setAttribute('tabindex', '0');
+        folderHeader.setAttribute('aria-expanded', String(!closed));
+        folderHeader.setAttribute('aria-controls', folderContent.id);
+
+        const toggleFolder = () => {
+            const isClosed = container.classList.toggle(
+                'p-gui__folder--closed',
+            );
+            folderHeader.setAttribute('aria-expanded', String(!isClosed));
+        };
+
+        folderHeader.addEventListener('click', toggleFolder);
+        folderHeader.addEventListener('keydown', (evt) => {
+            if (evt.key === 'Enter' || evt.key === ' ') {
+                evt.preventDefault();
+                toggleFolder();
+            }
         });
 
         let folder = new Folder({
@@ -545,6 +581,7 @@ export default class GUI {
         // Create tabs header
         const tabsHeader = document.createElement('div');
         tabsHeader.className = 'p-gui__tabs-header';
+        tabsHeader.setAttribute('role', 'tablist');
         container.append(tabsHeader);
 
         // Create tabs content
@@ -563,11 +600,19 @@ export default class GUI {
                 tabButton.className += ' p-gui__tab-button--active';
             }
             tabButton.textContent = tabLabel;
+            tabButton.id = 'p-gui-tab-' + nextDomId();
+            tabButton.setAttribute('role', 'tab');
+            tabButton.setAttribute('aria-selected', String(index === activeTab));
+            tabButton.setAttribute('tabindex', index === activeTab ? '0' : '-1');
             tabsHeader.append(tabButton);
 
             // Create tab pane
             const tabPane = document.createElement('div');
             tabPane.className = 'p-gui__tab-pane';
+            tabPane.id = 'p-gui-tabpanel-' + nextDomId();
+            tabPane.setAttribute('role', 'tabpanel');
+            tabPane.setAttribute('aria-labelledby', tabButton.id);
+            tabButton.setAttribute('aria-controls', tabPane.id);
             if (index === activeTab) {
                 tabPane.className += ' p-gui__tab-pane--active';
             }
@@ -589,17 +634,45 @@ export default class GUI {
 
             // Add click handler
             tabButton.addEventListener('click', () => {
-                // Remove active class from all tabs
-                tabInstances.forEach((tab) => {
-                    tab.button.classList.remove('p-gui__tab-button--active');
-                    tab.pane.classList.remove('p-gui__tab-pane--active');
-                });
+                activateTab(index);
+            });
 
-                // Add active class to clicked tab
-                tabButton.classList.add('p-gui__tab-button--active');
-                tabPane.classList.add('p-gui__tab-pane--active');
+            tabButton.addEventListener('keydown', (evt) => {
+                let targetIndex: number | null = null;
+                if (evt.key === 'ArrowRight') {
+                    targetIndex = (index + 1) % tabs.length;
+                } else if (evt.key === 'ArrowLeft') {
+                    targetIndex = (index - 1 + tabs.length) % tabs.length;
+                } else if (evt.key === 'Home') {
+                    targetIndex = 0;
+                } else if (evt.key === 'End') {
+                    targetIndex = tabs.length - 1;
+                } else {
+                    return;
+                }
+
+                evt.preventDefault();
+                activateTab(targetIndex);
+                tabInstances[targetIndex].button.focus();
             });
         });
+
+        function activateTab(index: number) {
+            // Remove active state from all tabs
+            tabInstances.forEach((tab) => {
+                tab.button.classList.remove('p-gui__tab-button--active');
+                tab.pane.classList.remove('p-gui__tab-pane--active');
+                tab.button.setAttribute('aria-selected', 'false');
+                tab.button.setAttribute('tabindex', '-1');
+            });
+
+            // Add active state to the target tab
+            const target = tabInstances[index];
+            target.button.classList.add('p-gui__tab-button--active');
+            target.pane.classList.add('p-gui__tab-pane--active');
+            target.button.setAttribute('aria-selected', 'true');
+            target.button.setAttribute('tabindex', '0');
+        }
 
         // Create main tabs instance to return
         const tabsInstance = new Folder({
@@ -689,6 +762,7 @@ export default class GUI {
         }
 
         this.domElement.classList.toggle('p-gui--collapsed');
+        this.closeBtn?.setAttribute('aria-expanded', String(!this.closed));
     }
 
     kill() {

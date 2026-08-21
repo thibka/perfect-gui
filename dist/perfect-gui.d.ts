@@ -147,6 +147,7 @@ declare class GUI {
     parent: GUI | null;
     imageContainer: HTMLElement | null;
     header: HTMLElement;
+    private closeBtn;
     previousInnerScroll: number;
     getTab?: (index: number) => GUI | null;
     getTabElement?: (index: number) => HTMLElement | null;
@@ -262,6 +263,8 @@ export declare class Slider {
     element: HTMLElement;
     constructor(parent: GUI, obj: any, prop: string, options?: SliderOptions);
     _updateHandlePositionFromPointer(evt: PointerEvent, firstDown?: boolean): void;
+    _setValue(newValue: number): void;
+    _updateAriaValue(): void;
     _updateHandlePositionFromValue(): void;
     _triggerCallbacks(): void;
     _quantize(x: number, step: number): number;

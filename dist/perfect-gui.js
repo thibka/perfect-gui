@@ -3,8 +3,12 @@ var e = class {
 	constructor(e, t = {}) {
 		if (this.callback = null, this.parent = e, typeof t != "object") throw Error(`[GUI] button() first parameter must be an object. Received: ${typeof t}.`);
 		let n = t.label || "\xA0", r = typeof t.tooltip == "string" ? t.tooltip : t.tooltip === !0 ? n : null, i = document.createElement("div");
-		i.className = "p-gui__button", i.textContent = n, r && i.setAttribute("title", r), i.addEventListener("click", () => {
+		i.className = "p-gui__button", i.textContent = n, i.setAttribute("role", "button"), i.setAttribute("tabindex", "0"), r && i.setAttribute("title", r);
+		let a = () => {
 			this.callback && this.callback(), this.parent.onUpdate ? this.parent.onUpdate() : this.parent.isFolder && this.parent.firstParent.onUpdate && this.parent.firstParent.onUpdate();
+		};
+		i.addEventListener("click", a), i.addEventListener("keydown", (e) => {
+			(e.key === "Enter" || e.key === " ") && (e.preventDefault(), a());
 		}), typeof t.color == "string" && (i.style.setProperty("--color-accent", t.color), i.style.setProperty("--color-accent-hover", t.hoverColor || t.color)), this.parent.wrapper.append(i), this.element = i;
 	}
 	onClick(e) {
@@ -19,9 +23,9 @@ var e = class {
 		let a = this.propReferences.push(this.obj[this.prop]) - 1, o = typeof r.tooltip == "string" ? r.tooltip : r.tooltip === !0 ? i : null, s = document.createElement("div");
 		s.className = "p-gui__slider", o && s.setAttribute("title", o), this.parent.wrapper.append(s), this.element = s;
 		let c = document.createElement("div");
-		c.className = "p-gui__slider-name", c.textContent = i, s.append(c), this.ctrlDiv = document.createElement("div"), this.ctrlDiv.prevPosition = 0, this.ctrlDiv.className = "p-gui__slider-ctrl", this.ctrlDiv.setAttribute("type", "range"), this.ctrlDiv.setAttribute("min", String(this.min)), this.ctrlDiv.setAttribute("max", String(this.max)), s.append(this.ctrlDiv);
+		c.className = "p-gui__slider-name", c.textContent = i, s.append(c), this.ctrlDiv = document.createElement("div"), this.ctrlDiv.prevPosition = 0, this.ctrlDiv.className = "p-gui__slider-ctrl", this.ctrlDiv.setAttribute("role", "slider"), this.ctrlDiv.setAttribute("tabindex", "0"), this.ctrlDiv.setAttribute("aria-label", i), this.ctrlDiv.setAttribute("aria-valuemin", String(this.min)), this.ctrlDiv.setAttribute("aria-valuemax", String(this.max)), s.append(this.ctrlDiv);
 		let l = document.createElement("div");
-		l.className = "p-gui__slider-bar", this.ctrlDiv.append(l), this.handle = document.createElement("div"), this.handle.className = "p-gui__slider-handle", this.ctrlDiv.append(this.handle), this.filling = document.createElement("div"), this.filling.className = "p-gui__slider-filling", l.append(this.filling), this.valueInput = document.createElement("input"), this.valueInput.className = "p-gui__slider-value", this.valueInput.value = this.obj[this.prop], s.append(this.valueInput), this._updateHandlePositionFromValue(), new ResizeObserver(() => {
+		l.className = "p-gui__slider-bar", this.ctrlDiv.append(l), this.handle = document.createElement("div"), this.handle.className = "p-gui__slider-handle", this.ctrlDiv.append(this.handle), this.filling = document.createElement("div"), this.filling.className = "p-gui__slider-filling", l.append(this.filling), this.valueInput = document.createElement("input"), this.valueInput.className = "p-gui__slider-value", this.valueInput.value = this.obj[this.prop], this.valueInput.setAttribute("aria-label", i), s.append(this.valueInput), this._updateHandlePositionFromValue(), new ResizeObserver(() => {
 			this._updateHandlePositionFromValue();
 		}).observe(this.ctrlDiv), this.valueInput.addEventListener("change", () => {
 			this._updateHandlePositionFromValue(), this._triggerCallbacks();
@@ -33,6 +37,20 @@ var e = class {
 			this.ctrlDiv.pointerDown = !1;
 		}), window.addEventListener("pointermove", (e) => {
 			this.ctrlDiv.pointerDown && (this.ctrlDiv.pointerDelta = e.clientX - (this.ctrlDiv.prevPosition ?? 0), this._updateHandlePositionFromPointer(e));
+		}), this.ctrlDiv.addEventListener("keydown", (e) => {
+			let t = 0;
+			if (e.key === "ArrowRight" || e.key === "ArrowUp") t = this.step;
+			else if (e.key === "ArrowLeft" || e.key === "ArrowDown") t = -this.step;
+			else if (e.key === "PageUp") t = this.step * 10;
+			else if (e.key === "PageDown") t = -this.step * 10;
+			else if (e.key === "Home") {
+				this._setValue(this.min), e.preventDefault();
+				return;
+			} else if (e.key === "End") {
+				this._setValue(this.max), e.preventDefault();
+				return;
+			} else return;
+			e.preventDefault(), this._setValue(parseFloat(this.valueInput.value) + t);
 		}), Object.defineProperty(this.obj, this.prop, {
 			set: (e) => {
 				this.propReferences[a] = e, this.valueInput.value = e, this._updateHandlePositionFromValue(), this.callback && this.callback(parseFloat(this.valueInput.value));
@@ -46,11 +64,17 @@ var e = class {
 		let c = this.min + (this.max - this.min) * (s - i / 2) / (r - i);
 		c = c > o ? this._quantizeFloor(c, this.step) : this._quantizeCeil(c, this.step), c = parseFloat(c.toFixed(9));
 		let l = parseFloat((o + this.step).toFixed(9)), u = parseFloat((o - this.step).toFixed(9));
-		(c >= l || c <= u) && (c = parseFloat(c.toFixed(this.decimals)), this.valueInput.value = String(c), this.ctrlDiv.prevPosition = e.clientX, this.handle.style.transform = `translate(-50%, -50%) translateX(${s}px)`, this.handle.position = s, this.filling.style.width = this.handle.position + "px", this._triggerCallbacks());
+		(c >= l || c <= u) && (c = parseFloat(c.toFixed(this.decimals)), this.valueInput.value = String(c), this.ctrlDiv.prevPosition = e.clientX, this.handle.style.transform = `translate(-50%, -50%) translateX(${s}px)`, this.handle.position = s, this.filling.style.width = this.handle.position + "px", this._updateAriaValue(), this._triggerCallbacks());
+	}
+	_setValue(e) {
+		e = Math.max(this.min, Math.min(this.max, e)), e = parseFloat(e.toFixed(this.decimals)), this.valueInput.value = String(e), this._updateHandlePositionFromValue(), this._triggerCallbacks();
+	}
+	_updateAriaValue() {
+		this.ctrlDiv.setAttribute("aria-valuenow", this.valueInput.value);
 	}
 	_updateHandlePositionFromValue() {
 		let e = this.ctrlDiv.offsetWidth, t = this.handle.offsetWidth, n = this.parent._mapLinear(parseFloat(this.valueInput.value), this.min, this.max, t / 2, e - t / 2);
-		n = Math.max(t / 2, Math.min(n, e - t / 2)), this.handle.style.transform = `translate(-50%, -50%) translateX(${n}px)`, this.handle.position = n, this.filling.style.width = this.handle.position + "px";
+		n = Math.max(t / 2, Math.min(n, e - t / 2)), this.handle.style.transform = `translate(-50%, -50%) translateX(${n}px)`, this.handle.position = n, this.filling.style.width = this.handle.position + "px", this._updateAriaValue();
 	}
 	_triggerCallbacks() {
 		this.obj[this.prop] = parseFloat(this.valueInput.value), this.parent.onUpdate ? this.parent.onUpdate() : this.parent.isFolder && this.parent.firstParent.onUpdate && this.parent.firstParent.onUpdate();
@@ -84,15 +108,19 @@ var e = class {
 			typeof e == "number" && (e = `${e}px`), c += `height: ${e}; `;
 		}
 		let l = document.createElement("div");
-		l.className = "p-gui__image", l.style = "background-image: url(" + t + "); " + c, a && l.setAttribute("title", a), this.parent.imageContainer.append(l), this.element = l, o && s && l.classList.add("p-gui__image--selected");
+		l.className = "p-gui__image", l.style = "background-image: url(" + t + "); " + c, l.setAttribute("role", "button"), l.setAttribute("tabindex", "0"), l.setAttribute("aria-label", i), l.setAttribute("aria-pressed", String(o)), a && l.setAttribute("title", a), this.parent.imageContainer.append(l), this.element = l, o && s && l.classList.add("p-gui__image--selected");
 		let u = document.createElement("div");
-		u.className = "p-gui__image-text", u.textContent = i, l.append(u), l.addEventListener("click", () => {
+		u.className = "p-gui__image-text", u.textContent = i, l.append(u);
+		let d = () => {
 			let e = l.parentElement?.querySelectorAll(".p-gui__image--selected") || [];
-			for (let t = 0; t < e.length; t++) e[t].classList.remove("p-gui__image--selected");
-			s && l.classList.add("p-gui__image--selected"), typeof this.callback == "function" && this.callback({
+			for (let t = 0; t < e.length; t++) e[t].classList.remove("p-gui__image--selected"), e[t].setAttribute("aria-pressed", "false");
+			s && (l.classList.add("p-gui__image--selected"), l.setAttribute("aria-pressed", "true")), typeof this.callback == "function" && this.callback({
 				path: t,
 				text: i
 			}), this.parent.onUpdate ? this.parent.onUpdate() : this.parent.isFolder && this.parent.firstParent.onUpdate && this.parent.firstParent.onUpdate();
+		};
+		l.addEventListener("click", d), l.addEventListener("keydown", (e) => {
+			(e.key === "Enter" || e.key === " ") && (e.preventDefault(), d());
 		});
 	}
 	onClick(e) {
@@ -102,15 +130,20 @@ var e = class {
 	constructor(e, t, n, r = {}) {
 		if (this.parent = e, this.callback = null, !t || typeof t != "object" || typeof n != "string") throw Error("[GUI] toggle() invalid parameters.");
 		let i = typeof r.label == "string" && r.label !== "" ? r.label : n, a = this.parent.propReferences.push(t[n]) - 1, o = typeof r.tooltip == "string" ? r.tooltip : r.tooltip === !0 ? i : null, s = document.createElement("div");
-		s.textContent = i, s.className = "p-gui__toggle", o && s.setAttribute("title", o), this.parent.wrapper.append(s), this.element = s;
+		s.textContent = i, s.className = "p-gui__toggle", s.setAttribute("role", "switch"), s.setAttribute("tabindex", "0"), s.setAttribute("aria-checked", String(!!t[n])), o && s.setAttribute("title", o), this.parent.wrapper.append(s), this.element = s;
 		let c = t[n] ? " p-gui__toggle-checkbox--active" : "", l = document.createElement("div");
-		l.className = "p-gui__toggle-checkbox" + c, s.append(l), s.addEventListener("click", (e) => {
-			if (!e.target || !(e.target instanceof HTMLElement)) return;
-			let r = !0;
-			l.classList.contains("p-gui__toggle-checkbox--active") && (r = !1), l.classList.toggle("p-gui__toggle-checkbox--active"), t[n] = r, this.parent.onUpdate ? this.parent.onUpdate() : this.parent.isFolder && this.parent.firstParent.onUpdate && this.parent.firstParent.onUpdate();
+		l.className = "p-gui__toggle-checkbox" + c, s.append(l);
+		let u = () => {
+			let e = !0;
+			l.classList.contains("p-gui__toggle-checkbox--active") && (e = !1), l.classList.toggle("p-gui__toggle-checkbox--active"), s.setAttribute("aria-checked", String(e)), t[n] = e, this.parent.onUpdate ? this.parent.onUpdate() : this.parent.isFolder && this.parent.firstParent.onUpdate && this.parent.firstParent.onUpdate();
+		};
+		s.addEventListener("click", (e) => {
+			!e.target || !(e.target instanceof HTMLElement) || u();
+		}), s.addEventListener("keydown", (e) => {
+			(e.key === "Enter" || e.key === " ") && (e.preventDefault(), u());
 		}), Object.defineProperty(t, n, {
 			set: (e) => {
-				this.parent.propReferences[a] = e, e ? l.classList.add("p-gui__toggle-checkbox--active") : l.classList.remove("p-gui__toggle-checkbox--active"), typeof this.callback == "function" && this.callback(e);
+				this.parent.propReferences[a] = e, e ? l.classList.add("p-gui__toggle-checkbox--active") : l.classList.remove("p-gui__toggle-checkbox--active"), s.setAttribute("aria-checked", String(!!e)), typeof this.callback == "function" && this.callback(e);
 			},
 			get: () => this.parent.propReferences[a]
 		});
@@ -130,7 +163,7 @@ var e = class {
 		})(), u = this.parent.propReferences.push(t[n]) - 1, d = document.createElement("div");
 		d.className = "p-gui__list", d.textContent = a, c && d.setAttribute("title", c), this.parent.wrapper.append(d), this.element = d;
 		let f = document.createElement("select");
-		d.append(f), f.className = "p-gui__list-dropdown", f.addEventListener("change", (e) => {
+		d.append(f), f.className = "p-gui__list-dropdown", f.setAttribute("aria-label", a), f.addEventListener("change", (e) => {
 			t[n] = e.target.value, this.parent.onUpdate ? this.parent.onUpdate() : this.parent.isFolder && this.parent.firstParent.onUpdate && this.parent.firstParent.onUpdate();
 		}), o && o.forEach((e, t) => {
 			let n = s ? e.label : e, r = s ? e.value : e, i = document.createElement("option");
@@ -167,7 +200,7 @@ var e = class {
 		let a = typeof r.tooltip == "string" ? r.tooltip : r.tooltip === !0 ? i : null, o = this.parent.propReferences.push(t[n]) - 1, s = t[n] || "#000000", c = document.createElement("div");
 		c.className = "p-gui__color", c.textContent = i, a && c.setAttribute("title", a), this.parent.wrapper.append(c), this.element = c;
 		let l = document.createElement("input");
-		l.className = "p-gui__color-picker", l.setAttribute("type", "color"), l.value = s, c.append(l), l.addEventListener("input", () => {
+		l.className = "p-gui__color-picker", l.setAttribute("type", "color"), l.setAttribute("aria-label", i), l.value = s, c.append(l), l.addEventListener("input", () => {
 			t[n] = l.value, this.parent.onUpdate ? this.parent.onUpdate() : this.parent.isFolder && this.parent.firstParent.onUpdate && this.parent.firstParent.onUpdate();
 		}), Object.defineProperty(t, n, {
 			set: (e) => {
@@ -192,38 +225,50 @@ var e = class {
 		let S = document.createElement("div");
 		S.className = "p-gui__vector-value", S.textContent = a[n] + ", " + o[r], x.append(S);
 		let C = document.createElement("div");
-		C.className = "p-gui__vector2-area", x.append(C), C.addEventListener("click", (e) => {
-			let t = this.parent._mapLinear(e.offsetX, 0, C.clientWidth, u, d), i = this.parent._mapLinear(e.offsetY, 0, C.clientHeight, p, f), s = Math.max(u, Math.min(d, t)), c = Math.max(f, Math.min(p, i));
-			a[n] = parseFloat(s.toFixed(g)), o[r] = parseFloat(c.toFixed(_)), this.callback && this.callback(a[n], o[r]), this.parent.onUpdate ? this.parent.onUpdate() : this.parent.isFolder && this.parent.firstParent.onUpdate && this.parent.firstParent.onUpdate();
+		C.className = "p-gui__vector2-area", C.setAttribute("role", "slider"), C.setAttribute("tabindex", "0"), C.setAttribute("aria-label", s), x.append(C);
+		let w = (e, t) => {
+			let i = Math.max(u, Math.min(d, e)), s = Math.max(f, Math.min(p, t));
+			a[n] = parseFloat(i.toFixed(g)), o[r] = parseFloat(s.toFixed(_)), this.callback && this.callback(a[n], o[r]), this.parent.onUpdate ? this.parent.onUpdate() : this.parent.isFolder && this.parent.firstParent.onUpdate && this.parent.firstParent.onUpdate();
+		};
+		C.addEventListener("click", (e) => {
+			w(this.parent._mapLinear(e.offsetX, 0, C.clientWidth, u, d), this.parent._mapLinear(e.offsetY, 0, C.clientHeight, p, f));
 		});
-		let w = (e) => {
-			let t = C.getBoundingClientRect(), i = e.clientX - t.left, s = e.clientY - t.top, c = this.parent._mapLinear(i, 0, C.clientWidth, u, d), l = this.parent._mapLinear(s, 0, C.clientHeight, p, f), m = Math.max(u, Math.min(d, c)), h = Math.max(f, Math.min(p, l));
-			a[n] = parseFloat(m.toFixed(g)), o[r] = parseFloat(h.toFixed(_)), this.callback && this.callback(a[n], o[r]), this.parent.onUpdate ? this.parent.onUpdate() : this.parent.isFolder && this.parent.firstParent.onUpdate && this.parent.firstParent.onUpdate();
+		let T = (e) => {
+			let t = C.getBoundingClientRect(), n = e.clientX - t.left, r = e.clientY - t.top;
+			w(this.parent._mapLinear(n, 0, C.clientWidth, u, d), this.parent._mapLinear(r, 0, C.clientHeight, p, f));
 		};
 		C.addEventListener("pointerdown", (e) => {
-			w(e), document.addEventListener("pointermove", w), document.addEventListener("pointerup", () => {
-				document.removeEventListener("pointermove", w);
+			T(e), document.addEventListener("pointermove", T), document.addEventListener("pointerup", () => {
+				document.removeEventListener("pointermove", T);
 			}, { once: !0 });
+		}), C.addEventListener("keydown", (e) => {
+			let t = 0, i = 0;
+			if (e.key === "ArrowRight") t = m;
+			else if (e.key === "ArrowLeft") t = -m;
+			else if (e.key === "ArrowUp") i = h;
+			else if (e.key === "ArrowDown") i = -h;
+			else return;
+			e.preventDefault(), w(a[n] + t, o[r] + i);
 		});
-		let T = document.createElement("div");
-		T.className = "p-gui__vector2-line p-gui__vector2-line-x", C.append(T);
 		let E = document.createElement("div");
-		E.className = "p-gui__vector2-line p-gui__vector2-line-y", C.append(E);
+		E.className = "p-gui__vector2-line p-gui__vector2-line-x", C.append(E);
 		let D = document.createElement("div");
-		D.className = "p-gui__vector2-dot", C.append(D);
-		let O = () => {
-			D.style.left = this.parent._mapLinear(a[n], u, d, 0, C.clientWidth) + "px", D.style.top = this.parent._mapLinear(o[r], f, p, C.clientHeight, 0) + "px";
+		D.className = "p-gui__vector2-line p-gui__vector2-line-y", C.append(D);
+		let O = document.createElement("div");
+		O.className = "p-gui__vector2-dot", C.append(O);
+		let k = () => {
+			O.style.left = this.parent._mapLinear(a[n], u, d, 0, C.clientWidth) + "px", O.style.top = this.parent._mapLinear(o[r], f, p, C.clientHeight, 0) + "px", C.setAttribute("aria-valuetext", `${a[n]}, ${o[r]}`);
 		};
-		O(), new ResizeObserver(() => {
-			O();
+		k(), new ResizeObserver(() => {
+			k();
 		}).observe(C), Object.defineProperty(a, n, {
 			set: (e) => {
-				this.parent.propReferences[v] = e, O(), S.textContent = String(e) + ", " + o[r];
+				this.parent.propReferences[v] = e, k(), S.textContent = String(e) + ", " + o[r];
 			},
 			get: () => this.parent.propReferences[v]
 		}), Object.defineProperty(o, r, {
 			set: (e) => {
-				this.parent.propReferences[y] = e, O(), S.textContent = a[n] + ", " + String(e);
+				this.parent.propReferences[y] = e, k(), S.textContent = a[n] + ", " + String(e);
 			},
 			get: () => this.parent.propReferences[y]
 		});
@@ -246,19 +291,31 @@ var e = class {
 		let l = this.propReferences.push(this.obj[this.prop]) - 1, u = typeof r.tooltip == "string" ? r.tooltip : r.tooltip === !0 ? i : null, d = document.createElement("div");
 		d.className = "p-gui__angle", u && d.setAttribute("title", u), this.parent.wrapper.append(d), this.element = d;
 		let f = document.createElement("div");
-		if (f.className = "p-gui__angle-name", f.textContent = i, d.append(f), this.dial = document.createElement("div"), this.dial.className = "p-gui__angle-dial", d.append(this.dial), !this.wraps) {
+		if (f.className = "p-gui__angle-name", f.textContent = i, d.append(f), this.dial = document.createElement("div"), this.dial.className = "p-gui__angle-dial", this.dial.setAttribute("role", "slider"), this.dial.setAttribute("tabindex", "0"), this.dial.setAttribute("aria-label", i), this.wraps || (this.dial.setAttribute("aria-valuemin", String(this.minDeg)), this.dial.setAttribute("aria-valuemax", String(this.maxDeg))), d.append(this.dial), !this.wraps) {
 			let e = this.maxDeg - this.minDeg;
 			this.dial.style.backgroundImage = `conic-gradient(from ${this.minDeg}deg, transparent ${e}deg, rgba(255, 255, 255, .2) ${e}deg)`;
 		}
 		this.needle = document.createElement("div"), this.needle.className = "p-gui__angle-needle", this.dial.append(this.needle);
 		let p = document.createElement("div");
-		p.className = "p-gui__angle-handle", this.needle.append(p), this.valueInput = document.createElement("input"), this.valueInput.className = "p-gui__angle-value", d.append(this.valueInput);
+		p.className = "p-gui__angle-handle", this.needle.append(p), this.valueInput = document.createElement("input"), this.valueInput.className = "p-gui__angle-value", this.valueInput.setAttribute("aria-label", i), d.append(this.valueInput);
 		let m = document.createElement("div");
 		m.className = "p-gui__angle-unit", m.textContent = this.unit == "rad" ? "rad" : "°", d.append(m), this._display(this._readDeg()), this.valueInput.addEventListener("change", () => {
 			let e = parseFloat(this.valueInput.value), t = isNaN(e) ? this._readDeg() : this._toDeg(e);
 			this._display(this._resolveDeg(t)), this._triggerCallbacks();
 		}), this.dial.addEventListener("pointerdown", (e) => {
 			this.dial.pointerDown = !0, this._updateFromPointer(e), document.addEventListener("pointermove", this._onPointerMove), document.addEventListener("pointerup", this._onPointerUp, { once: !0 });
+		}), this.dial.addEventListener("keydown", (e) => {
+			let t = 0;
+			if (e.key === "ArrowRight" || e.key === "ArrowUp") t = this.stepDeg;
+			else if (e.key === "ArrowLeft" || e.key === "ArrowDown") t = -this.stepDeg;
+			else if (e.key === "Home") {
+				this._display(this._resolveDeg(this.minDeg)), this._triggerCallbacks(), e.preventDefault();
+				return;
+			} else if (e.key === "End") {
+				this._display(this._resolveDeg(this.maxDeg)), this._triggerCallbacks(), e.preventDefault();
+				return;
+			} else return;
+			e.preventDefault(), this._display(this._resolveDeg(this._readDeg() + t)), this._triggerCallbacks();
 		}), Object.defineProperty(this.obj, this.prop, {
 			set: (e) => {
 				this.propReferences[l] = e, this._display(this._readDeg()), this.callback && this.callback(e);
@@ -279,7 +336,7 @@ var e = class {
 		return typeof e == "number" && isFinite(e) ? this._toDeg(e) : this.minDeg;
 	}
 	_display(e) {
-		this.needle.style.transform = `rotate(${e - 90}deg)`, this.valueInput.value = this._fromDeg(e).toFixed(this.decimals);
+		this.needle.style.transform = `rotate(${e - 90}deg)`, this.valueInput.value = this._fromDeg(e).toFixed(this.decimals), this.dial.setAttribute("aria-valuenow", this.valueInput.value), this.dial.setAttribute("aria-valuetext", `${this.valueInput.value}${this.unit == "rad" ? " rad" : "°"}`);
 	}
 	_triggerCallbacks() {
 		this.obj[this.prop] = parseFloat(this.valueInput.value), this.parent.onUpdate ? this.parent.onUpdate() : this.parent.isFolder && this.parent.firstParent.onUpdate && this.parent.firstParent.onUpdate();
@@ -439,8 +496,8 @@ function b(e) {
         transition: var(--transition) border-color;
     }
     
-    .p-gui__slider:hover, 
-    .p-gui__button:hover, 
+    .p-gui__slider:hover,
+    .p-gui__button:hover,
     .p-gui__toggle:hover,
     .p-gui__list:hover,
     .p-gui__vector2:hover,
@@ -448,8 +505,19 @@ function b(e) {
     .p-gui__color:hover,
     .p-gui__tabs:hover {
         border-color: rgba(255,255,255,.2);
-    }   
-    
+    }
+
+    .p-gui [role="button"]:focus-visible,
+    .p-gui [role="switch"]:focus-visible,
+    .p-gui [role="slider"]:focus-visible,
+    .p-gui [role="tab"]:focus-visible,
+    .p-gui input:focus-visible,
+    .p-gui select:focus-visible,
+    .p-gui button:focus-visible {
+        outline: 2px solid var(--color-accent-hover);
+        outline-offset: 1px;
+    }
+
     ${u}
     
     ${_}
@@ -473,7 +541,11 @@ function b(e) {
 }
 //#endregion
 //#region src/index.ts
-var x = class {
+var x = 0;
+function S() {
+	return ++x;
+}
+var C = class {
 	constructor(e = {}, t = !1) {
 		if (this.container = document.body, this.label = "", this.backgroundColor = null, this.opacity = 1, this.maxHeight = window.innerHeight, this.initMaxHeight = null, this.instanceId = 0, this.wrapperWidth = 290, this.stylesheet = null, this.closed = !1, this.domElement = null, this.hasBeenDragged = !1, this.xOffset = 0, this.yOffset = 0, this.position = {
 			initX: 0,
@@ -561,11 +633,13 @@ var x = class {
 		let e = document.createElement("div");
 		e.id = "p-gui-" + this.instanceId, e.className = "p-gui" + (this.closed ? " p-gui--collapsed" : ""), e.setAttribute("data-lenis-prevent", ""), this.container.append(e), this.header = document.createElement("div"), this.header.className = "p-gui__header", this.header.textContent = this.label, this.header.style = `${this.backgroundColor ? "border-color: " + this.backgroundColor + ";" : ""}`, e.append(this.header);
 		let t = document.createElement("div");
-		t.className = "p-gui__header-close", t.addEventListener("click", this.toggleClose.bind(this)), this.header.append(t);
+		t.className = "p-gui__content", t.id = "p-gui-content-" + this.instanceId, e.append(t);
 		let n = document.createElement("div");
-		n.className = "p-gui__content", e.append(n);
+		n.className = "p-gui__header-close", n.setAttribute("role", "button"), n.setAttribute("tabindex", "0"), n.setAttribute("aria-label", "Toggle panel"), n.setAttribute("aria-expanded", String(!this.closed)), n.setAttribute("aria-controls", t.id), n.addEventListener("click", this.toggleClose.bind(this)), n.addEventListener("keydown", (e) => {
+			(e.key === "Enter" || e.key === " ") && (e.preventDefault(), this.toggleClose());
+		}), this.header.append(n), this.closeBtn = n;
 		let r = document.createElement("div");
-		return r.className = "p-gui__inner", n.append(r), [e, r];
+		return r.className = "p-gui__inner", t.append(r), [e, r];
 	}
 	button(t = {}) {
 		return this.imageContainer = null, new e(this, t);
@@ -603,18 +677,23 @@ var x = class {
 		let c = document.createElement("div");
 		c.innerHTML = `<span class="p-gui__folder-arrow"></span>${n}`, c.className = "p-gui__folder-header", s.append(c);
 		let l = document.createElement("div");
-		l.className = "p-gui__folder-content", s.append(l);
+		l.className = "p-gui__folder-content", l.id = "p-gui-folder-content-" + S(), s.append(l);
 		let u = document.createElement("div");
-		u.className = "p-gui__folder-inner", l.append(u), c.addEventListener("click", () => {
-			s.classList.toggle("p-gui__folder--closed");
+		u.className = "p-gui__folder-inner", l.append(u), c.setAttribute("role", "button"), c.setAttribute("tabindex", "0"), c.setAttribute("aria-expanded", String(!t)), c.setAttribute("aria-controls", l.id);
+		let d = () => {
+			let e = s.classList.toggle("p-gui__folder--closed");
+			c.setAttribute("aria-expanded", String(!e));
+		};
+		c.addEventListener("click", d), c.addEventListener("keydown", (e) => {
+			(e.key === "Enter" || e.key === " ") && (e.preventDefault(), d());
 		});
-		let d = new S({
+		let f = new w({
 			container: s,
 			wrapper: u,
 			parent: this,
 			firstParent: this.firstParent
 		});
-		return this.folders.push(d), d;
+		return this.folders.push(f), f;
 	}
 	tabs(e = {}) {
 		let t = Array.isArray(e.tabs) ? e.tabs : [], n = e.active || 0, r = e.color || null, i = e.maxHeight || null;
@@ -626,46 +705,59 @@ var x = class {
 		let s = document.createElement("div");
 		s.className = a, s.style = o, this.wrapper.append(s);
 		let c = document.createElement("div");
-		c.className = "p-gui__tabs-header", s.append(c);
+		c.className = "p-gui__tabs-header", c.setAttribute("role", "tablist"), s.append(c);
 		let l = document.createElement("div");
 		l.className = "p-gui__tabs-content", s.append(l);
 		let u = [];
-		t.forEach((e, t) => {
-			let r = document.createElement("button");
-			r.className = "p-gui__tab-button", t === n && (r.className += " p-gui__tab-button--active"), r.textContent = e, c.append(r);
-			let i = document.createElement("div");
-			i.className = "p-gui__tab-pane", t === n && (i.className += " p-gui__tab-pane--active"), l.append(i);
-			let a = new S({
+		t.forEach((e, r) => {
+			let i = document.createElement("button");
+			i.className = "p-gui__tab-button", r === n && (i.className += " p-gui__tab-button--active"), i.textContent = e, i.id = "p-gui-tab-" + S(), i.setAttribute("role", "tab"), i.setAttribute("aria-selected", String(r === n)), i.setAttribute("tabindex", r === n ? "0" : "-1"), c.append(i);
+			let a = document.createElement("div");
+			a.className = "p-gui__tab-pane", a.id = "p-gui-tabpanel-" + S(), a.setAttribute("role", "tabpanel"), a.setAttribute("aria-labelledby", i.id), i.setAttribute("aria-controls", a.id), r === n && (a.className += " p-gui__tab-pane--active"), l.append(a);
+			let o = new w({
 				container: s,
-				wrapper: i,
+				wrapper: a,
 				parent: this,
 				firstParent: this.firstParent
 			});
 			u.push({
-				gui: a,
-				button: r,
-				pane: i
-			}), r.addEventListener("click", () => {
-				u.forEach((e) => {
-					e.button.classList.remove("p-gui__tab-button--active"), e.pane.classList.remove("p-gui__tab-pane--active");
-				}), r.classList.add("p-gui__tab-button--active"), i.classList.add("p-gui__tab-pane--active");
+				gui: o,
+				button: i,
+				pane: a
+			}), i.addEventListener("click", () => {
+				d(r);
+			}), i.addEventListener("keydown", (e) => {
+				let n = null;
+				if (e.key === "ArrowRight") n = (r + 1) % t.length;
+				else if (e.key === "ArrowLeft") n = (r - 1 + t.length) % t.length;
+				else if (e.key === "Home") n = 0;
+				else if (e.key === "End") n = t.length - 1;
+				else return;
+				e.preventDefault(), d(n), u[n].button.focus();
 			});
 		});
-		let d = new S({
+		function d(e) {
+			u.forEach((e) => {
+				e.button.classList.remove("p-gui__tab-button--active"), e.pane.classList.remove("p-gui__tab-pane--active"), e.button.setAttribute("aria-selected", "false"), e.button.setAttribute("tabindex", "-1");
+			});
+			let t = u[e];
+			t.button.classList.add("p-gui__tab-button--active"), t.pane.classList.add("p-gui__tab-pane--active"), t.button.setAttribute("aria-selected", "true"), t.button.setAttribute("tabindex", "0");
+		}
+		let f = new w({
 			container: s,
 			wrapper: u[n]?.pane || document.createElement("div"),
 			parent: this,
 			firstParent: this.firstParent
 		});
-		return d.getTab = (e) => u[e]?.gui || null, d.getTabElement = (e) => u[e]?.button || null, d.setActiveTab = (e) => {
+		return f.getTab = (e) => u[e]?.gui || null, f.getTabElement = (e) => u[e]?.button || null, f.setActiveTab = (e) => {
 			e >= 0 && e < u.length && u[e].button.click();
-		}, d.getActiveTab = () => u.findIndex((e) => e.button.classList.contains("p-gui__tab-button--active")), d.element = s, this.tabsArray.push(d), d;
+		}, f.getActiveTab = () => u.findIndex((e) => e.button.classList.contains("p-gui__tab-button--active")), f.element = s, this.tabsArray.push(f), f;
 	}
 	_makeDraggable() {
 		!this.domElement || !this.header || this.header.addEventListener("pointerdown", this._onPointerDown);
 	}
 	toggleClose() {
-		this.domElement && (this.closed = !this.closed, this.closed ? (this.previousInnerScroll = this.wrapper.scrollTop, this.wrapper.scrollTo(0, 0)) : this.wrapper.scrollTo(0, this.previousInnerScroll), this.domElement.classList.toggle("p-gui--collapsed"));
+		this.domElement && (this.closed = !this.closed, this.closed ? (this.previousInnerScroll = this.wrapper.scrollTop, this.wrapper.scrollTo(0, 0)) : this.wrapper.scrollTo(0, this.previousInnerScroll), this.domElement.classList.toggle("p-gui--collapsed"), this.closeBtn?.setAttribute("aria-expanded", String(!this.closed)));
 	}
 	kill() {
 		this.autoRepositioning && window.removeEventListener("resize", this._boundHandleResize), this.domElement &&= (this.domElement.remove(), null);
@@ -677,10 +769,10 @@ var x = class {
 		let t = e.toString(), n = t.indexOf(".");
 		return n === -1 ? 0 : t.length - n - 1;
 	}
-}, S = class extends x {
+}, w = class extends C {
 	constructor(e) {
 		super({}, !0), this.isFolder = !0, this.domElement = e.container, this.wrapper = e.wrapper, this.parent = e.parent, this.firstParent = e.firstParent;
 	}
 };
 //#endregion
-export { l as Angle, e as Button, a as Color, S as Folder, n as Image, i as List, t as Slider, r as Toggle, o as Vector2, x as default };
+export { l as Angle, e as Button, a as Color, w as Folder, n as Image, i as List, t as Slider, r as Toggle, o as Vector2, C as default };

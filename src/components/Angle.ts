@@ -92,6 +92,13 @@ export default class Angle {
 
         this.dial = document.createElement('div');
         this.dial.className = 'p-gui__angle-dial';
+        this.dial.setAttribute('role', 'slider');
+        this.dial.setAttribute('tabindex', '0');
+        this.dial.setAttribute('aria-label', label);
+        if (!this.wraps) {
+            this.dial.setAttribute('aria-valuemin', String(this.minDeg));
+            this.dial.setAttribute('aria-valuemax', String(this.maxDeg));
+        }
         container.append(this.dial);
 
         if (!this.wraps) {
@@ -109,6 +116,7 @@ export default class Angle {
 
         this.valueInput = document.createElement('input');
         this.valueInput.className = 'p-gui__angle-value';
+        this.valueInput.setAttribute('aria-label', label);
         container.append(this.valueInput);
 
         const unit_label = document.createElement('div');
@@ -135,6 +143,31 @@ export default class Angle {
             document.addEventListener('pointerup', this._onPointerUp, {
                 once: true,
             });
+        });
+
+        this.dial.addEventListener('keydown', (evt) => {
+            let delta = 0;
+            if (evt.key === 'ArrowRight' || evt.key === 'ArrowUp') {
+                delta = this.stepDeg;
+            } else if (evt.key === 'ArrowLeft' || evt.key === 'ArrowDown') {
+                delta = -this.stepDeg;
+            } else if (evt.key === 'Home') {
+                this._display(this._resolveDeg(this.minDeg));
+                this._triggerCallbacks();
+                evt.preventDefault();
+                return;
+            } else if (evt.key === 'End') {
+                this._display(this._resolveDeg(this.maxDeg));
+                this._triggerCallbacks();
+                evt.preventDefault();
+                return;
+            } else {
+                return;
+            }
+
+            evt.preventDefault();
+            this._display(this._resolveDeg(this._readDeg() + delta));
+            this._triggerCallbacks();
         });
 
         Object.defineProperty(this.obj, this.prop, {
@@ -216,6 +249,11 @@ export default class Angle {
     _display(deg: number) {
         this.needle.style.transform = `rotate(${deg - 90}deg)`;
         this.valueInput.value = this._fromDeg(deg).toFixed(this.decimals);
+        this.dial.setAttribute('aria-valuenow', this.valueInput.value);
+        this.dial.setAttribute(
+            'aria-valuetext',
+            `${this.valueInput.value}${this.unit == 'rad' ? ' rad' : '°'}`,
+        );
     }
 
     _triggerCallbacks() {

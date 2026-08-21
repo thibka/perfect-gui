@@ -34,6 +34,9 @@ export default class Toggle {
         const container = document.createElement('div');
         container.textContent = label;
         container.className = 'p-gui__toggle';
+        container.setAttribute('role', 'switch');
+        container.setAttribute('tabindex', '0');
+        container.setAttribute('aria-checked', String(!!obj[prop]));
         if (tooltip) {
             container.setAttribute('title', tooltip);
         }
@@ -48,9 +51,7 @@ export default class Toggle {
         checkbox.className = 'p-gui__toggle-checkbox' + activeClass;
         container.append(checkbox);
 
-        container.addEventListener('click', (ev) => {
-            if (!ev.target || !(ev.target instanceof HTMLElement)) return;
-
+        const toggleValue = () => {
             let value = true;
 
             if (checkbox.classList.contains('p-gui__toggle-checkbox--active')) {
@@ -58,6 +59,7 @@ export default class Toggle {
             }
 
             checkbox.classList.toggle('p-gui__toggle-checkbox--active');
+            container.setAttribute('aria-checked', String(value));
 
             obj[prop] = value;
 
@@ -68,6 +70,19 @@ export default class Toggle {
                 this.parent.firstParent.onUpdate
             ) {
                 this.parent.firstParent.onUpdate();
+            }
+        };
+
+        container.addEventListener('click', (ev) => {
+            if (!ev.target || !(ev.target instanceof HTMLElement)) return;
+
+            toggleValue();
+        });
+
+        container.addEventListener('keydown', (evt) => {
+            if (evt.key === 'Enter' || evt.key === ' ') {
+                evt.preventDefault();
+                toggleValue();
             }
         });
 
@@ -80,6 +95,7 @@ export default class Toggle {
                 } else {
                     checkbox.classList.remove('p-gui__toggle-checkbox--active');
                 }
+                container.setAttribute('aria-checked', String(!!val));
 
                 if (typeof this.callback == 'function') {
                     this.callback(val);

@@ -79,6 +79,7 @@ export default class List {
         let select = document.createElement('select');
         container.append(select);
         select.className = 'p-gui__list-dropdown';
+        select.setAttribute('aria-label', label);
         select.addEventListener('change', (ev) => {
             obj[prop] = (ev.target as HTMLSelectElement).value;
 

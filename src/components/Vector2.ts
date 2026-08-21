@@ -89,7 +89,32 @@ export default class Vector2 {
 
         const area = document.createElement('div');
         area.className = 'p-gui__vector2-area';
+        area.setAttribute('role', 'slider');
+        area.setAttribute('tabindex', '0');
+        area.setAttribute('aria-label', label);
         container.append(area);
+
+        const applyValue = (rawX: number, rawY: number) => {
+            const clampedX = Math.max(minX, Math.min(maxX, rawX));
+            const clampedY = Math.max(minY, Math.min(maxY, rawY));
+
+            objectX[propX] = parseFloat(clampedX.toFixed(decimalsX));
+            objectY[propY] = parseFloat(clampedY.toFixed(decimalsY));
+
+            if (this.callback) {
+                this.callback(objectX[propX], objectY[propY]);
+            }
+
+            if (this.parent.onUpdate) {
+                this.parent.onUpdate();
+            } else if (
+                this.parent.isFolder &&
+                this.parent.firstParent.onUpdate
+            ) {
+                this.parent.firstParent.onUpdate();
+            }
+        };
+
         area.addEventListener('click', (evt) => {
             const mappedX = this.parent._mapLinear(
                 evt.offsetX,
@@ -106,24 +131,7 @@ export default class Vector2 {
                 minY,
             );
 
-            const clampedX = Math.max(minX, Math.min(maxX, mappedX));
-            const clampedY = Math.max(minY, Math.min(maxY, mappedY));
-
-            objectX[propX] = parseFloat(clampedX.toFixed(decimalsX));
-            objectY[propY] = parseFloat(clampedY.toFixed(decimalsY));
-
-            if (this.callback) {
-                this.callback(objectX[propX], objectY[propY]);
-            }
-
-            if (this.parent.onUpdate) {
-                this.parent.onUpdate();
-            } else if (
-                this.parent.isFolder &&
-                this.parent.firstParent.onUpdate
-            ) {
-                this.parent.firstParent.onUpdate();
-            }
+            applyValue(mappedX, mappedY);
         });
 
         const handlePointerMove = (evt: PointerEvent) => {
@@ -131,7 +139,6 @@ export default class Vector2 {
             const offsetX = evt.clientX - rect.left;
             const offsetY = evt.clientY - rect.top;
 
-            // Calculate new values and clamp them within min/max bounds
             const mappedX = this.parent._mapLinear(
                 offsetX,
                 0,
@@ -147,24 +154,7 @@ export default class Vector2 {
                 minY,
             );
 
-            const clampedX = Math.max(minX, Math.min(maxX, mappedX));
-            const clampedY = Math.max(minY, Math.min(maxY, mappedY));
-
-            objectX[propX] = parseFloat(clampedX.toFixed(decimalsX));
-            objectY[propY] = parseFloat(clampedY.toFixed(decimalsY));
-
-            if (this.callback) {
-                this.callback(objectX[propX], objectY[propY]);
-            }
-
-            if (this.parent.onUpdate) {
-                this.parent.onUpdate();
-            } else if (
-                this.parent.isFolder &&
-                this.parent.firstParent.onUpdate
-            ) {
-                this.parent.firstParent.onUpdate();
-            }
+            applyValue(mappedX, mappedY);
         };
 
         area.addEventListener('pointerdown', (evt) => {
@@ -185,6 +175,20 @@ export default class Vector2 {
                 },
                 { once: true },
             );
+        });
+
+        area.addEventListener('keydown', (evt) => {
+            let deltaX = 0;
+            let deltaY = 0;
+
+            if (evt.key === 'ArrowRight') deltaX = stepX;
+            else if (evt.key === 'ArrowLeft') deltaX = -stepX;
+            else if (evt.key === 'ArrowUp') deltaY = stepY;
+            else if (evt.key === 'ArrowDown') deltaY = -stepY;
+            else return;
+
+            evt.preventDefault();
+            applyValue(objectX[propX] + deltaX, objectY[propY] + deltaY);
         });
 
         const line_x = document.createElement('div');
@@ -217,6 +221,11 @@ export default class Vector2 {
                     area.clientHeight,
                     0,
                 ) + 'px';
+
+            area.setAttribute(
+                'aria-valuetext',
+                `${objectX[propX]}, ${objectY[propY]}`,
+            );
         };
 
         // Initial position

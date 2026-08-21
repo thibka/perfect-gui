@@ -53,6 +53,7 @@ export default class Color {
         const colorpicker = document.createElement('input');
         colorpicker.className = 'p-gui__color-picker';
         colorpicker.setAttribute('type', 'color');
+        colorpicker.setAttribute('aria-label', label);
         colorpicker.value = value;
         container.append(colorpicker);
 

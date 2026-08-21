@@ -80,9 +80,11 @@ export default class Slider {
         this.ctrlDiv = document.createElement('div');
         this.ctrlDiv.prevPosition = 0;
         this.ctrlDiv.className = 'p-gui__slider-ctrl';
-        this.ctrlDiv.setAttribute('type', 'range');
-        this.ctrlDiv.setAttribute('min', String(this.min));
-        this.ctrlDiv.setAttribute('max', String(this.max));
+        this.ctrlDiv.setAttribute('role', 'slider');
+        this.ctrlDiv.setAttribute('tabindex', '0');
+        this.ctrlDiv.setAttribute('aria-label', label);
+        this.ctrlDiv.setAttribute('aria-valuemin', String(this.min));
+        this.ctrlDiv.setAttribute('aria-valuemax', String(this.max));
         container.append(this.ctrlDiv);
 
         const slider_bar = document.createElement('div');
@@ -100,6 +102,7 @@ export default class Slider {
         this.valueInput = document.createElement('input');
         this.valueInput.className = 'p-gui__slider-value';
         this.valueInput.value = this.obj[this.prop];
+        this.valueInput.setAttribute('aria-label', label);
         container.append(this.valueInput);
 
         // init position
@@ -137,6 +140,32 @@ export default class Slider {
                     evt.clientX - (this.ctrlDiv.prevPosition ?? 0);
                 this._updateHandlePositionFromPointer(evt);
             }
+        });
+
+        this.ctrlDiv.addEventListener('keydown', (evt) => {
+            let delta = 0;
+            if (evt.key === 'ArrowRight' || evt.key === 'ArrowUp') {
+                delta = this.step;
+            } else if (evt.key === 'ArrowLeft' || evt.key === 'ArrowDown') {
+                delta = -this.step;
+            } else if (evt.key === 'PageUp') {
+                delta = this.step * 10;
+            } else if (evt.key === 'PageDown') {
+                delta = -this.step * 10;
+            } else if (evt.key === 'Home') {
+                this._setValue(this.min);
+                evt.preventDefault();
+                return;
+            } else if (evt.key === 'End') {
+                this._setValue(this.max);
+                evt.preventDefault();
+                return;
+            } else {
+                return;
+            }
+
+            evt.preventDefault();
+            this._setValue(parseFloat(this.valueInput.value) + delta);
         });
 
         Object.defineProperty(this.obj, this.prop, {
@@ -202,8 +231,22 @@ export default class Slider {
 
             this.filling.style.width = this.handle.position + 'px';
 
+            this._updateAriaValue();
             this._triggerCallbacks();
         }
+    }
+
+    _setValue(newValue: number) {
+        newValue = Math.max(this.min, Math.min(this.max, newValue));
+        newValue = parseFloat(newValue.toFixed(this.decimals));
+
+        this.valueInput.value = String(newValue);
+        this._updateHandlePositionFromValue();
+        this._triggerCallbacks();
+    }
+
+    _updateAriaValue() {
+        this.ctrlDiv.setAttribute('aria-valuenow', this.valueInput.value);
     }
 
     _updateHandlePositionFromValue() {
@@ -226,6 +269,8 @@ export default class Slider {
         this.handle.position = handlePosition;
 
         this.filling.style.width = this.handle.position + 'px';
+
+        this._updateAriaValue();
     }
 
     _triggerCallbacks() {

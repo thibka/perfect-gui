@@ -151,8 +151,8 @@ export default function (positionType: PositionType) {
         transition: var(--transition) border-color;
     }
     
-    .p-gui__slider:hover, 
-    .p-gui__button:hover, 
+    .p-gui__slider:hover,
+    .p-gui__button:hover,
     .p-gui__toggle:hover,
     .p-gui__list:hover,
     .p-gui__vector2:hover,
@@ -160,8 +160,19 @@ export default function (positionType: PositionType) {
     .p-gui__color:hover,
     .p-gui__tabs:hover {
         border-color: rgba(255,255,255,.2);
-    }   
-    
+    }
+
+    .p-gui [role="button"]:focus-visible,
+    .p-gui [role="switch"]:focus-visible,
+    .p-gui [role="slider"]:focus-visible,
+    .p-gui [role="tab"]:focus-visible,
+    .p-gui input:focus-visible,
+    .p-gui select:focus-visible,
+    .p-gui button:focus-visible {
+        outline: 2px solid var(--color-accent-hover);
+        outline-offset: 1px;
+    }
+
     ${_button}
     
     ${_image}

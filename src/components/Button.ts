@@ -35,10 +35,12 @@ export default class Button {
         const el = document.createElement('div');
         el.className = 'p-gui__button';
         el.textContent = label;
+        el.setAttribute('role', 'button');
+        el.setAttribute('tabindex', '0');
         if (tooltip) {
             el.setAttribute('title', tooltip);
         }
-        el.addEventListener('click', () => {
+        const activate = () => {
             if (this.callback) {
                 this.callback();
             }
@@ -50,6 +52,13 @@ export default class Button {
                 this.parent.firstParent.onUpdate
             ) {
                 this.parent.firstParent.onUpdate();
+            }
+        };
+        el.addEventListener('click', activate);
+        el.addEventListener('keydown', (evt) => {
+            if (evt.key === 'Enter' || evt.key === ' ') {
+                evt.preventDefault();
+                activate();
             }
         });
 

@@ -72,6 +72,10 @@ export default class Image {
         const image = document.createElement('div');
         image.className = 'p-gui__image';
         image.style = 'background-image: url(' + path + '); ' + inline_styles;
+        image.setAttribute('role', 'button');
+        image.setAttribute('tabindex', '0');
+        image.setAttribute('aria-label', label);
+        image.setAttribute('aria-pressed', String(selected));
         if (tooltip) {
             image.setAttribute('title', tooltip);
         }
@@ -90,15 +94,17 @@ export default class Image {
         text.textContent = label;
         image.append(text);
 
-        image.addEventListener('click', () => {
+        const activate = () => {
             let selected_items = image.parentElement?.querySelectorAll(
                 '.p-gui__image--selected',
             ) || [];
             for (let i = 0; i < selected_items.length; i++) {
                 selected_items[i].classList.remove('p-gui__image--selected');
+                selected_items[i].setAttribute('aria-pressed', 'false');
             }
             if (selectionBorder) {
                 image.classList.add('p-gui__image--selected');
+                image.setAttribute('aria-pressed', 'true');
             }
             if (typeof this.callback == 'function') {
                 this.callback({ path, text: label });
@@ -110,6 +116,14 @@ export default class Image {
                 this.parent.firstParent.onUpdate
             ) {
                 this.parent.firstParent.onUpdate();
+            }
+        };
+
+        image.addEventListener('click', activate);
+        image.addEventListener('keydown', (evt) => {
+            if (evt.key === 'Enter' || evt.key === ' ') {
+                evt.preventDefault();
+                activate();
             }
         });
     }
