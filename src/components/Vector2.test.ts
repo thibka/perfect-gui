@@ -45,4 +45,31 @@ describe('Vector2', () => {
         expect(obj.y).toBe(7.5);
         expect(changes).toEqual([[2.5, 7.5]]);
     });
+
+    it('keeps two vector2 controls bound to the same props in sync in both directions', () => {
+        const gui = new GUI();
+        const obj = { x: 0, y: 0 };
+        const vector2a = new Vector2(gui, obj, 'x', 'y', { min: 0, max: 10 });
+        const vector2b = new Vector2(gui, obj, 'x', 'y', { min: 0, max: 10 });
+
+        const areaA = vector2a.element.querySelector<HTMLElement>('.p-gui__vector2-area')!;
+        Object.defineProperty(areaA, 'clientWidth', { value: 100, configurable: true });
+        Object.defineProperty(areaA, 'clientHeight', { value: 100, configurable: true });
+
+        const valueA = vector2a.element.querySelector('.p-gui__vector-value')!;
+        const valueB = vector2b.element.querySelector('.p-gui__vector-value')!;
+
+        clickAt(areaA, 25, 25);
+
+        expect(obj.x).toBe(2.5);
+        expect(obj.y).toBe(7.5);
+        expect(valueA.textContent).toBe('2.5, 7.5');
+        expect(valueB.textContent).toBe('2.5, 7.5');
+
+        obj.x = 6;
+        obj.y = 1;
+
+        expect(valueA.textContent).toBe('6, 1');
+        expect(valueB.textContent).toBe('6, 1');
+    });
 });

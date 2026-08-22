@@ -1,4 +1,5 @@
 import type GUI from '../index.js';
+import { bindSharedProp } from '../shared-prop.js';
 
 type AxisOption = {
     min?: number;
@@ -59,10 +60,8 @@ export default class Vector2 {
         const decimalsX = this.parent._countDecimals(stepX);
         const decimalsY = this.parent._countDecimals(stepY);
 
-        const propXReferenceIndex =
-            this.parent.propReferences.push(objectX[propX]) - 1;
-        const propYReferenceIndex =
-            this.parent.propReferences.push(objectY[propY]) - 1;
+        const propXEntry = bindSharedProp<number>(objectX, propX);
+        const propYEntry = bindSharedProp<number>(objectY, propY);
 
         const tooltip =
             typeof options.tooltip === 'string'
@@ -237,26 +236,14 @@ export default class Vector2 {
         });
         resizeObserver.observe(area);
 
-        Object.defineProperty(objectX, propX, {
-            set: (val) => {
-                this.parent.propReferences[propXReferenceIndex] = val;
-                updateDotPosition();
-                vector_value.textContent = String(val) + ', ' + objectY[propY];
-            },
-            get: () => {
-                return this.parent.propReferences[propXReferenceIndex];
-            },
+        propXEntry.listeners.add((val) => {
+            updateDotPosition();
+            vector_value.textContent = String(val) + ', ' + objectY[propY];
         });
 
-        Object.defineProperty(objectY, propY, {
-            set: (val) => {
-                this.parent.propReferences[propYReferenceIndex] = val;
-                updateDotPosition();
-                vector_value.textContent = objectX[propX] + ', ' + String(val);
-            },
-            get: () => {
-                return this.parent.propReferences[propYReferenceIndex];
-            },
+        propYEntry.listeners.add((val) => {
+            updateDotPosition();
+            vector_value.textContent = objectX[propX] + ', ' + String(val);
         });
     }
 

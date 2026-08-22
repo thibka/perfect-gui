@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import GUI from '../index.js';
 import Color from './Color.js';
 
@@ -35,5 +35,36 @@ describe('Color', () => {
 
         expect(obj.color).toBe('#00ff00');
         expect(changes).toEqual(['#00ff00']);
+    });
+
+    it('keeps two color pickers bound to the same prop in sync in both directions', () => {
+        const gui = new GUI();
+        const obj = { color: '#000000' };
+        const color1 = new Color(gui, obj, 'color');
+        const color2 = new Color(gui, obj, 'color');
+
+        const onChange1 = vi.fn();
+        const onChange2 = vi.fn();
+        color1.onChange(onChange1);
+        color2.onChange(onChange2);
+
+        const picker1 = color1.element.querySelector<HTMLInputElement>('.p-gui__color-picker')!;
+        const picker2 = color2.element.querySelector<HTMLInputElement>('.p-gui__color-picker')!;
+
+        picker1.value = '#00ff00';
+        picker1.dispatchEvent(new Event('input'));
+
+        expect(obj.color).toBe('#00ff00');
+        expect(onChange1).toHaveBeenCalledWith('#00ff00');
+        expect(onChange2).toHaveBeenCalledWith('#00ff00');
+        expect(picker2.value).toBe('#00ff00');
+
+        picker2.value = '#0000ff';
+        picker2.dispatchEvent(new Event('input'));
+
+        expect(obj.color).toBe('#0000ff');
+        expect(onChange1).toHaveBeenCalledWith('#0000ff');
+        expect(onChange2).toHaveBeenCalledWith('#0000ff');
+        expect(picker1.value).toBe('#0000ff');
     });
 });

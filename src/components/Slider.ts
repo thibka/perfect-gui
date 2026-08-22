@@ -1,4 +1,5 @@
 import type GUI from '../index.js';
+import { bindSharedProp } from '../shared-prop.js';
 
 export type Options = {
     label?: string;
@@ -10,7 +11,6 @@ export type Options = {
 
 export default class Slider {
     private parent: GUI;
-    private propReferences: string[];
     private min: number;
     private max: number;
     private step: number;
@@ -32,7 +32,6 @@ export default class Slider {
     
     constructor(parent: GUI, obj: any, prop: string, options: Options = {}) {
         this.parent = parent;
-        this.propReferences = [];
 
         if (obj && typeof obj === 'object' && typeof prop === 'string') {
             this.obj = obj;
@@ -52,7 +51,7 @@ export default class Slider {
         this.step = options.step || (this.max - this.min) / 100;
         this.decimals = this.parent._countDecimals(this.step);
 
-        const propReferenceIndex = this.propReferences.push(this.obj[this.prop]) - 1;
+        const propEntry = bindSharedProp<number>(this.obj, this.prop);
         const tooltip =
             typeof options.tooltip === 'string'
                 ? options.tooltip
@@ -168,20 +167,14 @@ export default class Slider {
             this._setValue(parseFloat(this.valueInput.value) + delta);
         });
 
-        Object.defineProperty(this.obj, this.prop, {
-            set: (val) => {
-                this.propReferences[propReferenceIndex] = val;
-                this.valueInput.value = val;
+        propEntry.listeners.add((val) => {
+            this.valueInput.value = String(val);
 
-                this._updateHandlePositionFromValue();
+            this._updateHandlePositionFromValue();
 
-                if (this.callback) {
-                    this.callback(parseFloat(this.valueInput.value));
-                }
-            },
-            get: () => {
-                return this.propReferences[propReferenceIndex];
-            },
+            if (this.callback) {
+                this.callback(parseFloat(this.valueInput.value));
+            }
         });
     }
 

@@ -126,7 +126,6 @@ export default class GUI {
     public getActiveTab?: () => number;
     public element?: HTMLElement;
     
-    public propReferences: any[];
     public onUpdate: (() => void) | null = null;
     private autoRepositioning: boolean = false;
     private _boundHandleResize = this._handleResize.bind(this);
@@ -135,7 +134,6 @@ export default class GUI {
         this.firstParent = this;
         this.folders = [];
         this.tabsArray = [];
-        this.propReferences = [];
 
         if (options.isFolder) {
             this._folderConstructor(options.folderOptions);

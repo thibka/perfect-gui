@@ -1,4 +1,5 @@
 import type GUI from '../index.js';
+import { bindSharedProp } from '../shared-prop.js';
 
 export type Options = {
     label?: string;
@@ -36,7 +37,7 @@ export default class Color {
                   ? label
                   : null;
 
-        const propReferenceIndex = this.parent.propReferences.push(obj[prop]) - 1;
+        const propEntry = bindSharedProp<string>(obj, prop);
         const value = obj[prop] || '#000000';
 
         const container = document.createElement('div');
@@ -70,19 +71,12 @@ export default class Color {
             }
         });
 
-        Object.defineProperty(obj, prop, {
-            set: (val: string) => {
-                this.parent.propReferences[propReferenceIndex] = val;
+        propEntry.listeners.add((val) => {
+            colorpicker.value = val;
 
-                colorpicker.value = val;
-
-                if (typeof this.callback === 'function') {
-                    this.callback(val);
-                }
-            },
-            get: () => {
-                return this.parent.propReferences[propReferenceIndex];
-            },
+            if (typeof this.callback === 'function') {
+                this.callback(val);
+            }
         });
     }
 

@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import GUI from '../index.js';
 import Slider from './Slider.js';
 import type { Options } from './Slider.js';
@@ -50,5 +50,36 @@ describe('Slider value <-> DOM sync', () => {
 
         expect(changes).toEqual([4]);
         expect(obj.value).toBe(4);
+    });
+
+    it('keeps two sliders bound to the same prop in sync in both directions', () => {
+        const gui = new GUI();
+        const obj = { value: 0 };
+        const slider1 = new Slider(gui, obj, 'value', { min: 0, max: 10, step: 1 });
+        const slider2 = new Slider(gui, obj, 'value', { min: 0, max: 10, step: 1 });
+
+        const onChange1 = vi.fn();
+        const onChange2 = vi.fn();
+        slider1.onChange(onChange1);
+        slider2.onChange(onChange2);
+
+        const input1 = slider1.element.querySelector<HTMLInputElement>('.p-gui__slider-value')!;
+        const input2 = slider2.element.querySelector<HTMLInputElement>('.p-gui__slider-value')!;
+
+        input1.value = '4';
+        input1.dispatchEvent(new Event('change'));
+
+        expect(obj.value).toBe(4);
+        expect(onChange1).toHaveBeenCalledWith(4);
+        expect(onChange2).toHaveBeenCalledWith(4);
+        expect(input2.value).toBe('4');
+
+        input2.value = '9';
+        input2.dispatchEvent(new Event('change'));
+
+        expect(obj.value).toBe(9);
+        expect(onChange1).toHaveBeenCalledWith(9);
+        expect(onChange2).toHaveBeenCalledWith(9);
+        expect(input1.value).toBe('9');
     });
 });

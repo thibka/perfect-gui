@@ -1,4 +1,5 @@
 import type GUI from '../index.js';
+import { bindSharedProp } from '../shared-prop.js';
 
 export type Options = {
     label?: string;
@@ -21,8 +22,7 @@ export default class Toggle {
             typeof options.label === 'string' && options.label !== ''
                 ? options.label
                 : prop;
-        const propReferenceIndex =
-            this.parent.propReferences.push(obj[prop]) - 1;
+        const propEntry = bindSharedProp<boolean>(obj, prop);
 
         const tooltip =
             typeof options.tooltip === 'string'
@@ -86,24 +86,17 @@ export default class Toggle {
             }
         });
 
-        Object.defineProperty(obj, prop, {
-            set: (val) => {
-                this.parent.propReferences[propReferenceIndex] = val;
+        propEntry.listeners.add((val) => {
+            if (val) {
+                checkbox.classList.add('p-gui__toggle-checkbox--active');
+            } else {
+                checkbox.classList.remove('p-gui__toggle-checkbox--active');
+            }
+            container.setAttribute('aria-checked', String(!!val));
 
-                if (val) {
-                    checkbox.classList.add('p-gui__toggle-checkbox--active');
-                } else {
-                    checkbox.classList.remove('p-gui__toggle-checkbox--active');
-                }
-                container.setAttribute('aria-checked', String(!!val));
-
-                if (typeof this.callback == 'function') {
-                    this.callback(val);
-                }
-            },
-            get: () => {
-                return this.parent.propReferences[propReferenceIndex];
-            },
+            if (typeof this.callback == 'function') {
+                this.callback(val);
+            }
         });
     }
 

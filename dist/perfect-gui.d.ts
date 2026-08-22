@@ -153,7 +153,6 @@ declare class GUI {
     setActiveTab?: (index: number) => void;
     getActiveTab?: () => number;
     element?: HTMLElement;
-    propReferences: any[];
     onUpdate: (() => void) | null;
     private autoRepositioning;
     private _boundHandleResize;
@@ -247,7 +246,6 @@ declare type ScreenCorner = {
 
 export declare class Slider {
     private parent;
-    private propReferences;
     private min;
     private max;
     private step;

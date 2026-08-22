@@ -1,4 +1,5 @@
 import type GUI from '../index.js';
+import { bindSharedProp } from '../shared-prop.js';
 
 type ValueObjectItem = { label: string; value: string | number };
 export type Values = (string | number)[] | ValueObjectItem[];
@@ -63,7 +64,7 @@ export default class List {
             }
         })();
 
-        const propReferenceIndex = this.parent.propReferences.push(obj[prop]) - 1;
+        const propEntry = bindSharedProp(obj, prop);
 
         let container = document.createElement('div');
         container.className = 'p-gui__list';
@@ -111,59 +112,53 @@ export default class List {
             });
         }
 
-        Object.defineProperty(obj, prop, {
-            set: (val) => {
-                let newIndex, newValue, newObj;
-                if (valuesIsObject) {
-                    newObj = values?.find((item) => {
-                        return (item as ValueObjectItem).value == val;
-                    });
-                    if (!newObj) {
-                        console.error(`[GUI] list() value ${val} not found in values`);
-                        return;
-                    }
-                    newValue = (newObj as ValueObjectItem)?.value || (values[0] as ValueObjectItem).value;
-                    newIndex = (values as ValueObjectItem[]).indexOf(newObj as ValueObjectItem);
-                } 
-                else {
-                    if (typeof val == 'string') {
-                        newIndex = (values as (string | number)[]).indexOf(val);
-                        newValue = val;
-                    }
-                    if (typeof val == 'number') {
-                        newIndex = val;
-                        newValue = values[val];
-                    }
-                }
-
-                if (newIndex === undefined || newValue === undefined) {
-                    console.error('[GUI] list() newIndex or newValue is undefined');
+        propEntry.listeners.add((val) => {
+            let newIndex, newValue, newObj;
+            if (valuesIsObject) {
+                newObj = values?.find((item) => {
+                    return (item as ValueObjectItem).value == val;
+                });
+                if (!newObj) {
+                    console.error(`[GUI] list() value ${val} not found in values`);
                     return;
                 }
-
-                this.parent.propReferences[propReferenceIndex] =
-                    valuesIsObject ? newValue : val;
-
-                const previousSelection =
-                    select.querySelector('[selected]');
-                if (previousSelection) {
-                    previousSelection.removeAttribute('selected');
+                newValue = (newObj as ValueObjectItem)?.value || (values[0] as ValueObjectItem).value;
+                newIndex = (values as ValueObjectItem[]).indexOf(newObj as ValueObjectItem);
+            }
+            else {
+                if (typeof val == 'string') {
+                    newIndex = (values as (string | number)[]).indexOf(val);
+                    newValue = val;
                 }
-                select
-                    .querySelectorAll('option')
-                    [newIndex].setAttribute('selected', '');
-
-                if (typeof this.callback == 'function') {
-                    if (valuesIsObject && newObj) {
-                        this.callback(newObj, newIndex);
-                    } else {
-                        this.callback(newValue, newIndex);
-                    }
+                if (typeof val == 'number') {
+                    newIndex = val;
+                    newValue = values[val];
                 }
-            },
-            get: () => {
-                return this.parent.propReferences[propReferenceIndex];
-            },
+            }
+
+            if (newIndex === undefined || newValue === undefined) {
+                console.error('[GUI] list() newIndex or newValue is undefined');
+                return;
+            }
+
+            propEntry.value = valuesIsObject ? newValue : val;
+
+            const previousSelection =
+                select.querySelector('[selected]');
+            if (previousSelection) {
+                previousSelection.removeAttribute('selected');
+            }
+            select
+                .querySelectorAll('option')
+                [newIndex].setAttribute('selected', '');
+
+            if (typeof this.callback == 'function') {
+                if (valuesIsObject && newObj) {
+                    this.callback(newObj, newIndex);
+                } else {
+                    this.callback(newValue, newIndex);
+                }
+            }
         });
     }
 
