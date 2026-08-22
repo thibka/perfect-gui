@@ -1,10 +1,19 @@
 <div align="center">
   <h1>Perfect GUI</h1>
   <p>A nice, simple and (probably not so) perfect GUI for JavaScript.</p>
+
+  <p>
+    <a href="https://www.npmjs.com/package/perfect-gui"><img src="https://img.shields.io/npm/v/perfect-gui" alt="npm version" /></a>
+    <a href="https://bundlejs.com/?q=perfect-gui"><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fdeno.bundlejs.com%2F%3Fq%3Dperfect-gui&label=bundle%20size&query=%24.size.compressedSize" alt="minzipped size" /></a>
+    <img src="https://img.shields.io/badge/dependencies-0-brightgreen" alt="zero dependencies" />
+    <a href="LICENSE"><img src="https://img.shields.io/npm/l/perfect-gui" alt="license" /></a>
+  </p>
   
   <p>
     <a href="https://thibka.github.io/perfect-gui/dist/"><b>Documentation & Live Examples</b></a>
   </p>
+
+  <img src="https://thibka.github.io/perfect-gui/public/readme.jpg" alt="Perfect GUI screenshot" />
 </div>
 
 ## Features
@@ -101,15 +110,17 @@ const gui = new GUI({
 
 See the [Documentation](https://thibka.github.io/perfect-gui/dist/) for a comprehensive list of properties and usage.
 
-- [`button()`](https://thibka.github.io/perfect-gui/dist/#method-button)
-- [`slider()`](https://thibka.github.io/perfect-gui/dist/#method-slider)
-- [`toggle()`](https://thibka.github.io/perfect-gui/dist/#method-toggle)
-- [`list()`](https://thibka.github.io/perfect-gui/dist/#method-list)
-- [`image()`](https://thibka.github.io/perfect-gui/dist/#method-image)
-- [`color()`](https://thibka.github.io/perfect-gui/dist/#method-color)
-- [`vector2()`](https://thibka.github.io/perfect-gui/dist/#method-vector2)
-- [`angle()`](https://thibka.github.io/perfect-gui/dist/#method-angle)
-- [`folder()`](https://thibka.github.io/perfect-gui/dist/#method-folder)
-- [`tabs()`](https://thibka.github.io/perfect-gui/dist/#method-tabs)
-- [`toggleClose()`](https://thibka.github.io/perfect-gui/dist/#method-toggleclose)
-- [`kill()`](https://thibka.github.io/perfect-gui/dist/#method-kill)
+| Method | Description |
+| --- | --- |
+| [`button(options)`](https://thibka.github.io/perfect-gui/dist/#method-button) | Adds a clickable button. |
+| [`slider(obj, prop, options)`](https://thibka.github.io/perfect-gui/dist/#method-slider) | Numeric slider bound to `obj[prop]`. |
+| [`toggle(obj, prop, options)`](https://thibka.github.io/perfect-gui/dist/#method-toggle) | Boolean checkbox bound to `obj[prop]`. |
+| [`list(obj, prop, values, options)`](https://thibka.github.io/perfect-gui/dist/#method-list) | Dropdown to select a value from a list, bound to `obj[prop]`. |
+| [`image(path, options)`](https://thibka.github.io/perfect-gui/dist/#method-image) | Displays an image inside the panel. |
+| [`color(obj, prop, options)`](https://thibka.github.io/perfect-gui/dist/#method-color) | Color picker bound to `obj[prop]`. |
+| [`vector2(obj, propX, propY, options)`](https://thibka.github.io/perfect-gui/dist/#method-vector2) | 2D pad bound to `obj[propX]` and `obj[propY]`. |
+| [`angle(obj, prop, options)`](https://thibka.github.io/perfect-gui/dist/#method-angle) | Rotary angle control bound to `obj[prop]`. |
+| [`folder(options)`](https://thibka.github.io/perfect-gui/dist/#method-folder) | Collapsible group of controls. |
+| [`tabs(options)`](https://thibka.github.io/perfect-gui/dist/#method-tabs) | Tabbed panels to organize controls. |
+| [`toggleClose()`](https://thibka.github.io/perfect-gui/dist/#method-toggleclose) | Programmatically expands or collapses the panel. |
+| [`kill()`](https://thibka.github.io/perfect-gui/dist/#method-kill) | Destroys the GUI instance and removes its listeners. |
