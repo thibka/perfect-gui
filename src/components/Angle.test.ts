@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import GUI from '../index.js';
 import Angle from './Angle.js';
 import type { Options } from './Angle.js';
@@ -36,6 +36,43 @@ describe('Angle._resolveDeg', () => {
         const { angle } = createAngle({ min: 0, max: 360, step: 10 });
         expect(angle._resolveDeg(24)).toBe(20);
         expect(angle._resolveDeg(26)).toBe(30);
+    });
+});
+
+describe('Angle shared prop binding', () => {
+    it('keeps two controllers bound to the same prop in sync in both directions', () => {
+        const gui = new GUI();
+        const obj = { rotation: 0 };
+        const angle1 = new Angle(gui, obj, 'rotation', { label: 'Degrees' });
+        const angle2 = new Angle(gui, obj, 'rotation', { label: 'Degrees2' });
+
+        const onChange1 = vi.fn();
+        const onChange2 = vi.fn();
+        angle1.onChange(onChange1);
+        angle2.onChange(onChange2);
+
+        const input1 = angle1.element.querySelector(
+            '.p-gui__angle-value',
+        ) as HTMLInputElement;
+        const input2 = angle2.element.querySelector(
+            '.p-gui__angle-value',
+        ) as HTMLInputElement;
+
+        input1.value = '45';
+        input1.dispatchEvent(new Event('change'));
+
+        expect(obj.rotation).toBe(45);
+        expect(onChange1).toHaveBeenCalledWith(45);
+        expect(onChange2).toHaveBeenCalledWith(45);
+        expect(input2.value).toBe('45');
+
+        input2.value = '90';
+        input2.dispatchEvent(new Event('change'));
+
+        expect(obj.rotation).toBe(90);
+        expect(onChange1).toHaveBeenCalledWith(90);
+        expect(onChange2).toHaveBeenCalledWith(90);
+        expect(input1.value).toBe('90');
     });
 });
 

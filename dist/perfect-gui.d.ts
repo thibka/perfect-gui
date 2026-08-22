@@ -1,6 +1,5 @@
 export declare class Angle {
     private parent;
-    private propReferences;
     private obj;
     private prop;
     private unit;

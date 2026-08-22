@@ -276,30 +276,46 @@ var e = class {
 	onChange(e) {
 		return this.callback = e, this;
 	}
-}, s = 180 / Math.PI, c = Math.PI / 180, l = class {
+}, s = 180 / Math.PI, c = Math.PI / 180, l = /* @__PURE__ */ new WeakMap();
+function u(e, t) {
+	let n = l.get(e);
+	n || (n = /* @__PURE__ */ new Map(), l.set(e, n));
+	let r = n.get(t);
+	return r || (r = {
+		value: e[t],
+		listeners: /* @__PURE__ */ new Set()
+	}, n.set(t, r), Object.defineProperty(e, t, {
+		configurable: !0,
+		get: () => r.value,
+		set: (e) => {
+			r.value = e, r.listeners.forEach((t) => t(e));
+		}
+	})), r;
+}
+var d = class {
 	constructor(e, t, n, r = {}) {
 		if (this.callback = null, this._onPointerMove = (e) => {
 			this.dial.pointerDown && this._updateFromPointer(e);
 		}, this._onPointerUp = () => {
 			this.dial.pointerDown = !1, document.removeEventListener("pointermove", this._onPointerMove);
-		}, this.parent = e, this.propReferences = [], t && typeof t == "object" && typeof n == "string") this.obj = t, this.prop = n;
+		}, this.parent = e, t && typeof t == "object" && typeof n == "string") this.obj = t, this.prop = n;
 		else throw Error("[GUI] angle() invalid parameters.");
 		let i = typeof r.label == "string" && r.label || " ";
 		i == " " && (i = this.prop), this.unit = r.unit === "rad" ? "rad" : "deg";
 		let a = this._fromDeg(360), o = r.min ?? 0, s = r.max ?? o + a, c = r.step || this._fromDeg(1);
 		this.minDeg = this._toDeg(o), this.maxDeg = this._toDeg(s), this.stepDeg = Math.abs(this._toDeg(c)) || 1, this.wraps = this.maxDeg - this.minDeg >= 359.999999, this.decimals = this.unit == "rad" ? 3 : this.parent._countDecimals(c);
-		let l = this.propReferences.push(this.obj[this.prop]) - 1, u = typeof r.tooltip == "string" ? r.tooltip : r.tooltip === !0 ? i : null, d = document.createElement("div");
-		d.className = "p-gui__angle", u && d.setAttribute("title", u), this.parent.wrapper.append(d), this.element = d;
-		let f = document.createElement("div");
-		if (f.className = "p-gui__angle-name", f.textContent = i, d.append(f), this.dial = document.createElement("div"), this.dial.className = "p-gui__angle-dial", this.dial.setAttribute("role", "slider"), this.dial.setAttribute("tabindex", "0"), this.dial.setAttribute("aria-label", i), this.wraps || (this.dial.setAttribute("aria-valuemin", String(this.minDeg)), this.dial.setAttribute("aria-valuemax", String(this.maxDeg))), d.append(this.dial), !this.wraps) {
+		let l = u(this.obj, this.prop), d = typeof r.tooltip == "string" ? r.tooltip : r.tooltip === !0 ? i : null, f = document.createElement("div");
+		f.className = "p-gui__angle", d && f.setAttribute("title", d), this.parent.wrapper.append(f), this.element = f;
+		let p = document.createElement("div");
+		if (p.className = "p-gui__angle-name", p.textContent = i, f.append(p), this.dial = document.createElement("div"), this.dial.className = "p-gui__angle-dial", this.dial.setAttribute("role", "slider"), this.dial.setAttribute("tabindex", "0"), this.dial.setAttribute("aria-label", i), this.wraps || (this.dial.setAttribute("aria-valuemin", String(this.minDeg)), this.dial.setAttribute("aria-valuemax", String(this.maxDeg))), f.append(this.dial), !this.wraps) {
 			let e = this.maxDeg - this.minDeg;
 			this.dial.style.backgroundImage = `conic-gradient(from ${this.minDeg}deg, transparent ${e}deg, rgba(255, 255, 255, .2) ${e}deg)`;
 		}
 		this.needle = document.createElement("div"), this.needle.className = "p-gui__angle-needle", this.dial.append(this.needle);
-		let p = document.createElement("div");
-		p.className = "p-gui__angle-handle", this.needle.append(p), this.valueInput = document.createElement("input"), this.valueInput.className = "p-gui__angle-value", this.valueInput.setAttribute("aria-label", i), d.append(this.valueInput);
 		let m = document.createElement("div");
-		m.className = "p-gui__angle-unit", m.textContent = this.unit == "rad" ? "rad" : "°", d.append(m), this._display(this._readDeg()), this.valueInput.addEventListener("change", () => {
+		m.className = "p-gui__angle-handle", this.needle.append(m), this.valueInput = document.createElement("input"), this.valueInput.className = "p-gui__angle-value", this.valueInput.setAttribute("aria-label", i), f.append(this.valueInput);
+		let h = document.createElement("div");
+		h.className = "p-gui__angle-unit", h.textContent = this.unit == "rad" ? "rad" : "°", f.append(h), this._display(this._readDeg()), this.valueInput.addEventListener("change", () => {
 			let e = parseFloat(this.valueInput.value), t = isNaN(e) ? this._readDeg() : this._toDeg(e);
 			this._display(this._resolveDeg(t)), this._triggerCallbacks();
 		}), this.dial.addEventListener("pointerdown", (e) => {
@@ -316,11 +332,8 @@ var e = class {
 				return;
 			} else return;
 			e.preventDefault(), this._display(this._resolveDeg(this._readDeg() + t)), this._triggerCallbacks();
-		}), Object.defineProperty(this.obj, this.prop, {
-			set: (e) => {
-				this.propReferences[l] = e, this._display(this._readDeg()), this.callback && this.callback(e);
-			},
-			get: () => this.propReferences[l]
+		}), l.listeners.add((e) => {
+			this._display(this._readDeg()), this.callback && this.callback(e);
 		});
 	}
 	_updateFromPointer(e) {
@@ -353,10 +366,10 @@ var e = class {
 	onChange(e) {
 		return this.callback = e, this;
 	}
-}, u = ".p-gui__button{background:var(--color-accent);text-align:center;color:var(--color-bg);box-sizing:border-box;transition:var(--transition) background, var(--transition) border-color;border:1px solid #0000}.p-gui__button:hover{background:var(--color-accent-hover);border-color:#fff3}.p-gui__folder .p-gui__button{margin-inline:0}", d = ".p-gui__slider{min-height:14px;color:var(--color-text-dark);transition:color var(--transition);touch-action:none;justify-content:space-between;align-items:center;gap:10px;padding:3px;display:flex;position:relative}.p-gui__slider:hover{color:var(--color-text-light)}.p-gui__slider-name{text-overflow:ellipsis;width:50%;overflow:hidden}.p-gui__slider-ctrl{-webkit-appearance:none;font:inherit;box-sizing:border-box;cursor:pointer;touch-action:none;outline:none;width:37%;height:14px;margin:0 0 0 auto;padding:0;position:relative;right:0}.p-gui__slider-bar{background:#fff3;width:100%;height:2px;position:absolute;top:50%;left:0;transform:translateY(-50%)}.p-gui__slider-filling{background:var(--color-accent);pointer-events:none;width:0;height:100%;position:absolute;top:-25%;left:0}.p-gui__slider:hover .p-gui__slider-filling{background:var(--color-accent-hover)}.p-gui__slider-handle{pointer-events:none;background:var(--color-text-dark);border-radius:2px;width:9px;height:9px;position:absolute;top:50%;left:0;transform:translate(-50%,-50%);box-shadow:0 0 2px #00000080}.p-gui__slider:hover .p-gui__slider-handle{background:var(--color-text-light)}.p-gui__slider-value{color:inherit;width:13%;background:#ffffff1a;border:none;border-radius:2px;padding:2px 4px;display:inline-block;right:7px}.p-gui__slider-value:focus{outline:none}", f = ".p-gui__list{cursor:default;color:var(--color-text-dark);transition:var(--transition) color}.p-gui__list:hover{color:var(--color-text-light)}.p-gui__list-dropdown{color:#fff;background:#ffffff0d;padding:0 12px 0 5px;top:0}.p-gui__list-dropdown{cursor:pointer;border:1px solid var(--color-border-2);border-radius:3px;outline:none;height:calc(100% - 4px);margin:auto;position:absolute;top:0;bottom:0;right:5px}.p-gui__list-dropdown option{color:#000;background:#fff}.p-gui__list-dropdown:hover{background:#ffffff1a}", p = ".p-gui__toggle{color:var(--color-text-dark);transition:var(--transition) background, var(--transition) color}.p-gui__toggle:hover{color:var(--color-text-light);background:#ffffff1a}.p-gui__folder .p-gui__toggle{margin-inline:0}.p-gui__toggle-checkbox{box-sizing:border-box;pointer-events:none;background-color:#ffffff1a;border:1px solid #ffffff26;border-radius:999px;width:26px;height:14px;margin:auto;transition:background-color .2s,border-color .2s;position:absolute;top:0;bottom:0;right:10px}.p-gui__toggle-checkbox:before{content:\"\";background-color:#ddd;border-radius:50%;width:10px;height:10px;transition:transform .2s,background-color .2s;position:absolute;top:50%;left:1px;transform:translateY(-50%)}.p-gui__toggle-checkbox--active{border-color:var(--color-border);background-color:#ddd}.p-gui__toggle-checkbox--active:before{background-color:var(--color-border);box-shadow:0 0 4px var(--color-accent-hover);transform:translate(12px,-50%)}", m = ".p-gui__color{cursor:default;color:var(--color-text-dark);transition:var(--transition) color}.p-gui__color:hover{color:var(--color-text-light)}.p-gui__color-picker{cursor:pointer;border:1px solid var(--color-border-2);-webkit-appearance:none;background-color:#0000;border:1px solid #222;border-radius:3px;outline:none;height:calc(100% - 4px);margin:auto;padding:0;position:absolute;top:0;bottom:0;right:5px;overflow:hidden}.p-gui__color-picker::-webkit-color-swatch-wrapper{padding:0}.p-gui__color-picker::-webkit-color-swatch{border:none}", h = ".p-gui__vector2{color:var(--color-text-dark);cursor:default;background:0 0}.p-gui__vector2:hover{color:var(--color-text-light)}.p-gui__vector2-area{--sub-color:#282828;background-color:#0000004d;background-image:repeating-linear-gradient(to bottom, var(--sub-color) 0, var(--sub-color) 1px, transparent 1px, transparent 4px), repeating-linear-gradient(to bottom, var(--sub-color) 0, var(--sub-color) 1px, transparent 1px, transparent 4px), repeating-linear-gradient(to right, var(--sub-color) 0, var(--sub-color) 1px, transparent 1px, transparent 4px), repeating-linear-gradient(to right, var(--sub-color) 0, var(--sub-color) 1px, transparent 1px, transparent 4px);border:1px solid var(--color-border);aspect-ratio:1;box-sizing:border-box;touch-action:none;cursor:pointer;background-position:25% 0,75% 0,0 25%,0 75%;background-repeat:no-repeat;background-size:1px 100%,1px 100%,100% 1px,100% 1px;width:50%;margin-top:8px;margin-left:auto;position:relative}.p-gui__vector2-line{opacity:1;pointer-events:none;background:#333;position:absolute}.p-gui__vector2-line-x{width:100%;height:1px;top:50%;left:0;transform:translateY(-50%)}.p-gui__vector2-line-y{width:1px;height:100%;top:0;left:50%;transform:translate(-50%)}.p-gui__vector2-dot{pointer-events:none;background:#d5d5d5;border:2px solid #f99;border-radius:50%;width:8px;height:8px;position:absolute;top:0;left:0;transform:translate(-50%,-50%)}.p-gui__vector-value{display:inline-block;position:absolute;right:7px}", g = ".p-gui__angle{min-height:34px;color:var(--color-text-dark);transition:color var(--transition);touch-action:none;align-items:center;gap:8px;padding:3px;display:flex;position:relative}.p-gui__angle:hover{color:var(--color-text-light)}.p-gui__angle-name{text-overflow:ellipsis;width:50%;overflow:hidden}.p-gui__angle-dial{box-sizing:border-box;border:1px solid var(--color-accent);cursor:pointer;touch-action:none;background:#0000004d;border-radius:50%;flex:none;width:28px;height:28px;margin-left:auto;position:relative}.p-gui__angle-dial:after{content:\"\";background:#ffffff4d;border-radius:50%;width:3px;height:3px;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}.p-gui__angle-needle{transform-origin:0;background:var(--color-accent);pointer-events:none;width:50%;height:1px;position:absolute;top:50%;left:50%}.p-gui__angle:hover .p-gui__angle-needle{background:var(--color-accent-hover)}.p-gui__angle-handle{background:var(--color-text-dark);border-radius:50%;width:5px;height:5px;position:absolute;top:50%;right:0;transform:translate(50%,-50%);box-shadow:0 0 2px #00000080}.p-gui__angle:hover .p-gui__angle-handle{background:var(--color-text-light)}.p-gui__angle-value{width:34px;color:inherit;text-align:right;background:#ffffff1a;border:none;border-radius:2px;padding:2px 4px}.p-gui__angle-value:focus{outline:none}.p-gui__angle-unit{opacity:.6;width:18px}", _ = ".p-gui__image-container{box-sizing:border-box;flex-wrap:wrap;justify-content:flex-start;width:100%;padding:3px;display:flex}.p-gui__image{cursor:pointer;border-radius:var(--main-border-radius);height:90px;color:var(--color-text-dark);transition:var(--transition) color;background-position:50%;background-size:cover;flex:0 0 calc(33.333% - 5px);margin:1px 2.5px 19px;position:relative}.p-gui__image:hover{color:var(--color-text-light)}.p-gui__image:after{content:\"\";box-sizing:border-box;border-radius:var(--main-border-radius);width:100%;height:100%;transition:var(--transition) border-color;border:1px solid #0000;position:absolute;top:0;left:0}.p-gui__image--selected:after{border-color:#06ff89}.p-gui__image-text{text-shadow:0 -1px #111;white-space:nowrap;text-overflow:ellipsis;width:100%;position:absolute;bottom:-15px;overflow:hidden}", v = ".p-gui__folder{background:var(--color-bg);border:1px solid var(--color-border-2);border-radius:var(--main-border-radius);box-sizing:border-box;border-left:1px solid #bbb;flex-wrap:wrap;width:100%;margin-bottom:2px;display:flex;position:relative}.p-gui__folder--first{margin-top:0}.p-gui__folder-content{grid-template-rows:1fr;width:100%;transition:grid-template-rows .25s;display:grid}.p-gui__folder-inner{padding-left:3px;padding-right:2px;overflow:hidden}.p-gui__folder--closed .p-gui__folder-content{grid-template-rows:0fr}.p-gui__folder-header{color:#fff;cursor:pointer;box-sizing:border-box;border-top-right-radius:var(--main-border-radius);border-bottom-right-radius:var(--main-border-radius);background-color:#00000080;width:100%;padding:5px 3px}.p-gui__folder-header:hover{background-color:#000000bf}.p-gui__folder-arrow{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAHlBMVEUAAAD///////////////////////////////////8kfJuVAAAACXRSTlMA9Z1fCdMo1yxEJnA0AAAAK0lEQVQI12PABlRgjKkJUMZMYRhjpgqMAZSEMICSaIzpDWiKhdENhEhgAgATSg5jyWnYewAAAABJRU5ErkJggg==);background-size:contain;width:8px;height:8px;margin-right:5px;display:inline-block;transform:rotate(90deg)}.p-gui__folder--closed .p-gui__folder-arrow{transform:rotate(0)}", y = ".p-gui__tabs{background:var(--color-bg);border:1px solid var(--color-border-2);border-radius:var(--main-border-radius);box-sizing:border-box;border-left:1px solid #bbb;width:100%;margin-bottom:2px;padding-block:0;position:relative}.p-gui__tabs--first{margin-top:0}.p-gui__tabs-header{border-top-left-radius:var(--main-border-radius);border-top-right-radius:var(--main-border-radius);background-color:#00000080;display:flex}.p-gui__tab-button{color:#bbb;cursor:pointer;white-space:nowrap;text-overflow:ellipsis;background:0 0;border:none;flex:1;padding:7px 10px;font-family:inherit;overflow:hidden}.p-gui__tab-button:last-child{border-right:none}.p-gui__tab-button:hover{color:#fff}.p-gui__tab-button--active{background-color:var(--color-bg);color:#fff;border-bottom:1px solid #0000}.p-gui__tabs-content{width:100%;position:relative}.p-gui__tab-pane{box-sizing:border-box;width:100%;padding-top:4px;display:none}.p-gui__tab-pane--active{display:block}";
+}, f = ".p-gui__button{background:var(--color-accent);text-align:center;color:var(--color-bg);box-sizing:border-box;transition:var(--transition) background, var(--transition) border-color;border:1px solid #0000}.p-gui__button:hover{background:var(--color-accent-hover);border-color:#fff3}.p-gui__folder .p-gui__button{margin-inline:0}", p = ".p-gui__slider{min-height:14px;color:var(--color-text-dark);transition:color var(--transition);touch-action:none;justify-content:space-between;align-items:center;gap:10px;padding:3px;display:flex;position:relative}.p-gui__slider:hover{color:var(--color-text-light)}.p-gui__slider-name{text-overflow:ellipsis;width:50%;overflow:hidden}.p-gui__slider-ctrl{-webkit-appearance:none;font:inherit;box-sizing:border-box;cursor:pointer;touch-action:none;outline:none;width:37%;height:14px;margin:0 0 0 auto;padding:0;position:relative;right:0}.p-gui__slider-bar{background:#fff3;width:100%;height:2px;position:absolute;top:50%;left:0;transform:translateY(-50%)}.p-gui__slider-filling{background:var(--color-accent);pointer-events:none;width:0;height:100%;position:absolute;top:-25%;left:0}.p-gui__slider:hover .p-gui__slider-filling{background:var(--color-accent-hover)}.p-gui__slider-handle{pointer-events:none;background:var(--color-text-dark);border-radius:2px;width:9px;height:9px;position:absolute;top:50%;left:0;transform:translate(-50%,-50%);box-shadow:0 0 2px #00000080}.p-gui__slider:hover .p-gui__slider-handle{background:var(--color-text-light)}.p-gui__slider-value{color:inherit;width:13%;background:#ffffff1a;border:none;border-radius:2px;padding:2px 4px;display:inline-block;right:7px}.p-gui__slider-value:focus{outline:none}", m = ".p-gui__list{cursor:default;color:var(--color-text-dark);transition:var(--transition) color}.p-gui__list:hover{color:var(--color-text-light)}.p-gui__list-dropdown{color:#fff;background:#ffffff0d;padding:0 12px 0 5px;top:0}.p-gui__list-dropdown{cursor:pointer;border:1px solid var(--color-border-2);border-radius:3px;outline:none;height:calc(100% - 4px);margin:auto;position:absolute;top:0;bottom:0;right:5px}.p-gui__list-dropdown option{color:#000;background:#fff}.p-gui__list-dropdown:hover{background:#ffffff1a}", h = ".p-gui__toggle{color:var(--color-text-dark);transition:var(--transition) background, var(--transition) color}.p-gui__toggle:hover{color:var(--color-text-light);background:#ffffff1a}.p-gui__folder .p-gui__toggle{margin-inline:0}.p-gui__toggle-checkbox{box-sizing:border-box;pointer-events:none;background-color:#ffffff1a;border:1px solid #ffffff26;border-radius:999px;width:26px;height:14px;margin:auto;transition:background-color .2s,border-color .2s;position:absolute;top:0;bottom:0;right:10px}.p-gui__toggle-checkbox:before{content:\"\";background-color:#ddd;border-radius:50%;width:10px;height:10px;transition:transform .2s,background-color .2s;position:absolute;top:50%;left:1px;transform:translateY(-50%)}.p-gui__toggle-checkbox--active{border-color:var(--color-border);background-color:#ddd}.p-gui__toggle-checkbox--active:before{background-color:var(--color-border);box-shadow:0 0 4px var(--color-accent-hover);transform:translate(12px,-50%)}", g = ".p-gui__color{cursor:default;color:var(--color-text-dark);transition:var(--transition) color}.p-gui__color:hover{color:var(--color-text-light)}.p-gui__color-picker{cursor:pointer;border:1px solid var(--color-border-2);-webkit-appearance:none;background-color:#0000;border:1px solid #222;border-radius:3px;outline:none;height:calc(100% - 4px);margin:auto;padding:0;position:absolute;top:0;bottom:0;right:5px;overflow:hidden}.p-gui__color-picker::-webkit-color-swatch-wrapper{padding:0}.p-gui__color-picker::-webkit-color-swatch{border:none}", _ = ".p-gui__vector2{color:var(--color-text-dark);cursor:default;background:0 0}.p-gui__vector2:hover{color:var(--color-text-light)}.p-gui__vector2-area{--sub-color:#282828;background-color:#0000004d;background-image:repeating-linear-gradient(to bottom, var(--sub-color) 0, var(--sub-color) 1px, transparent 1px, transparent 4px), repeating-linear-gradient(to bottom, var(--sub-color) 0, var(--sub-color) 1px, transparent 1px, transparent 4px), repeating-linear-gradient(to right, var(--sub-color) 0, var(--sub-color) 1px, transparent 1px, transparent 4px), repeating-linear-gradient(to right, var(--sub-color) 0, var(--sub-color) 1px, transparent 1px, transparent 4px);border:1px solid var(--color-border);aspect-ratio:1;box-sizing:border-box;touch-action:none;cursor:pointer;background-position:25% 0,75% 0,0 25%,0 75%;background-repeat:no-repeat;background-size:1px 100%,1px 100%,100% 1px,100% 1px;width:50%;margin-top:8px;margin-left:auto;position:relative}.p-gui__vector2-line{opacity:1;pointer-events:none;background:#333;position:absolute}.p-gui__vector2-line-x{width:100%;height:1px;top:50%;left:0;transform:translateY(-50%)}.p-gui__vector2-line-y{width:1px;height:100%;top:0;left:50%;transform:translate(-50%)}.p-gui__vector2-dot{pointer-events:none;background:#d5d5d5;border:2px solid #f99;border-radius:50%;width:8px;height:8px;position:absolute;top:0;left:0;transform:translate(-50%,-50%)}.p-gui__vector-value{display:inline-block;position:absolute;right:7px}", v = ".p-gui__angle{min-height:34px;color:var(--color-text-dark);transition:color var(--transition);touch-action:none;align-items:center;gap:8px;padding:3px;display:flex;position:relative}.p-gui__angle:hover{color:var(--color-text-light)}.p-gui__angle-name{text-overflow:ellipsis;width:50%;overflow:hidden}.p-gui__angle-dial{box-sizing:border-box;border:1px solid var(--color-accent);cursor:pointer;touch-action:none;background:#0000004d;border-radius:50%;flex:none;width:28px;height:28px;margin-left:auto;position:relative}.p-gui__angle-dial:after{content:\"\";background:#ffffff4d;border-radius:50%;width:3px;height:3px;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}.p-gui__angle-needle{transform-origin:0;background:var(--color-accent);pointer-events:none;width:50%;height:1px;position:absolute;top:50%;left:50%}.p-gui__angle:hover .p-gui__angle-needle{background:var(--color-accent-hover)}.p-gui__angle-handle{background:var(--color-text-dark);border-radius:50%;width:5px;height:5px;position:absolute;top:50%;right:0;transform:translate(50%,-50%);box-shadow:0 0 2px #00000080}.p-gui__angle:hover .p-gui__angle-handle{background:var(--color-text-light)}.p-gui__angle-value{width:34px;color:inherit;text-align:right;background:#ffffff1a;border:none;border-radius:2px;padding:2px 4px}.p-gui__angle-value:focus{outline:none}.p-gui__angle-unit{opacity:.6;width:18px}", y = ".p-gui__image-container{box-sizing:border-box;flex-wrap:wrap;justify-content:flex-start;width:100%;padding:3px;display:flex}.p-gui__image{cursor:pointer;border-radius:var(--main-border-radius);height:90px;color:var(--color-text-dark);transition:var(--transition) color;background-position:50%;background-size:cover;flex:0 0 calc(33.333% - 5px);margin:1px 2.5px 19px;position:relative}.p-gui__image:hover{color:var(--color-text-light)}.p-gui__image:after{content:\"\";box-sizing:border-box;border-radius:var(--main-border-radius);width:100%;height:100%;transition:var(--transition) border-color;border:1px solid #0000;position:absolute;top:0;left:0}.p-gui__image--selected:after{border-color:#06ff89}.p-gui__image-text{text-shadow:0 -1px #111;white-space:nowrap;text-overflow:ellipsis;width:100%;position:absolute;bottom:-15px;overflow:hidden}", b = ".p-gui__folder{background:var(--color-bg);border:1px solid var(--color-border-2);border-radius:var(--main-border-radius);box-sizing:border-box;border-left:1px solid #bbb;flex-wrap:wrap;width:100%;margin-bottom:2px;display:flex;position:relative}.p-gui__folder--first{margin-top:0}.p-gui__folder-content{grid-template-rows:1fr;width:100%;transition:grid-template-rows .25s;display:grid}.p-gui__folder-inner{padding-left:3px;padding-right:2px;overflow:hidden}.p-gui__folder--closed .p-gui__folder-content{grid-template-rows:0fr}.p-gui__folder-header{color:#fff;cursor:pointer;box-sizing:border-box;border-top-right-radius:var(--main-border-radius);border-bottom-right-radius:var(--main-border-radius);background-color:#00000080;width:100%;padding:5px 3px}.p-gui__folder-header:hover{background-color:#000000bf}.p-gui__folder-arrow{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAHlBMVEUAAAD///////////////////////////////////8kfJuVAAAACXRSTlMA9Z1fCdMo1yxEJnA0AAAAK0lEQVQI12PABlRgjKkJUMZMYRhjpgqMAZSEMICSaIzpDWiKhdENhEhgAgATSg5jyWnYewAAAABJRU5ErkJggg==);background-size:contain;width:8px;height:8px;margin-right:5px;display:inline-block;transform:rotate(90deg)}.p-gui__folder--closed .p-gui__folder-arrow{transform:rotate(0)}", x = ".p-gui__tabs{background:var(--color-bg);border:1px solid var(--color-border-2);border-radius:var(--main-border-radius);box-sizing:border-box;border-left:1px solid #bbb;width:100%;margin-bottom:2px;padding-block:0;position:relative}.p-gui__tabs--first{margin-top:0}.p-gui__tabs-header{border-top-left-radius:var(--main-border-radius);border-top-right-radius:var(--main-border-radius);background-color:#00000080;display:flex}.p-gui__tab-button{color:#bbb;cursor:pointer;white-space:nowrap;text-overflow:ellipsis;background:0 0;border:none;flex:1;padding:7px 10px;font-family:inherit;overflow:hidden}.p-gui__tab-button:last-child{border-right:none}.p-gui__tab-button:hover{color:#fff}.p-gui__tab-button--active{background-color:var(--color-bg);color:#fff;border-bottom:1px solid #0000}.p-gui__tabs-content{width:100%;position:relative}.p-gui__tab-pane{box-sizing:border-box;width:100%;padding-top:4px;display:none}.p-gui__tab-pane--active{display:block}";
 //#endregion
 //#region src/styles/styles.ts
-function b(e) {
+function S(e) {
 	return `
     .p-gui {
         --main-border-radius: 6px;
@@ -518,34 +531,34 @@ function b(e) {
         outline-offset: 1px;
     }
 
-    ${u}
-    
-    ${_}
-    
     ${f}
     
-    ${p}
-
-    ${d}
+    ${y}
     
     ${m}
     
     ${h}
 
+    ${p}
+    
     ${g}
+    
+    ${_}
 
     ${v}
+
+    ${b}
     
-    ${y}
+    ${x}
 `;
 }
 //#endregion
 //#region src/index.ts
-var x = 0;
-function S() {
-	return ++x;
+var C = 0;
+function w() {
+	return ++C;
 }
-var C = class {
+var T = class {
 	constructor(e = {}, t = !1) {
 		if (this.container = document.body, this.label = "", this.backgroundColor = null, this.opacity = 1, this.maxHeight = window.innerHeight, this.initMaxHeight = null, this.instanceId = 0, this.wrapperWidth = 290, this.stylesheet = null, this.closed = !1, this.domElement = null, this.hasBeenDragged = !1, this.xOffset = 0, this.yOffset = 0, this.position = {
 			initX: 0,
@@ -570,7 +583,7 @@ var C = class {
 			let t = typeof e.container == "string" ? document.querySelector(e.container) : e.container;
 			t instanceof HTMLElement && (this.container = t, n = "absolute");
 		}
-		this.screenCorner = this._parseScreenCorner(e.position), e.width && (this.wrapperWidth = e.width), typeof e.onUpdate == "function" && (this.onUpdate = e.onUpdate), this.label = typeof e.label == "string" ? e.label : "", this.backgroundColor = e.color || null, this.opacity = e.opacity || 1, this.container && this.container !== document.body && (this.maxHeight = Math.min(this.container.clientHeight, window.innerHeight)), e.maxHeight && (this.initMaxHeight = e.maxHeight, this.maxHeight = Math.min(this.initMaxHeight, this.maxHeight)), window.perfectGUI || (window.perfectGUI = {}), window.perfectGUI.instanceCounter == null ? window.perfectGUI.instanceCounter = 0 : window.perfectGUI.instanceCounter++, this.instanceId = window.perfectGUI.instanceCounter, this.stylesheet = document.createElement("style"), this.stylesheet.setAttribute("type", "text/css"), this.stylesheet.setAttribute("id", "lm-gui-stylesheet"), document.head.append(this.stylesheet), this.instanceId == 0 && this._addStyles(`${b(n)}`), this._styleInstance(), this.closed = !!e.closed;
+		this.screenCorner = this._parseScreenCorner(e.position), e.width && (this.wrapperWidth = e.width), typeof e.onUpdate == "function" && (this.onUpdate = e.onUpdate), this.label = typeof e.label == "string" ? e.label : "", this.backgroundColor = e.color || null, this.opacity = e.opacity || 1, this.container && this.container !== document.body && (this.maxHeight = Math.min(this.container.clientHeight, window.innerHeight)), e.maxHeight && (this.initMaxHeight = e.maxHeight, this.maxHeight = Math.min(this.initMaxHeight, this.maxHeight)), window.perfectGUI || (window.perfectGUI = {}), window.perfectGUI.instanceCounter == null ? window.perfectGUI.instanceCounter = 0 : window.perfectGUI.instanceCounter++, this.instanceId = window.perfectGUI.instanceCounter, this.stylesheet = document.createElement("style"), this.stylesheet.setAttribute("type", "text/css"), this.stylesheet.setAttribute("id", "lm-gui-stylesheet"), document.head.append(this.stylesheet), this.instanceId == 0 && this._addStyles(`${S(n)}`), this._styleInstance(), this.closed = !!e.closed;
 		let [r, i] = this._addWrapper();
 		this.domElement = r, this.wrapper = i, this.domElement.setAttribute("data-corner-x", this.screenCorner.x), this.domElement.setAttribute("data-corner-y", this.screenCorner.y), this.autoRepositioning = e.autoRepositioning != 0, this.autoRepositioning && window.addEventListener("resize", this._boundHandleResize), this._handleResize(), e.draggable == 1 && this._makeDraggable();
 	}
@@ -663,7 +676,7 @@ var C = class {
 		return this.imageContainer = null, new o(this, e, t, n, r);
 	}
 	angle(e, t, n = {}) {
-		return this.imageContainer = null, new l(this, e, t, n);
+		return this.imageContainer = null, new d(this, e, t, n);
 	}
 	folder(e) {
 		let t = typeof e.closed == "boolean" ? e.closed : !1, n = e.label || "", r = e.color || null, i = e.maxHeight || null;
@@ -677,7 +690,7 @@ var C = class {
 		let c = document.createElement("div");
 		c.innerHTML = `<span class="p-gui__folder-arrow"></span>${n}`, c.className = "p-gui__folder-header", s.append(c);
 		let l = document.createElement("div");
-		l.className = "p-gui__folder-content", l.id = "p-gui-folder-content-" + S(), s.append(l);
+		l.className = "p-gui__folder-content", l.id = "p-gui-folder-content-" + w(), s.append(l);
 		let u = document.createElement("div");
 		u.className = "p-gui__folder-inner", l.append(u), c.setAttribute("role", "button"), c.setAttribute("tabindex", "0"), c.setAttribute("aria-expanded", String(!t)), c.setAttribute("aria-controls", l.id);
 		let d = () => {
@@ -687,7 +700,7 @@ var C = class {
 		c.addEventListener("click", d), c.addEventListener("keydown", (e) => {
 			(e.key === "Enter" || e.key === " ") && (e.preventDefault(), d());
 		});
-		let f = new w({
+		let f = new E({
 			container: s,
 			wrapper: u,
 			parent: this,
@@ -711,10 +724,10 @@ var C = class {
 		let u = [];
 		t.forEach((e, r) => {
 			let i = document.createElement("button");
-			i.className = "p-gui__tab-button", r === n && (i.className += " p-gui__tab-button--active"), i.textContent = e, i.id = "p-gui-tab-" + S(), i.setAttribute("role", "tab"), i.setAttribute("aria-selected", String(r === n)), i.setAttribute("tabindex", r === n ? "0" : "-1"), c.append(i);
+			i.className = "p-gui__tab-button", r === n && (i.className += " p-gui__tab-button--active"), i.textContent = e, i.id = "p-gui-tab-" + w(), i.setAttribute("role", "tab"), i.setAttribute("aria-selected", String(r === n)), i.setAttribute("tabindex", r === n ? "0" : "-1"), c.append(i);
 			let a = document.createElement("div");
-			a.className = "p-gui__tab-pane", a.id = "p-gui-tabpanel-" + S(), a.setAttribute("role", "tabpanel"), a.setAttribute("aria-labelledby", i.id), i.setAttribute("aria-controls", a.id), r === n && (a.className += " p-gui__tab-pane--active"), l.append(a);
-			let o = new w({
+			a.className = "p-gui__tab-pane", a.id = "p-gui-tabpanel-" + w(), a.setAttribute("role", "tabpanel"), a.setAttribute("aria-labelledby", i.id), i.setAttribute("aria-controls", a.id), r === n && (a.className += " p-gui__tab-pane--active"), l.append(a);
+			let o = new E({
 				container: s,
 				wrapper: a,
 				parent: this,
@@ -743,7 +756,7 @@ var C = class {
 			let t = u[e];
 			t.button.classList.add("p-gui__tab-button--active"), t.pane.classList.add("p-gui__tab-pane--active"), t.button.setAttribute("aria-selected", "true"), t.button.setAttribute("tabindex", "0");
 		}
-		let f = new w({
+		let f = new E({
 			container: s,
 			wrapper: u[n]?.pane || document.createElement("div"),
 			parent: this,
@@ -769,10 +782,10 @@ var C = class {
 		let t = e.toString(), n = t.indexOf(".");
 		return n === -1 ? 0 : t.length - n - 1;
 	}
-}, w = class extends C {
+}, E = class extends T {
 	constructor(e) {
 		super({}, !0), this.isFolder = !0, this.domElement = e.container, this.wrapper = e.wrapper, this.parent = e.parent, this.firstParent = e.firstParent;
 	}
 };
 //#endregion
-export { l as Angle, e as Button, a as Color, w as Folder, n as Image, i as List, t as Slider, r as Toggle, o as Vector2, C as default };
+export { d as Angle, e as Button, a as Color, E as Folder, n as Image, i as List, t as Slider, r as Toggle, o as Vector2, T as default };

@@ -14,9 +14,44 @@ export type Options = {
 const RAD_TO_DEG = 180 / Math.PI;
 const DEG_TO_RAD = Math.PI / 180;
 
+type PropEntry = {
+    value: number;
+    listeners: Set<(val: number) => void>;
+};
+
+// Allows several Angle controllers to share the same obj/prop: only the
+// first one to bind a given property installs the getter/setter, and every
+// controller bound to it is notified on change instead of the last one
+// silently overwriting the previous descriptor.
+const propRegistry = new WeakMap<object, Map<string, PropEntry>>();
+
+function bindSharedProp(obj: any, prop: string): PropEntry {
+    let props = propRegistry.get(obj);
+    if (!props) {
+        props = new Map();
+        propRegistry.set(obj, props);
+    }
+
+    let entry = props.get(prop);
+    if (!entry) {
+        entry = { value: obj[prop], listeners: new Set() };
+        props.set(prop, entry);
+
+        Object.defineProperty(obj, prop, {
+            configurable: true,
+            get: () => entry!.value,
+            set: (val) => {
+                entry!.value = val;
+                entry!.listeners.forEach((listener) => listener(val));
+            },
+        });
+    }
+
+    return entry;
+}
+
 export default class Angle {
     private parent: GUI;
-    private propReferences: number[];
     private obj: any;
     private prop: string;
     private unit: Unit;
@@ -35,7 +70,6 @@ export default class Angle {
 
     constructor(parent: GUI, obj: any, prop: string, options: Options = {}) {
         this.parent = parent;
-        this.propReferences = [];
 
         if (obj && typeof obj === 'object' && typeof prop === 'string') {
             this.obj = obj;
@@ -64,8 +98,7 @@ export default class Angle {
         this.decimals =
             this.unit == 'rad' ? 3 : this.parent._countDecimals(step);
 
-        const propReferenceIndex =
-            this.propReferences.push(this.obj[this.prop]) - 1;
+        const propEntry = bindSharedProp(this.obj, this.prop);
         const tooltip =
             typeof options.tooltip === 'string'
                 ? options.tooltip
@@ -170,19 +203,12 @@ export default class Angle {
             this._triggerCallbacks();
         });
 
-        Object.defineProperty(this.obj, this.prop, {
-            set: (val) => {
-                this.propReferences[propReferenceIndex] = val;
+        propEntry.listeners.add((val) => {
+            this._display(this._readDeg());
 
-                this._display(this._readDeg());
-
-                if (this.callback) {
-                    this.callback(val);
-                }
-            },
-            get: () => {
-                return this.propReferences[propReferenceIndex];
-            },
+            if (this.callback) {
+                this.callback(val);
+            }
         });
     }
 
