@@ -1,27 +1,39 @@
     .p-gui__vector2 {
         background: transparent;
-        aspect-ratio: 1;
-        padding-bottom: 0;
         color: var(--color-text-dark);
+        cursor: default;
     }
-    
+
     .p-gui__vector2:hover {
         color: var(--color-text-light);
     }
-    
+
     .p-gui__vector2-area {
         position: relative;
-        background: rgba(0, 0, 0, .3);
+        background-color: rgba(0, 0, 0, .3);
+        --sub-color: #282828;
+        background-image:
+            repeating-linear-gradient(to bottom, var(--sub-color) 0, var(--sub-color) 1px, transparent 1px, transparent 4px),
+            repeating-linear-gradient(to bottom, var(--sub-color) 0, var(--sub-color) 1px, transparent 1px, transparent 4px),
+            repeating-linear-gradient(to right, var(--sub-color) 0, var(--sub-color) 1px, transparent 1px, transparent 4px),
+            repeating-linear-gradient(to right, var(--sub-color) 0, var(--sub-color) 1px, transparent 1px, transparent 4px);
+        background-position: 25% 0, 75% 0, 0 25%, 0 75%;
+        background-size: 1px 100%, 1px 100%, 100% 1px, 100% 1px;
+        background-repeat: no-repeat;
+        border: 1px solid var(--color-border);
         margin-top: 8px;
-        width: 100%;
-        height: calc(100% - 28px);
+        margin-left: auto;
+        width: 50%;
+        aspect-ratio: 1;
+        box-sizing: border-box;
         touch-action: none;
+        cursor: pointer;
     }
     
     .p-gui__vector2-line {
         position: absolute;
-        background: white;
-        opacity: .3;
+        background: #333;
+        opacity: 1;
         pointer-events: none;
     }
     
