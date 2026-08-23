@@ -1,0 +1,114 @@
+.p-gui__number {
+    cursor: default;
+    color: var(--color-text-dark);
+    transition: var(--transition) color;
+}
+
+.p-gui__number:hover {
+    color: var(--color-text-light);
+}
+
+.p-gui__number-ctrl {
+    position: absolute;
+    right: 5px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    height: calc(100% - 4px);
+    width: 45%;
+    box-sizing: border-box;
+    display: flex;
+    border-radius: 3px;
+    border: 1px solid var(--color-border-2);
+    background: rgba(255, 255, 255, 0.05);
+    overflow: hidden;
+}
+
+.p-gui__number-ctrl:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.p-gui__number-input {
+    flex: 1;
+    min-width: 0;
+    box-sizing: border-box;
+    cursor: text;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: white;
+    padding: 0 0 0 6px;
+
+    /* Hide native spin buttons: replaced with .p-gui__number-stepper */
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+
+.p-gui__number-input::-webkit-outer-spin-button,
+.p-gui__number-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.p-gui__number-input::placeholder {
+    color: var(--color-text-dark);
+}
+
+/* The default focus ring on the input gets clipped by .p-gui__number-ctrl's
+   overflow: hidden, leaving only a stray line at the input/stepper divider.
+   Ring the whole control instead. */
+input.p-gui__number-input:focus-visible {
+    outline: none;
+}
+
+.p-gui__number-ctrl:has(.p-gui__number-input:focus-visible) {
+    outline: 2px solid var(--color-accent-hover);
+    outline-offset: 1px;
+}
+
+.p-gui__number-stepper {
+    flex: 0 0 12px;
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid var(--color-border-2);
+}
+
+.p-gui__number-arrow {
+    flex: 1 1 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.p-gui__number-arrow:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.p-gui__number-arrow::before {
+    content: '';
+    width: 0;
+    height: 0;
+    border-left: 3px solid transparent;
+    border-right: 3px solid transparent;
+}
+
+.p-gui__number-arrow--up {
+    border-bottom: 1px solid var(--color-border-2);
+}
+
+.p-gui__number-arrow--up::before {
+    border-bottom: 4px solid var(--color-text-dark);
+}
+
+.p-gui__number-arrow--down::before {
+    border-top: 4px solid var(--color-text-dark);
+}
+
+.p-gui__number-arrow--up:hover::before {
+    border-bottom-color: var(--color-text-light);
+}
+
+.p-gui__number-arrow--down:hover::before {
+    border-top-color: var(--color-text-light);
+}

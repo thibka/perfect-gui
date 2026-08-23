@@ -8,6 +8,8 @@ import _angle from './_angle.css?inline';
 import _image from './_image.css?inline';
 import _folder from './_folder.css?inline';
 import _tabs from './_tabs.css?inline';
+import _text from './_text.css?inline';
+import _number from './_number.css?inline';
 
 type PositionType = 'absolute' | 'fixed';
 
@@ -132,14 +134,16 @@ export default function (positionType: PositionType) {
         background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUAQMAAAC3R49OAAAABlBMVEUAAAD///+l2Z/dAAAAAXRSTlMAQObYZgAAABVJREFUCNdjYEhgIIj///8AwsSoBQD43QydY5mb0QAAAABJRU5ErkJggg==);
     }
     
-    .p-gui__slider, 
-    .p-gui__button, 
+    .p-gui__slider,
+    .p-gui__button,
     .p-gui__toggle,
     .p-gui__list,
     .p-gui__vector2,
     .p-gui__angle,
     .p-gui__color,
-    .p-gui__tabs {
+    .p-gui__tabs,
+    .p-gui__text,
+    .p-gui__number {
         width: 100%;
         padding: 5px 3px;
         cursor: pointer;
@@ -150,7 +154,7 @@ export default function (positionType: PositionType) {
         border-radius: var(--main-border-radius);
         transition: var(--transition) border-color;
     }
-    
+
     .p-gui__slider:hover,
     .p-gui__button:hover,
     .p-gui__toggle:hover,
@@ -158,7 +162,9 @@ export default function (positionType: PositionType) {
     .p-gui__vector2:hover,
     .p-gui__angle:hover,
     .p-gui__color:hover,
-    .p-gui__tabs:hover {
+    .p-gui__tabs:hover,
+    .p-gui__text:hover,
+    .p-gui__number:hover {
         border-color: rgba(255,255,255,.2);
     }
 
@@ -190,7 +196,11 @@ export default function (positionType: PositionType) {
     ${_angle}
 
     ${_folder}
-    
+
     ${_tabs}
+
+    ${_text}
+
+    ${_number}
 `;
 }

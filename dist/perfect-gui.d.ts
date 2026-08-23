@@ -77,6 +77,10 @@ declare type Callback_4 = (value: string) => void;
 
 declare type Callback_5 = ((x: number, y: number) => void);
 
+declare type Callback_6 = (value: string) => void;
+
+declare type Callback_7 = (value: number) => void;
+
 export declare class Color {
     private parent;
     private callback;
@@ -172,6 +176,8 @@ declare class GUI {
     color(obj: any, prop: string, options?: ColorOptions): Color;
     vector2(obj: any, propX: string, propY: string, options?: Vector2Options): Vector2;
     angle(obj: any, prop: string, options?: AngleOptions): Angle;
+    text(obj: any, prop: string, options?: TextOptions): Text_2;
+    number(obj: any, prop: string, options?: NumberOptions): NumberInput;
     folder(options: FolderCreateOptions): Folder;
     tabs(options?: {
         tabs?: string[];
@@ -222,6 +228,25 @@ export declare type ListOptions = {
 };
 
 export declare type ListValues = (string | number)[] | ValueObjectItem[];
+
+export declare class NumberInput {
+    private parent;
+    private min?;
+    private max?;
+    private callback;
+    element: HTMLDivElement;
+    constructor(parent: GUI, obj: any, prop: string, options?: NumberOptions);
+    onChange(callback: Callback_7): this;
+}
+
+export declare type NumberOptions = {
+    label?: string;
+    tooltip?: string | boolean;
+    min?: number;
+    max?: number;
+    step?: number;
+    placeholder?: string;
+};
 
 declare type Options = {
     label?: string;
@@ -276,6 +301,22 @@ export declare type SliderOptions = {
     max?: number;
     step?: number;
     tooltip?: string;
+};
+
+declare class Text_2 {
+    private parent;
+    private callback;
+    element: HTMLDivElement;
+    constructor(parent: GUI, obj: any, prop: string, options?: TextOptions);
+    onChange(callback: Callback_6): this;
+}
+export { Text_2 as Text }
+
+export declare type TextOptions = {
+    label?: string;
+    tooltip?: string | boolean;
+    placeholder?: string;
+    maxLength?: number;
 };
 
 export declare class Toggle {

@@ -6,6 +6,8 @@ import List from './components/List.js';
 import Color from './components/Color.js';
 import Vector2 from './components/Vector2.js';
 import Angle from './components/Angle.js';
+import Text from './components/Text.js';
+import NumberInput from './components/Number.js';
 import styles from './styles/styles.js';
 
 import type { Options as SliderOptions } from './components/Slider.js';
@@ -16,6 +18,8 @@ import type { Options as ListOptions, Values as ListValues } from './components/
 import type { Options as ColorOptions } from './components/Color.js';
 import type { Options as Vector2Options } from './components/Vector2.js';
 import type { Options as AngleOptions, Unit as AngleUnit } from './components/Angle.js';
+import type { Options as TextOptions } from './components/Text.js';
+import type { Options as NumberOptions } from './components/Number.js';
 
 export type {
     SliderOptions,
@@ -28,8 +32,10 @@ export type {
     Vector2Options,
     AngleOptions,
     AngleUnit,
+    TextOptions,
+    NumberOptions,
 };
-export { Button, Slider, Image, Toggle, List, Color, Vector2, Angle };
+export { Button, Slider, Image, Toggle, List, Color, Vector2, Angle, Text, NumberInput };
 
 declare global {
     interface Window {
@@ -477,6 +483,18 @@ export default class GUI {
     angle(obj: any, prop: string, options: AngleOptions = {}) {
         this.imageContainer = null;
         const instance = new Angle(this, obj, prop, options);
+        return instance;
+    }
+
+    text(obj: any, prop: string, options: TextOptions = {}) {
+        this.imageContainer = null;
+        const instance = new Text(this, obj, prop, options);
+        return instance;
+    }
+
+    number(obj: any, prop: string, options: NumberOptions = {}) {
+        this.imageContainer = null;
+        const instance = new NumberInput(this, obj, prop, options);
         return instance;
     }
 
