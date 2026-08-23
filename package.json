@@ -34,7 +34,6 @@
   },
   "homepage": "https://thibka.github.io/perfect-gui/dist/",
   "devDependencies": {
-    "@microsoft/api-extractor": "^7.58.12",
     "eslint": "^9.39.4",
     "jsdom": "^27.0.1",
     "typescript": "^6.0.3",
