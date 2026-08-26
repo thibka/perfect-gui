@@ -8,6 +8,7 @@ export type Options = {
     max?: number;
     step?: number;
     placeholder?: string;
+    readonly?: boolean;
 };
 
 type Callback = (value: number) => void;
@@ -28,6 +29,7 @@ export default class NumberInput {
         this.parent = parent;
         this.min = options.min;
         this.max = options.max;
+        const readonly = !!options.readonly;
 
         if (!obj || typeof obj !== 'object' || typeof prop !== 'string') {
             throw Error(`[GUI] number() invalid parameters. Expected (object, string, options).`);
@@ -53,6 +55,9 @@ export default class NumberInput {
         container.textContent = label;
         if (tooltip) {
             container.setAttribute('title', tooltip);
+        }
+        if (readonly) {
+            container.setAttribute('data-readonly', 'true');
         }
         this.parent.wrapper.append(container);
 
@@ -81,6 +86,10 @@ export default class NumberInput {
             input.setAttribute('placeholder', options.placeholder);
         }
         input.value = String(value);
+        if (readonly) {
+            input.readOnly = true;
+            input.tabIndex = -1;
+        }
         ctrl.append(input);
 
         const stepper = document.createElement('div');
@@ -102,6 +111,8 @@ export default class NumberInput {
         stepper.append(downArrow);
 
         const commitValue = () => {
+            if (readonly) return;
+
             let newValue = parseFloat(input.value);
 
             if (isNaN(newValue)) {
@@ -128,6 +139,8 @@ export default class NumberInput {
         };
 
         const applyStep = (direction: 1 | -1) => {
+            if (readonly) return;
+
             let current = parseFloat(input.value);
             if (isNaN(current)) {
                 current = 0;

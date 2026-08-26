@@ -15,6 +15,7 @@ export type Options = {
     step?: number;
     x?: AxisOption; // X axis options
     y?: AxisOption; // Y axis options
+    readonly?: boolean;
 }
 
 type Callback = ((x: number, y: number) => void);
@@ -26,6 +27,7 @@ export default class Vector2 {
 
     constructor(private parent: GUI, obj: any, propX: string, propY: string, options: Options = {}) {
         this.callback = null;
+        const readonly = !!options.readonly;
 
         let objectX, objectY;
 
@@ -76,6 +78,9 @@ export default class Vector2 {
         if (tooltip) {
             container.setAttribute('title', tooltip);
         }
+        if (readonly) {
+            container.setAttribute('data-readonly', 'true');
+        }
         this.parent.wrapper.append(container);
 
         // Expose the DOM element
@@ -89,11 +94,16 @@ export default class Vector2 {
         const area = document.createElement('div');
         area.className = 'p-gui__vector2-area';
         area.setAttribute('role', 'slider');
-        area.setAttribute('tabindex', '0');
+        area.setAttribute('tabindex', readonly ? '-1' : '0');
         area.setAttribute('aria-label', label);
+        if (readonly) {
+            area.setAttribute('aria-readonly', 'true');
+        }
         container.append(area);
 
         const applyValue = (rawX: number, rawY: number) => {
+            if (readonly) return;
+
             const clampedX = Math.max(minX, Math.min(maxX, rawX));
             const clampedY = Math.max(minY, Math.min(maxY, rawY));
 

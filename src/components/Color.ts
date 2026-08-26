@@ -4,6 +4,7 @@ import { bindSharedProp } from '../shared-prop.js';
 export type Options = {
     label?: string;
     tooltip?: string | boolean;
+    readonly?: boolean;
 }
 
 type Callback = (value: string) => void;
@@ -20,6 +21,7 @@ export default class Color {
         params: Options = {}
     ) {
         this.parent = parent;
+        const readonly = !!params.readonly;
 
         if (typeof obj !== 'object' || typeof prop !== 'string') {
             throw Error(`[GUI] color() invalid parameters. Expected (object, string, options).`);
@@ -46,8 +48,11 @@ export default class Color {
         if (tooltip) {
             container.setAttribute('title', tooltip);
         }
+        if (readonly) {
+            container.setAttribute('data-readonly', 'true');
+        }
         this.parent.wrapper.append(container);
-        
+
         // Expose the DOM element
         this.element = container;
 
@@ -56,9 +61,14 @@ export default class Color {
         colorpicker.setAttribute('type', 'color');
         colorpicker.setAttribute('aria-label', label);
         colorpicker.value = value;
+        if (readonly) {
+            colorpicker.disabled = true;
+        }
         container.append(colorpicker);
 
         colorpicker.addEventListener('input', () => {
+            if (readonly) return;
+
             obj[prop] = colorpicker.value;
 
             if (this.parent.onUpdate) {

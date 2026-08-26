@@ -33,3 +33,7 @@
 .p-gui__text-input::placeholder {
     color: var(--color-text-dark);
 }
+
+.p-gui__text[data-readonly="true"] .p-gui__text-input {
+    cursor: default;
+}

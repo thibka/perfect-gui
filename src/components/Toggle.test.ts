@@ -63,4 +63,23 @@ describe('Toggle', () => {
                 .classList.contains('p-gui__toggle-checkbox--active'),
         ).toBe(false);
     });
+
+    it('ignores clicks when readonly, but still reflects external changes', () => {
+        const gui = new GUI();
+        const obj = { enabled: false };
+        const toggle = new Toggle(gui, obj, 'enabled', { readonly: true });
+
+        expect(toggle.element.getAttribute('data-readonly')).toBe('true');
+        expect(toggle.element.getAttribute('tabindex')).toBe('-1');
+
+        toggle.element.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+        expect(obj.enabled).toBe(false);
+
+        obj.enabled = true;
+        expect(
+            toggle.element
+                .querySelector('.p-gui__toggle-checkbox')!
+                .classList.contains('p-gui__toggle-checkbox--active'),
+        ).toBe(true);
+    });
 });

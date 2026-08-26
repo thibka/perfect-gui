@@ -7,6 +7,7 @@ export type Options = {
     max?: number;
     step?: number;
     tooltip?: string;
+    readonly?: boolean;
 };
 
 export default class Slider {
@@ -17,6 +18,7 @@ export default class Slider {
     private decimals: number;
     private obj: any;
     private prop: string;
+    private isReadonly: boolean;
     private callback: ((value: number) => void) | null = null;
     
     private ctrlDiv: HTMLDivElement & { 
@@ -39,6 +41,8 @@ export default class Slider {
         } else {
             throw Error(`[GUI] slider() invalid parameters.`);
         }
+
+        this.isReadonly = !!options.readonly;
 
         let label = typeof options.label == 'string' ? options.label || ' ' : ' ';
 
@@ -65,6 +69,9 @@ export default class Slider {
         if (tooltip) {
             container.setAttribute('title', tooltip);
         }
+        if (this.isReadonly) {
+            container.setAttribute('data-readonly', 'true');
+        }
 
         this.parent.wrapper.append(container);
         
@@ -80,8 +87,11 @@ export default class Slider {
         this.ctrlDiv.prevPosition = 0;
         this.ctrlDiv.className = 'p-gui__slider-ctrl';
         this.ctrlDiv.setAttribute('role', 'slider');
-        this.ctrlDiv.setAttribute('tabindex', '0');
+        this.ctrlDiv.setAttribute('tabindex', this.isReadonly ? '-1' : '0');
         this.ctrlDiv.setAttribute('aria-label', label);
+        if (this.isReadonly) {
+            this.ctrlDiv.setAttribute('aria-readonly', 'true');
+        }
         this.ctrlDiv.setAttribute('aria-valuemin', String(this.min));
         this.ctrlDiv.setAttribute('aria-valuemax', String(this.max));
         container.append(this.ctrlDiv);
@@ -102,6 +112,10 @@ export default class Slider {
         this.valueInput.className = 'p-gui__slider-value';
         this.valueInput.value = this.obj[this.prop];
         this.valueInput.setAttribute('aria-label', label);
+        if (this.isReadonly) {
+            this.valueInput.readOnly = true;
+            this.valueInput.tabIndex = -1;
+        }
         container.append(this.valueInput);
 
         // init position
@@ -115,11 +129,15 @@ export default class Slider {
         resizeObserver.observe(this.ctrlDiv);
 
         this.valueInput.addEventListener('change', () => {
+            if (this.isReadonly) return;
+
             this._updateHandlePositionFromValue();
             this._triggerCallbacks();
         });
 
         this.ctrlDiv.addEventListener('pointerdown', (evt) => {
+            if (this.isReadonly) return;
+
             this.ctrlDiv.pointerDown = true;
             this.ctrlDiv.prevPosition = evt.clientX;
             this._updateHandlePositionFromPointer(evt, true);
@@ -142,6 +160,8 @@ export default class Slider {
         });
 
         this.ctrlDiv.addEventListener('keydown', (evt) => {
+            if (this.isReadonly) return;
+
             let delta = 0;
             if (evt.key === 'ArrowRight' || evt.key === 'ArrowUp') {
                 delta = this.step;

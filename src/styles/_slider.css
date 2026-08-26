@@ -92,3 +92,12 @@
 .p-gui__slider-value:focus {
     outline: none;
 }
+
+.p-gui__slider[data-readonly="true"] .p-gui__slider-ctrl,
+.p-gui__slider[data-readonly="true"] .p-gui__slider-value {
+    cursor: default;
+}
+
+.p-gui__slider[data-readonly="true"] .p-gui__slider-handle {
+    display: none;
+}

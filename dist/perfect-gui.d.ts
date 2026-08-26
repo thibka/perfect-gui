@@ -8,6 +8,7 @@ export declare class Angle {
     private stepDeg;
     private decimals;
     private wraps;
+    private isReadonly;
     private callback;
     private dial;
     private needle;
@@ -39,6 +40,7 @@ export declare type AngleOptions = {
     min?: number;
     max?: number;
     step?: number;
+    readonly?: boolean;
 };
 
 export declare type AngleUnit = 'deg' | 'rad';
@@ -92,6 +94,7 @@ export declare class Color {
 export declare type ColorOptions = {
     label?: string;
     tooltip?: string | boolean;
+    readonly?: boolean;
 };
 
 export declare class Folder extends GUI {
@@ -246,6 +249,7 @@ export declare type NumberOptions = {
     max?: number;
     step?: number;
     placeholder?: string;
+    readonly?: boolean;
 };
 
 declare type Options = {
@@ -277,6 +281,7 @@ export declare class Slider {
     private decimals;
     private obj;
     private prop;
+    private isReadonly;
     private callback;
     private ctrlDiv;
     private handle;
@@ -301,6 +306,7 @@ export declare type SliderOptions = {
     max?: number;
     step?: number;
     tooltip?: string;
+    readonly?: boolean;
 };
 
 declare class Text_2 {
@@ -317,6 +323,7 @@ export declare type TextOptions = {
     tooltip?: string | boolean;
     placeholder?: string;
     maxLength?: number;
+    readonly?: boolean;
 };
 
 export declare class Toggle {
@@ -330,6 +337,7 @@ export declare class Toggle {
 export declare type ToggleOptions = {
     label?: string;
     tooltip?: string;
+    readonly?: boolean;
 };
 
 declare type ValueObjectItem = {
@@ -353,6 +361,7 @@ export declare type Vector2Options = {
     step?: number;
     x?: AxisOption;
     y?: AxisOption;
+    readonly?: boolean;
 };
 
 export { }

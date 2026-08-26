@@ -72,4 +72,20 @@ describe('Vector2', () => {
         expect(valueA.textContent).toBe('6, 1');
         expect(valueB.textContent).toBe('6, 1');
     });
+
+    it('ignores clicks when readonly, but still reflects external changes', () => {
+        const { vector2, obj, area } = createVector2({ min: 0, max: 10, readonly: true });
+
+        expect(area.getAttribute('tabindex')).toBe('-1');
+        expect(vector2.element.getAttribute('data-readonly')).toBe('true');
+
+        clickAt(area, 25, 25);
+        expect(obj.x).toBe(0);
+        expect(obj.y).toBe(0);
+
+        obj.x = 3;
+        obj.y = 4;
+        const value = vector2.element.querySelector('.p-gui__vector-value')!;
+        expect(value.textContent).toBe('3, 4');
+    });
 });

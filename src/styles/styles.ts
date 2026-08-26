@@ -168,6 +168,26 @@ export default function (positionType: PositionType) {
         border-color: rgba(255,255,255,.2);
     }
 
+    .p-gui__slider[data-readonly="true"],
+    .p-gui__toggle[data-readonly="true"],
+    .p-gui__vector2[data-readonly="true"],
+    .p-gui__angle[data-readonly="true"],
+    .p-gui__color[data-readonly="true"],
+    .p-gui__text[data-readonly="true"],
+    .p-gui__number[data-readonly="true"] {
+        cursor: default;
+    }
+
+    .p-gui__slider[data-readonly="true"]:hover,
+    .p-gui__toggle[data-readonly="true"]:hover,
+    .p-gui__vector2[data-readonly="true"]:hover,
+    .p-gui__angle[data-readonly="true"]:hover,
+    .p-gui__color[data-readonly="true"]:hover,
+    .p-gui__text[data-readonly="true"]:hover,
+    .p-gui__number[data-readonly="true"]:hover {
+        border-color: var(--color-border-2);
+    }
+
     .p-gui [role="button"]:focus-visible,
     .p-gui [role="switch"]:focus-visible,
     .p-gui [role="slider"]:focus-visible,

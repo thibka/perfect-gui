@@ -89,3 +89,20 @@ describe('Angle unit conversion', () => {
         expect(angle._fromDeg(45)).toBe(45);
     });
 });
+
+describe('Angle readonly mode', () => {
+    it('ignores edits when readonly, but still reflects external changes', () => {
+        const { angle, obj } = createAngle({ readonly: true });
+        const input = angle.element.querySelector<HTMLInputElement>('.p-gui__angle-value')!;
+
+        expect(input.readOnly).toBe(true);
+        expect(angle.element.getAttribute('data-readonly')).toBe('true');
+
+        input.value = '45';
+        input.dispatchEvent(new Event('change'));
+        expect(obj.rotation).toBe(0);
+
+        obj.rotation = 90;
+        expect(input.value).toBe('90');
+    });
+});

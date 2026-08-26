@@ -6,6 +6,7 @@ export type Options = {
     tooltip?: string | boolean;
     placeholder?: string;
     maxLength?: number;
+    readonly?: boolean;
 };
 
 type Callback = (value: string) => void;
@@ -22,6 +23,7 @@ export default class Text {
         options: Options = {}
     ) {
         this.parent = parent;
+        const readonly = !!options.readonly;
 
         if (!obj || typeof obj !== 'object' || typeof prop !== 'string') {
             throw Error(`[GUI] text() invalid parameters. Expected (object, string, options).`);
@@ -48,6 +50,9 @@ export default class Text {
         if (tooltip) {
             container.setAttribute('title', tooltip);
         }
+        if (readonly) {
+            container.setAttribute('data-readonly', 'true');
+        }
         this.parent.wrapper.append(container);
 
         // Expose the DOM element
@@ -64,9 +69,15 @@ export default class Text {
             input.maxLength = options.maxLength;
         }
         input.value = String(value);
+        if (readonly) {
+            input.readOnly = true;
+            input.tabIndex = -1;
+        }
         container.append(input);
 
         input.addEventListener('input', () => {
+            if (readonly) return;
+
             obj[prop] = input.value;
 
             if (this.parent.onUpdate) {

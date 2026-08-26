@@ -143,4 +143,23 @@ describe('NumberInput', () => {
         expect(onChange2).toHaveBeenCalledWith(9);
         expect(input2.value).toBe('9');
     });
+
+    it('ignores edits and stepper clicks when readonly, but still reflects external changes', () => {
+        const { number, obj } = createNumber(5, { readonly: true });
+        const input = number.element.querySelector<HTMLInputElement>('.p-gui__number-input')!;
+        const upArrow = number.element.querySelector<HTMLElement>('.p-gui__number-arrow--up')!;
+
+        expect(input.readOnly).toBe(true);
+        expect(number.element.getAttribute('data-readonly')).toBe('true');
+
+        upArrow.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
+        expect(obj.value).toBe(5);
+
+        input.value = '99';
+        input.dispatchEvent(new Event('change'));
+        expect(obj.value).toBe(5);
+
+        obj.value = 12;
+        expect(input.value).toBe('12');
+    });
 });

@@ -95,3 +95,11 @@
     width: 18px;
     opacity: .6;
 }
+
+.p-gui__angle[data-readonly="true"] .p-gui__angle-dial {
+    cursor: default;
+}
+
+.p-gui__angle[data-readonly="true"] .p-gui__angle-handle {
+    display: none;
+}

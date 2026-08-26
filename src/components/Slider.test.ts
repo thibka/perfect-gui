@@ -82,4 +82,19 @@ describe('Slider value <-> DOM sync', () => {
         expect(onChange2).toHaveBeenCalledWith(9);
         expect(input1.value).toBe('9');
     });
+
+    it('ignores edits when readonly, but still reflects external changes', () => {
+        const { slider, obj } = createSlider({ min: 0, max: 10, step: 1, readonly: true });
+        const input = slider.element.querySelector<HTMLInputElement>('.p-gui__slider-value')!;
+
+        expect(input.readOnly).toBe(true);
+        expect(slider.element.getAttribute('data-readonly')).toBe('true');
+
+        input.value = '4';
+        input.dispatchEvent(new Event('change'));
+        expect(obj.value).toBe(0.5);
+
+        obj.value = 7;
+        expect(input.value).toBe('7');
+    });
 });

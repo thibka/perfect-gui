@@ -51,3 +51,8 @@
     background-color: var(--color-border);
     box-shadow: 0 0 4px var(--color-accent-hover);
 }
+
+.p-gui__toggle[data-readonly="true"]:hover {
+    background: transparent;
+    color: var(--color-text-dark);
+}

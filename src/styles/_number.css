@@ -112,3 +112,11 @@ input.p-gui__number-input:focus-visible {
 .p-gui__number-arrow--down:hover::before {
     border-top-color: var(--color-text-light);
 }
+
+.p-gui__number[data-readonly="true"] .p-gui__number-stepper {
+    display: none;
+}
+
+.p-gui__number[data-readonly="true"] .p-gui__number-input {
+    cursor: default;
+}

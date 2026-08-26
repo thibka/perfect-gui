@@ -65,4 +65,21 @@ describe('Text', () => {
         expect(onChange2).toHaveBeenCalledWith('b');
         expect(input2.value).toBe('b');
     });
+
+    it('ignores user input when readonly, but still reflects external changes', () => {
+        const gui = new GUI();
+        const obj = { name: 'a' };
+        const text = new Text(gui, obj, 'name', { readonly: true });
+        const input = text.element.querySelector<HTMLInputElement>('.p-gui__text-input')!;
+
+        expect(input.readOnly).toBe(true);
+        expect(text.element.getAttribute('data-readonly')).toBe('true');
+
+        input.value = 'hacked';
+        input.dispatchEvent(new Event('input'));
+        expect(obj.name).toBe('a');
+
+        obj.name = 'live update';
+        expect(input.value).toBe('live update');
+    });
 });

@@ -32,3 +32,8 @@
 .p-gui__color-picker::-webkit-color-swatch {
     border: none;
 }
+
+.p-gui__color-picker:disabled {
+    cursor: default;
+    opacity: .8;
+}

@@ -4,6 +4,7 @@ import { bindSharedProp } from '../shared-prop.js';
 export type Options = {
     label?: string;
     tooltip?: string;
+    readonly?: boolean;
 }
 
 export default class Toggle {
@@ -13,6 +14,7 @@ export default class Toggle {
 
     constructor(private parent: GUI, obj: any, prop: string, options: Options = {}) {
         this.callback = null;
+        const readonly = !!options.readonly;
 
         if (!obj || typeof obj !== 'object' || typeof prop !== 'string') {
             throw Error(`[GUI] toggle() invalid parameters.`);
@@ -35,10 +37,14 @@ export default class Toggle {
         container.textContent = label;
         container.className = 'p-gui__toggle';
         container.setAttribute('role', 'switch');
-        container.setAttribute('tabindex', '0');
+        container.setAttribute('tabindex', readonly ? '-1' : '0');
         container.setAttribute('aria-checked', String(!!obj[prop]));
         if (tooltip) {
             container.setAttribute('title', tooltip);
+        }
+        if (readonly) {
+            container.setAttribute('data-readonly', 'true');
+            container.setAttribute('aria-readonly', 'true');
         }
         this.parent.wrapper.append(container);
 
@@ -52,6 +58,8 @@ export default class Toggle {
         container.append(checkbox);
 
         const toggleValue = () => {
+            if (readonly) return;
+
             let value = true;
 
             if (checkbox.classList.contains('p-gui__toggle-checkbox--active')) {

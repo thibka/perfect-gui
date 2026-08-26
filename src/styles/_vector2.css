@@ -71,3 +71,7 @@
         right: 7px;
         position: absolute;
     }
+
+    .p-gui__vector2[data-readonly="true"] .p-gui__vector2-area {
+        cursor: default;
+    }

@@ -67,4 +67,17 @@ describe('Color', () => {
         expect(onChange2).toHaveBeenCalledWith('#0000ff');
         expect(picker1.value).toBe('#0000ff');
     });
+
+    it('disables the picker when readonly, but still reflects external changes', () => {
+        const gui = new GUI();
+        const obj = { color: '#000000' };
+        const color = new Color(gui, obj, 'color', { readonly: true });
+        const picker = color.element.querySelector<HTMLInputElement>('.p-gui__color-picker')!;
+
+        expect(picker.disabled).toBe(true);
+        expect(color.element.getAttribute('data-readonly')).toBe('true');
+
+        obj.color = '#00ff00';
+        expect(picker.value).toBe('#00ff00');
+    });
 });

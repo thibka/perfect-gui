@@ -10,6 +10,7 @@ export type Options = {
     min?: number;
     max?: number;
     step?: number;
+    readonly?: boolean;
 };
 
 const RAD_TO_DEG = 180 / Math.PI;
@@ -25,6 +26,7 @@ export default class Angle {
     private stepDeg: number;
     private decimals: number;
     private wraps: boolean;
+    private isReadonly: boolean;
     private callback: ((value: number) => void) | null = null;
 
     private dial: HTMLElement & { pointerDown?: boolean };
@@ -42,6 +44,8 @@ export default class Angle {
         } else {
             throw Error(`[GUI] angle() invalid parameters.`);
         }
+
+        this.isReadonly = !!options.readonly;
 
         let label = typeof options.label == 'string' ? options.label || ' ' : ' ';
 
@@ -77,6 +81,9 @@ export default class Angle {
         if (tooltip) {
             container.setAttribute('title', tooltip);
         }
+        if (this.isReadonly) {
+            container.setAttribute('data-readonly', 'true');
+        }
 
         this.parent.wrapper.append(container);
 
@@ -91,8 +98,11 @@ export default class Angle {
         this.dial = document.createElement('div');
         this.dial.className = 'p-gui__angle-dial';
         this.dial.setAttribute('role', 'slider');
-        this.dial.setAttribute('tabindex', '0');
+        this.dial.setAttribute('tabindex', this.isReadonly ? '-1' : '0');
         this.dial.setAttribute('aria-label', label);
+        if (this.isReadonly) {
+            this.dial.setAttribute('aria-readonly', 'true');
+        }
         if (!this.wraps) {
             this.dial.setAttribute('aria-valuemin', String(this.minDeg));
             this.dial.setAttribute('aria-valuemax', String(this.maxDeg));
@@ -115,6 +125,10 @@ export default class Angle {
         this.valueInput = document.createElement('input');
         this.valueInput.className = 'p-gui__angle-value';
         this.valueInput.setAttribute('aria-label', label);
+        if (this.isReadonly) {
+            this.valueInput.readOnly = true;
+            this.valueInput.tabIndex = -1;
+        }
         container.append(this.valueInput);
 
         const unit_label = document.createElement('div');
@@ -125,6 +139,8 @@ export default class Angle {
         this._display(this._readDeg());
 
         this.valueInput.addEventListener('change', () => {
+            if (this.isReadonly) return;
+
             const parsed = parseFloat(this.valueInput.value);
             const valueDeg = isNaN(parsed) ? this._readDeg() : this._toDeg(parsed);
 
@@ -133,6 +149,8 @@ export default class Angle {
         });
 
         this.dial.addEventListener('pointerdown', (evt) => {
+            if (this.isReadonly) return;
+
             this.dial.pointerDown = true;
             this._updateFromPointer(evt);
 
@@ -144,6 +162,8 @@ export default class Angle {
         });
 
         this.dial.addEventListener('keydown', (evt) => {
+            if (this.isReadonly) return;
+
             let delta = 0;
             if (evt.key === 'ArrowRight' || evt.key === 'ArrowUp') {
                 delta = this.stepDeg;
