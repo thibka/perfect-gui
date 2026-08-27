@@ -27,6 +27,18 @@
 - **Data Binding**: Automatically sync your controls with object properties.
 - **Zero Dependencies**: Lightweight and built with vanilla JavaScript.
 
+## Why Perfect GUI?
+
+Perfect GUI keeps the simplicity of `dat.gui`/`lil-gui`, with a few things that aren't standard in that category of tool:
+
+| Feature | Perfect GUI | dat.gui | lil-gui | Tweakpane |
+| --- | :---: | :---: | :---: | :---: |
+| Image buttons | ✅ | ❌ | ❌ | 🔌 plugin |
+| Angle dial | ✅ | ❌ | ❌ | 🔌 plugin |
+| Tabs | ✅ | ❌ | ❌ | ✅ |
+| Draggable, auto-repositioning panel | ✅ | ❌ | ❌ | ✅ |
+| Multi-control sync on the same property | ✅ | ❌ | ❌ | ❌ |
+
 ## Installation
 
 **With NPM:**
