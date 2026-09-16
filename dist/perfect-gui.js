@@ -711,7 +711,7 @@ var k = class {
 		return e === document.body ? window.innerWidth - document.documentElement.clientWidth : e.offsetWidth - e.clientWidth;
 	}
 	_handleResize() {
-		if (!this.domElement || (this.container == document.body ? this.maxHeight = window.innerHeight : this.maxHeight = Math.min(this.container.clientHeight, window.innerHeight), this.initMaxHeight && (this.maxHeight = Math.min(this.initMaxHeight, this.maxHeight)), this.wrapper.style.maxHeight = this.maxHeight + "px", this.hasBeenDragged)) return;
+		if (!this.domElement || (this.container == document.body ? this.maxHeight = window.innerHeight : this.maxHeight = Math.min(this.container.clientHeight, window.innerHeight), this.initMaxHeight && (this.maxHeight = Math.min(this.initMaxHeight, this.maxHeight)), this.domElement.style.maxHeight = this.maxHeight + "px", this.hasBeenDragged)) return;
 		let e = this._getScrollbarWidth(this.container);
 		if (this.xOffset = this.screenCorner.x == "left" ? 0 : this.container.clientWidth - this.wrapperWidth - e, this.instanceId > 0) {
 			let e = this.container.querySelectorAll(`.p-gui:not(#${this.domElement.id}):not([data-dragged])`);
