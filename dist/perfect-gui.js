@@ -175,8 +175,7 @@ var r = class {
 		if (!s) throw Error("[GUI] list() Third argument must be an array.");
 		let c = s && s.length > 0 && typeof s[0] == "object", l = typeof a.tooltip == "string" ? a.tooltip : a.tooltip === !0 ? o : null, u = (() => {
 			if (!s) return null;
-			if (typeof t[r] == "string") return c ? s.find((e) => e.value === t[r])?.value : s.indexOf(t[r]);
-			if (typeof t[r] == "number") return c ? s.find((e) => e.value === t[r])?.value : t[r];
+			if (typeof t[r] == "string" || typeof t[r] == "number") return c ? s.find((e) => e.value === t[r])?.value : s.indexOf(t[r]);
 		})(), d = n(t, r), f = document.createElement("div");
 		f.className = "p-gui__list", f.textContent = o, l && f.setAttribute("title", l), this.parent.wrapper.append(f), this.element = f;
 		let p = document.createElement("select");
@@ -193,7 +192,7 @@ var r = class {
 					return;
 				}
 				n = r?.value || s[0].value, t = s.indexOf(r);
-			} else typeof e == "string" && (t = s.indexOf(e), n = e), typeof e == "number" && (t = e, n = s[e]);
+			} else typeof e == "string" && (t = s.indexOf(e), n = e), typeof e == "number" && (t = s.indexOf(e), n = e);
 			if (t === void 0 || n === void 0) {
 				console.error("[GUI] list() newIndex or newValue is undefined");
 				return;

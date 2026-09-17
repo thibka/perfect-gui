@@ -67,6 +67,33 @@ describe('List with string values', () => {
     });
 });
 
+describe('List with number values', () => {
+    function createList(initial: number) {
+        const gui = new GUI();
+        const obj = { resolution: initial };
+        const values = [256, 512, 1024];
+        const list = new List(gui, obj, 'resolution', values);
+        return { list, obj, values, gui };
+    }
+
+    it('selects the option matching the initial value, not its index', () => {
+        const { list } = createList(512);
+        const selected = list.element.querySelector('option[selected]') as HTMLOptionElement;
+        expect(selected.value).toBe('512');
+    });
+
+    it('invokes onChange with the new value and index when set programmatically', () => {
+        const { list, obj } = createList(256);
+        const changes: Array<[string | number, number]> = [];
+        list.onChange((value, index) => changes.push([value as number, index]));
+
+        obj.resolution = 1024;
+
+        expect(changes).toEqual([[1024, 2]]);
+        expect(list.element.querySelectorAll('option')[2].hasAttribute('selected')).toBe(true);
+    });
+});
+
 describe('List with object values', () => {
     function createList() {
         const gui = new GUI();

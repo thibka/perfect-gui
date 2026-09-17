@@ -44,7 +44,7 @@ export default class List {
             }
             if (typeof obj[prop] === 'string') {
                 if (!valuesIsObject) {
-                    // values is an array of strings
+                    // values is an array of strings or numbers
                     return (values as (string | number)[]).indexOf(obj[prop]);
                 } else {
                     // values is an array of objects
@@ -54,8 +54,8 @@ export default class List {
             }
             if (typeof obj[prop] == 'number') {
                 if (!valuesIsObject) {
-                    // values is an array of strings
-                    return obj[prop];
+                    // values is an array of strings or numbers
+                    return (values as (string | number)[]).indexOf(obj[prop]);
                 } else {
                     // values is an array of objects
                     return (values as ValueObjectItem[]).find((item) => item.value === obj[prop])
@@ -131,8 +131,8 @@ export default class List {
                     newValue = val;
                 }
                 if (typeof val == 'number') {
-                    newIndex = val;
-                    newValue = values[val];
+                    newIndex = (values as (string | number)[]).indexOf(val);
+                    newValue = val;
                 }
             }
 
