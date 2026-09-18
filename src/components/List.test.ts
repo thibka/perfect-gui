@@ -92,6 +92,18 @@ describe('List with number values', () => {
         expect(changes).toEqual([[1024, 2]]);
         expect(list.element.querySelectorAll('option')[2].hasAttribute('selected')).toBe(true);
     });
+
+    it('does not crash and stores a number when choosing via the native select', () => {
+        const { list, obj } = createList(256);
+        const select = list.element.querySelector<HTMLSelectElement>('.p-gui__list-dropdown')!;
+        select.value = '1024';
+
+        expect(() => select.dispatchEvent(new Event('change'))).not.toThrow();
+
+        expect(obj.resolution).toBe(1024);
+        expect(typeof obj.resolution).toBe('number');
+        expect(list.element.querySelectorAll('option')[2].hasAttribute('selected')).toBe(true);
+    });
 });
 
 describe('List with object values', () => {

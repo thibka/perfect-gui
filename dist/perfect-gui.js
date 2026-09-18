@@ -180,7 +180,15 @@ var r = class {
 		f.className = "p-gui__list", f.textContent = o, l && f.setAttribute("title", l), this.parent.wrapper.append(f), this.element = f;
 		let p = document.createElement("select");
 		f.append(p), p.className = "p-gui__list-dropdown", p.setAttribute("aria-label", o), p.addEventListener("change", (e) => {
-			t[r] = e.target.value, this.parent.onUpdate ? this.parent.onUpdate() : this.parent.isFolder && this.parent.firstParent.onUpdate && this.parent.firstParent.onUpdate();
+			let n = e.target.value, i = n;
+			if (c) {
+				let e = s.find((e) => String(e.value) === n);
+				e !== void 0 && (i = e.value);
+			} else {
+				let e = s.find((e) => String(e) === n);
+				e !== void 0 && (i = e);
+			}
+			t[r] = i, this.parent.onUpdate ? this.parent.onUpdate() : this.parent.isFolder && this.parent.firstParent.onUpdate && this.parent.firstParent.onUpdate();
 		}), s && s.forEach((e, t) => {
 			let n = c ? e.label : e, r = c ? e.value : e, i = document.createElement("option");
 			i.setAttribute("value", String(r)), i.textContent = String(n), p.append(i), (!c && u == t || c && u == r) && i.setAttribute("selected", "");
@@ -193,8 +201,8 @@ var r = class {
 				}
 				n = r?.value || s[0].value, t = s.indexOf(r);
 			} else typeof e == "string" && (t = s.indexOf(e), n = e), typeof e == "number" && (t = s.indexOf(e), n = e);
-			if (t === void 0 || n === void 0) {
-				console.error("[GUI] list() newIndex or newValue is undefined");
+			if (t === void 0 || t === -1 || n === void 0) {
+				console.error(`[GUI] list() value ${e} not found in values`);
 				return;
 			}
 			d.value = c ? n : e;

@@ -82,7 +82,29 @@ export default class List {
         select.className = 'p-gui__list-dropdown';
         select.setAttribute('aria-label', label);
         select.addEventListener('change', (ev) => {
-            obj[prop] = (ev.target as HTMLSelectElement).value;
+            const rawValue = (ev.target as HTMLSelectElement).value;
+
+            // The native <select> always reports its value as a string, so it
+            // must be coerced back to the original value's type (e.g. number)
+            // before being written back to obj[prop].
+            let newValue: string | number = rawValue;
+            if (!valuesIsObject) {
+                const match = (values as (string | number)[]).find(
+                    (item) => String(item) === rawValue,
+                );
+                if (match !== undefined) {
+                    newValue = match;
+                }
+            } else {
+                const match = (values as ValueObjectItem[]).find(
+                    (item) => String(item.value) === rawValue,
+                );
+                if (match !== undefined) {
+                    newValue = match.value;
+                }
+            }
+
+            obj[prop] = newValue;
 
             if (this.parent.onUpdate) {
                 this.parent.onUpdate();
@@ -136,8 +158,8 @@ export default class List {
                 }
             }
 
-            if (newIndex === undefined || newValue === undefined) {
-                console.error('[GUI] list() newIndex or newValue is undefined');
+            if (newIndex === undefined || newIndex === -1 || newValue === undefined) {
+                console.error(`[GUI] list() value ${val} not found in values`);
                 return;
             }
 
