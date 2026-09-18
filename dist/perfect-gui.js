@@ -646,7 +646,7 @@ function O() {
 }
 var k = class {
 	constructor(e = {}, t = !1) {
-		if (this.container = document.body, this.label = "", this.backgroundColor = null, this.opacity = 1, this.maxHeight = window.innerHeight, this.initMaxHeight = null, this.instanceId = 0, this.wrapperWidth = 290, this.stylesheet = null, this.closed = !1, this.domElement = null, this.hasBeenDragged = !1, this.xOffset = 0, this.yOffset = 0, this.position = {
+		if (this.container = document.body, this.label = "", this.backgroundColor = null, this.opacity = 1, this.maxHeight = window.innerHeight, this.initMaxHeight = null, this.instanceId = 0, this.wrapperWidth = 290, this.stylesheet = null, this.closed = !1, this.collapsible = !0, this.domElement = null, this.hasBeenDragged = !1, this.xOffset = 0, this.yOffset = 0, this.position = {
 			initX: 0,
 			initY: 0,
 			prevX: 0,
@@ -669,7 +669,7 @@ var k = class {
 			let t = typeof e.container == "string" ? document.querySelector(e.container) : e.container;
 			t instanceof HTMLElement && (this.container = t, n = "absolute");
 		}
-		this.screenCorner = this._parseScreenCorner(e.position), e.width && (this.wrapperWidth = e.width), typeof e.onUpdate == "function" && (this.onUpdate = e.onUpdate), this.label = typeof e.label == "string" ? e.label : "", this.backgroundColor = e.color || null, this.opacity = e.opacity || 1, this.container && this.container !== document.body && (this.maxHeight = Math.min(this.container.clientHeight, window.innerHeight)), e.maxHeight && (this.initMaxHeight = e.maxHeight, this.maxHeight = Math.min(this.initMaxHeight, this.maxHeight)), window.perfectGUI || (window.perfectGUI = {}), window.perfectGUI.instanceCounter == null ? window.perfectGUI.instanceCounter = 0 : window.perfectGUI.instanceCounter++, this.instanceId = window.perfectGUI.instanceCounter, this.stylesheet = document.createElement("style"), this.stylesheet.setAttribute("type", "text/css"), this.stylesheet.setAttribute("id", "lm-gui-stylesheet"), document.head.append(this.stylesheet), this.instanceId == 0 && this._addStyles(`${E(n)}`), this._styleInstance(), this.closed = !!e.closed;
+		this.screenCorner = this._parseScreenCorner(e.position), e.width && (this.wrapperWidth = e.width), typeof e.onUpdate == "function" && (this.onUpdate = e.onUpdate), this.label = typeof e.label == "string" ? e.label : "", this.backgroundColor = e.color || null, this.opacity = e.opacity || 1, this.container && this.container !== document.body && (this.maxHeight = Math.min(this.container.clientHeight, window.innerHeight)), e.maxHeight && (this.initMaxHeight = e.maxHeight, this.maxHeight = Math.min(this.initMaxHeight, this.maxHeight)), window.perfectGUI || (window.perfectGUI = {}), window.perfectGUI.instanceCounter == null ? window.perfectGUI.instanceCounter = 0 : window.perfectGUI.instanceCounter++, this.instanceId = window.perfectGUI.instanceCounter, this.stylesheet = document.createElement("style"), this.stylesheet.setAttribute("type", "text/css"), this.stylesheet.setAttribute("id", "lm-gui-stylesheet"), document.head.append(this.stylesheet), this.instanceId == 0 && this._addStyles(`${E(n)}`), this._styleInstance(), this.closed = !!e.closed, this.collapsible = e.collapsible != 0;
 		let [r, i] = this._addWrapper();
 		this.domElement = r, this.wrapper = i, this.domElement.setAttribute("data-corner-x", this.screenCorner.x), this.domElement.setAttribute("data-corner-y", this.screenCorner.y), this.autoRepositioning = e.autoRepositioning != 0, this.autoRepositioning && window.addEventListener("resize", this._boundHandleResize), this._handleResize(), e.draggable == 1 && this._makeDraggable();
 	}
@@ -732,13 +732,14 @@ var k = class {
 		let e = document.createElement("div");
 		e.id = "p-gui-" + this.instanceId, e.className = "p-gui" + (this.closed ? " p-gui--collapsed" : ""), e.setAttribute("data-lenis-prevent", ""), this.container.append(e), this.header = document.createElement("div"), this.header.className = "p-gui__header", this.header.textContent = this.label, this.header.style = `${this.backgroundColor ? "border-color: " + this.backgroundColor + ";" : ""}`, e.append(this.header);
 		let t = document.createElement("div");
-		t.className = "p-gui__content", t.id = "p-gui-content-" + this.instanceId, e.append(t);
+		if (t.className = "p-gui__content", t.id = "p-gui-content-" + this.instanceId, e.append(t), this.collapsible) {
+			let e = document.createElement("div");
+			e.className = "p-gui__header-close", e.setAttribute("role", "button"), e.setAttribute("tabindex", "0"), e.setAttribute("aria-label", "Toggle panel"), e.setAttribute("aria-expanded", String(!this.closed)), e.setAttribute("aria-controls", t.id), e.addEventListener("click", this.toggleClose.bind(this)), e.addEventListener("keydown", (e) => {
+				(e.key === "Enter" || e.key === " ") && (e.preventDefault(), this.toggleClose());
+			}), this.header.append(e), this.closeBtn = e;
+		}
 		let n = document.createElement("div");
-		n.className = "p-gui__header-close", n.setAttribute("role", "button"), n.setAttribute("tabindex", "0"), n.setAttribute("aria-label", "Toggle panel"), n.setAttribute("aria-expanded", String(!this.closed)), n.setAttribute("aria-controls", t.id), n.addEventListener("click", this.toggleClose.bind(this)), n.addEventListener("keydown", (e) => {
-			(e.key === "Enter" || e.key === " ") && (e.preventDefault(), this.toggleClose());
-		}), this.header.append(n), this.closeBtn = n;
-		let r = document.createElement("div");
-		return r.className = "p-gui__inner", t.append(r), [e, r];
+		return n.className = "p-gui__inner", t.append(n), [e, n];
 	}
 	button(t = {}) {
 		return this.imageContainer = null, new e(this, t);

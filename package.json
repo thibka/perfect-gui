@@ -1,7 +1,7 @@
 {
   "name": "perfect-gui",
   "type": "module",
-  "version": "6.5.2",
+  "version": "6.6.0",
   "description": "GUI for JavaScript",
   "main": "dist/perfect-gui.js",
   "module": "dist/perfect-gui.js",
@@ -34,6 +34,7 @@
   },
   "homepage": "https://thibka.github.io/perfect-gui/dist/",
   "devDependencies": {
+    "@microsoft/api-extractor": "^7.59.1",
     "eslint": "^9.39.4",
     "jsdom": "^27.0.1",
     "typescript": "^6.0.3",

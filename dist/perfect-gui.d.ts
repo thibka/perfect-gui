@@ -144,6 +144,7 @@ declare class GUI {
     private wrapperWidth;
     private stylesheet;
     private closed;
+    private collapsible;
     domElement: HTMLElement | null;
     private hasBeenDragged;
     private xOffset;
@@ -264,6 +265,7 @@ declare type Options = {
     maxHeight?: number;
     width?: number;
     closed?: boolean;
+    collapsible?: boolean;
     draggable?: boolean;
     autoRepositioning?: boolean;
 };

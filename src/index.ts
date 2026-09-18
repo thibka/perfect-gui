@@ -80,6 +80,7 @@ type Options = {
     maxHeight?: number;
     width?: number;
     closed?: boolean;
+    collapsible?: boolean;
     draggable?: boolean;
     autoRepositioning?: boolean;
 }
@@ -105,6 +106,7 @@ export default class GUI {
     private wrapperWidth: number = 290;
     private stylesheet: HTMLStyleElement | null = null;
     private closed: boolean = false;
+    private collapsible: boolean = true;
     public domElement: HTMLElement | null = null;
     private hasBeenDragged: boolean = false;
     private xOffset: number = 0;
@@ -213,6 +215,7 @@ export default class GUI {
         this._styleInstance();
 
         this.closed = !!options.closed;
+        this.collapsible = options.collapsible != false;
 
         const [domElement, wrapper] = this._addWrapper();
         this.domElement = domElement;
@@ -411,22 +414,24 @@ export default class GUI {
         content.id = 'p-gui-content-' + this.instanceId;
         domElement.append(content);
 
-        const close_btn = document.createElement('div');
-        close_btn.className = 'p-gui__header-close';
-        close_btn.setAttribute('role', 'button');
-        close_btn.setAttribute('tabindex', '0');
-        close_btn.setAttribute('aria-label', 'Toggle panel');
-        close_btn.setAttribute('aria-expanded', String(!this.closed));
-        close_btn.setAttribute('aria-controls', content.id);
-        close_btn.addEventListener('click', this.toggleClose.bind(this));
-        close_btn.addEventListener('keydown', (evt) => {
-            if (evt.key === 'Enter' || evt.key === ' ') {
-                evt.preventDefault();
-                this.toggleClose();
-            }
-        });
-        this.header.append(close_btn);
-        this.closeBtn = close_btn;
+        if (this.collapsible) {
+            const close_btn = document.createElement('div');
+            close_btn.className = 'p-gui__header-close';
+            close_btn.setAttribute('role', 'button');
+            close_btn.setAttribute('tabindex', '0');
+            close_btn.setAttribute('aria-label', 'Toggle panel');
+            close_btn.setAttribute('aria-expanded', String(!this.closed));
+            close_btn.setAttribute('aria-controls', content.id);
+            close_btn.addEventListener('click', this.toggleClose.bind(this));
+            close_btn.addEventListener('keydown', (evt) => {
+                if (evt.key === 'Enter' || evt.key === ' ') {
+                    evt.preventDefault();
+                    this.toggleClose();
+                }
+            });
+            this.header.append(close_btn);
+            this.closeBtn = close_btn;
+        }
 
         const wrapper = document.createElement('div');
         wrapper.className = 'p-gui__inner';

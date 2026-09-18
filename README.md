@@ -108,6 +108,7 @@ const gui = new GUI({
     width: 250, // Width of the panel in pixels (default: 290)
     maxHeight: 500, // Max height beyond which scrolling is necessary
     closed: false, // Start closed? (default: false)
+    collapsible: true, // Show the collapse/expand button? (default: true)
     position: 'bottom right', // Position ('top', 'bottom', 'left', 'right')
     draggable: false, // Can it be manually moved? (default: false)
     autoRepositioning: true, // Reset position on window resize? (default: true)
