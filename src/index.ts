@@ -10,6 +10,7 @@ import Text from './components/Text.js';
 import NumberInput from './components/Number.js';
 import styles from './styles/styles.js';
 import { _countDecimals, _mapLinear } from './utils.js';
+import type { Container } from './components/Component.js';
 
 import type { Options as SliderOptions } from './components/Slider.js';
 import type { Options as ButtonOptions } from './components/Button.js';
@@ -91,7 +92,7 @@ type ScreenCorner = {
     y: 'top' | 'bottom';
 };
 
-export default class GUI {
+export default class GUI implements Container {
     public firstParent: GUI;
     private container: HTMLElement = document.body;
     public wrapper!: HTMLElement;
@@ -236,7 +237,7 @@ export default class GUI {
     }
 
     _styleInstance() {
-        let scrollbar_width = this._getScrollbarWidth(this.container);
+        const scrollbar_width = this._getScrollbarWidth(this.container);
         if (this.screenCorner.x == 'left') {
             this.xOffset = 0;
         } else {
@@ -247,7 +248,7 @@ export default class GUI {
         }
 
         if (this.instanceId > 0) {
-            let existingDomInstances =
+            const existingDomInstances =
                 this.container.querySelectorAll<HTMLElement>('.p-gui');
             
             for (let i = 0; i < existingDomInstances.length; i++) {
@@ -302,7 +303,7 @@ export default class GUI {
     }
 
     _parseScreenCorner(position: string | undefined): ScreenCorner {
-        let parsedPosition: ScreenCorner = { x: 'right', y: 'top' };
+        const parsedPosition: ScreenCorner = { x: 'right', y: 'top' };
 
         if (position == undefined) {
             return parsedPosition;
@@ -345,7 +346,7 @@ export default class GUI {
             return;
         }
 
-        let scrollbar_width = this._getScrollbarWidth(this.container);
+        const scrollbar_width = this._getScrollbarWidth(this.container);
         this.xOffset =
             this.screenCorner.x == 'left'
                 ? 0
@@ -353,11 +354,11 @@ export default class GUI {
                   this.wrapperWidth -
                   scrollbar_width;
         if (this.instanceId > 0) {
-            let existingDomInstances = this.container.querySelectorAll<HTMLElement>(
+            const existingDomInstances = this.container.querySelectorAll<HTMLElement>(
                 `.p-gui:not(#${this.domElement.id}):not([data-dragged])`,
             );
             for (let i = 0; i < existingDomInstances.length; i++) {
-                let instanceId = parseInt(
+                const instanceId = parseInt(
                     existingDomInstances[i].id.replace('p-gui-', ''),
                 );
                 if (instanceId > this.instanceId) break;
@@ -441,6 +442,20 @@ export default class GUI {
         return [domElement, wrapper];
     }
 
+    // Container interface, used by Components in place of the full GUI type.
+    append(el: HTMLElement) {
+        this.imageContainer = null;
+        this.wrapper.append(el);
+    }
+
+    notifyUpdate() {
+        if (this.onUpdate) {
+            this.onUpdate();
+        } else if (this.isFolder && this.firstParent.onUpdate) {
+            this.firstParent.onUpdate();
+        }
+    }
+
     button(options: ButtonOptions = {}) {
         this.imageContainer = null;
         const instance = new Button(this, options);
@@ -463,7 +478,6 @@ export default class GUI {
     }
 
     toggle(obj: any, prop: string, options: ToggleOptions = {}) {
-        this.imageContainer = null;
         const instance = new Toggle(this, obj, prop, options);
         return instance;
     }
@@ -505,11 +519,11 @@ export default class GUI {
     }
 
     folder(options: FolderCreateOptions) {
-        let closed =
+        const closed =
             typeof options.closed == 'boolean' ? options.closed : false;
-        let label = options.label || '';
-        let color = options.color || null;
-        let maxHeight = options.maxHeight || null;
+        const label = options.label || '';
+        const color = options.color || null;
+        const maxHeight = options.maxHeight || null;
 
         this.imageContainer = null;
 
@@ -567,7 +581,7 @@ export default class GUI {
             }
         });
 
-        let folder = new Folder({
+        const folder = new Folder({
             container,
             wrapper: folderInner,
             parent: this,

@@ -1,5 +1,5 @@
-import type GUI from '../index.js';
-import { bindSharedProp } from '../shared-prop.js';
+import type { Container } from './Component.js';
+import BoundComponent from './BoundComponent.js';
 
 export type Options = {
     label?: string;
@@ -7,58 +7,35 @@ export type Options = {
     readonly?: boolean;
 }
 
-export default class Toggle {
-    private callback: ((value: boolean) => void) | null;
+export default class Toggle extends BoundComponent<boolean> {
+    constructor(container: Container, obj: any, prop: string, options: Options = {}) {
+        super(container, obj, prop, !!options.readonly);
 
-    public element: HTMLDivElement;
+        const label = this.resolveLabel(options, prop);
+        const tooltip = this.resolveTooltip(options, label);
 
-    constructor(private parent: GUI, obj: any, prop: string, options: Options = {}) {
-        this.callback = null;
-        const readonly = !!options.readonly;
-
-        if (!obj || typeof obj !== 'object' || typeof prop !== 'string') {
-            throw Error(`[GUI] toggle() invalid parameters.`);
-        }
-
-        let label =
-            typeof options.label === 'string' && options.label !== ''
-                ? options.label
-                : prop;
-        const propEntry = bindSharedProp<boolean>(obj, prop);
-
-        const tooltip =
-            typeof options.tooltip === 'string'
-                ? options.tooltip
-                : options.tooltip === true
-                  ? label
-                  : null;
-
-        const container = document.createElement('div');
-        container.textContent = label;
-        container.className = 'p-gui__toggle';
-        container.setAttribute('role', 'switch');
-        container.setAttribute('tabindex', readonly ? '-1' : '0');
-        container.setAttribute('aria-checked', String(!!obj[prop]));
+        const el = document.createElement('div');
+        el.textContent = label;
+        el.className = 'p-gui__toggle';
+        el.setAttribute('role', 'switch');
+        el.setAttribute('aria-checked', String(!!obj[prop]));
         if (tooltip) {
-            container.setAttribute('title', tooltip);
+            el.setAttribute('title', tooltip);
         }
-        if (readonly) {
-            container.setAttribute('data-readonly', 'true');
-            container.setAttribute('aria-readonly', 'true');
-        }
-        this.parent.wrapper.append(container);
+        this.applyReadonlyAttributes(el);
+        this.container.append(el);
 
         // Expose the DOM element
-        this.element = container;
+        this.element = el;
 
-        let activeClass = obj[prop] ? ' p-gui__toggle-checkbox--active' : '';
+        const activeClass = obj[prop] ? ' p-gui__toggle-checkbox--active' : '';
 
         const checkbox = document.createElement('div');
         checkbox.className = 'p-gui__toggle-checkbox' + activeClass;
-        container.append(checkbox);
+        el.append(checkbox);
 
         const toggleValue = () => {
-            if (readonly) return;
+            if (this.readonly) return;
 
             let value = true;
 
@@ -67,49 +44,35 @@ export default class Toggle {
             }
 
             checkbox.classList.toggle('p-gui__toggle-checkbox--active');
-            container.setAttribute('aria-checked', String(value));
+            el.setAttribute('aria-checked', String(value));
 
-            obj[prop] = value;
+            this.obj[this.prop] = value;
 
-            if (this.parent.onUpdate) {
-                this.parent.onUpdate();
-            } else if (
-                this.parent.isFolder &&
-                this.parent.firstParent.onUpdate
-            ) {
-                this.parent.firstParent.onUpdate();
-            }
+            this.notifyUpdate();
         };
 
-        container.addEventListener('click', (ev) => {
+        el.addEventListener('click', (ev) => {
             if (!ev.target || !(ev.target instanceof HTMLElement)) return;
 
             toggleValue();
         });
 
-        container.addEventListener('keydown', (evt) => {
+        el.addEventListener('keydown', (evt) => {
             if (evt.key === 'Enter' || evt.key === ' ') {
                 evt.preventDefault();
                 toggleValue();
             }
         });
 
-        propEntry.listeners.add((val) => {
+        this.propEntry.listeners.add((val) => {
             if (val) {
                 checkbox.classList.add('p-gui__toggle-checkbox--active');
             } else {
                 checkbox.classList.remove('p-gui__toggle-checkbox--active');
             }
-            container.setAttribute('aria-checked', String(!!val));
+            el.setAttribute('aria-checked', String(!!val));
 
-            if (typeof this.callback == 'function') {
-                this.callback(val);
-            }
+            this.emitChange(val);
         });
-    }
-
-    onChange(callback: (value: boolean) => void) {
-        this.callback = callback;
-        return this;
     }
 }

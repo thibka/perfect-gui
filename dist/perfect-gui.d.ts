@@ -51,6 +51,18 @@ declare type AxisOption = {
     step?: number;
 };
 
+declare abstract class BoundComponent<T = any> extends Component {
+    protected obj: any;
+    protected prop: string;
+    protected propEntry: SharedPropEntry<T>;
+    protected readonly: boolean;
+    private callback;
+    constructor(container: Container, obj: any, prop: string, readonly: boolean);
+    onChange(callback: (value: T) => void): this;
+    protected emitChange(value: T): void;
+    protected applyReadonlyAttributes(el: HTMLElement, interactiveTabIndex?: string): void;
+}
+
 export declare class Button {
     parent: GUI;
     callback: null | Callback;
@@ -97,6 +109,25 @@ export declare type ColorOptions = {
     readonly?: boolean;
 };
 
+declare abstract class Component {
+    element: HTMLElement;
+    protected container: Container;
+    constructor(container: Container);
+    protected notifyUpdate(): void;
+    protected resolveLabel(options: ComponentOptions, fallback: string): string;
+    protected resolveTooltip(options: ComponentOptions, label: string): string | null;
+}
+
+declare type ComponentOptions = {
+    label?: string;
+    tooltip?: string | boolean;
+};
+
+declare interface Container {
+    append(el: HTMLElement): void;
+    notifyUpdate(): void;
+}
+
 export declare class Folder extends GUI {
     parent: GUI;
     firstParent: GUI;
@@ -128,7 +159,7 @@ declare type FolderParams = {
     firstParent: GUI;
 };
 
-declare class GUI {
+declare class GUI implements Container {
     firstParent: GUI;
     private container;
     wrapper: HTMLElement;
@@ -172,6 +203,8 @@ declare class GUI {
     _handleResize(): void;
     _addStyles(styles: string): void;
     _addWrapper(): [HTMLDivElement, HTMLDivElement];
+    append(el: HTMLElement): void;
+    notifyUpdate(): void;
     button(options?: ButtonOptions): Button;
     image(path: string, options?: ImageOptions): Image_2;
     slider(obj: any, prop: string, options?: SliderOptions): Slider;
@@ -277,6 +310,11 @@ declare type ScreenCorner = {
     y: 'top' | 'bottom';
 };
 
+declare type SharedPropEntry<T = any> = {
+    value: T;
+    listeners: Set<(val: T) => void>;
+};
+
 export declare class Slider {
     private parent;
     private min;
@@ -330,12 +368,8 @@ export declare type TextOptions = {
     readonly?: boolean;
 };
 
-export declare class Toggle {
-    private parent;
-    private callback;
-    element: HTMLDivElement;
-    constructor(parent: GUI, obj: any, prop: string, options?: ToggleOptions);
-    onChange(callback: (value: boolean) => void): this;
+export declare class Toggle extends BoundComponent<boolean> {
+    constructor(container: Container, obj: any, prop: string, options?: ToggleOptions);
 }
 
 export declare type ToggleOptions = {
