@@ -139,3 +139,11 @@ See the [Documentation](https://thibka.github.io/perfect-gui/dist/) for a compre
 | [`tabs(options)`](https://thibka.github.io/perfect-gui/dist/#method-tabs) | Tabbed panels to organize controls. |
 | [`toggleClose()`](https://thibka.github.io/perfect-gui/dist/#method-toggleclose) | Programmatically expands or collapses the panel. |
 | [`kill()`](https://thibka.github.io/perfect-gui/dist/#method-kill) | Destroys the GUI instance and removes its listeners. |
+
+Every bound component (slider, toggle, color, etc.) exposes `onChange(callback)`. Each component only ever holds a single callback, so calling `onChange` again replaces the previous one rather than adding a second listener:
+
+```javascript
+const control = gui.slider(settings, 'opacity');
+control.onChange(() => console.log('first'));
+control.onChange(() => console.log('second')); // replaces the 'first' callback, it will never run
+```

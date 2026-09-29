@@ -43,7 +43,7 @@ export default class Angle {
             this.obj = obj;
             this.prop = prop;
         } else {
-            throw Error(`[GUI] angle() invalid parameters.`);
+            throw Error('[GUI] angle() invalid parameters.');
         }
 
         this.isReadonly = !!options.readonly;

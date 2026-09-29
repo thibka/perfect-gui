@@ -40,7 +40,7 @@ export default class Slider {
             this.obj = obj;
             this.prop = prop;
         } else {
-            throw Error(`[GUI] slider() invalid parameters.`);
+            throw Error('[GUI] slider() invalid parameters.');
         }
 
         this.isReadonly = !!options.readonly;

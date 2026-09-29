@@ -22,9 +22,9 @@ export default class Image {
         this.parent = parent;
 
         if (path === undefined) {
-            throw Error(`[GUI] image() path must be provided.`);
+            throw Error('[GUI] image() path must be provided.');
         } else if (typeof path !== 'string') {
-            throw Error(`[GUI] image() path must be a string.`);
+            throw Error('[GUI] image() path must be a string.');
         }
 
         if (typeof params !== 'object') {
@@ -32,7 +32,7 @@ export default class Image {
                 `[GUI] image() second parameter must be an object. Received: ${typeof params}.`,
             );
         }
-        let filename = path.replace(/^.*[\\\/]/, '');
+        const filename = path.replace(/^.*[\\/]/, '');
         let label;
         if (params.label == undefined) {
             label = filename;
@@ -95,7 +95,7 @@ export default class Image {
         image.append(text);
 
         const activate = () => {
-            let selected_items = image.parentElement?.querySelectorAll(
+            const selected_items = image.parentElement?.querySelectorAll(
                 '.p-gui__image--selected',
             ) || [];
             for (let i = 0; i < selected_items.length; i++) {

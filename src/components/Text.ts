@@ -26,7 +26,7 @@ export default class Text {
         const readonly = !!options.readonly;
 
         if (!obj || typeof obj !== 'object' || typeof prop !== 'string') {
-            throw Error(`[GUI] text() invalid parameters. Expected (object, string, options).`);
+            throw Error('[GUI] text() invalid parameters. Expected (object, string, options).');
         }
 
         let label = typeof options.label === 'string' ? options.label || ' ' : ' ';

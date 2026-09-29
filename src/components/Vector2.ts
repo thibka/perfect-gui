@@ -40,11 +40,9 @@ export default class Vector2 {
         ) {
             objectX = obj;
             objectY = obj;
-            propX = propX;
-            propY = propY;
         } else {
             throw Error(
-                `[GUI] vector2() invalid parameters. Use: gui.vector2(obj, 'propX', 'propY', options)`,
+                '[GUI] vector2() invalid parameters. Use: gui.vector2(obj, \'propX\', \'propY\', options)',
             );
         }
 

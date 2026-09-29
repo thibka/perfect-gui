@@ -6,9 +6,9 @@ Decision (confirmed): rewrite `src/plugins/three.js` in TypeScript against the c
 
 **Blocked by:** None (can start immediately)
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] `.eslintrc.js` replaced by `eslint.config.js` (flat config) using `typescript-eslint`.
-- [ ] `npm run lint` script added and passing.
-- [ ] `src/plugins/three.js` rewritten as a typed `.ts` module against the current component/API surface, exported properly, and covered by at least a smoke test.
-- [ ] README documents that calling `onChange` again replaces the previous callback (only one callback per Component).
+- [x] `.eslintrc.js` replaced by `eslint.config.js` (flat config) using `typescript-eslint`.
+- [x] `npm run lint` script added and passing.
+- [x] `src/plugins/three.js` rewritten as a typed `.ts` module against the current component/API surface, exported properly, and covered by at least a smoke test.
+- [x] README documents that calling `onChange` again replaces the previous callback (only one callback per Component).

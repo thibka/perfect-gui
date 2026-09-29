@@ -24,7 +24,7 @@ export default class Color {
         const readonly = !!params.readonly;
 
         if (typeof obj !== 'object' || typeof prop !== 'string') {
-            throw Error(`[GUI] color() invalid parameters. Expected (object, string, options).`);
+            throw Error('[GUI] color() invalid parameters. Expected (object, string, options).');
         }
 
         let label = typeof params.label === 'string' ? params.label || ' ' : ' ';

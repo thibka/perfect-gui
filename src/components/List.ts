@@ -20,16 +20,16 @@ export default class List {
         this.callback = null;
 
         if (!obj || typeof obj !== 'object' || typeof prop !== 'string') {
-            throw Error(`[GUI] list() invalid parameters.`);
+            throw Error('[GUI] list() invalid parameters.');
         }
 
-        let label = typeof options.label === 'string' ? options.label : prop;
-        let values = Array.isArray(valuesArg) ? valuesArg : null;
+        const label = typeof options.label === 'string' ? options.label : prop;
+        const values = Array.isArray(valuesArg) ? valuesArg : null;
         if (!values) {
-            throw Error(`[GUI] list() Third argument must be an array.`);
+            throw Error('[GUI] list() Third argument must be an array.');
         }
 
-        let valuesIsObject =
+        const valuesIsObject =
             values && values.length > 0 && typeof values[0] === 'object';
         const tooltip =
             typeof options.tooltip === 'string'
@@ -38,7 +38,7 @@ export default class List {
                   ? label
                   : null;
 
-        let value = (() => {
+        const value = (() => {
             if (!values) {
                 return null;
             }
@@ -66,7 +66,7 @@ export default class List {
 
         const propEntry = bindSharedProp(obj, prop);
 
-        let container = document.createElement('div');
+        const container = document.createElement('div');
         container.className = 'p-gui__list';
         container.textContent = label;
         if (tooltip) {
@@ -77,7 +77,7 @@ export default class List {
         // Expose the DOM element
         this.element = container;
 
-        let select = document.createElement('select');
+        const select = document.createElement('select');
         container.append(select);
         select.className = 'p-gui__list-dropdown';
         select.setAttribute('aria-label', label);
@@ -120,7 +120,7 @@ export default class List {
             values.forEach((item, index) => {
                 const optionName = valuesIsObject ? (item as ValueObjectItem).label : item;
                 const optionValue = valuesIsObject ? (item as ValueObjectItem).value : item;
-                let option = document.createElement('option');
+                const option = document.createElement('option');
                 option.setAttribute('value', String(optionValue));
                 option.textContent = String(optionName);
                 select.append(option);
@@ -171,8 +171,8 @@ export default class List {
                 previousSelection.removeAttribute('selected');
             }
             select
-                .querySelectorAll('option')
-                [newIndex].setAttribute('selected', '');
+                .querySelectorAll('option')[newIndex]
+                .setAttribute('selected', '');
 
             if (typeof this.callback == 'function') {
                 if (valuesIsObject && newObj) {

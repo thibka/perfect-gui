@@ -23,7 +23,7 @@ export default class Button {
             );
         }
 
-        let label = options.label || ' ';
+        const label = options.label || ' ';
 
         const tooltip =
             typeof options.tooltip === 'string'
