@@ -49,7 +49,7 @@ Objectif : pouvoir refactorer `index.ts` sans régression, alors qu'il n'est qua
 
 ## Phase 1 — Nettoyages sans risque (P5, P8)
 
-- [ ] Déplacer `_mapLinear` et `_countDecimals` dans `src/utils.ts` et mettre à jour Slider, Angle, etc. Garder temporairement des alias sur `GUI` s'ils sont considérés comme publics (voir l'impact API).
+- [x] Déplacer `_mapLinear` et `_countDecimals` dans `src/utils.ts` et mettre à jour Slider, Angle, etc. Garder temporairement des alias sur `GUI` s'ils sont considérés comme publics (voir l'impact API).
 - [ ] Supprimer `src/plugins/three.js`, ou le réécrire en TS avec l'API actuelle. **Décision à prendre.**
 - [ ] Migrer ESLint vers `eslint.config.js` (flat config) avec `typescript-eslint`, et ajouter un script `npm run lint`.
 - [ ] Documenter dans le README que `onChange` remplace le callback précédent (décision prise : un seul callback par Component, voir le [Journal](#journal)).

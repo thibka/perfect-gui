@@ -6,9 +6,13 @@ If these are considered part of the public API (used externally, not just intern
 
 **Blocked by:** 01
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] `_mapLinear` and `_countDecimals` exist in `src/utils.ts`, fully tested (existing tests for these should keep passing, relocated as needed).
-- [ ] Slider, Angle, and any other component using these functions import from `utils.ts` instead of `parent._mapLinear`/`parent._countDecimals`.
-- [ ] `GUI` no longer defines these methods itself (aliases only if the API-impact decision requires them).
-- [ ] `npm run build` is green.
+- [x] `_mapLinear` and `_countDecimals` exist in `src/utils.ts`, fully tested (existing tests for these should keep passing, relocated as needed).
+- [x] Slider, Angle, and any other component using these functions import from `utils.ts` instead of `parent._mapLinear`/`parent._countDecimals`.
+- [x] `GUI` no longer defines these methods itself (aliases only if the API-impact decision requires them).
+- [x] `npm run build` is green.
+
+## Comments
+
+Implemented: moved the logic into `src/utils.ts` (exported `_mapLinear`/`_countDecimals`), with tests relocated to `src/utils.test.ts`. Slider, Vector2, Number, and Angle now import directly from `utils.ts` instead of going through `this.parent._mapLinear`/`this.parent._countDecimals`. Since `REFACTORING.md`'s API-impact table already commits to the "keep deprecated alias until v7" mitigation for these (prefixed `_` but potentially used externally), `GUI._mapLinear`/`GUI._countDecimals` remain as thin `@deprecated` forwarding methods; `index.test.ts` now tests them as aliases rather than duplicating the logic tests. `npm run build`: 92 passed, 1 expected fail (unchanged from ticket 01's baseline).

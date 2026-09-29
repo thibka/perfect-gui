@@ -9,6 +9,7 @@ import Angle from './components/Angle.js';
 import Text from './components/Text.js';
 import NumberInput from './components/Number.js';
 import styles from './styles/styles.js';
+import { _countDecimals, _mapLinear } from './utils.js';
 
 import type { Options as SliderOptions } from './components/Slider.js';
 import type { Options as ButtonOptions } from './components/Button.js';
@@ -796,26 +797,14 @@ export default class GUI {
         }
     }
 
+    /** @deprecated Use `_mapLinear` from `./utils.js` instead. Will be removed in v7. */
     _mapLinear(x: number, a1: number, a2: number, b1: number, b2: number): number {
-        return b1 + ((x - a1) * (b2 - b1)) / (a2 - a1);
+        return _mapLinear(x, a1, a2, b1, b2);
     }
 
+    /** @deprecated Use `_countDecimals` from `./utils.js` instead. Will be removed in v7. */
     _countDecimals(num: number) {
-        // Convert the number to a string
-        const numStr = num.toString();
-
-        // Find the position of the decimal point
-        const decimalIndex = numStr.indexOf('.');
-
-        // If there is no decimal point, return 0
-        if (decimalIndex === -1) {
-            return 0;
-        }
-
-        // Calculate the number of digits after the decimal point
-        const decimalPlaces = numStr.length - decimalIndex - 1;
-
-        return decimalPlaces;
+        return _countDecimals(num);
     }
 }
 

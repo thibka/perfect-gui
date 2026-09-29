@@ -1,5 +1,6 @@
 import type GUI from '../index.js';
 import { bindSharedProp } from '../shared-prop.js';
+import { _countDecimals, _mapLinear } from '../utils.js';
 
 type AxisOption = {
     min?: number;
@@ -59,8 +60,8 @@ export default class Vector2 {
         const maxY = safeParamsY.max ?? options.max ?? 1;
         const stepX = safeParamsX.step || options.step || (maxX - minX) / 100;
         const stepY = safeParamsY.step || options.step || (maxY - minY) / 100;
-        const decimalsX = this.parent._countDecimals(stepX);
-        const decimalsY = this.parent._countDecimals(stepY);
+        const decimalsX = _countDecimals(stepX);
+        const decimalsY = _countDecimals(stepY);
 
         const propXEntry = bindSharedProp<number>(objectX, propX);
         const propYEntry = bindSharedProp<number>(objectY, propY);
@@ -125,14 +126,14 @@ export default class Vector2 {
         };
 
         area.addEventListener('click', (evt) => {
-            const mappedX = this.parent._mapLinear(
+            const mappedX = _mapLinear(
                 evt.offsetX,
                 0,
                 area.clientWidth,
                 minX,
                 maxX,
             );
-            const mappedY = this.parent._mapLinear(
+            const mappedY = _mapLinear(
                 evt.offsetY,
                 0,
                 area.clientHeight,
@@ -148,14 +149,14 @@ export default class Vector2 {
             const offsetX = evt.clientX - rect.left;
             const offsetY = evt.clientY - rect.top;
 
-            const mappedX = this.parent._mapLinear(
+            const mappedX = _mapLinear(
                 offsetX,
                 0,
                 area.clientWidth,
                 minX,
                 maxX,
             );
-            const mappedY = this.parent._mapLinear(
+            const mappedY = _mapLinear(
                 offsetY,
                 0,
                 area.clientHeight,
@@ -215,7 +216,7 @@ export default class Vector2 {
         // Function to update dot position based on current values
         const updateDotPosition = () => {
             dot.style.left =
-                this.parent._mapLinear(
+                _mapLinear(
                     objectX[propX],
                     minX,
                     maxX,
@@ -223,7 +224,7 @@ export default class Vector2 {
                     area.clientWidth,
                 ) + 'px';
             dot.style.top =
-                this.parent._mapLinear(
+                _mapLinear(
                     objectY[propY],
                     minY,
                     maxY,

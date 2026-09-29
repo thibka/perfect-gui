@@ -1,5 +1,6 @@
 import type GUI from '../index.js';
 import { bindSharedProp } from '../shared-prop.js';
+import { _countDecimals } from '../utils.js';
 
 export type Unit = 'deg' | 'rad';
 
@@ -65,7 +66,7 @@ export default class Angle {
         this.stepDeg = Math.abs(this._toDeg(step)) || 1;
         this.wraps = this.maxDeg - this.minDeg >= 360 - 1e-6;
         this.decimals =
-            this.unit == 'rad' ? 3 : this.parent._countDecimals(step);
+            this.unit == 'rad' ? 3 : _countDecimals(step);
 
         const propEntry = bindSharedProp<number>(this.obj, this.prop);
         const tooltip =

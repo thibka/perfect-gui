@@ -195,7 +195,9 @@ declare class GUI {
     _makeDraggable(): void;
     toggleClose(): void;
     kill(): void;
+    /** @deprecated Use `_mapLinear` from `./utils.js` instead. Will be removed in v7. */
     _mapLinear(x: number, a1: number, a2: number, b1: number, b2: number): number;
+    /** @deprecated Use `_countDecimals` from `./utils.js` instead. Will be removed in v7. */
     _countDecimals(num: number): number;
 }
 export default GUI;

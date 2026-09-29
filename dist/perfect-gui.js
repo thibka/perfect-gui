@@ -31,20 +31,29 @@ function n(e, n) {
 	})), i;
 }
 //#endregion
+//#region src/utils.ts
+function r(e, t, n, r, i) {
+	return r + (e - t) * (i - r) / (n - t);
+}
+function i(e) {
+	let t = e.toString(), n = t.indexOf(".");
+	return n === -1 ? 0 : t.length - n - 1;
+}
+//#endregion
 //#region src/components/Slider.ts
-var r = class {
-	constructor(e, t, r, i = {}) {
+var a = class {
+	constructor(e, t, r, a = {}) {
 		if (this.callback = null, this.parent = e, t && typeof t == "object" && typeof r == "string") this.obj = t, this.prop = r;
 		else throw Error("[GUI] slider() invalid parameters.");
-		this.isReadonly = !!i.readonly;
-		let a = typeof i.label == "string" && i.label || "\xA0";
-		a == "\xA0" && (a = this.prop), this.min = i.min ?? 0, this.max = i.max ?? 1, this.step = i.step || (this.max - this.min) / 100, this.decimals = this.parent._countDecimals(this.step);
-		let o = n(this.obj, this.prop), s = typeof i.tooltip == "string" ? i.tooltip : i.tooltip === !0 ? a : null, c = document.createElement("div");
-		c.className = "p-gui__slider", s && c.setAttribute("title", s), this.isReadonly && c.setAttribute("data-readonly", "true"), this.parent.wrapper.append(c), this.element = c;
-		let l = document.createElement("div");
-		l.className = "p-gui__slider-name", l.textContent = a, c.append(l), this.ctrlDiv = document.createElement("div"), this.ctrlDiv.prevPosition = 0, this.ctrlDiv.className = "p-gui__slider-ctrl", this.ctrlDiv.setAttribute("role", "slider"), this.ctrlDiv.setAttribute("tabindex", this.isReadonly ? "-1" : "0"), this.ctrlDiv.setAttribute("aria-label", a), this.isReadonly && this.ctrlDiv.setAttribute("aria-readonly", "true"), this.ctrlDiv.setAttribute("aria-valuemin", String(this.min)), this.ctrlDiv.setAttribute("aria-valuemax", String(this.max)), c.append(this.ctrlDiv);
+		this.isReadonly = !!a.readonly;
+		let o = typeof a.label == "string" && a.label || "\xA0";
+		o == "\xA0" && (o = this.prop), this.min = a.min ?? 0, this.max = a.max ?? 1, this.step = a.step || (this.max - this.min) / 100, this.decimals = i(this.step);
+		let s = n(this.obj, this.prop), c = typeof a.tooltip == "string" ? a.tooltip : a.tooltip === !0 ? o : null, l = document.createElement("div");
+		l.className = "p-gui__slider", c && l.setAttribute("title", c), this.isReadonly && l.setAttribute("data-readonly", "true"), this.parent.wrapper.append(l), this.element = l;
 		let u = document.createElement("div");
-		u.className = "p-gui__slider-bar", this.ctrlDiv.append(u), this.handle = document.createElement("div"), this.handle.className = "p-gui__slider-handle", this.ctrlDiv.append(this.handle), this.filling = document.createElement("div"), this.filling.className = "p-gui__slider-filling", u.append(this.filling), this.valueInput = document.createElement("input"), this.valueInput.className = "p-gui__slider-value", this.valueInput.value = this.obj[this.prop], this.valueInput.setAttribute("aria-label", a), this.isReadonly && (this.valueInput.readOnly = !0, this.valueInput.tabIndex = -1), c.append(this.valueInput), this._updateHandlePositionFromValue(), new ResizeObserver(() => {
+		u.className = "p-gui__slider-name", u.textContent = o, l.append(u), this.ctrlDiv = document.createElement("div"), this.ctrlDiv.prevPosition = 0, this.ctrlDiv.className = "p-gui__slider-ctrl", this.ctrlDiv.setAttribute("role", "slider"), this.ctrlDiv.setAttribute("tabindex", this.isReadonly ? "-1" : "0"), this.ctrlDiv.setAttribute("aria-label", o), this.isReadonly && this.ctrlDiv.setAttribute("aria-readonly", "true"), this.ctrlDiv.setAttribute("aria-valuemin", String(this.min)), this.ctrlDiv.setAttribute("aria-valuemax", String(this.max)), l.append(this.ctrlDiv);
+		let d = document.createElement("div");
+		d.className = "p-gui__slider-bar", this.ctrlDiv.append(d), this.handle = document.createElement("div"), this.handle.className = "p-gui__slider-handle", this.ctrlDiv.append(this.handle), this.filling = document.createElement("div"), this.filling.className = "p-gui__slider-filling", d.append(this.filling), this.valueInput = document.createElement("input"), this.valueInput.className = "p-gui__slider-value", this.valueInput.value = this.obj[this.prop], this.valueInput.setAttribute("aria-label", o), this.isReadonly && (this.valueInput.readOnly = !0, this.valueInput.tabIndex = -1), l.append(this.valueInput), this._updateHandlePositionFromValue(), new ResizeObserver(() => {
 			this._updateHandlePositionFromValue();
 		}).observe(this.ctrlDiv), this.valueInput.addEventListener("change", () => {
 			this.isReadonly || (this._updateHandlePositionFromValue(), this._triggerCallbacks());
@@ -71,7 +80,7 @@ var r = class {
 				return;
 			} else return;
 			e.preventDefault(), this._setValue(parseFloat(this.valueInput.value) + t);
-		}), o.listeners.add((e) => {
+		}), s.listeners.add((e) => {
 			this.valueInput.value = String(e), this._updateHandlePositionFromValue(), this.callback && this.callback(parseFloat(this.valueInput.value));
 		});
 	}
@@ -90,7 +99,7 @@ var r = class {
 		this.ctrlDiv.setAttribute("aria-valuenow", this.valueInput.value);
 	}
 	_updateHandlePositionFromValue() {
-		let e = this.ctrlDiv.offsetWidth, t = this.handle.offsetWidth, n = this.parent._mapLinear(parseFloat(this.valueInput.value), this.min, this.max, t / 2, e - t / 2);
+		let e = this.ctrlDiv.offsetWidth, t = this.handle.offsetWidth, n = r(parseFloat(this.valueInput.value), this.min, this.max, t / 2, e - t / 2);
 		n = Math.max(t / 2, Math.min(n, e - t / 2)), this.handle.style.transform = `translate(-50%, -50%) translateX(${n}px)`, this.handle.position = n, this.filling.style.width = this.handle.position + "px", this._updateAriaValue();
 	}
 	_triggerCallbacks() {
@@ -108,7 +117,7 @@ var r = class {
 	onChange(e) {
 		return this.callback = e, this;
 	}
-}, i = class {
+}, o = class {
 	constructor(e, t, n = {}) {
 		if (this.callback = null, this.parent = e, t === void 0) throw Error("[GUI] image() path must be provided.");
 		if (typeof t != "string") throw Error("[GUI] image() path must be a string.");
@@ -143,7 +152,7 @@ var r = class {
 	onClick(e) {
 		return this.callback = e, this;
 	}
-}, a = class {
+}, s = class {
 	constructor(e, t, r, i = {}) {
 		this.parent = e, this.callback = null;
 		let a = !!i.readonly;
@@ -168,7 +177,7 @@ var r = class {
 	onChange(e) {
 		return this.callback = e, this;
 	}
-}, o = class {
+}, c = class {
 	constructor(e, t, r, i, a = {}) {
 		if (this.parent = e, this.callback = null, !t || typeof t != "object" || typeof r != "string") throw Error("[GUI] list() invalid parameters.");
 		let o = typeof a.label == "string" ? a.label : r, s = Array.isArray(i) ? i : null;
@@ -213,7 +222,7 @@ var r = class {
 	onChange(e) {
 		return this.callback = e, this;
 	}
-}, s = class {
+}, l = class {
 	constructor(e, t, r, i = {}) {
 		this.callback = null, this.parent = e;
 		let a = !!i.readonly;
@@ -232,90 +241,90 @@ var r = class {
 	onChange(e) {
 		return this.callback = e, this;
 	}
-}, c = class {
-	constructor(e, t, r, i, a = {}) {
+}, u = class {
+	constructor(e, t, a, o, s = {}) {
 		this.parent = e, this.callback = null;
-		let o = !!a.readonly, s, c;
-		if (t && typeof t == "object" && typeof r == "string" && typeof i == "string") s = t, c = t, r = r, i = i;
+		let c = !!s.readonly, l, u;
+		if (t && typeof t == "object" && typeof a == "string" && typeof o == "string") l = t, u = t, a = a, o = o;
 		else throw Error("[GUI] vector2() invalid parameters. Use: gui.vector2(obj, 'propX', 'propY', options)");
-		let l = typeof a.label == "string" && a.label || "\xA0";
-		l === "\xA0" && (l = r + " / " + i);
-		let u = a.x || {}, d = a.y || {}, f = u.min ?? a.min ?? 0, p = u.max ?? a.max ?? 1, m = d.min ?? a.min ?? 0, h = d.max ?? a.max ?? 1, g = u.step || a.step || (p - f) / 100, _ = d.step || a.step || (h - m) / 100, v = this.parent._countDecimals(g), y = this.parent._countDecimals(_), b = n(s, r), x = n(c, i), S = typeof a.tooltip == "string" ? a.tooltip : a.tooltip === !0 ? l : null, C = document.createElement("div");
-		C.className = "p-gui__vector2", C.textContent = l, S && C.setAttribute("title", S), o && C.setAttribute("data-readonly", "true"), this.parent.wrapper.append(C), this.element = C;
-		let w = document.createElement("div");
-		w.className = "p-gui__vector-value", w.textContent = s[r] + ", " + c[i], C.append(w);
-		let T = document.createElement("div");
-		T.className = "p-gui__vector2-area", T.setAttribute("role", "slider"), T.setAttribute("tabindex", o ? "-1" : "0"), T.setAttribute("aria-label", l), o && T.setAttribute("aria-readonly", "true"), C.append(T);
-		let E = (e, t) => {
-			if (o) return;
-			let n = Math.max(f, Math.min(p, e)), a = Math.max(m, Math.min(h, t));
-			s[r] = parseFloat(n.toFixed(v)), c[i] = parseFloat(a.toFixed(y)), this.callback && this.callback(s[r], c[i]), this.parent.onUpdate ? this.parent.onUpdate() : this.parent.isFolder && this.parent.firstParent.onUpdate && this.parent.firstParent.onUpdate();
+		let d = typeof s.label == "string" && s.label || "\xA0";
+		d === "\xA0" && (d = a + " / " + o);
+		let f = s.x || {}, p = s.y || {}, m = f.min ?? s.min ?? 0, h = f.max ?? s.max ?? 1, g = p.min ?? s.min ?? 0, _ = p.max ?? s.max ?? 1, v = f.step || s.step || (h - m) / 100, y = p.step || s.step || (_ - g) / 100, b = i(v), x = i(y), S = n(l, a), C = n(u, o), w = typeof s.tooltip == "string" ? s.tooltip : s.tooltip === !0 ? d : null, T = document.createElement("div");
+		T.className = "p-gui__vector2", T.textContent = d, w && T.setAttribute("title", w), c && T.setAttribute("data-readonly", "true"), this.parent.wrapper.append(T), this.element = T;
+		let E = document.createElement("div");
+		E.className = "p-gui__vector-value", E.textContent = l[a] + ", " + u[o], T.append(E);
+		let D = document.createElement("div");
+		D.className = "p-gui__vector2-area", D.setAttribute("role", "slider"), D.setAttribute("tabindex", c ? "-1" : "0"), D.setAttribute("aria-label", d), c && D.setAttribute("aria-readonly", "true"), T.append(D);
+		let O = (e, t) => {
+			if (c) return;
+			let n = Math.max(m, Math.min(h, e)), r = Math.max(g, Math.min(_, t));
+			l[a] = parseFloat(n.toFixed(b)), u[o] = parseFloat(r.toFixed(x)), this.callback && this.callback(l[a], u[o]), this.parent.onUpdate ? this.parent.onUpdate() : this.parent.isFolder && this.parent.firstParent.onUpdate && this.parent.firstParent.onUpdate();
 		};
-		T.addEventListener("click", (e) => {
-			E(this.parent._mapLinear(e.offsetX, 0, T.clientWidth, f, p), this.parent._mapLinear(e.offsetY, 0, T.clientHeight, h, m));
+		D.addEventListener("click", (e) => {
+			O(r(e.offsetX, 0, D.clientWidth, m, h), r(e.offsetY, 0, D.clientHeight, _, g));
 		});
-		let D = (e) => {
-			let t = T.getBoundingClientRect(), n = e.clientX - t.left, r = e.clientY - t.top;
-			E(this.parent._mapLinear(n, 0, T.clientWidth, f, p), this.parent._mapLinear(r, 0, T.clientHeight, h, m));
+		let k = (e) => {
+			let t = D.getBoundingClientRect(), n = e.clientX - t.left, i = e.clientY - t.top;
+			O(r(n, 0, D.clientWidth, m, h), r(i, 0, D.clientHeight, _, g));
 		};
-		T.addEventListener("pointerdown", (e) => {
-			D(e), document.addEventListener("pointermove", D), document.addEventListener("pointerup", () => {
-				document.removeEventListener("pointermove", D);
+		D.addEventListener("pointerdown", (e) => {
+			k(e), document.addEventListener("pointermove", k), document.addEventListener("pointerup", () => {
+				document.removeEventListener("pointermove", k);
 			}, { once: !0 });
-		}), T.addEventListener("keydown", (e) => {
+		}), D.addEventListener("keydown", (e) => {
 			let t = 0, n = 0;
-			if (e.key === "ArrowRight") t = g;
-			else if (e.key === "ArrowLeft") t = -g;
-			else if (e.key === "ArrowUp") n = _;
-			else if (e.key === "ArrowDown") n = -_;
+			if (e.key === "ArrowRight") t = v;
+			else if (e.key === "ArrowLeft") t = -v;
+			else if (e.key === "ArrowUp") n = y;
+			else if (e.key === "ArrowDown") n = -y;
 			else return;
-			e.preventDefault(), E(s[r] + t, c[i] + n);
+			e.preventDefault(), O(l[a] + t, u[o] + n);
 		});
-		let O = document.createElement("div");
-		O.className = "p-gui__vector2-line p-gui__vector2-line-x", T.append(O);
-		let k = document.createElement("div");
-		k.className = "p-gui__vector2-line p-gui__vector2-line-y", T.append(k);
 		let A = document.createElement("div");
-		A.className = "p-gui__vector2-dot", T.append(A);
-		let j = () => {
-			A.style.left = this.parent._mapLinear(s[r], f, p, 0, T.clientWidth) + "px", A.style.top = this.parent._mapLinear(c[i], m, h, T.clientHeight, 0) + "px", T.setAttribute("aria-valuetext", `${s[r]}, ${c[i]}`);
+		A.className = "p-gui__vector2-line p-gui__vector2-line-x", D.append(A);
+		let j = document.createElement("div");
+		j.className = "p-gui__vector2-line p-gui__vector2-line-y", D.append(j);
+		let M = document.createElement("div");
+		M.className = "p-gui__vector2-dot", D.append(M);
+		let N = () => {
+			M.style.left = r(l[a], m, h, 0, D.clientWidth) + "px", M.style.top = r(u[o], g, _, D.clientHeight, 0) + "px", D.setAttribute("aria-valuetext", `${l[a]}, ${u[o]}`);
 		};
-		j(), new ResizeObserver(() => {
-			j();
-		}).observe(T), b.listeners.add((e) => {
-			j(), w.textContent = String(e) + ", " + c[i];
-		}), x.listeners.add((e) => {
-			j(), w.textContent = s[r] + ", " + String(e);
+		N(), new ResizeObserver(() => {
+			N();
+		}).observe(D), S.listeners.add((e) => {
+			N(), E.textContent = String(e) + ", " + u[o];
+		}), C.listeners.add((e) => {
+			N(), E.textContent = l[a] + ", " + String(e);
 		});
 	}
 	onChange(e) {
 		return this.callback = e, this;
 	}
-}, l = 180 / Math.PI, u = Math.PI / 180, d = class {
-	constructor(e, t, r, i = {}) {
+}, d = 180 / Math.PI, f = Math.PI / 180, p = class {
+	constructor(e, t, r, a = {}) {
 		if (this.callback = null, this._onPointerMove = (e) => {
 			this.dial.pointerDown && this._updateFromPointer(e);
 		}, this._onPointerUp = () => {
 			this.dial.pointerDown = !1, document.removeEventListener("pointermove", this._onPointerMove);
 		}, this.parent = e, t && typeof t == "object" && typeof r == "string") this.obj = t, this.prop = r;
 		else throw Error("[GUI] angle() invalid parameters.");
-		this.isReadonly = !!i.readonly;
-		let a = typeof i.label == "string" && i.label || " ";
-		a == " " && (a = this.prop), this.unit = i.unit === "rad" ? "rad" : "deg";
-		let o = this._fromDeg(360), s = i.min ?? 0, c = i.max ?? s + o, l = i.step || this._fromDeg(1);
-		this.minDeg = this._toDeg(s), this.maxDeg = this._toDeg(c), this.stepDeg = Math.abs(this._toDeg(l)) || 1, this.wraps = this.maxDeg - this.minDeg >= 359.999999, this.decimals = this.unit == "rad" ? 3 : this.parent._countDecimals(l);
-		let u = n(this.obj, this.prop), d = typeof i.tooltip == "string" ? i.tooltip : i.tooltip === !0 ? a : null, f = document.createElement("div");
-		f.className = "p-gui__angle", d && f.setAttribute("title", d), this.isReadonly && f.setAttribute("data-readonly", "true"), this.parent.wrapper.append(f), this.element = f;
-		let p = document.createElement("div");
-		if (p.className = "p-gui__angle-name", p.textContent = a, f.append(p), this.dial = document.createElement("div"), this.dial.className = "p-gui__angle-dial", this.dial.setAttribute("role", "slider"), this.dial.setAttribute("tabindex", this.isReadonly ? "-1" : "0"), this.dial.setAttribute("aria-label", a), this.isReadonly && this.dial.setAttribute("aria-readonly", "true"), this.wraps || (this.dial.setAttribute("aria-valuemin", String(this.minDeg)), this.dial.setAttribute("aria-valuemax", String(this.maxDeg))), f.append(this.dial), !this.wraps) {
+		this.isReadonly = !!a.readonly;
+		let o = typeof a.label == "string" && a.label || " ";
+		o == " " && (o = this.prop), this.unit = a.unit === "rad" ? "rad" : "deg";
+		let s = this._fromDeg(360), c = a.min ?? 0, l = a.max ?? c + s, u = a.step || this._fromDeg(1);
+		this.minDeg = this._toDeg(c), this.maxDeg = this._toDeg(l), this.stepDeg = Math.abs(this._toDeg(u)) || 1, this.wraps = this.maxDeg - this.minDeg >= 359.999999, this.decimals = this.unit == "rad" ? 3 : i(u);
+		let d = n(this.obj, this.prop), f = typeof a.tooltip == "string" ? a.tooltip : a.tooltip === !0 ? o : null, p = document.createElement("div");
+		p.className = "p-gui__angle", f && p.setAttribute("title", f), this.isReadonly && p.setAttribute("data-readonly", "true"), this.parent.wrapper.append(p), this.element = p;
+		let m = document.createElement("div");
+		if (m.className = "p-gui__angle-name", m.textContent = o, p.append(m), this.dial = document.createElement("div"), this.dial.className = "p-gui__angle-dial", this.dial.setAttribute("role", "slider"), this.dial.setAttribute("tabindex", this.isReadonly ? "-1" : "0"), this.dial.setAttribute("aria-label", o), this.isReadonly && this.dial.setAttribute("aria-readonly", "true"), this.wraps || (this.dial.setAttribute("aria-valuemin", String(this.minDeg)), this.dial.setAttribute("aria-valuemax", String(this.maxDeg))), p.append(this.dial), !this.wraps) {
 			let e = this.maxDeg - this.minDeg;
 			this.dial.style.backgroundImage = `conic-gradient(from ${this.minDeg}deg, transparent ${e}deg, rgba(255, 255, 255, .2) ${e}deg)`;
 		}
 		this.needle = document.createElement("div"), this.needle.className = "p-gui__angle-needle", this.dial.append(this.needle);
-		let m = document.createElement("div");
-		m.className = "p-gui__angle-handle", this.needle.append(m), this.valueInput = document.createElement("input"), this.valueInput.className = "p-gui__angle-value", this.valueInput.setAttribute("aria-label", a), this.isReadonly && (this.valueInput.readOnly = !0, this.valueInput.tabIndex = -1), f.append(this.valueInput);
 		let h = document.createElement("div");
-		h.className = "p-gui__angle-unit", h.textContent = this.unit == "rad" ? "rad" : "°", f.append(h), this._display(this._readDeg()), this.valueInput.addEventListener("change", () => {
+		h.className = "p-gui__angle-handle", this.needle.append(h), this.valueInput = document.createElement("input"), this.valueInput.className = "p-gui__angle-value", this.valueInput.setAttribute("aria-label", o), this.isReadonly && (this.valueInput.readOnly = !0, this.valueInput.tabIndex = -1), p.append(this.valueInput);
+		let g = document.createElement("div");
+		g.className = "p-gui__angle-unit", g.textContent = this.unit == "rad" ? "rad" : "°", p.append(g), this._display(this._readDeg()), this.valueInput.addEventListener("change", () => {
 			if (this.isReadonly) return;
 			let e = parseFloat(this.valueInput.value), t = isNaN(e) ? this._readDeg() : this._toDeg(e);
 			this._display(this._resolveDeg(t)), this._triggerCallbacks();
@@ -334,12 +343,12 @@ var r = class {
 				return;
 			} else return;
 			e.preventDefault(), this._display(this._resolveDeg(this._readDeg() + t)), this._triggerCallbacks();
-		}), u.listeners.add((e) => {
+		}), d.listeners.add((e) => {
 			this._display(this._readDeg()), this.callback && this.callback(e);
 		});
 	}
 	_updateFromPointer(e) {
-		let t = this.dial.getBoundingClientRect(), n = t.left + t.width / 2, r = t.top + t.height / 2, i = Math.atan2(e.clientX - n, r - e.clientY) * l;
+		let t = this.dial.getBoundingClientRect(), n = t.left + t.width / 2, r = t.top + t.height / 2, i = Math.atan2(e.clientX - n, r - e.clientY) * d;
 		this._display(this._resolveDeg(i)), this._triggerCallbacks();
 	}
 	_resolveDeg(e) {
@@ -357,10 +366,10 @@ var r = class {
 		this.obj[this.prop] = parseFloat(this.valueInput.value), this.parent.onUpdate ? this.parent.onUpdate() : this.parent.isFolder && this.parent.firstParent.onUpdate && this.parent.firstParent.onUpdate();
 	}
 	_toDeg(e) {
-		return this.unit == "rad" ? e * l : e;
+		return this.unit == "rad" ? e * d : e;
 	}
 	_fromDeg(e) {
-		return this.unit == "rad" ? e * u : e;
+		return this.unit == "rad" ? e * f : e;
 	}
 	_mod(e, t) {
 		return (e % t + t) % t;
@@ -368,7 +377,7 @@ var r = class {
 	onChange(e) {
 		return this.callback = e, this;
 	}
-}, f = class {
+}, m = class {
 	constructor(e, t, r, i = {}) {
 		this.callback = null, this.parent = e;
 		let a = !!i.readonly;
@@ -388,54 +397,54 @@ var r = class {
 	onChange(e) {
 		return this.callback = e, this;
 	}
-}, p = class {
-	constructor(e, t, r, i = {}) {
-		this.callback = null, this.parent = e, this.min = i.min, this.max = i.max;
-		let a = !!i.readonly;
+}, h = class {
+	constructor(e, t, r, a = {}) {
+		this.callback = null, this.parent = e, this.min = a.min, this.max = a.max;
+		let o = !!a.readonly;
 		if (!t || typeof t != "object" || typeof r != "string") throw Error("[GUI] number() invalid parameters. Expected (object, string, options).");
-		let o = typeof i.label == "string" && i.label || " ";
-		o === " " && (o = r);
-		let s = typeof i.tooltip == "string" ? i.tooltip : i.tooltip === !0 ? o : null, c = n(t, r), l = typeof t[r] == "number" ? t[r] : 0, u = document.createElement("div");
-		u.className = "p-gui__number", u.textContent = o, s && u.setAttribute("title", s), a && u.setAttribute("data-readonly", "true"), this.parent.wrapper.append(u), this.element = u;
-		let d = i.step || 1, f = this.parent._countDecimals(d), p = document.createElement("div");
-		p.className = "p-gui__number-ctrl", u.append(p);
-		let m = document.createElement("input");
-		m.className = "p-gui__number-input", m.setAttribute("type", "number"), m.setAttribute("aria-label", o), typeof i.min == "number" && m.setAttribute("min", String(i.min)), typeof i.max == "number" && m.setAttribute("max", String(i.max)), m.setAttribute("step", String(d)), typeof i.placeholder == "string" && m.setAttribute("placeholder", i.placeholder), m.value = String(l), a && (m.readOnly = !0, m.tabIndex = -1), p.append(m);
-		let h = document.createElement("div");
-		h.className = "p-gui__number-stepper", p.append(h);
+		let s = typeof a.label == "string" && a.label || " ";
+		s === " " && (s = r);
+		let c = typeof a.tooltip == "string" ? a.tooltip : a.tooltip === !0 ? s : null, l = n(t, r), u = typeof t[r] == "number" ? t[r] : 0, d = document.createElement("div");
+		d.className = "p-gui__number", d.textContent = s, c && d.setAttribute("title", c), o && d.setAttribute("data-readonly", "true"), this.parent.wrapper.append(d), this.element = d;
+		let f = a.step || 1, p = i(f), m = document.createElement("div");
+		m.className = "p-gui__number-ctrl", d.append(m);
+		let h = document.createElement("input");
+		h.className = "p-gui__number-input", h.setAttribute("type", "number"), h.setAttribute("aria-label", s), typeof a.min == "number" && h.setAttribute("min", String(a.min)), typeof a.max == "number" && h.setAttribute("max", String(a.max)), h.setAttribute("step", String(f)), typeof a.placeholder == "string" && h.setAttribute("placeholder", a.placeholder), h.value = String(u), o && (h.readOnly = !0, h.tabIndex = -1), m.append(h);
 		let g = document.createElement("div");
-		g.className = "p-gui__number-arrow p-gui__number-arrow--up", g.setAttribute("role", "button"), g.setAttribute("tabindex", "-1"), g.setAttribute("aria-label", `Increase ${o}`), h.append(g);
+		g.className = "p-gui__number-stepper", m.append(g);
 		let _ = document.createElement("div");
-		_.className = "p-gui__number-arrow p-gui__number-arrow--down", _.setAttribute("role", "button"), _.setAttribute("tabindex", "-1"), _.setAttribute("aria-label", `Decrease ${o}`), h.append(_);
-		let v = () => {
-			if (a) return;
-			let e = parseFloat(m.value);
-			isNaN(e) && (e = 0), typeof this.min == "number" && (e = Math.max(this.min, e)), typeof this.max == "number" && (e = Math.min(this.max, e)), m.value = String(e), t[r] = e, this.parent.onUpdate ? this.parent.onUpdate() : this.parent.isFolder && this.parent.firstParent.onUpdate && this.parent.firstParent.onUpdate();
-		}, y = (e) => {
-			if (a) return;
-			let t = parseFloat(m.value);
+		_.className = "p-gui__number-arrow p-gui__number-arrow--up", _.setAttribute("role", "button"), _.setAttribute("tabindex", "-1"), _.setAttribute("aria-label", `Increase ${s}`), g.append(_);
+		let v = document.createElement("div");
+		v.className = "p-gui__number-arrow p-gui__number-arrow--down", v.setAttribute("role", "button"), v.setAttribute("tabindex", "-1"), v.setAttribute("aria-label", `Decrease ${s}`), g.append(v);
+		let y = () => {
+			if (o) return;
+			let e = parseFloat(h.value);
+			isNaN(e) && (e = 0), typeof this.min == "number" && (e = Math.max(this.min, e)), typeof this.max == "number" && (e = Math.min(this.max, e)), h.value = String(e), t[r] = e, this.parent.onUpdate ? this.parent.onUpdate() : this.parent.isFolder && this.parent.firstParent.onUpdate && this.parent.firstParent.onUpdate();
+		}, b = (e) => {
+			if (o) return;
+			let t = parseFloat(h.value);
 			isNaN(t) && (t = 0);
-			let n = Math.max(f, this.parent._countDecimals(t)), r = parseFloat((t + e * d).toFixed(n));
-			m.value = String(r), v(), m.focus();
+			let n = Math.max(p, i(t)), r = parseFloat((t + e * f).toFixed(n));
+			h.value = String(r), y(), h.focus();
 		};
-		m.addEventListener("change", v), m.addEventListener("keydown", (e) => {
-			e.key === "ArrowUp" ? (e.preventDefault(), y(1)) : e.key === "ArrowDown" && (e.preventDefault(), y(-1));
-		}), g.addEventListener("pointerdown", (e) => {
-			e.preventDefault(), y(1);
+		h.addEventListener("change", y), h.addEventListener("keydown", (e) => {
+			e.key === "ArrowUp" ? (e.preventDefault(), b(1)) : e.key === "ArrowDown" && (e.preventDefault(), b(-1));
 		}), _.addEventListener("pointerdown", (e) => {
-			e.preventDefault(), y(-1);
-		}), c.listeners.add((e) => {
+			e.preventDefault(), b(1);
+		}), v.addEventListener("pointerdown", (e) => {
+			e.preventDefault(), b(-1);
+		}), l.listeners.add((e) => {
 			let t = String(e);
-			m.value !== t && (m.value = t), typeof this.callback == "function" && this.callback(e);
+			h.value !== t && (h.value = t), typeof this.callback == "function" && this.callback(e);
 		});
 	}
 	onChange(e) {
 		return this.callback = e, this;
 	}
-}, m = ".p-gui__button{background:var(--color-accent);text-align:center;color:var(--color-bg);box-sizing:border-box;transition:var(--transition) background, var(--transition) border-color;border:1px solid #0000}.p-gui__button:hover{background:var(--color-accent-hover);border-color:#fff3}.p-gui__folder .p-gui__button{margin-inline:0}", h = ".p-gui__slider{min-height:14px;color:var(--color-text-dark);transition:color var(--transition);touch-action:none;justify-content:space-between;align-items:center;gap:10px;padding:3px;display:flex;position:relative}.p-gui__slider:hover{color:var(--color-text-light)}.p-gui__slider-name{text-overflow:ellipsis;width:50%;overflow:hidden}.p-gui__slider-ctrl{-webkit-appearance:none;font:inherit;box-sizing:border-box;cursor:pointer;touch-action:none;outline:none;width:37%;height:14px;margin:0 0 0 auto;padding:0;position:relative;right:0}.p-gui__slider-bar{background:#fff3;width:100%;height:2px;position:absolute;top:50%;left:0;transform:translateY(-50%)}.p-gui__slider-filling{background:var(--color-accent);pointer-events:none;width:0;height:100%;position:absolute;top:-25%;left:0}.p-gui__slider:hover .p-gui__slider-filling{background:var(--color-accent-hover)}.p-gui__slider-handle{pointer-events:none;background:var(--color-text-dark);border-radius:2px;width:9px;height:9px;position:absolute;top:50%;left:0;transform:translate(-50%,-50%);box-shadow:0 0 2px #00000080}.p-gui__slider:hover .p-gui__slider-handle{background:var(--color-text-light)}.p-gui__slider-value{color:inherit;width:13%;background:#ffffff1a;border:none;border-radius:2px;padding:2px 4px;display:inline-block;right:7px}.p-gui__slider-value:focus{outline:none}.p-gui__slider[data-readonly=true] .p-gui__slider-ctrl,.p-gui__slider[data-readonly=true] .p-gui__slider-value{cursor:default}.p-gui__slider[data-readonly=true] .p-gui__slider-handle{display:none}", g = ".p-gui__list{cursor:default;color:var(--color-text-dark);transition:var(--transition) color}.p-gui__list:hover{color:var(--color-text-light)}.p-gui__list-dropdown{color:#fff;background:#ffffff0d;padding:0 12px 0 5px;top:0}.p-gui__list-dropdown{cursor:pointer;border:1px solid var(--color-border-2);border-radius:3px;outline:none;height:calc(100% - 4px);margin:auto;position:absolute;top:0;bottom:0;right:5px}.p-gui__list-dropdown option{color:#000;background:#fff}.p-gui__list-dropdown:hover{background:#ffffff1a}", _ = ".p-gui__toggle{color:var(--color-text-dark);transition:var(--transition) background, var(--transition) color}.p-gui__toggle:hover{color:var(--color-text-light);background:#ffffff1a}.p-gui__folder .p-gui__toggle{margin-inline:0}.p-gui__toggle-checkbox{box-sizing:border-box;pointer-events:none;background-color:#ffffff1a;border:1px solid #ffffff26;border-radius:999px;width:26px;height:14px;margin:auto;transition:background-color .2s,border-color .2s;position:absolute;top:0;bottom:0;right:10px}.p-gui__toggle-checkbox:before{content:\"\";background-color:#ddd;border-radius:50%;width:10px;height:10px;transition:transform .2s,background-color .2s;position:absolute;top:50%;left:1px;transform:translateY(-50%)}.p-gui__toggle-checkbox--active{border-color:var(--color-border);background-color:#ddd}.p-gui__toggle-checkbox--active:before{background-color:var(--color-border);box-shadow:0 0 4px var(--color-accent-hover);transform:translate(12px,-50%)}.p-gui__toggle[data-readonly=true]:hover{color:var(--color-text-dark);background:0 0}", v = ".p-gui__color{cursor:default;color:var(--color-text-dark);transition:var(--transition) color}.p-gui__color:hover{color:var(--color-text-light)}.p-gui__color-picker{cursor:pointer;border:1px solid var(--color-border-2);-webkit-appearance:none;background-color:#0000;border:1px solid #222;border-radius:3px;outline:none;height:calc(100% - 4px);margin:auto;padding:0;position:absolute;top:0;bottom:0;right:5px;overflow:hidden}.p-gui__color-picker::-webkit-color-swatch-wrapper{padding:0}.p-gui__color-picker::-webkit-color-swatch{border:none}.p-gui__color-picker:disabled{cursor:default;opacity:.8}", y = ".p-gui__vector2{color:var(--color-text-dark);cursor:default;background:0 0}.p-gui__vector2:hover{color:var(--color-text-light)}.p-gui__vector2-area{--sub-color:#282828;background-color:#0000004d;background-image:repeating-linear-gradient(to bottom, var(--sub-color) 0, var(--sub-color) 1px, transparent 1px, transparent 4px), repeating-linear-gradient(to bottom, var(--sub-color) 0, var(--sub-color) 1px, transparent 1px, transparent 4px), repeating-linear-gradient(to right, var(--sub-color) 0, var(--sub-color) 1px, transparent 1px, transparent 4px), repeating-linear-gradient(to right, var(--sub-color) 0, var(--sub-color) 1px, transparent 1px, transparent 4px);border:1px solid var(--color-border);aspect-ratio:1;box-sizing:border-box;touch-action:none;cursor:pointer;background-position:25% 0,75% 0,0 25%,0 75%;background-repeat:no-repeat;background-size:1px 100%,1px 100%,100% 1px,100% 1px;width:50%;margin-top:8px;margin-left:auto;position:relative}.p-gui__vector2-line{opacity:1;pointer-events:none;background:#333;position:absolute}.p-gui__vector2-line-x{width:100%;height:1px;top:50%;left:0;transform:translateY(-50%)}.p-gui__vector2-line-y{width:1px;height:100%;top:0;left:50%;transform:translate(-50%)}.p-gui__vector2-dot{pointer-events:none;background:#d5d5d5;border:2px solid #f99;border-radius:50%;width:8px;height:8px;position:absolute;top:0;left:0;transform:translate(-50%,-50%)}.p-gui__vector-value{display:inline-block;position:absolute;right:7px}.p-gui__vector2[data-readonly=true] .p-gui__vector2-area{cursor:default}", b = ".p-gui__angle{min-height:34px;color:var(--color-text-dark);transition:color var(--transition);touch-action:none;align-items:center;gap:8px;padding:3px;display:flex;position:relative}.p-gui__angle:hover{color:var(--color-text-light)}.p-gui__angle-name{text-overflow:ellipsis;width:50%;overflow:hidden}.p-gui__angle-dial{box-sizing:border-box;border:1px solid var(--color-accent);cursor:pointer;touch-action:none;background:#0000004d;border-radius:50%;flex:none;width:28px;height:28px;margin-left:auto;position:relative}.p-gui__angle-dial:after{content:\"\";background:#ffffff4d;border-radius:50%;width:3px;height:3px;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}.p-gui__angle-needle{transform-origin:0;background:var(--color-accent);pointer-events:none;width:50%;height:1px;position:absolute;top:50%;left:50%}.p-gui__angle:hover .p-gui__angle-needle{background:var(--color-accent-hover)}.p-gui__angle-handle{background:var(--color-text-dark);border-radius:50%;width:5px;height:5px;position:absolute;top:50%;right:0;transform:translate(50%,-50%);box-shadow:0 0 2px #00000080}.p-gui__angle:hover .p-gui__angle-handle{background:var(--color-text-light)}.p-gui__angle-value{width:34px;color:inherit;text-align:right;background:#ffffff1a;border:none;border-radius:2px;padding:2px 4px}.p-gui__angle-value:focus{outline:none}.p-gui__angle-unit{opacity:.6;width:18px}.p-gui__angle[data-readonly=true] .p-gui__angle-dial{cursor:default}.p-gui__angle[data-readonly=true] .p-gui__angle-handle{display:none}", x = ".p-gui__image-container{box-sizing:border-box;flex-wrap:wrap;justify-content:flex-start;width:100%;padding:3px;display:flex}.p-gui__image{cursor:pointer;border-radius:var(--main-border-radius);height:90px;color:var(--color-text-dark);transition:var(--transition) color;background-position:50%;background-size:cover;flex:0 0 calc(33.333% - 5px);margin:1px 2.5px 19px;position:relative}.p-gui__image:hover{color:var(--color-text-light)}.p-gui__image:after{content:\"\";box-sizing:border-box;border-radius:var(--main-border-radius);width:100%;height:100%;transition:var(--transition) border-color;border:1px solid #0000;position:absolute;top:0;left:0}.p-gui__image--selected:after{border-color:#06ff89}.p-gui__image-text{text-shadow:0 -1px #111;white-space:nowrap;text-overflow:ellipsis;width:100%;position:absolute;bottom:-15px;overflow:hidden}", S = ".p-gui__folder{background:var(--color-bg);border:1px solid var(--color-border-2);border-radius:var(--main-border-radius);box-sizing:border-box;border-left:1px solid #bbb;flex-wrap:wrap;width:100%;margin-bottom:2px;display:flex;position:relative}.p-gui__folder--first{margin-top:0}.p-gui__folder-content{grid-template-rows:1fr;width:100%;transition:grid-template-rows .25s;display:grid}.p-gui__folder-inner{padding-left:3px;padding-right:2px;overflow:hidden}.p-gui__folder--closed .p-gui__folder-content{grid-template-rows:0fr}.p-gui__folder-header{color:#fff;cursor:pointer;box-sizing:border-box;border-top-right-radius:var(--main-border-radius);border-bottom-right-radius:var(--main-border-radius);background-color:#00000080;width:100%;padding:5px 3px}.p-gui__folder-header:hover{background-color:#000000bf}.p-gui__folder-arrow{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAHlBMVEUAAAD///////////////////////////////////8kfJuVAAAACXRSTlMA9Z1fCdMo1yxEJnA0AAAAK0lEQVQI12PABlRgjKkJUMZMYRhjpgqMAZSEMICSaIzpDWiKhdENhEhgAgATSg5jyWnYewAAAABJRU5ErkJggg==);background-size:contain;width:8px;height:8px;margin-right:5px;display:inline-block;transform:rotate(90deg)}.p-gui__folder--closed .p-gui__folder-arrow{transform:rotate(0)}", C = ".p-gui__tabs{background:var(--color-bg);border:1px solid var(--color-border-2);border-radius:var(--main-border-radius);box-sizing:border-box;border-left:1px solid #bbb;width:100%;margin-bottom:2px;padding-block:0;position:relative}.p-gui__tabs--first{margin-top:0}.p-gui__tabs-header{border-top-left-radius:var(--main-border-radius);border-top-right-radius:var(--main-border-radius);background-color:#00000080;display:flex}.p-gui__tab-button{color:#bbb;cursor:pointer;white-space:nowrap;text-overflow:ellipsis;background:0 0;border:none;flex:1;padding:7px 10px;font-family:inherit;overflow:hidden}.p-gui__tab-button:last-child{border-right:none}.p-gui__tab-button:hover{color:#fff}.p-gui__tab-button--active{background-color:var(--color-bg);color:#fff;border-bottom:1px solid #0000}.p-gui__tabs-content{width:100%;position:relative}.p-gui__tab-pane{box-sizing:border-box;width:100%;padding-top:4px;display:none}.p-gui__tab-pane--active{display:block}", w = ".p-gui__text{cursor:default;color:var(--color-text-dark);transition:var(--transition) color}.p-gui__text:hover{color:var(--color-text-light)}.p-gui__text-input{box-sizing:border-box;cursor:text;border:1px solid var(--color-border-2);color:#fff;background:#ffffff0d;border-radius:3px;outline:none;width:45%;height:calc(100% - 4px);margin:auto;padding:0 6px;position:absolute;top:0;bottom:0;right:5px}.p-gui__text-input:hover{background:#ffffff1a}.p-gui__text-input::placeholder{color:var(--color-text-dark)}.p-gui__text[data-readonly=true] .p-gui__text-input{cursor:default}", T = ".p-gui__number{cursor:default;color:var(--color-text-dark);transition:var(--transition) color}.p-gui__number:hover{color:var(--color-text-light)}.p-gui__number-ctrl{box-sizing:border-box;border:1px solid var(--color-border-2);background:#ffffff0d;border-radius:3px;width:45%;height:calc(100% - 4px);margin:auto;display:flex;position:absolute;top:0;bottom:0;right:5px;overflow:hidden}.p-gui__number-ctrl:hover{background:#ffffff1a}.p-gui__number-input{box-sizing:border-box;cursor:text;color:#fff;appearance:textfield;background:0 0;border:none;outline:none;flex:1;min-width:0;padding:0 0 0 6px}.p-gui__number-input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}.p-gui__number-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}.p-gui__number-input::placeholder{color:var(--color-text-dark)}input.p-gui__number-input:focus-visible{outline:none}.p-gui__number-ctrl:has(.p-gui__number-input:focus-visible){outline:2px solid var(--color-accent-hover);outline-offset:1px}.p-gui__number-stepper{border-left:1px solid var(--color-border-2);flex-direction:column;flex:0 0 12px;display:flex}.p-gui__number-arrow{cursor:pointer;flex:50%;justify-content:center;align-items:center;display:flex}.p-gui__number-arrow:hover{background:#ffffff1a}.p-gui__number-arrow:before{content:\"\";border-left:3px solid #0000;border-right:3px solid #0000;width:0;height:0}.p-gui__number-arrow--up{border-bottom:1px solid var(--color-border-2)}.p-gui__number-arrow--up:before{border-bottom:4px solid var(--color-text-dark)}.p-gui__number-arrow--down:before{border-top:4px solid var(--color-text-dark)}.p-gui__number-arrow--up:hover:before{border-bottom-color:var(--color-text-light)}.p-gui__number-arrow--down:hover:before{border-top-color:var(--color-text-light)}.p-gui__number[data-readonly=true] .p-gui__number-stepper{display:none}.p-gui__number[data-readonly=true] .p-gui__number-input{cursor:default}";
+}, g = ".p-gui__button{background:var(--color-accent);text-align:center;color:var(--color-bg);box-sizing:border-box;transition:var(--transition) background, var(--transition) border-color;border:1px solid #0000}.p-gui__button:hover{background:var(--color-accent-hover);border-color:#fff3}.p-gui__folder .p-gui__button{margin-inline:0}", _ = ".p-gui__slider{min-height:14px;color:var(--color-text-dark);transition:color var(--transition);touch-action:none;justify-content:space-between;align-items:center;gap:10px;padding:3px;display:flex;position:relative}.p-gui__slider:hover{color:var(--color-text-light)}.p-gui__slider-name{text-overflow:ellipsis;width:50%;overflow:hidden}.p-gui__slider-ctrl{-webkit-appearance:none;font:inherit;box-sizing:border-box;cursor:pointer;touch-action:none;outline:none;width:37%;height:14px;margin:0 0 0 auto;padding:0;position:relative;right:0}.p-gui__slider-bar{background:#fff3;width:100%;height:2px;position:absolute;top:50%;left:0;transform:translateY(-50%)}.p-gui__slider-filling{background:var(--color-accent);pointer-events:none;width:0;height:100%;position:absolute;top:-25%;left:0}.p-gui__slider:hover .p-gui__slider-filling{background:var(--color-accent-hover)}.p-gui__slider-handle{pointer-events:none;background:var(--color-text-dark);border-radius:2px;width:9px;height:9px;position:absolute;top:50%;left:0;transform:translate(-50%,-50%);box-shadow:0 0 2px #00000080}.p-gui__slider:hover .p-gui__slider-handle{background:var(--color-text-light)}.p-gui__slider-value{color:inherit;width:13%;background:#ffffff1a;border:none;border-radius:2px;padding:2px 4px;display:inline-block;right:7px}.p-gui__slider-value:focus{outline:none}.p-gui__slider[data-readonly=true] .p-gui__slider-ctrl,.p-gui__slider[data-readonly=true] .p-gui__slider-value{cursor:default}.p-gui__slider[data-readonly=true] .p-gui__slider-handle{display:none}", v = ".p-gui__list{cursor:default;color:var(--color-text-dark);transition:var(--transition) color}.p-gui__list:hover{color:var(--color-text-light)}.p-gui__list-dropdown{color:#fff;background:#ffffff0d;padding:0 12px 0 5px;top:0}.p-gui__list-dropdown{cursor:pointer;border:1px solid var(--color-border-2);border-radius:3px;outline:none;height:calc(100% - 4px);margin:auto;position:absolute;top:0;bottom:0;right:5px}.p-gui__list-dropdown option{color:#000;background:#fff}.p-gui__list-dropdown:hover{background:#ffffff1a}", y = ".p-gui__toggle{color:var(--color-text-dark);transition:var(--transition) background, var(--transition) color}.p-gui__toggle:hover{color:var(--color-text-light);background:#ffffff1a}.p-gui__folder .p-gui__toggle{margin-inline:0}.p-gui__toggle-checkbox{box-sizing:border-box;pointer-events:none;background-color:#ffffff1a;border:1px solid #ffffff26;border-radius:999px;width:26px;height:14px;margin:auto;transition:background-color .2s,border-color .2s;position:absolute;top:0;bottom:0;right:10px}.p-gui__toggle-checkbox:before{content:\"\";background-color:#ddd;border-radius:50%;width:10px;height:10px;transition:transform .2s,background-color .2s;position:absolute;top:50%;left:1px;transform:translateY(-50%)}.p-gui__toggle-checkbox--active{border-color:var(--color-border);background-color:#ddd}.p-gui__toggle-checkbox--active:before{background-color:var(--color-border);box-shadow:0 0 4px var(--color-accent-hover);transform:translate(12px,-50%)}.p-gui__toggle[data-readonly=true]:hover{color:var(--color-text-dark);background:0 0}", b = ".p-gui__color{cursor:default;color:var(--color-text-dark);transition:var(--transition) color}.p-gui__color:hover{color:var(--color-text-light)}.p-gui__color-picker{cursor:pointer;border:1px solid var(--color-border-2);-webkit-appearance:none;background-color:#0000;border:1px solid #222;border-radius:3px;outline:none;height:calc(100% - 4px);margin:auto;padding:0;position:absolute;top:0;bottom:0;right:5px;overflow:hidden}.p-gui__color-picker::-webkit-color-swatch-wrapper{padding:0}.p-gui__color-picker::-webkit-color-swatch{border:none}.p-gui__color-picker:disabled{cursor:default;opacity:.8}", x = ".p-gui__vector2{color:var(--color-text-dark);cursor:default;background:0 0}.p-gui__vector2:hover{color:var(--color-text-light)}.p-gui__vector2-area{--sub-color:#282828;background-color:#0000004d;background-image:repeating-linear-gradient(to bottom, var(--sub-color) 0, var(--sub-color) 1px, transparent 1px, transparent 4px), repeating-linear-gradient(to bottom, var(--sub-color) 0, var(--sub-color) 1px, transparent 1px, transparent 4px), repeating-linear-gradient(to right, var(--sub-color) 0, var(--sub-color) 1px, transparent 1px, transparent 4px), repeating-linear-gradient(to right, var(--sub-color) 0, var(--sub-color) 1px, transparent 1px, transparent 4px);border:1px solid var(--color-border);aspect-ratio:1;box-sizing:border-box;touch-action:none;cursor:pointer;background-position:25% 0,75% 0,0 25%,0 75%;background-repeat:no-repeat;background-size:1px 100%,1px 100%,100% 1px,100% 1px;width:50%;margin-top:8px;margin-left:auto;position:relative}.p-gui__vector2-line{opacity:1;pointer-events:none;background:#333;position:absolute}.p-gui__vector2-line-x{width:100%;height:1px;top:50%;left:0;transform:translateY(-50%)}.p-gui__vector2-line-y{width:1px;height:100%;top:0;left:50%;transform:translate(-50%)}.p-gui__vector2-dot{pointer-events:none;background:#d5d5d5;border:2px solid #f99;border-radius:50%;width:8px;height:8px;position:absolute;top:0;left:0;transform:translate(-50%,-50%)}.p-gui__vector-value{display:inline-block;position:absolute;right:7px}.p-gui__vector2[data-readonly=true] .p-gui__vector2-area{cursor:default}", S = ".p-gui__angle{min-height:34px;color:var(--color-text-dark);transition:color var(--transition);touch-action:none;align-items:center;gap:8px;padding:3px;display:flex;position:relative}.p-gui__angle:hover{color:var(--color-text-light)}.p-gui__angle-name{text-overflow:ellipsis;width:50%;overflow:hidden}.p-gui__angle-dial{box-sizing:border-box;border:1px solid var(--color-accent);cursor:pointer;touch-action:none;background:#0000004d;border-radius:50%;flex:none;width:28px;height:28px;margin-left:auto;position:relative}.p-gui__angle-dial:after{content:\"\";background:#ffffff4d;border-radius:50%;width:3px;height:3px;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}.p-gui__angle-needle{transform-origin:0;background:var(--color-accent);pointer-events:none;width:50%;height:1px;position:absolute;top:50%;left:50%}.p-gui__angle:hover .p-gui__angle-needle{background:var(--color-accent-hover)}.p-gui__angle-handle{background:var(--color-text-dark);border-radius:50%;width:5px;height:5px;position:absolute;top:50%;right:0;transform:translate(50%,-50%);box-shadow:0 0 2px #00000080}.p-gui__angle:hover .p-gui__angle-handle{background:var(--color-text-light)}.p-gui__angle-value{width:34px;color:inherit;text-align:right;background:#ffffff1a;border:none;border-radius:2px;padding:2px 4px}.p-gui__angle-value:focus{outline:none}.p-gui__angle-unit{opacity:.6;width:18px}.p-gui__angle[data-readonly=true] .p-gui__angle-dial{cursor:default}.p-gui__angle[data-readonly=true] .p-gui__angle-handle{display:none}", C = ".p-gui__image-container{box-sizing:border-box;flex-wrap:wrap;justify-content:flex-start;width:100%;padding:3px;display:flex}.p-gui__image{cursor:pointer;border-radius:var(--main-border-radius);height:90px;color:var(--color-text-dark);transition:var(--transition) color;background-position:50%;background-size:cover;flex:0 0 calc(33.333% - 5px);margin:1px 2.5px 19px;position:relative}.p-gui__image:hover{color:var(--color-text-light)}.p-gui__image:after{content:\"\";box-sizing:border-box;border-radius:var(--main-border-radius);width:100%;height:100%;transition:var(--transition) border-color;border:1px solid #0000;position:absolute;top:0;left:0}.p-gui__image--selected:after{border-color:#06ff89}.p-gui__image-text{text-shadow:0 -1px #111;white-space:nowrap;text-overflow:ellipsis;width:100%;position:absolute;bottom:-15px;overflow:hidden}", w = ".p-gui__folder{background:var(--color-bg);border:1px solid var(--color-border-2);border-radius:var(--main-border-radius);box-sizing:border-box;border-left:1px solid #bbb;flex-wrap:wrap;width:100%;margin-bottom:2px;display:flex;position:relative}.p-gui__folder--first{margin-top:0}.p-gui__folder-content{grid-template-rows:1fr;width:100%;transition:grid-template-rows .25s;display:grid}.p-gui__folder-inner{padding-left:3px;padding-right:2px;overflow:hidden}.p-gui__folder--closed .p-gui__folder-content{grid-template-rows:0fr}.p-gui__folder-header{color:#fff;cursor:pointer;box-sizing:border-box;border-top-right-radius:var(--main-border-radius);border-bottom-right-radius:var(--main-border-radius);background-color:#00000080;width:100%;padding:5px 3px}.p-gui__folder-header:hover{background-color:#000000bf}.p-gui__folder-arrow{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAHlBMVEUAAAD///////////////////////////////////8kfJuVAAAACXRSTlMA9Z1fCdMo1yxEJnA0AAAAK0lEQVQI12PABlRgjKkJUMZMYRhjpgqMAZSEMICSaIzpDWiKhdENhEhgAgATSg5jyWnYewAAAABJRU5ErkJggg==);background-size:contain;width:8px;height:8px;margin-right:5px;display:inline-block;transform:rotate(90deg)}.p-gui__folder--closed .p-gui__folder-arrow{transform:rotate(0)}", T = ".p-gui__tabs{background:var(--color-bg);border:1px solid var(--color-border-2);border-radius:var(--main-border-radius);box-sizing:border-box;border-left:1px solid #bbb;width:100%;margin-bottom:2px;padding-block:0;position:relative}.p-gui__tabs--first{margin-top:0}.p-gui__tabs-header{border-top-left-radius:var(--main-border-radius);border-top-right-radius:var(--main-border-radius);background-color:#00000080;display:flex}.p-gui__tab-button{color:#bbb;cursor:pointer;white-space:nowrap;text-overflow:ellipsis;background:0 0;border:none;flex:1;padding:7px 10px;font-family:inherit;overflow:hidden}.p-gui__tab-button:last-child{border-right:none}.p-gui__tab-button:hover{color:#fff}.p-gui__tab-button--active{background-color:var(--color-bg);color:#fff;border-bottom:1px solid #0000}.p-gui__tabs-content{width:100%;position:relative}.p-gui__tab-pane{box-sizing:border-box;width:100%;padding-top:4px;display:none}.p-gui__tab-pane--active{display:block}", E = ".p-gui__text{cursor:default;color:var(--color-text-dark);transition:var(--transition) color}.p-gui__text:hover{color:var(--color-text-light)}.p-gui__text-input{box-sizing:border-box;cursor:text;border:1px solid var(--color-border-2);color:#fff;background:#ffffff0d;border-radius:3px;outline:none;width:45%;height:calc(100% - 4px);margin:auto;padding:0 6px;position:absolute;top:0;bottom:0;right:5px}.p-gui__text-input:hover{background:#ffffff1a}.p-gui__text-input::placeholder{color:var(--color-text-dark)}.p-gui__text[data-readonly=true] .p-gui__text-input{cursor:default}", D = ".p-gui__number{cursor:default;color:var(--color-text-dark);transition:var(--transition) color}.p-gui__number:hover{color:var(--color-text-light)}.p-gui__number-ctrl{box-sizing:border-box;border:1px solid var(--color-border-2);background:#ffffff0d;border-radius:3px;width:45%;height:calc(100% - 4px);margin:auto;display:flex;position:absolute;top:0;bottom:0;right:5px;overflow:hidden}.p-gui__number-ctrl:hover{background:#ffffff1a}.p-gui__number-input{box-sizing:border-box;cursor:text;color:#fff;appearance:textfield;background:0 0;border:none;outline:none;flex:1;min-width:0;padding:0 0 0 6px}.p-gui__number-input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}.p-gui__number-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}.p-gui__number-input::placeholder{color:var(--color-text-dark)}input.p-gui__number-input:focus-visible{outline:none}.p-gui__number-ctrl:has(.p-gui__number-input:focus-visible){outline:2px solid var(--color-accent-hover);outline-offset:1px}.p-gui__number-stepper{border-left:1px solid var(--color-border-2);flex-direction:column;flex:0 0 12px;display:flex}.p-gui__number-arrow{cursor:pointer;flex:50%;justify-content:center;align-items:center;display:flex}.p-gui__number-arrow:hover{background:#ffffff1a}.p-gui__number-arrow:before{content:\"\";border-left:3px solid #0000;border-right:3px solid #0000;width:0;height:0}.p-gui__number-arrow--up{border-bottom:1px solid var(--color-border-2)}.p-gui__number-arrow--up:before{border-bottom:4px solid var(--color-text-dark)}.p-gui__number-arrow--down:before{border-top:4px solid var(--color-text-dark)}.p-gui__number-arrow--up:hover:before{border-bottom-color:var(--color-text-light)}.p-gui__number-arrow--down:hover:before{border-top-color:var(--color-text-light)}.p-gui__number[data-readonly=true] .p-gui__number-stepper{display:none}.p-gui__number[data-readonly=true] .p-gui__number-input{cursor:default}";
 //#endregion
 //#region src/styles/styles.ts
-function E(e) {
+function O(e) {
 	return `
     .p-gui {
         --main-border-radius: 6px;
@@ -621,38 +630,38 @@ function E(e) {
         outline-offset: 1px;
     }
 
-    ${m}
-    
-    ${x}
-    
     ${g}
     
-    ${_}
-
-    ${h}
+    ${C}
     
     ${v}
     
     ${y}
 
+    ${_}
+    
     ${b}
+    
+    ${x}
 
     ${S}
-
-    ${C}
 
     ${w}
 
     ${T}
+
+    ${E}
+
+    ${D}
 `;
 }
 //#endregion
 //#region src/index.ts
-var D = 0;
-function O() {
-	return ++D;
+var k = 0;
+function A() {
+	return ++k;
 }
-var k = class {
+var j = class {
 	constructor(e = {}, t = !1) {
 		if (this.container = document.body, this.label = "", this.backgroundColor = null, this.opacity = 1, this.maxHeight = window.innerHeight, this.initMaxHeight = null, this.instanceId = 0, this.wrapperWidth = 290, this.stylesheet = null, this.closed = !1, this.collapsible = !0, this.domElement = null, this.hasBeenDragged = !1, this.xOffset = 0, this.yOffset = 0, this.position = {
 			initX: 0,
@@ -677,7 +686,7 @@ var k = class {
 			let t = typeof e.container == "string" ? document.querySelector(e.container) : e.container;
 			t instanceof HTMLElement && (this.container = t, n = "absolute");
 		}
-		this.screenCorner = this._parseScreenCorner(e.position), e.width && (this.wrapperWidth = e.width), typeof e.onUpdate == "function" && (this.onUpdate = e.onUpdate), this.label = typeof e.label == "string" ? e.label : "", this.backgroundColor = e.color || null, this.opacity = e.opacity || 1, this.container && this.container !== document.body && (this.maxHeight = Math.min(this.container.clientHeight, window.innerHeight)), e.maxHeight && (this.initMaxHeight = e.maxHeight, this.maxHeight = Math.min(this.initMaxHeight, this.maxHeight)), window.perfectGUI || (window.perfectGUI = {}), window.perfectGUI.instanceCounter == null ? window.perfectGUI.instanceCounter = 0 : window.perfectGUI.instanceCounter++, this.instanceId = window.perfectGUI.instanceCounter, this.stylesheet = document.createElement("style"), this.stylesheet.setAttribute("type", "text/css"), this.stylesheet.setAttribute("id", "lm-gui-stylesheet"), document.head.append(this.stylesheet), this.instanceId == 0 && this._addStyles(`${E(n)}`), this._styleInstance(), this.closed = !!e.closed, this.collapsible = e.collapsible != 0;
+		this.screenCorner = this._parseScreenCorner(e.position), e.width && (this.wrapperWidth = e.width), typeof e.onUpdate == "function" && (this.onUpdate = e.onUpdate), this.label = typeof e.label == "string" ? e.label : "", this.backgroundColor = e.color || null, this.opacity = e.opacity || 1, this.container && this.container !== document.body && (this.maxHeight = Math.min(this.container.clientHeight, window.innerHeight)), e.maxHeight && (this.initMaxHeight = e.maxHeight, this.maxHeight = Math.min(this.initMaxHeight, this.maxHeight)), window.perfectGUI || (window.perfectGUI = {}), window.perfectGUI.instanceCounter == null ? window.perfectGUI.instanceCounter = 0 : window.perfectGUI.instanceCounter++, this.instanceId = window.perfectGUI.instanceCounter, this.stylesheet = document.createElement("style"), this.stylesheet.setAttribute("type", "text/css"), this.stylesheet.setAttribute("id", "lm-gui-stylesheet"), document.head.append(this.stylesheet), this.instanceId == 0 && this._addStyles(`${O(n)}`), this._styleInstance(), this.closed = !!e.closed, this.collapsible = e.collapsible != 0;
 		let [r, i] = this._addWrapper();
 		this.domElement = r, this.wrapper = i, this.domElement.setAttribute("data-corner-x", this.screenCorner.x), this.domElement.setAttribute("data-corner-y", this.screenCorner.y), this.autoRepositioning = e.autoRepositioning != 0, this.autoRepositioning && window.addEventListener("resize", this._boundHandleResize), this._handleResize(), e.draggable == 1 && this._makeDraggable();
 	}
@@ -753,31 +762,31 @@ var k = class {
 		return this.imageContainer = null, new e(this, t);
 	}
 	image(e, t = {}) {
-		return this.imageContainer || (this.imageContainer = document.createElement("div"), this.imageContainer.className = "p-gui__image-container", this.wrapper.append(this.imageContainer)), new i(this, e, t);
+		return this.imageContainer || (this.imageContainer = document.createElement("div"), this.imageContainer.className = "p-gui__image-container", this.wrapper.append(this.imageContainer)), new o(this, e, t);
 	}
 	slider(e, t, n = {}) {
-		return this.imageContainer = null, new r(this, e, t, n);
-	}
-	toggle(e, t, n = {}) {
 		return this.imageContainer = null, new a(this, e, t, n);
 	}
-	list(e, t, n, r = {}) {
-		return this.imageContainer = null, new o(this, e, t, n, r);
-	}
-	color(e, t, n = {}) {
+	toggle(e, t, n = {}) {
 		return this.imageContainer = null, new s(this, e, t, n);
 	}
-	vector2(e, t, n, r = {}) {
+	list(e, t, n, r = {}) {
 		return this.imageContainer = null, new c(this, e, t, n, r);
 	}
+	color(e, t, n = {}) {
+		return this.imageContainer = null, new l(this, e, t, n);
+	}
+	vector2(e, t, n, r = {}) {
+		return this.imageContainer = null, new u(this, e, t, n, r);
+	}
 	angle(e, t, n = {}) {
-		return this.imageContainer = null, new d(this, e, t, n);
+		return this.imageContainer = null, new p(this, e, t, n);
 	}
 	text(e, t, n = {}) {
-		return this.imageContainer = null, new f(this, e, t, n);
+		return this.imageContainer = null, new m(this, e, t, n);
 	}
 	number(e, t, n = {}) {
-		return this.imageContainer = null, new p(this, e, t, n);
+		return this.imageContainer = null, new h(this, e, t, n);
 	}
 	folder(e) {
 		let t = typeof e.closed == "boolean" ? e.closed : !1, n = e.label || "", r = e.color || null, i = e.maxHeight || null;
@@ -791,7 +800,7 @@ var k = class {
 		let c = document.createElement("div");
 		c.innerHTML = `<span class="p-gui__folder-arrow"></span>${n}`, c.className = "p-gui__folder-header", s.append(c);
 		let l = document.createElement("div");
-		l.className = "p-gui__folder-content", l.id = "p-gui-folder-content-" + O(), s.append(l);
+		l.className = "p-gui__folder-content", l.id = "p-gui-folder-content-" + A(), s.append(l);
 		let u = document.createElement("div");
 		u.className = "p-gui__folder-inner", l.append(u), c.setAttribute("role", "button"), c.setAttribute("tabindex", "0"), c.setAttribute("aria-expanded", String(!t)), c.setAttribute("aria-controls", l.id);
 		let d = () => {
@@ -801,7 +810,7 @@ var k = class {
 		c.addEventListener("click", d), c.addEventListener("keydown", (e) => {
 			(e.key === "Enter" || e.key === " ") && (e.preventDefault(), d());
 		});
-		let f = new A({
+		let f = new M({
 			container: s,
 			wrapper: u,
 			parent: this,
@@ -825,10 +834,10 @@ var k = class {
 		let u = [];
 		t.forEach((e, r) => {
 			let i = document.createElement("button");
-			i.className = "p-gui__tab-button", r === n && (i.className += " p-gui__tab-button--active"), i.textContent = e, i.id = "p-gui-tab-" + O(), i.setAttribute("role", "tab"), i.setAttribute("aria-selected", String(r === n)), i.setAttribute("tabindex", r === n ? "0" : "-1"), c.append(i);
+			i.className = "p-gui__tab-button", r === n && (i.className += " p-gui__tab-button--active"), i.textContent = e, i.id = "p-gui-tab-" + A(), i.setAttribute("role", "tab"), i.setAttribute("aria-selected", String(r === n)), i.setAttribute("tabindex", r === n ? "0" : "-1"), c.append(i);
 			let a = document.createElement("div");
-			a.className = "p-gui__tab-pane", a.id = "p-gui-tabpanel-" + O(), a.setAttribute("role", "tabpanel"), a.setAttribute("aria-labelledby", i.id), i.setAttribute("aria-controls", a.id), r === n && (a.className += " p-gui__tab-pane--active"), l.append(a);
-			let o = new A({
+			a.className = "p-gui__tab-pane", a.id = "p-gui-tabpanel-" + A(), a.setAttribute("role", "tabpanel"), a.setAttribute("aria-labelledby", i.id), i.setAttribute("aria-controls", a.id), r === n && (a.className += " p-gui__tab-pane--active"), l.append(a);
+			let o = new M({
 				container: s,
 				wrapper: a,
 				parent: this,
@@ -857,7 +866,7 @@ var k = class {
 			let t = u[e];
 			t.button.classList.add("p-gui__tab-button--active"), t.pane.classList.add("p-gui__tab-pane--active"), t.button.setAttribute("aria-selected", "true"), t.button.setAttribute("tabindex", "0");
 		}
-		let f = new A({
+		let f = new M({
 			container: s,
 			wrapper: u[n]?.pane || document.createElement("div"),
 			parent: this,
@@ -876,17 +885,16 @@ var k = class {
 	kill() {
 		this.autoRepositioning && window.removeEventListener("resize", this._boundHandleResize), this.domElement &&= (this.domElement.remove(), null);
 	}
-	_mapLinear(e, t, n, r, i) {
-		return r + (e - t) * (i - r) / (n - t);
+	_mapLinear(e, t, n, i, a) {
+		return r(e, t, n, i, a);
 	}
 	_countDecimals(e) {
-		let t = e.toString(), n = t.indexOf(".");
-		return n === -1 ? 0 : t.length - n - 1;
+		return i(e);
 	}
-}, A = class extends k {
+}, M = class extends j {
 	constructor(e) {
 		super({}, !0), this.isFolder = !0, this.domElement = e.container, this.wrapper = e.wrapper, this.parent = e.parent, this.firstParent = e.firstParent;
 	}
 };
 //#endregion
-export { d as Angle, e as Button, s as Color, A as Folder, i as Image, o as List, p as NumberInput, r as Slider, f as Text, a as Toggle, c as Vector2, k as default };
+export { p as Angle, e as Button, l as Color, M as Folder, o as Image, c as List, h as NumberInput, a as Slider, m as Text, s as Toggle, u as Vector2, j as default };

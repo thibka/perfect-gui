@@ -1,5 +1,6 @@
 import type GUI from '../index.js';
 import { bindSharedProp } from '../shared-prop.js';
+import { _countDecimals } from '../utils.js';
 
 export type Options = {
     label?: string;
@@ -65,7 +66,7 @@ export default class NumberInput {
         this.element = container;
 
         const step = options.step || 1;
-        const stepDecimals = this.parent._countDecimals(step);
+        const stepDecimals = _countDecimals(step);
 
         const ctrl = document.createElement('div');
         ctrl.className = 'p-gui__number-ctrl';
@@ -149,7 +150,7 @@ export default class NumberInput {
             // with an integer step should keep stepping to 1.1, 2.1, ...)
             // in addition to the step's decimals, then round to avoid
             // floating-point drift (0.1 + 1 !== 1.1 in binary floats).
-            const decimals = Math.max(stepDecimals, this.parent._countDecimals(current));
+            const decimals = Math.max(stepDecimals, _countDecimals(current));
             const stepped = parseFloat((current + direction * step).toFixed(decimals));
             input.value = String(stepped);
             commitValue();

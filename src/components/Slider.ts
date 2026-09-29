@@ -1,5 +1,6 @@
 import type GUI from '../index.js';
 import { bindSharedProp } from '../shared-prop.js';
+import { _countDecimals, _mapLinear } from '../utils.js';
 
 export type Options = {
     label?: string;
@@ -53,7 +54,7 @@ export default class Slider {
         this.min = options.min ?? 0;
         this.max = options.max ?? 1;
         this.step = options.step || (this.max - this.min) / 100;
-        this.decimals = this.parent._countDecimals(this.step);
+        this.decimals = _countDecimals(this.step);
 
         const propEntry = bindSharedProp<number>(this.obj, this.prop);
         const tooltip =
@@ -265,7 +266,7 @@ export default class Slider {
     _updateHandlePositionFromValue() {
         const sliderWidth = this.ctrlDiv.offsetWidth;
         const handleWidth = this.handle.offsetWidth;
-        let handlePosition = this.parent._mapLinear(
+        let handlePosition = _mapLinear(
             parseFloat(this.valueInput.value),
             this.min,
             this.max,
