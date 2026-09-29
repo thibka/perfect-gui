@@ -6,11 +6,15 @@ Write the `onUpdate` propagation characterization test first, before anything el
 
 **Blocked by:** None (can start immediately)
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] Characterization test: a Component directly in the Panel, one inside a Folder, one inside a nested Folder, and one inside a Tab each trigger `onUpdate` exactly once on user interaction.
-- [ ] Characterization test: a readonly Component and a programmatic change (`obj.prop = x`) do NOT trigger `onUpdate`.
-- [ ] Integration tests for `GUI`: construction, `label`, `position` (all 4 corners), `container` (CSS selector and element), `closed`, `collapsible`, `toggleClose`, `kill`.
-- [ ] Folder tests: nesting, `closed` state, keyboard interaction (Enter/Space).
-- [ ] Tabs tests: `getTab`, `setActiveTab`, `getActiveTab`, keyboard navigation.
-- [ ] Regression test for P6 (multi-instance positioning bug): a second `GUI` instance created with a `container` option must render with `position: absolute`. Write it as `it.fails` — it is expected to fail until ticket 08 fixes P6.
+- [x] Characterization test: a Component directly in the Panel, one inside a Folder, one inside a nested Folder, and one inside a Tab each trigger `onUpdate` exactly once on user interaction.
+- [x] Characterization test: a readonly Component and a programmatic change (`obj.prop = x`) do NOT trigger `onUpdate`.
+- [x] Integration tests for `GUI`: construction, `label`, `position` (all 4 corners), `container` (CSS selector and element), `closed`, `collapsible`, `toggleClose`, `kill`.
+- [x] Folder tests: nesting, `closed` state, keyboard interaction (Enter/Space).
+- [x] Tabs tests: `getTab`, `setActiveTab`, `getActiveTab`, keyboard navigation.
+- [x] Regression test for P6 (multi-instance positioning bug): a second `GUI` instance created with a `container` option must render with `position: absolute`. Write it as `it.fails` — it is expected to fail until ticket 08 fixes P6.
+
+## Comments
+
+Implemented: `src/on-update-propagation.test.ts` (fan-out characterization tests) and integration tests added to `src/index.test.ts` (GUI construction/toggleClose/kill, Folder, Tabs, P6 regression as `it.fails`). Added an `Element.prototype.scrollTo` stub to `test/setup.ts` since jsdom doesn't implement it and `toggleClose()` depends on it. Full suite (`npm run build`) passes: 90 passed, 1 expected fail.

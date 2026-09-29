@@ -7,3 +7,7 @@ class ResizeObserverStub {
 }
 
 globalThis.ResizeObserver = ResizeObserverStub as unknown as typeof ResizeObserver;
+
+// jsdom does not implement Element.scrollTo; GUI.toggleClose() calls it to
+// restore/save scroll position, so a no-op stub keeps that code path callable.
+Element.prototype.scrollTo = function () {};
