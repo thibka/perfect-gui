@@ -10,6 +10,7 @@ import _folder from './_folder.css?inline';
 import _tabs from './_tabs.css?inline';
 import _text from './_text.css?inline';
 import _number from './_number.css?inline';
+import _displaytext from './_displaytext.css?inline';
 
 type PositionType = 'absolute' | 'fixed';
 
@@ -143,7 +144,8 @@ export default function (positionType: PositionType) {
     .p-gui__color,
     .p-gui__tabs,
     .p-gui__text,
-    .p-gui__number {
+    .p-gui__number,
+    .p-gui__displaytext {
         width: 100%;
         padding: 5px 3px;
         cursor: pointer;
@@ -164,7 +166,8 @@ export default function (positionType: PositionType) {
     .p-gui__color:hover,
     .p-gui__tabs:hover,
     .p-gui__text:hover,
-    .p-gui__number:hover {
+    .p-gui__number:hover,
+    .p-gui__displaytext:hover {
         border-color: rgba(255,255,255,.2);
     }
 
@@ -222,5 +225,7 @@ export default function (positionType: PositionType) {
     ${_text}
 
     ${_number}
+
+    ${_displaytext}
 `;
 }

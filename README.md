@@ -129,6 +129,7 @@ See the [Documentation](https://thibka.github.io/perfect-gui/dist/) for a compre
 | [`slider(obj, prop, options)`](https://thibka.github.io/perfect-gui/dist/#method-slider) | Numeric slider bound to `obj[prop]`. |
 | [`number(obj, prop, options)`](https://thibka.github.io/perfect-gui/dist/#method-number) | Plain numeric input (no slider) bound to `obj[prop]`. |
 | [`text(obj, prop, options)`](https://thibka.github.io/perfect-gui/dist/#method-text) | Free text input bound to `obj[prop]`. |
+| [`displayText(obj, prop, options)`](https://thibka.github.io/perfect-gui/dist/#method-displaytext) | Read-only text showing the value of `obj[prop]`. |
 | [`toggle(obj, prop, options)`](https://thibka.github.io/perfect-gui/dist/#method-toggle) | Boolean checkbox bound to `obj[prop]`. |
 | [`list(obj, prop, values, options)`](https://thibka.github.io/perfect-gui/dist/#method-list) | Dropdown to select a value from a list, bound to `obj[prop]`. |
 | [`image(path, options)`](https://thibka.github.io/perfect-gui/dist/#method-image) | Displays an image inside the panel. |

@@ -128,6 +128,15 @@ declare interface Container {
     notifyUpdate(): void;
 }
 
+export declare class DisplayText extends BoundComponent<string> {
+    constructor(container: Container, obj: any, prop: string, options?: DisplayTextOptions);
+}
+
+export declare type DisplayTextOptions = {
+    tooltip?: string | boolean;
+    style?: 'normal' | 'heading' | 'code';
+};
+
 export declare class Folder extends GUI {
     parent: GUI;
     firstParent: GUI;
@@ -215,6 +224,7 @@ declare class GUI implements Container {
     angle(obj: any, prop: string, options?: AngleOptions): Angle;
     text(obj: any, prop: string, options?: TextOptions): Text_2;
     number(obj: any, prop: string, options?: NumberOptions): NumberInput;
+    displayText(obj: any, prop: string, options?: DisplayTextOptions): DisplayText;
     folder(options: FolderCreateOptions): Folder;
     tabs(options?: {
         tabs?: string[];

@@ -25,7 +25,7 @@ One pane of a Tabs set, itself a Container.
 _Avoid_: Tab pane, page
 
 **Component**:
-Anything added to a Container: Slider, Toggle, Text, Button, etc. Not all Components control a value (e.g. Text only displays).
+Anything added to a Container: Slider, Toggle, Text, Button, etc. Not all Components control a value (e.g. DisplayText only displays).
 _Avoid_: Controller, control, widget, input
 
 ## Events
