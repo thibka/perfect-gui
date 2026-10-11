@@ -166,8 +166,7 @@ export default function (positionType: PositionType) {
     .p-gui__color:hover,
     .p-gui__tabs:hover,
     .p-gui__text:hover,
-    .p-gui__number:hover,
-    .p-gui__displaytext:hover {
+    .p-gui__number:hover {
         border-color: rgba(255,255,255,.2);
     }
 

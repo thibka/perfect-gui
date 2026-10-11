@@ -1,5 +1,7 @@
 .p-gui__displaytext {
-    cursor: default;
+    cursor: text;
+    user-select: text;
+    -webkit-user-select: text;
     color: var(--color-text-dark);
     transition: var(--transition) color;
     padding: 5px 3px;
@@ -12,7 +14,6 @@
 
 .p-gui__displaytext:hover {
     color: var(--color-text-light);
-    border-color: rgba(255,255,255,.2);
 }
 
 .p-gui__displaytext--heading {
