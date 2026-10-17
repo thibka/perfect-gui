@@ -35,6 +35,7 @@ Perfect GUI keeps the simplicity of `dat.gui`/`lil-gui`, with a few things that 
 | --- | :---: | :---: | :---: | :---: |
 | Image buttons | ✅ | ❌ | ❌ | 🔌 plugin |
 | Angle dial | ✅ | ❌ | ❌ | 🔌 plugin |
+| Read-only text display | ✅ | ❌ | ❌ | ✅ |
 | Tabs | ✅ | ❌ | ❌ | ✅ |
 | Draggable, auto-repositioning panel | ✅ | ❌ | ❌ | ✅ |
 | Multi-control sync on the same property | ✅ | ❌ | ❌ | ❌ |
